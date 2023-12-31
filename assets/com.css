@@ -1,0 +1,143 @@
+* {
+    margin:0;
+    padding: 0;
+    font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", STXihei, "华文细黑", Heiti, "黑体", SimSun, "宋体", sans-serif;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+}
+a {
+    color: #293939;
+    text-decoration: none;
+    font-size: 15px;
+    text-align: center;
+}
+img {
+    position:relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+    -webkit-transform: translate(-50%,0);
+    -moz-transform: translate(-50%,0);
+    display: block;
+    border-radius: 10px;
+}
+div,p {
+    line-height: 22px;
+}
+div.header {
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    border-bottom: 1px solid #ddd;
+    box-sizing: border-box;
+}
+div.header a {
+    float: left;
+    margin-left: 20px;
+}
+.title {
+    font-size: 25px;
+}
+div.header .title1 {
+    font-size: 14px;
+    color: #888;
+    position: relative;
+    left: 10px;
+    display: block;
+    float: left;
+    height: 100%;
+}
+div.main {
+    margin: 20px 0;
+    width: 600px;
+    padding: 20px;
+    font-size: 18px;
+    line-height: 27px;
+    word-break: break-all;
+    box-shadow: 2px 2px 10px rgb(90 90 90);
+    border-radius: 10px;
+}
+h1 {
+    line-height: 45px;
+}
+h2 {
+    line-height: 35px;
+}
+h3 {
+    line-height: 25px;
+}
+div.main ul {
+    display: flex;
+    flex-direction: column;
+}
+div.main ul,li {
+    list-style: none;
+    font-size: 20px;
+    color: #a0a0a0;
+}
+div.main li {
+    display: flex;
+    margin: 6px 0;
+}
+div.main li > a {
+    font-size: 20px;
+    margin: 0 10px;
+}
+div.main p.item {
+    margin: 12px 0;
+    padding: 10px 0;
+    border-bottom: 1px #eaeaea solid;
+}
+div.main p.item-bj {
+    margin: 12px 0;
+    color: gray;
+    text-align: right;
+    font-style: italic;
+    font-size: 14px;
+}
+div.main .time {
+    color: #a0a0a0;
+    font-size: 18px;
+    text-align: right;
+    margin-top: 10px;
+}
+div.main .list .date {
+    line-height: 30px;
+}
+div.main .list a {
+    flex: 1;
+    text-align: left;
+    line-height: 30px;
+}
+pre.quote {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 10px;
+    line-height: 22px;
+    font-size: 16px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+div.code {
+    background: #ececec;
+    padding: 8px;
+    margin: 5px 0;
+    overflow-x: scroll;
+    border-radius: 10px;
+    line-height: 22px;
+}
+@media(max-width:620px) {
+    div.main {
+        margin: 0;
+        padding: 10px;
+        width: 96%;
+        border: 0;
+        box-shadow: none;
+    }
+    img {
+        width: 98%;
+    }
+}

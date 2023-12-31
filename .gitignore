@@ -1,0 +1,9 @@
+Debug
+Release
+.xcode
+*.pro.*
+*.TMP
+.idea
+.DS_Store
+xxmoon.xcodeproj/*
+.qmake.stash
