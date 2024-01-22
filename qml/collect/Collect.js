@@ -3,6 +3,9 @@
 
 /// col
 function refreshAll(key_changed) {
+    if($l.isDebug()) {
+        Com.debug("refreshAll", key_changed);
+    }
     let k = search_bar.text.trim();
     if(key_changed && k.length === 0 && col_list_model.count > 0) {
         pre_cid = getCurrentColId();

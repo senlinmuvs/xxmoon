@@ -349,9 +349,6 @@ ApplicationWindow {
             window.width = wh[0];
             window.height = wh[1];
         }
-        if(pageLoader.item.init) {
-            pageLoader.item.init(data);
-        }
         if(!inited){
             x = screen.width/2 - window.width/2;
             y = screen.height/2 - window.height/2;

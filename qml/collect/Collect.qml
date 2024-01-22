@@ -570,6 +570,7 @@ Rectangle {
             root.tagManager.loadTagList(all, list);
             //等标签加载完再加载主页数据
             if(col_list_model.count === 0) {
+                Com.info("loadCollects on init tags");
                 Collect.loadCollects();
             }
         }
@@ -666,6 +667,7 @@ Rectangle {
         col_list_view.forceActiveFocus();
     }
     function init(data) {
+        Com.info("Collect init data");
         if(data) {
             let lw = data[$app.ENV_K_LAST_COLLECT_LEFT_WIDTH];
             if(lw) {
