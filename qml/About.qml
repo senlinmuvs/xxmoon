@@ -124,8 +124,6 @@ Popup {
                                 if($app.getPlatform() === Com.platform_mac) {
                                     if(/.+[/]Terminal.app|.+[/]iTerm.app/.test(path)) {
                                         path = "vi";
-                                    } else {
-                                        path = "/" + path;
                                     }
                                 }
                                 setup_editor.text = path;

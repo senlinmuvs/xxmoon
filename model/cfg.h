@@ -9,8 +9,7 @@ class Cfg {
 public:
     Cfg();
 
-//    QString dataDir = QDir::homePath();
-    QString dataDir = "/Volumes/MD";
+    QString dataDir = QDir::homePath();
     QString exchangeDataDir = "";
     QString initImgNamePre = "2020";
     QString appName = "xxmoon";
