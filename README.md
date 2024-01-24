@@ -33,7 +33,7 @@
 ![](imgs/20211024135321.071.695.820.webp)
 ![](imgs/20211024135323.697.696.823.webp)
 
-[快捷键](https://github.com/senlinmuvs/xxmoon/wiki)
+[所有操作](https://github.com/senlinmuvs/xxmoon/wiki)
 
 ## 后语
 优先macOS的开发，上了苹果App Store，Windows版的会有滞后，看起来可能会不如苹果版的，可在官网下载。这个软件会一直更新，这也是我自己用得比较多的软件。
