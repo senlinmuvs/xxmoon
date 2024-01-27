@@ -66,21 +66,6 @@ void CollectAction::addCol(QString name, QObject *obj) {
     DB_Async->exe([=] {
         QVariantMap m;
         QString err;
-        if(!app->isActivated()) {
-            uint c = colDao->count();
-            if(c >= MAX_FOLDER_TRIAL) {
-                if(DEPLOY == 0) {
-                    err = QObject::tr("Please activate");
-                } else {
-                    //TODO tips 升级
-//                    err = QObject::tr("Please activate");
-                }
-                QMetaObject::invokeMethod(obj, "onAdded",
-                                          Q_ARG(QVariant, QVariant::fromValue(err)),
-                                          Q_ARG(QVariant, QVariant::fromValue(m)));
-                return;
-            }
-        }
         Collect *col = new Collect();
         uint maxI = colDao->getMaxI();
         col->name = name;
@@ -199,15 +184,6 @@ void CollectAction::updatePK(uint id, QString cont, QString k, uint pklistWidth,
 
 void CollectAction::updatePKCid(uint colIndex, uint pkId, uint cid, QObject *obj) {
     DB_Async->exe([=] {
-        QVariantMap m;
-        QString err;
-        if(!app->isActivated()) {
-            uint c = pkDao->countCol(cid);
-            if(c >= MAX_PK_EACH_FOLDER_TRIAL) {
-                alert(QObject::tr("Please activate"));
-                return;
-            }
-        }
         pkDao->updateCid(pkId, cid);
         QMetaObject::invokeMethod(obj, "onMoved",
                                   Q_ARG(QVariant, QVariant::fromValue(colIndex)));
@@ -216,13 +192,6 @@ void CollectAction::updatePKCid(uint colIndex, uint pkId, uint cid, QObject *obj
 
 void CollectAction::addPK(uint cid, QString txt, uint pklistWidth, QObject *obj) {
     DB_Async->exe([=]{
-        if(!app->isActivated()) {
-            uint c = pkDao->countCol(cid);
-            if(c >= MAX_PK_EACH_FOLDER_TRIAL) {
-                alert(QObject::tr("Please activate"));
-                return;
-            }
-        }
         PK *pk = new PK();
         pk->cont = txt;
         pk->cid = cid;

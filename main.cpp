@@ -68,9 +68,8 @@ int start(int argc, char* argv[]) {
     Com_Async->start();
     DB_Async->start();
     SM_Async->start();
-    if(DEPLOY == 0) {
-        HServer::INS().loop();
-    }
+
+//    HServer::INS().loop();
     app->init();
 
 //    Timer::INS().init();

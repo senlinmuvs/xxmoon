@@ -6,16 +6,12 @@
 #define SIMPLE_SIZE 200
 #define MAX_TAG 6
 #define GEN_PDF_MAX_WIDTH 520
-#define MAX_FOLDER_TRIAL 10
-#define MAX_PK_EACH_FOLDER_TRIAL 50
 #define FILE_PRE "file:///"
 #define FILE_PRE_MAC "file://"
 #define WIN 0
 #define UNIX 1
 #define MAC 2
-#define VERSION "1.26.15"
-#define DEPLOY 1
-//DEPLOY 0 官网下载, 1 Mac App Store
+#define VERSION "1.26.16"
 
 #define CB_VAR std::function<QVariantList()>
 

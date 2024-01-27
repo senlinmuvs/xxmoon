@@ -57,9 +57,7 @@ public:
     QString getCfgFile();
 
     Q_INVOKABLE int getPlatform();
-    Q_INVOKABLE int getDeploy(){return DEPLOY;}
     Q_INVOKABLE QString getComputerID();
-    Q_INVOKABLE bool isActivated();
     Q_INVOKABLE QString getCfgVal(QString k);
     Q_INVOKABLE QString getCtrl();
 

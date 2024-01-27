@@ -59,9 +59,6 @@ int App::getPlatform() {
     return UNIX;
 #endif
 }
-bool App::isActivated() {
-    return DEPLOY == 0 ? activated : true;
-}
 QString App::getCfgFile() {
     return cfg->cfgFileName;
 }

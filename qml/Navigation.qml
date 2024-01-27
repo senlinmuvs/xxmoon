@@ -71,22 +71,21 @@ Rectangle {
                 rightMargin: 10
             }
             spacing: 8
-            Btn {
-                id: btn_serv
-                text: "S"
-                color:"transparent"
-                text_size: UI.nav_btn_serv_font_size
-                visible: $app.getDeploy() === 0
-                function click() {
-                    serv.op();
-                }
-                function fkEntered() {
-                    Com.st(0, qsTr('Mobile connect to computer'));
-                }
-                function fkExited() {
-                    Com.st(0, '');
-                }
-            }
+//            Btn {
+//                id: btn_serv
+//                text: "S"
+//                color:"transparent"
+//                text_size: UI.nav_btn_serv_font_size
+//                function click() {
+//                    serv.op();
+//                }
+//                function fkEntered() {
+//                    Com.st(0, qsTr('Mobile connect to computer'));
+//                }
+//                function fkExited() {
+//                    Com.st(0, '');
+//                }
+//            }
             Btn {
                 id: btn_imp
                 text: "●"

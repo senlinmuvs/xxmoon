@@ -83,43 +83,36 @@ QString Mac::openSelectFile() {
         for(NSURL* url in [openDlg URLs]) {
             NSString *path = [url path];
             NSLog( @"user selected path:%@", path);
-            if(DEPLOY > 0) {
-                NSError *error = nil;
-                NSData *bookmark = [url bookmarkDataWithOptions:NSURLBookmarkCreationWithSecurityScope
-                                     includingResourceValuesForKeys:nil
-                                                      relativeToURL:nil
-                                                              error:&error];
-                if(error != nil) {
-                    NSLog(@"openSelectFile error %@", error);
-                    return "";
+            NSError *error = nil;
+            NSData *bookmark = [url bookmarkDataWithOptions:NSURLBookmarkCreationWithSecurityScope
+                                 includingResourceValuesForKeys:nil
+                                                  relativeToURL:nil
+                                                          error:&error];
+            if(error != nil) {
+                NSLog(@"openSelectFile error %@", error);
+                return "";
+            }
+            if (bookmark == nil) {
+                NSLog(@"%@ bookmark is nil", url);
+                return "";
+            }
+            //
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            bool exists = false;
+            for(NSString *u in urls) {
+                if([u isEqualToString:path]) {
+                    exists = true;
+                    break;
                 }
-                if (bookmark == nil) {
-                    NSLog(@"%@ bookmark is nil", url);
-                    return "";
-                }
-                //
-                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                bool exists = false;
-                for(NSString *u in urls) {
-                    if([u isEqualToString:path]) {
-                        exists = true;
-                        break;
-                    }
-                }
-                if(exists) {
-                    NSLog( @"user selected path:%@ existed.", [url path]);
-                } else {
-                    [urls addObject:path];
-                    [userDefaults setObject:urls forKey:@"urls"];
-                    [userDefaults setObject:bookmark forKey:path];
-                    [userDefaults synchronize];
-                    NSLog( @"user selected path:%@ save to userDefaults done.", [url path]);
-                }
+            }
+            if(exists) {
+                NSLog( @"user selected path:%@ existed.", [url path]);
             } else {
-                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                 [urls addObject:path];
                 [userDefaults setObject:urls forKey:@"urls"];
+                [userDefaults setObject:bookmark forKey:path];
                 [userDefaults synchronize];
+                NSLog( @"user selected path:%@ save to userDefaults done.", [url path]);
             }
             return QString::fromNSString(path);
         }

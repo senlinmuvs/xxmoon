@@ -7,7 +7,7 @@ import "com/ui.js" as UI
 Popup {
     id: root
     width: 400
-    height: $app.getDeploy() === 0 ? ($app.isActivated() ? 300 : 380) : 200
+    height: 200
     x: navigation.width
     y: parent.height - height
     topPadding: 0
@@ -19,6 +19,16 @@ Popup {
     }
     property int leftOff: 73
     property string oldHotKeyPK
+
+    MouseArea {
+        width: parent.width;
+        height: parent.height;
+        onClicked: {
+            setup_hot_key_pk.focus = false;
+            root.forceActiveFocus();
+        }
+    }
+
     Rectangle {
         x: 10
         y: 10
@@ -40,7 +50,7 @@ Popup {
         Column {
             id: col_setup
             anchors {
-                bottom: col_act.top
+                bottom: col_ext.top
                 bottomMargin: 8
                 left: parent.left
                 right: parent.right
@@ -137,7 +147,6 @@ Popup {
             Row {
                 spacing: 4
                 width: parent.width
-                visible: $app.getDeploy() === 0
                 Title2 {
                     text: qsTr("Pick Hotkey")
                     width: parent.width/2 - leftOff
@@ -156,7 +165,7 @@ Popup {
         }
 
         Column {
-            id: col_act
+            id: col_ext
             anchors {
                 bottom: parent.bottom
                 bottomMargin: 0
@@ -164,74 +173,6 @@ Popup {
                 right: parent.right
             }
             spacing: 10
-            Rectangle {
-                width: parent.width
-                height: 1
-                color: "#565656"
-                visible: $app.getDeploy() === 0
-            }
-            Row {
-                spacing: 4
-                width: parent.width
-                visible: $app.getDeploy() === 0
-                Text {
-                    id: cid_lab
-                    color:"#FFFFFF"
-                    text: qsTr("Computer ID")
-                    font.pointSize: UI.about_label_font_size
-                }
-                Text {
-                    id: activation_flag
-                    text:"("+qsTr("Activated")+")"
-                    color:"white"
-                    visible: $app.isActivated()
-                    font.pointSize: UI.about_label_font_size
-                }
-                Link {
-                    id: link_buy
-                    width: parent.width - cid_lab.width - 5
-                    horizontalAlignment: Text.AlignRight
-                    text: qsTr("buy")
-                    font.pointSize: UI.about_label_font_size
-                    url: Com.urls['buy']+"?cid="+$app.getComputerID()
-                    visible: !$app.isActivated()
-                }
-            }
-            TextArea {
-                visible: $app.getDeploy() === 0
-                color:"#FFFFFF"
-                font.pointSize: UI.about_label_font_size
-                readOnly: true
-                width: parent.width
-                text: $app.getComputerID()
-                wrapMode: Text.WrapAnywhere
-                selectByMouse: true
-                selectByKeyboard: true
-                background: Rectangle {color:Qt.rgba(0.1, 0.1, 0.1, 0.8)}
-            }
-            TextArea {
-                id: activation_area
-                width: parent.width
-                height: 60
-                color:"#FFFFFF"
-                background: Rectangle{color: Qt.rgba(0.1, 0.1, 0.1, 0.8)}
-                placeholderText: qsTr("input activation code")
-                selectByMouse: true
-                selectByKeyboard: true
-                visible: $app.getDeploy() === 0 && !$app.isActivated()
-                onTextChanged: {
-                    if($app.checkAuth(activation_area.text, true)) {
-                        visible = false;
-                        activation_flag.visible = true;
-                        link_buy.visible = false;
-                    }
-                }
-            }
-            Rectangle {
-                width: parent.width
-                height: 1
-                color: "#565656"
-            }
             Row {
                 spacing: 5
                 Text {
