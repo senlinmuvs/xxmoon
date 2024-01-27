@@ -254,9 +254,9 @@ Popup {
                 }
                 Link {
                     font.bold: true
-                    text: "xxmoon.com"
+                    text: "xxmoon"
                     color: "white"
-                    url: Com.urls['main']
+                    url: "https://github.com/senlinmuvs/xxmoon"
                     font.pointSize: UI.font_size_title2
                 }
             }

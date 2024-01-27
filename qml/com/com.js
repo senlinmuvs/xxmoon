@@ -12,10 +12,6 @@ const PUSH_UP_TAGS = 3;
 let tag1 = $app.tag1;
 let tag2 = $app.tag2;
 let MAX_TAG = $app.maxTag;
-let urls = {
-    'main': 'https://xxmoon.com',
-    'buy': 'https://xxmoon.com/buy.html'
-};
 
 let img_logo = "/assets/logo64.png";
 let img_kindle = "/assets/kindle64.png";

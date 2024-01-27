@@ -13,7 +13,7 @@
 #define WIN 0
 #define UNIX 1
 #define MAC 2
-#define VERSION "1.26.14"
+#define VERSION "1.26.15"
 #define DEPLOY 1
 //DEPLOY 0 官网下载, 1 Mac App Store
 

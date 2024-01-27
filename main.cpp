@@ -201,30 +201,5 @@ void exit_(int r) {
 #ifdef Q_OS_MAC
     mac->close();
 #endif
-//    delete Com_Async;
-//    delete DB_Async;
-//    delete SM_Async;
-//    delete serverMsgQueue;
-//    delete serverDataQueue;
-//    delete cfg;
-//    delete colAction;
-//    delete bookAction;
-//    delete l;
-//    delete db;
-//    delete workDao;
-//    delete noteDao;
-//    delete envDao;
-//    delete pkDao;
-//    delete colDao;
-//    delete tagDao;
-//    delete process;
-//    delete doc_parser;
-//    delete lg;
-//    delete xm;
-//    delete sm;
-//    delete engine;
-//#ifdef Q_OS_MAC
-//    delete menuManager;
-//#endif
     qDebug() << "EXITED";
 }
