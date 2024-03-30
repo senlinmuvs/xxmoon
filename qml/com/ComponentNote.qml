@@ -18,12 +18,12 @@ Rectangle {
             leftMargin: 8
         }
         spacing: 10
-        Rectangle {
-            color: "transparent"
-            height: 6
-            width: parent.width
-            visible: visible_date
-        }
+//        Rectangle {
+//            color: "transparent"
+//            height: 6
+//            width: parent.width
+//            visible: visible_date
+//        }
 //        Rectangle {
 //            height: 20
 //            width: 100
@@ -80,7 +80,6 @@ Rectangle {
                 color:"#898989"
                 text: (date_str + " " + time_str)
                 horizontalAlignment: Text.AlignRight
-                visible: visible_time
             }
             Text {
                 font.pointSize: UI.ui_font_pk_time
