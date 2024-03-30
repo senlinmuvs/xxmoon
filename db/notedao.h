@@ -23,6 +23,7 @@ public:
     void updateNote(uint id, uint pos0, uint pos1, QString cont);
     void updateTags(uint id, QString tags);
     void deleteNote(uint id);
+    void deleteNote_(uint id);
 };
 
 #endif // NOTEDAO_H

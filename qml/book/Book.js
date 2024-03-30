@@ -82,7 +82,9 @@ function onKeyPressed(event) {
     } else if(event.modifiers === (ctrlVal|Qt.AltModifier) && event.key === Qt.Key_Return) {
         outEdit();
     } else if(event.key === Qt.Key_Delete || event.key === Qt.Key_Backspace) {
-        ensure_popup.open();
+        if(note_list_model.count > 0) {
+            ensure_popup.open();
+        }
     } else if(event.modifiers === ctrlVal && event.key === Qt.Key_F) {
         search_bar.forceActiveFocus();
     } else if(event.modifiers === ctrlVal && event.key === Qt.Key_T) {

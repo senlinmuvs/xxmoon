@@ -95,6 +95,9 @@ public:
     Q_INVOKABLE QVariantMap getUIData();
     Q_INVOKABLE void copyImg(QString path);
 
+    Q_INVOKABLE bool importDouban();
+    Q_INVOKABLE bool importWechatRead();
+
     QString createSiteFile(QString filename, QString cont, qint64 ct);
     QString insertIndexItem(QString indexhtml, QMap<QString,QString> indexmap);
 

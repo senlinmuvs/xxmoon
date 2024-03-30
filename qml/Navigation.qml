@@ -92,7 +92,11 @@ Rectangle {
                 color:"transparent"
                 text_size: UI.nav_btn_imp_font_size
                 function click() {
-                    fileDialog.open();
+                    if(!$app.importDouban()) {
+                        if(!$app.importWechatRead()) {
+                            fileDialog.open();
+                        }
+                    }
                 }
                 function fkEntered() {
                     $app.getLastPath(btn_imp);

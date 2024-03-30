@@ -15,6 +15,7 @@ QVariantMap Work::toVMap() {
     m.insert("author", author);
     m.insert("time", time);
     m.insert("t", t);
+    m.insert("fro", fro);
     m.insert("total", total);
     return m;
 }

@@ -1935,3 +1935,107 @@ bool App::existFile(QString file) {
     QFile f(file);
     return f.exists();
 }
+
+Work* parseWork4Douban(QString s) {
+    Work *w = new Work();
+    int i = s.indexOf("《");
+    if(i < 0) {
+        return w;
+    }
+    int j = s.indexOf("》");
+    if(j < 0) {
+        return w;
+    }
+    int len = j - i - 1;
+    if(len <= 0) {
+        return w;
+    }
+    w->name = s.mid(i+1, len);
+    return w;
+}
+
+Note* parseNote4Douban(QString s) {
+    s = s.trimmed();
+    Note *n = new Note();
+    QString cont = "";
+    QStringList lines = s.split("\n");
+    for(int i = 0; i < lines.length()-1; i++) {
+        lines[i] = lines[i].trimmed();
+        if(lines[i].isEmpty()) {
+            continue;
+        }
+        if(lines[i].startsWith("## 章节：")) {
+            lines[i] = "## " + lines[i].mid(6);
+        }
+        if(lines[i].startsWith("> ")) {
+            lines[i] = lines[i].mid(2);
+        }
+        cont += lines[i] + "\n";
+    }
+    n->cont = cont;
+
+    QString lastLine = lines[lines.length()-1];
+    QStringList arr = lastLine.split("% · ");
+    if(arr.length() > 1) {
+        n->pos0 = arr[0].toUInt();
+        QString time_ = arr[1];
+//        qDebug() << time_ << time_.mid(0,4) << time_.mid(5,2);
+        QDateTime time(QDate(time_.mid(0,4).toInt(), time_.mid(5,2).toInt(), time_.mid(8,2).toInt()),
+                       QTime(time_.mid(11,2).toInt(), time_.mid(14,2).toInt(), 0));
+        n->time = time.toMSecsSinceEpoch() / 1000;
+    }
+    return n;
+}
+
+bool App::importDouban() {
+    QString cont = ut::cpb::getText();
+    if(cont.isEmpty()) {
+        return false;
+    }
+    QStringList lines = cont.split("\n");
+    if(lines.length() < 6) {
+        return false;
+    }
+    if(!lines[2].contains("豆瓣阅读")) {
+        return false;
+    }
+    DB_Async->exe([=] {
+        QString item = "";
+        Work *w = parseWork4Douban(lines[0]);
+        w->fro = 1;
+        uint c = 0;
+        Note preNote;
+        for(int i = 6; i < lines.length(); i++) {
+            QString it = lines[i];
+            item += it + "\n";
+            if(it.contains("% · ")) {
+                Note *n = parseNote4Douban(item);
+                if(w->time <= 0) {
+                    w->time = n->time;
+                    workDao->add(w);
+                }
+                if(preNote.id > 0) {
+                    if(n->time <= preNote.time) {
+                        n->time = preNote.time + (preNote.time-n->time) + 1;
+                    }
+                }
+                n->wid = w->id;
+                noteDao->insert(n);
+    //            qDebug() << w.toString();
+    //            qDebug() << n.toString();
+    //            qDebug() << "-----------------------";
+                item = "";
+                c++;
+                preNote = *n;
+                delete n;
+            }
+        }
+        delete w;
+        st(0, QString("已添加 %1 条笔记").arg(c));
+    });
+    return true;
+}
+
+bool App::importWechatRead() {
+    return false;
+}

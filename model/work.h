@@ -18,6 +18,7 @@ public:
     uint time = 0;
     uint total = 0;
     uint t = 0;//0 导入 1 手动
+    uint fro = 0; //0 kindle 1 douban 2 wechat read
 
     QString toString();
     QVariantMap toVMap();

@@ -12,25 +12,28 @@ QList<Work*> gets(QSqlQuery *q) {
     int colAuthor = rec.indexOf("author");
     int colTime= rec.indexOf("time");
     int colT = rec.indexOf("t");
+    int colFro = rec.indexOf("fro");
     if(q->next()) {
         uint id = q->value(colId).toUInt();
         QString name = q->value(colWork).toString();
         QString author = q->value(colAuthor).toString();
         uint time = q->value(colTime).toUInt();
         uint t = q->value(colT).toUInt();
+        uint fro = q->value(colFro).toUInt();
         Work *w = new Work();
         w->id = id;
         w->name = name;
         w->author = author;
         w->time = time;
         w->t = t;
+        w->fro = fro;
         list.insert(list.end(), w);
     }
     return list;
 }
 Work* WorkDao::get(QString name, QString author) {
     QSqlQuery q;
-    q.prepare("select id,name,author,time,t from work where name=:name and author=:author");
+    q.prepare("select id,name,author,time,t,fro from work where name=:name and author=:author");
     q.bindValue(":name", name);
     q.bindValue(":author", author);
     bool suc = q.exec();
@@ -94,13 +97,14 @@ void WorkDao::add(Work *w) {
     if(lg->isDebug()) {
         lg->trace(QString("add work %1").arg(w->toString()));
     }
-    QString insert_sql = "insert into work(id,name,author,time,t) values(:id,:name,:author,:time,:t)";
+    QString insert_sql = "insert into work(id,name,author,time,t,fro) values(:id,:name,:author,:time,:t,:fro)";
     db->execute("add work", insert_sql, [&w](QSqlQuery q) {
         q.bindValue(":id", w->id);
         q.bindValue(":name", w->name);
         q.bindValue(":author", w->author);
         q.bindValue(":time", w->time);
         q.bindValue(":t", w->t);
+        q.bindValue(":fro", w->fro);
     });
 }
 

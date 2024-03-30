@@ -98,7 +98,15 @@ void BookAction::updateNoteTags(uint id, QString tags, uint cbid) {
 }
 void BookAction::deleteNote(uint id, QObject *obj) {
     DB_Async->exe([=] {
-        noteDao->deleteNote(id);
+        Note *n = noteDao->get(id);
+        if(n->id > 0) {
+            Work *w = workDao->get(n->wid);
+            if(w->fro > 0) {
+                noteDao->deleteNote_(id);
+            } else {
+                noteDao->deleteNote(id);
+            }
+        }
         QMetaObject::invokeMethod(obj, "onDeletedNote");
     });
 }
