@@ -102,9 +102,9 @@ macx {
     ICON = assets/logo.icns
     include(/Volumes/D/github/qt/QHotkey/qhotkey.pri)
 
-    LIBS += -L$$PWD/libs/macos/ -lcrypto -lssl -lxxmoon
+    LIBS += -L$$PWD/libs/mac/ -lcrypto -lssl -lxxmoon
     INCLUDEPATH += /Volumes/D/github/c/openssl-1.1.1k/include
-    INCLUDEPATH += $$PWD/libs/macos/
+    INCLUDEPATH += $$PWD/libs/mac/
 
     QMAKE_TARGET_BUNDLE_PREFIX = com.xxmoon
 #    mac_icon.files = $$files($$PWD/xxmoon/Images.xcassets/AppIcon.appiconset/icon*.png)
