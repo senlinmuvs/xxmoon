@@ -1,8 +1,8 @@
 macx {
-    INCLUDEPATH += $$PWD/libs/macos/
-    LIBS += -L$$PWD/libs/macos/ -lxxmoon
+    INCLUDEPATH += $$PWD/libs/mac/
+    LIBS += -L$$PWD/libs/mac/ -lxxmoon
 }
 win32 {
-    INCLUDEPATH += $$PWD/libs/
-    LIBS += -L$$PWD/libs/ -lxxmoon
+    INCLUDEPATH += $$PWD/libs/win/
+    LIBS += -L$$PWD/libs/win -lxxmoon
 }
