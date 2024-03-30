@@ -2032,6 +2032,7 @@ bool App::importDouban() {
         }
         delete w;
         st(0, QString("已添加 %1 条笔记").arg(c));
+        ut::cpb::clear();
     });
     return true;
 }
