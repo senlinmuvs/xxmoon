@@ -2004,7 +2004,8 @@ bool App::importDouban() {
         Work *w = parseWork4Douban(lines[0]);
         w->fro = 1;
         uint c = 0;
-        Note preNote;
+        qint64 preTime = 0;
+        uint x = 0;
         for(int i = 6; i < lines.length(); i++) {
             QString it = lines[i];
             item += it + "\n";
@@ -2014,9 +2015,15 @@ bool App::importDouban() {
                     w->time = n->time;
                     workDao->add(w);
                 }
-                if(preNote.id > 0) {
-                    if(n->time <= preNote.time) {
-                        n->time = preNote.time + (preNote.time-n->time) + 1;
+                if(n->time == preTime) {
+                    x++;
+                } else {
+                    x = 0;
+                }
+                qint64 timeCopy = n->time;
+                if(preTime > 0) {
+                    if(n->time == preTime) {
+                        n->time = preTime + x;
                     }
                 }
                 n->wid = w->id;
@@ -2026,7 +2033,7 @@ bool App::importDouban() {
     //            qDebug() << "-----------------------";
                 item = "";
                 c++;
-                preNote = *n;
+                preTime = timeCopy;
                 delete n;
             }
         }
