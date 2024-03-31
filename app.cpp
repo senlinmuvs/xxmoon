@@ -2044,6 +2044,93 @@ bool App::importDouban() {
     return true;
 }
 
+Work* parseWork4WechatRead(QString line0, QString line1) {
+    Work *w = new Work();
+    int i = line0.indexOf("《");
+    if(i < 0) {
+        return w;
+    }
+    int j = line0.indexOf("》");
+    if(j < 0) {
+        return w;
+    }
+    int len = j - i - 1;
+    if(len <= 0) {
+        return w;
+    }
+    w->name = line0.mid(i+1, len);
+    w->author = line1.trimmed();
+    return w;
+}
+Note* parseNote4WechatRead(QString item) {
+    Note *n = new Note();
+    QStringList lines = item.split("\n");
+    for(int i = 0; i < lines.length(); i++) {
+        QString it = lines[i].trimmed();
+        if(it.isEmpty()) {
+            continue;
+        }
+        if(it.startsWith("◆ ")) {
+            it = it.mid(2);
+        }
+        n->cont += it + "\n";
+    }
+    n->time = ut::time::getCurSeconds();
+    return n;
+}
 bool App::importWechatRead() {
-    return false;
+    QString cont = ut::cpb::getText();
+    if(cont.isEmpty()) {
+        return false;
+    }
+    QStringList lines = cont.split("\n");
+    if(lines.length() < 6) {
+        return false;
+    }
+    if(!lines[3].contains("个笔记")) {
+        return false;
+    }
+    DB_Async->exe([=] {
+        QString item = "";
+        Work *w = parseWork4WechatRead(lines[0], lines[2]);
+        w->fro = 2;
+        uint c = 0;
+        qint64 preTime = 0;
+        uint x = 0;
+        for(int i = 5; i < lines.length(); i++) {
+            QString it = lines[i];
+            item += it + "\n";
+            if(it.startsWith("◆ ")) {
+                Note *n = parseNote4WechatRead(item);
+                if(w->time <= 0) {
+                    w->time = n->time;
+                    workDao->add(w);
+                }
+                if(n->time == preTime) {
+                    x++;
+                } else {
+                    x = 0;
+                }
+                qint64 timeCopy = n->time;
+                if(preTime > 0) {
+                    if(n->time == preTime) {
+                        n->time = preTime + x;
+                    }
+                }
+                n->wid = w->id;
+                noteDao->insert(n);
+    //            qDebug() << w.toString();
+    //            qDebug() << n.toString();
+    //            qDebug() << "-----------------------";
+                item = "";
+                c++;
+                preTime = timeCopy;
+                delete n;
+            }
+        }
+        delete w;
+        st(0, QString("已添加 %1 条笔记").arg(c));
+        ut::cpb::clear();
+    });
+    return true;
 }
