@@ -31,6 +31,7 @@ void BookAction::updateWork(uint bid, QString name, QString author, uint time, Q
 void BookAction::delWork(uint id, uint cbid) {
     DB_Async->exe([=]{
         workDao->del(id);
+        noteDao->deleteByWid(id);
         sendMsg(cbid, NULL);
     });
 }

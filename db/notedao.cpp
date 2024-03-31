@@ -397,3 +397,8 @@ void NoteDao::deleteNote_(uint id) {
         q.bindValue(":id", id);
     });
 }
+void NoteDao::deleteByWid(uint wid) {
+    db->execute("deleteByWid", "delete from note where wid=:wid", [wid](QSqlQuery q){
+        q.bindValue(":wid", wid);
+    });
+}

@@ -24,6 +24,7 @@ public:
     void updateTags(uint id, QString tags);
     void deleteNote(uint id);
     void deleteNote_(uint id);
+    void deleteByWid(uint wid);
 };
 
 #endif // NOTEDAO_H
