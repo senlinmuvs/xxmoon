@@ -402,3 +402,18 @@ void NoteDao::deleteByWid(uint wid) {
         q.bindValue(":wid", wid);
     });
 }
+bool NoteDao::exists(uint wid, QString cont) {
+    QString sql = "select count(*) c from note where wid=:wid and cont=:cont";
+    QSqlQuery q;
+    q.prepare(sql);
+    q.bindValue(":wid", wid);
+    q.bindValue(":cont", cont);
+    bool suc = q.exec();
+    if(!suc) {
+        lg->error(QString("note exists error %1").arg(q.lastError().text()));
+    }
+    if(q.next()) {
+        return q.value(0).toUInt() > 0;
+    }
+    return false;
+}

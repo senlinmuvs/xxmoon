@@ -12,6 +12,7 @@ public:
     WorkDao();
 
     Work* get(QString name, QString author);
+    Work* get(QString name);
     Work* get(uint id);
     void add(Work *w);
     void add(const QList<Work*> &list);

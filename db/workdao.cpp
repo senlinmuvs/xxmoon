@@ -33,12 +33,27 @@ QList<Work*> gets(QSqlQuery *q) {
 }
 Work* WorkDao::get(QString name, QString author) {
     QSqlQuery q;
-    q.prepare("select id,name,author,time,t,fro from work where name=:name and author=:author");
+    q.prepare("select id,name,author,time,t,fro from work where name=:name and author=:author limit 1");
     q.bindValue(":name", name);
     q.bindValue(":author", author);
     bool suc = q.exec();
     if(!suc) {
         lg->error(QString("get work error %1").arg(q.lastError().text()));
+        return NULL;
+    }
+    QList<Work*> list = gets(&q);
+    if(list.size() > 0) {
+        return list.at(0);
+    }
+    return NULL;
+}
+Work* WorkDao::get(QString name) {
+    QSqlQuery q;
+    q.prepare("select id,name,author,time,t,fro from work where name=:name limit 1");
+    q.bindValue(":name", name);
+    bool suc = q.exec();
+    if(!suc) {
+        lg->error(QString("get work by name error %1").arg(q.lastError().text()));
         return NULL;
     }
     QList<Work*> list = gets(&q);

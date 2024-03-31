@@ -2002,6 +2002,7 @@ bool App::importDouban() {
     DB_Async->exe([=] {
         QString item = "";
         Work *w = parseWork4Douban(lines[0]);
+        uint wid = 0;
         w->fro = 1;
         uint c = 0;
         qint64 preTime = 0;
@@ -2013,7 +2014,14 @@ bool App::importDouban() {
                 Note *n = parseNote4Douban(item);
                 if(w->time <= 0) {
                     w->time = n->time;
-                    workDao->add(w);
+                    Work *w_ = workDao->get(w->name);
+                    if(w_->id > 0) {
+                        wid = w_->id;
+                    } else {
+                        workDao->add(w);
+                        wid = w->id;
+                    }
+                    delete w_;
                 }
                 if(n->time == preTime) {
                     x++;
@@ -2026,8 +2034,10 @@ bool App::importDouban() {
                         n->time = preTime + x;
                     }
                 }
-                n->wid = w->id;
-                noteDao->insert(n);
+                n->wid = wid;
+                if(!noteDao->exists(n->wid, n->cont)) {
+                    noteDao->insert(n);
+                }
     //            qDebug() << w.toString();
     //            qDebug() << n.toString();
     //            qDebug() << "-----------------------";
@@ -2093,6 +2103,7 @@ bool App::importWechatRead() {
     DB_Async->exe([=] {
         QString item = "";
         Work *w = parseWork4WechatRead(lines[0], lines[2]);
+        uint wid = 0;
         w->fro = 2;
         uint c = 0;
         qint64 preTime = 0;
@@ -2104,7 +2115,14 @@ bool App::importWechatRead() {
                 Note *n = parseNote4WechatRead(item);
                 if(w->time <= 0) {
                     w->time = n->time;
-                    workDao->add(w);
+                    Work *w_ = workDao->get(w->name, w->author);
+                    if(w_->id > 0) {
+                        wid = w_->id;
+                    } else {
+                        workDao->add(w);
+                        wid = w->id;
+                    }
+                    delete w_;
                 }
                 if(n->time == preTime) {
                     x++;
@@ -2117,8 +2135,10 @@ bool App::importWechatRead() {
                         n->time = preTime + x;
                     }
                 }
-                n->wid = w->id;
-                noteDao->insert(n);
+                n->wid = wid;
+                if(!noteDao->exists(n->wid, n->cont)) {
+                    noteDao->insert(n);
+                }
     //            qDebug() << w.toString();
     //            qDebug() << n.toString();
     //            qDebug() << "-----------------------";
