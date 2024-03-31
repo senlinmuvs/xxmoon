@@ -69,12 +69,27 @@ Component {
                     color:"#989898"
                 }
             }
-            Text {
-                text: search_bar.keys[0] ? Book.viewCont(author, search_bar.keys[2]) : author
-                font {
-                    pointSize: 12
+            Row {
+                spacing: 10
+                Text {
+                    width: work_list.width - e_extra.width - 25
+                    text: search_bar.keys[0] ? Book.viewCont(author, search_bar.keys[2]) : author
+                    font {
+                        pointSize: 12
+                    }
+                    color:"#989898"
+                    wrapMode: Text.Wrap
                 }
-                color:"#989898"
+                Text {
+                    id: e_extra
+                    text: extra
+                    width: 70
+                    horizontalAlignment: Text.AlignRight
+                    font {
+                        pointSize: UI.total_font_size
+                    }
+                    color:"#989898"
+                }
             }
         }
         Rectangle {

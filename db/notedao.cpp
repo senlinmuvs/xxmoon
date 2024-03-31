@@ -196,7 +196,7 @@ vector<Work> NoteDao::getWorkList(QString k, ulong fromTime) {
     QString sql;
     QString pageSize = QString::number(PAGE_SIZE);
     if(hasK) {
-        sql = "select w.id, w.name,author,w.time,count(*) as c from note n join work w on w.id=n.wid where del=0 #cond_time #cont #tags group by n.wid order by n.time desc limit "+ pageSize;
+        sql = "select w.id, w.name,author,w.time,w.fro,count(*) as c from note n join work w on w.id=n.wid where del=0 #cond_time #cont #tags group by n.wid order by n.time desc limit "+ pageSize;
         if(searchAuthor) {
             if(k2.length() > 0) {
                 sql = sql.replace("#cont", "and w.author like :k1 and cont like :k2");
@@ -240,9 +240,9 @@ vector<Work> NoteDao::getWorkList(QString k, ulong fromTime) {
     } else {
         sql =
         "select t1.*,t2.c from "
-            "(select id,name,author,`time` from work #cond_time_t1) t1 "
+            "(select id,name,author,`time`,fro from work #cond_time_t1) t1 "
         "left outer join "
-            "(select wid, w.name,author,w.time,count(*) as c from note n join work w on w.id=n.wid where del=0 #cond_time_t2 group by n.wid) t2 "
+            "(select wid, w.name,author,w.time,w.fro,count(*) as c from note n join work w on w.id=n.wid where del=0 #cond_time_t2 group by n.wid) t2 "
         "on t1.id = t2.wid "
         "order by t1.time desc limit "+pageSize;
         if(fromTime > 0) {
@@ -276,18 +276,21 @@ vector<Work> NoteDao::getWorkList(QString k, ulong fromTime) {
     int colAuthor = rec.indexOf("author");
     int colTime = rec.indexOf("time");
     int colC= rec.indexOf("c");
+    int colFro= rec.indexOf("fro");
     while (q.next()) {
         uint id = q.value(colId).toUInt();
         QString book = q.value(colBook).toString();
         QString author = q.value(colAuthor).toString();
         uint time = q.value(colTime).toUInt();
-        uint c= q.value(colC).toUInt();
+        uint c = q.value(colC).toUInt();
+        uint fro = q.value(colFro).toUInt();
         Work w;
         w.id = id;
         w.time = time;
         w.total = c;
         w.author = author;
         w.name = book;
+        w.fro = fro;
         list.insert(list.end(), w);
     }
 //    qDebug() << sql << k1 << k2 << k << fromTime;

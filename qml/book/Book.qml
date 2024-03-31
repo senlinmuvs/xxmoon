@@ -539,17 +539,28 @@ Rectangle {
         let preTimeStr = Com.parseTime(Book.getWorkLastTime())[0];
         for(let i in list) {
             let e = list[i];
+//            console.log(JSON.stringify(e));
             let w = {
                 id: e.id,
                 name: e.name,
                 author: e.author,
                 time: e.time,
                 total: e.total,
-                t: e.t
+                t: e.t,
+                extra: ''
             };
             let arr = Com.parseTime(w.time);
             w.time_str = arr[0];
             w.visible_time = preTimeStr !== w.time_str;
+            let from_str = '';
+            if(e.fro === 0) {
+                from_str = 'K';
+            } else if(e.fro === 1) {
+                from_str = '豆';
+            } else if(e.fro === 2) {
+                from_str = '微';
+            }
+            w.extra = Com.parseTime(w.time, 1)[0] + " " + from_str;
             work_list_model.append(w);
             preTimeStr = w.time_str;
         }
