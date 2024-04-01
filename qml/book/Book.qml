@@ -547,20 +547,18 @@ Rectangle {
                 time: e.time,
                 total: e.total,
                 t: e.t,
-                extra: ''
+                from_str: ''
             };
             let arr = Com.parseTime(w.time);
             w.time_str = arr[0];
             w.visible_time = preTimeStr !== w.time_str;
-            let from_str = '';
             if(e.fro === 0) {
-                from_str = 'K';
+                w.from_str = 'K';
             } else if(e.fro === 1) {
-                from_str = '豆';
+                w.from_str = '豆';
             } else if(e.fro === 2) {
-                from_str = '微';
+                w.from_str = '微';
             }
-            w.extra = Com.parseTime(w.time, 1)[0] + " " + from_str;
             work_list_model.append(w);
             preTimeStr = w.time_str;
         }

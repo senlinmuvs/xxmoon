@@ -82,7 +82,7 @@ Component {
                 }
                 Text {
                     id: e_extra
-                    text: extra
+                    text: Com.parseTime(time, 1)[0] + " " + from_str
                     width: 70
                     horizontalAlignment: Text.AlignRight
                     font {
