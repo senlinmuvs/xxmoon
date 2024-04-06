@@ -155,16 +155,17 @@ Rectangle {
         y:0
         visible: index === pk_list_view.currentIndex
         width: 10
-        height: Com.min(pk_list_rect.height, 50)
+        height: Com.max(Com.min(pk_list_rect.height, 50), e_num.height)
         color: UI.ui_highlight_color
         Text {
+            id: e_num
             text:Com.verText(index+1)
             font.pointSize: 10
             width: parent.width
             x: parent.width/2-width/2+1
             y: parent.height/2-height/2+7
             color: "white"
-            verticalAlignment: Text.AlignVCenter
+            anchors.verticalCenter: parent.verticalCenter
         }
     }
     MouseArea {

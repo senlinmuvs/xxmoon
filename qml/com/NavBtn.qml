@@ -6,6 +6,8 @@ Rectangle {
     property alias img: image.source
     property int st: 0
     signal clicked
+    signal entered_
+    signal exited_
 
     color: "transparent"
     width: 32
@@ -18,9 +20,16 @@ Rectangle {
     }
     MouseArea {
         anchors.fill: parent;
+        hoverEnabled: true
         acceptedButtons: Qt.LeftButton| Qt.RightButton;
         onClicked: {
             click()
+        }
+        onEntered: {
+            entered_()
+        }
+        onExited: {
+            exited_()
         }
    }
    function reset() {}

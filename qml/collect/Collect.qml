@@ -327,6 +327,7 @@ Rectangle {
                 text: "+"
                 text_size: UI.btn_font_smybol_size
                 text_color: "#EAEAEA"
+                hover_color: "#191919"
                 radius: 1
                 function click() {
                     Collect.onBtnClick_addCol();

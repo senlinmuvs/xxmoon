@@ -4,6 +4,7 @@ let platform = $app.getPlatform();
 
 /////////////////MAC/////////////////
 let nav_width = 70;
+let nav_tab_height = 52;
 let main_st_height = 0;
 let nav_btn_imp_font_size = 25;
 let nav_btn_serv_font_size = 15;

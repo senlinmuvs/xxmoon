@@ -1,4 +1,4 @@
-﻿import QtQuick 2.0
+﻿import QtQuick
 
 Rectangle {
     id:root
@@ -17,7 +17,7 @@ Rectangle {
     property int yoff
     property var mask_color: Qt.rgba(100/255, 100/255, 100/255, 0.6)
     property alias mask_visible: mask.visible
-    property string hover_color
+    property string hover_color:"#494949"
     property alias t: lap
     property bool enable_click: true
     property bool enable_drag: false
@@ -52,7 +52,7 @@ Rectangle {
         x: xx
         y: xx
         width: parent.width + xx
-        height: parent.width + xx
+        height: parent.height + xx
 //        drag.target: parent
         drag.axis: Drag.XAxis
         acceptedButtons: Qt.LeftButton | Qt.RightButton
@@ -112,6 +112,7 @@ Rectangle {
             }
         }
         onEntered: {
+            console.log(mouseX, mouseY);
             enter = true
             if(hover_color) {
                 mask.color = hover_color

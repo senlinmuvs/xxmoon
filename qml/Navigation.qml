@@ -21,44 +21,78 @@ Rectangle {
 
         Column {
             id: navCol
-            spacing: 20
-            y: 10
             width: parent.width
-            NavBtn {
-                id: colBtn
-                img: Com.img_logo
-                function reset() {
-                    img = Com.img_logo;
-                    st = 0;
-                }
-                function click() {
-                    if(st == 0) {
-                        currentNavBtn.reset();
+            Rectangle {
+                color: "transparent"
+                x:3
+                width: parent.width-3
+                height: UI.nav_tab_height
+                NavBtn {
+                    id: colBtn
+                    img: Com.img_logo
+                    anchors.centerIn: parent
+                    function reset() {
                         img = Com.img_logo;
-                        currentNavBtn = colBtn;
-                        curTabLabel.y = initYOffset;
-                        pageLoader.source = "qrc:/qml/collect/Collect.qml";
-                        st = 1;
-                        curIndex = 0;
+                        st = 0;
+                    }
+                    function click() {
+                        if(st == 0) {
+                            currentNavBtn.reset();
+                            img = Com.img_logo;
+                            currentNavBtn = colBtn;
+                            curTabLabel.y = initYOffset;
+                            pageLoader.source = "qrc:/qml/collect/Collect.qml";
+                            st = 1;
+                            curIndex = 0;
+                            parent.color = "transparent";
+                        }
+                    }
+                    onEntered_: {
+                        if(curIndex !== 0) {
+                            parent.color = "#414141";
+                        }
+                    }
+                    onExited_: {
+                        if(curIndex !== 0) {
+                            parent.color = "transparent";
+                        }
                     }
                 }
             }
-            NavBtn {
-                id: bookBtn
-                img: Com.img_kindle
-                function reset() {
-                    img = Com.img_kindle;
-                    st = 0;
-                }
-                function click() {
-                    if(st == 0) {
-                        currentNavBtn.reset();
+            Rectangle {
+                color: "transparent"
+                x:3
+                width: parent.width-3
+                height: UI.nav_tab_height
+                NavBtn {
+                    id: bookBtn
+                    img: Com.img_kindle
+                    anchors.centerIn: parent
+                    function reset() {
                         img = Com.img_kindle;
-                        currentNavBtn = bookBtn;
-                        curTabLabel.y = curTabLabel.height + initYOffset;
-                        pageLoader.source = "qrc:/qml/book/Book.qml";
-                        st = 1;
-                        curIndex = 1;
+                        st = 0;
+                    }
+                    function click() {
+                        if(st == 0) {
+                            currentNavBtn.reset();
+                            img = Com.img_kindle;
+                            currentNavBtn = bookBtn;
+                            curTabLabel.y = curTabLabel.height + initYOffset;
+                            pageLoader.source = "qrc:/qml/book/Book.qml";
+                            st = 1;
+                            curIndex = 1;
+                            parent.color = "transparent";
+                        }
+                    }
+                    onEntered_: {
+                        if(curIndex !== 1) {
+                            parent.color = "#414141";
+                        }
+                    }
+                    onExited_: {
+                        if(curIndex !== 1) {
+                            parent.color = "transparent";
+                        }
                     }
                 }
             }
@@ -125,8 +159,8 @@ Rectangle {
         x: 0
         y: initYOffset
         z: 0
-        width: 70
-        height: 52
+        width: parent.width
+        height: UI.nav_tab_height
         color: "#484848"
 
         Rectangle {

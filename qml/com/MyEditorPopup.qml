@@ -142,20 +142,21 @@ Popup {
                 }
             }
         }
-
         TextField {
             id: first_field
             x: 0
             y: tool_bar.height + 4
             visible: false
-            width: 100
+            width: 200
             height: 30
             selectByMouse: true
-            placeholderText: '123-456'
+            placeholderText: '位置:123-456'
+            placeholderTextColor: "#808080"
             validator: RegularExpressionValidator {
                 regularExpression: /[0-9]{1,9}-[0-9]{1,9}/
             }
-            background: Rectangle{
+            color: "#000"
+            background: Rectangle {
                 color: "transparent"
                 Rectangle {
                     width: parent.width
