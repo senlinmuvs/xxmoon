@@ -48,6 +48,7 @@ Btn {
                 text_size: 11
                 color:"#bababa"
                 enable_click: false
+                hover_color: "#bebebe"
             }
         }
     ]

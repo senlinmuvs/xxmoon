@@ -90,6 +90,7 @@ Rectangle {
             if(enable_drag) {
                 moving = true;
                 color = '#d50023';
+                mask.visible = false;
             }
         }
         onReleased:function(mouse) {
@@ -112,7 +113,7 @@ Rectangle {
             }
         }
         onEntered: {
-            console.log(mouseX, mouseY);
+            // console.log(mouseX, mouseY);
             enter = true
             if(hover_color) {
                 mask.color = hover_color
