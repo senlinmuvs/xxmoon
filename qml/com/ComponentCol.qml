@@ -4,7 +4,7 @@ import "../collect/Collect.js" as Collect
 import "ui.js" as UI
 
 Rectangle {
-    id: col_list_rect
+    id: root
     width: col_list.width
     height: e_col_name.height + 20
     color: "transparent"
@@ -38,7 +38,7 @@ Rectangle {
     Text {
         id: flag_moving
         x: (parent.width-width)/2
-        y: col_list_rect.height - 15
+        y: root.height - 15
         color:"#C9C9C9"
         text:qsTr("Sorting...")
         font.pointSize: 10
@@ -46,7 +46,7 @@ Rectangle {
     }
     Rectangle {
         x:0
-        y:col_list_rect.height
+        y:root.height
         width: col_list.width
         height: 1
         color: "#686868"
@@ -97,12 +97,20 @@ Rectangle {
         anchors.fill: parent
         anchors.rightMargin: 60
         acceptedButtons: Qt.LeftButton | Qt.RightButton
+        hoverEnabled: true
         onClicked: function(mouse){
             col_list_view.forceActiveFocus();
             col_list_view.currentIndex = index;
             if (mouse.button === Qt.RightButton) {
                 colRightMenu.open();
             }
+            root.color = "transparent";
+        }
+        onEntered: {
+            root.color = "#393939";
+        }
+        onExited: {
+            root.color = "transparent";
         }
     }
 }

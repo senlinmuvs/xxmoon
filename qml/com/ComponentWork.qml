@@ -4,7 +4,7 @@ import "../book/Book.js" as Book
 import "ui.js" as UI
 
 Rectangle {
-    id: work_list_rect
+    id: root
     width: work_list.width
     height: work_list_col.height + 20
     color: "transparent"
@@ -92,7 +92,7 @@ Rectangle {
     }
     Rectangle {
         x:0
-        y:work_list_rect.height
+        y:root.height
         width: work_list.width
         height: 1
         color: "#686868"
@@ -100,12 +100,20 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton
+        hoverEnabled: true
         onClicked: function(mouse){
             work_list_view.forceActiveFocus();
             work_list_view.currentIndex = index;
             if (mouse.button === Qt.RightButton) {
                 menu_work_right.open();
             }
+            root.color = "transparent";
+        }
+        onEntered: {
+            root.color = "#393939";
+        }
+        onExited: {
+            root.color = "transparent";
         }
     }
 }
