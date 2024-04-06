@@ -27,6 +27,8 @@ Rectangle {
                 x:3
                 width: parent.width-3
                 height: UI.nav_tab_height
+                property var btn: colBtn
+
                 NavBtn {
                     id: colBtn
                     img: Com.img_logo
@@ -64,6 +66,7 @@ Rectangle {
                 x:3
                 width: parent.width-3
                 height: UI.nav_tab_height
+                property var btn: bookBtn
                 NavBtn {
                     id: bookBtn
                     img: Com.img_kindle
@@ -171,7 +174,7 @@ Rectangle {
         }
     }
     function go(i) {
-        navCol.children[i].click();
+        navCol.children[i].btn.click();
     }
     function onKeysPressed(event) {
         if(event.key === Qt.Key_Tab) {
