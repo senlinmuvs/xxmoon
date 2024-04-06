@@ -136,7 +136,7 @@ Rectangle {
         anchors.rightMargin: minBtn.width*3 + (importBtn.visible?importBtn.width:0)
         property point clickPos:"0,0"
 
-        onPressed:{
+        onPressed:function(mouse) {
             clickPos =Qt.point(mouse.x,mouse.y)
         }
         onPositionChanged: {

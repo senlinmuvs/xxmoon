@@ -1,5 +1,5 @@
-﻿import QtQuick 2.13
-import QtQuick.Controls 2.13
+﻿import QtQuick
+import QtQuick.Controls.Fusion
 import "ui.js" as UI
 
 Popup {
@@ -12,7 +12,7 @@ Popup {
     leftPadding: 0
     bottomPadding: 0
     focus: true
-    background: Rectangle{
+    background: Rectangle {
         color: "transparent"
     }
     property int bid: 0
@@ -22,10 +22,11 @@ Popup {
         TextField {
             id: tf_book_name
             width: parent.width
+            height: 40
+            placeholderTextColor: "#808080"
             placeholderText: qsTr("Book Name")
             font.pointSize: UI.book_edit_label_font_size
-            text: ""
-            color: "#080808"
+            color: "white"
             wrapMode: Text.Wrap
             selectByMouse: true
             maximumLength: 50
@@ -34,14 +35,19 @@ Popup {
                     $app.regMenuReceiver(tf_book_name);
                 }
             }
+            // background: Rectangle {
+            //     color: "#292929"
+            //     border.color: "#000"
+            // }
         }
         TextField {
             id: tf_author_name
             width: parent.width
+            height: 40
+            placeholderTextColor: "#808080"
             placeholderText: qsTr("Author Name")
             font.pointSize: UI.book_edit_label_font_size
-            text: ""
-            color: "#080808"
+            color: "white"
             wrapMode: Text.Wrap
             selectByMouse: true
             maximumLength: 50
@@ -54,6 +60,7 @@ Popup {
         DateInput {
             id: di_date
             width: parent.width
+            height: 40
             font.pointSize: UI.book_edit_label_font_size
         }
         Btn {
@@ -65,7 +72,7 @@ Popup {
                 submit();
             }
         }
-        Keys.onPressed: {
+        Keys.onPressed: function(event) {
             if(event.key === Qt.Key_Return) {
                 submit();
             }

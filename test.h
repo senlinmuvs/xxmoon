@@ -99,20 +99,14 @@ void test4() {
     qDebug() << "------------------------- TEST3 END -------------------------";
 }
 
-char* strchar(QString s) {
-    QString str1 = s;
-    QByteArray ba = str1.toLocal8Bit();
-    char *c_str2 = ba.data();
-    return c_str2;
-}
 void test5() {
     qDebug() << "------------------------- TEST 5 START -----------------------";
     QString src = ut::file::readFile("/Users/sen/Desktop/src.txt");
-    QString code = "xml";
-    qDebug() << src;
+    QString code = "java";
+    qDebug() << src.toUtf8().data();
     qDebug() << "-------------------------------------------------------------";
-    char* x = Highlight(strchar(src), strchar(code));
-    ut::file::writeText("/Users/sen/Desktop/test_xml.html", x);
+    QString x = Highlight(src.toUtf8().data(), code.toUtf8().data());
+    ut::file::writeText("/Users/sen/Desktop/code_java.html", x);
     qDebug() << x;
     qDebug() << "------------------------- TEST 5 END -------------------------";
 }

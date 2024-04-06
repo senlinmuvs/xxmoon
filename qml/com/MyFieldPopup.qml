@@ -1,5 +1,5 @@
-﻿import QtQuick 2.0
-import QtQuick.Controls 2.12
+﻿import QtQuick
+import QtQuick.Controls.Fusion
 
 import "com.js" as Com
 
@@ -26,17 +26,19 @@ Popup {
     leftPadding: 0
     bottomPadding: 0
     focus: true
+
     TextField {
         id: popup_text
         anchors.fill: parent
         font.pointSize: 16
-        color: "#080808"
+        color: "white"
         wrapMode: Text.Wrap
         selectByMouse: true
         focus: true
         echoMode: pwd?TextInput.Password:TextInput.Normal
         placeholderText: placeholder
-        Keys.onPressed: {
+        verticalAlignment: Text.AlignVCenter
+        Keys.onPressed: function(event) {
             if(event.key === Qt.Key_Return) {
                 event.accepted = true;
                 submit();

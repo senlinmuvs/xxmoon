@@ -1,5 +1,5 @@
-import QtQuick 2.13
-import QtQuick.Controls 2.12
+import QtQuick
+import QtQuick.Controls.Fusion
 import "ui.js" as UI
 import "../com/com.js" as Com
 
@@ -13,6 +13,9 @@ TextArea {
     selectedTextColor: "#FFF"
     font.pointSize: UI.ui_font_pk
     color: "#404040"
+    background: Rectangle {
+        color: "transparent"
+    }
     wrapMode: Text.WrapAnywhere
     onLinkActivated: {
         if(link) {

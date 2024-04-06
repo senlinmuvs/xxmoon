@@ -1,5 +1,5 @@
-﻿import QtQuick 2.13
-import QtQuick.Controls 2.12
+﻿import QtQuick
+import QtQuick.Controls.Fusion
 import "com.js" as Com
 import "../collect/Collect.js" as Collect
 
@@ -59,7 +59,7 @@ Popup {
         onTextChanged: {
             tagManager.searchTags(input.text);
         }
-        Keys.onPressed: {
+        Keys.onPressed:function(event) {
             if(event.modifiers === ctrlVal && event.key === Qt.Key_Return) {
                 tagManager.setTagForItem(input.text);
             } else if(event.modifiers === Qt.AltModifier && event.key === Qt.Key_Return) {

@@ -4,7 +4,7 @@
 
 Future::Future() {
     waitingResult = new QSemaphore();
-    mtx = new QMutex(QMutex::Recursive);
+    mtx = new QRecursiveMutex();
 }
 
 Future::~Future() {

@@ -124,7 +124,7 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton
-        onClicked: {
+        onClicked: function(mouse){
             note_list_view.currentIndex = index;
             work_list_view.forceActiveFocus();
             if(mouse.button === Qt.RightButton) {

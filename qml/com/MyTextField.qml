@@ -1,5 +1,5 @@
-﻿import QtQuick 2.0
-import QtQuick.Controls 2.12
+﻿import QtQuick
+import QtQuick.Controls.Fusion
 import "../com/ui.js" as UI
 
 TextField {
@@ -9,10 +9,6 @@ TextField {
     color: "white"
     selectByMouse: true
     horizontalAlignment: Text.AlignLeft
-    background: Rectangle {
-        anchors.fill: parent
-        color:"#222"
-    }
     property var range
 
     onTextChanged: {

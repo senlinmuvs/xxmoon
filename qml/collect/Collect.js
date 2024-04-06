@@ -396,7 +396,7 @@ function getColIndexByCid(cid) {
 }
 
 function onBtnClick_addCol() {
-    if(col_list_view.header) {
+    if(!col_edit_popup.visible) {
         col_edit_popup.text = '';
         col_edit_popup.add = true;
         col_edit_popup.open();

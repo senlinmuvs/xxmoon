@@ -118,6 +118,7 @@ Rectangle {
         }
         Keys.onUpPressed: scrollBar.decrease()
         Keys.onDownPressed: scrollBar.increase()
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
         ScrollBar.vertical: ScrollBar {
             id: scrollBar
             parent: scroll.parent
@@ -126,7 +127,7 @@ Rectangle {
             anchors.bottom: scroll.bottom
             stepSize: scrollStep
         }
-        Keys.onPressed: {
+        Keys.onPressed: function(event) {
             onKeysPressed(event);
         }
     }
@@ -134,7 +135,7 @@ Rectangle {
         id: ma_root
         anchors.fill: parent
         acceptedButtons: Qt.RightButton
-        onClicked: {
+        onClicked: function(mouse){
             if (mouse.button === Qt.RightButton) {
                 mi_picture_model.visible = pk&&pk.imgs.length > 0;
                 menu_right.open();

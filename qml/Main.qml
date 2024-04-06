@@ -1,6 +1,6 @@
-﻿import QtQuick 2.14
-import QtQuick.Controls 2.14
-import Qt.labs.platform 1.1
+﻿import QtQuick
+import QtQuick.Controls
+import Qt.labs.platform
 import "com"
 import "com/com.js" as Com
 import "com/ui.js" as UI
@@ -23,7 +23,8 @@ ApplicationWindow {
     property int st_height: UI.main_st_height
     property var mini_win
     property int cbid: 0
-    property var cbs: {0:null} // all call back
+    // property var cbs: {0:null} // all call back
+    property var cbs
     property bool inited: false
     property string xmfile: ''
     property bool widthChanged
@@ -69,14 +70,14 @@ ApplicationWindow {
             window.requestActivate();
         }
     }
-    onWindowStateChanged: {
-        if(windowState === 2) {
-            $app.setLocal("maxWindow",1);
-            winIsMax = true;
-        } else {
-            $app.setLocal("maxWindow",0);
-            winIsMax = false;
-        }
+    onWindowStateChanged: function(windowState) {
+       if(windowState === 2) {
+           $app.setLocal("maxWindow",1);
+           winIsMax = true;
+       } else {
+           $app.setLocal("maxWindow",0);
+           winIsMax = false;
+       }
     }
     onWidthChanged: {
         if(window.width === screen.width) {
@@ -145,7 +146,7 @@ ApplicationWindow {
                     pageLoader.item.init($app.getUIData());
                 }
             }
-            Keys.onPressed: {
+            Keys.onPressed: function(event) {
                 navigation.onKeysPressed(event);
             }
         }

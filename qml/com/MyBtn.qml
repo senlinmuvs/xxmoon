@@ -66,7 +66,7 @@ Rectangle {
                 mask.visible = false;
             }
         }
-        onClicked: {
+        onClicked:function(mouse) {
             if(enable_click) {
                 mouse.accepted = true;
                 if(mouse.button === Qt.LeftButton) {
@@ -76,7 +76,7 @@ Rectangle {
                 }
             }
         }
-        onDoubleClicked: {
+        onDoubleClicked: function(mouse){
             mouse.accepted = true;
         }
         onPressed: {
@@ -92,7 +92,7 @@ Rectangle {
                 color = '#d50023';
             }
         }
-        onReleased: {
+        onReleased:function(mouse) {
             root.color = old_color;
             mask.visible = false;
             if(enable_drag) {
@@ -103,7 +103,7 @@ Rectangle {
                 moving = false;
             }
         }
-        onMouseXChanged: {
+        onMouseXChanged: function(mouse) {
             mouse.accepted = true;
             if(moving) {
                 if(!area.drag.target){

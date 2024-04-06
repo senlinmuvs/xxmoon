@@ -1,5 +1,5 @@
-﻿import QtQuick 2.0
-import QtQuick.Controls 2.12
+﻿import QtQuick
+import QtQuick.Controls.Fusion
 import "com"
 import "com/com.js" as Com
 import "com/ui.js" as UI

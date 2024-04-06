@@ -1,5 +1,5 @@
-﻿import QtQuick 2.0
-import QtQuick.Controls 2.12
+﻿import QtQuick
+import QtQuick.Controls
 import "../com/com.js" as Com
 import "../collect/Collect.js" as Collect
 import "ui.js" as UI
@@ -177,7 +177,7 @@ Rectangle {
         onDoubleClicked: {
             Collect.openEditPopup();
         }
-        onClicked: {
+        onClicked:function(mouse){
             if (mouse.button === Qt.RightButton) {
                 pk_list_view.currentIndex = index;
                 mi_cp_main_img.visible = !jm && img.length > 0;
@@ -190,7 +190,7 @@ Rectangle {
                 menu_right_pk.open();
             }
         }
-        onMouseXChanged: {
+        onMouseXChanged:function(mouse) {
             if(tags) {
                 if(mouseY>parent.height-30) {
                     mouse.accepted = false;

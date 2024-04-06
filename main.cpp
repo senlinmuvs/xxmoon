@@ -23,7 +23,7 @@
 #include "com/runmain.h"
 #include "hserver.h"
 #include "timer.h"
-//#include "test.h"
+// #include "test.h"
 
 using namespace std;
 
@@ -50,8 +50,8 @@ void initCfg();
 void exit_(int r);
 
 int main(int argc, char *argv[]) {
-//    test9();
-//    return 0;
+   // test5();
+   // return 0;
     int r = start(argc, argv);
     exit_(r);
     return r;

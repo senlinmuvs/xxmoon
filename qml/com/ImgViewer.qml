@@ -1,7 +1,7 @@
-﻿import QtQuick 2.13
-import QtQuick.Window 2.12
-import QtQuick.Controls 2.12
-import Qt.labs.platform 1.1
+﻿import QtQuick
+import QtQuick.Window
+import QtQuick.Controls.Fusion
+import Qt.labs.platform
 import "com.js" as Com
 
 Window {
@@ -23,7 +23,7 @@ Window {
         anchors.fill:parent
         img_radius: 1
         focus: true
-        Keys.onPressed: {
+        Keys.onPressed: function(event) {
             onKeysPressed(event);
         }
         states: [
@@ -49,10 +49,10 @@ Window {
         id: mouseRegion
         anchors.fill: parent
         property variant clickPos: "1,1"
-        onPressed: {
+        onPressed:function(mouse) {
             clickPos  = Qt.point(mouse.x,mouse.y)
         }
-        onPositionChanged: {
+        onPositionChanged:function(mouse) {
             var delta = Qt.point(mouse.x-clickPos.x, mouse.y-clickPos.y)
             root.x += delta.x;
             root.y += delta.y;

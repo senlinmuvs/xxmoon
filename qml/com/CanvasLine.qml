@@ -1,6 +1,6 @@
-﻿import QtQuick 2.9
-import QtQuick.Window 2.2
-import QtQuick.Controls 1.4
+﻿import QtQuick
+import QtQuick.Window
+import QtQuick.Controls
 
 Rectangle {
     id: root
@@ -45,7 +45,7 @@ Rectangle {
         anchors.fill: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         //当鼠标按下时调用本函数
-        onPressed: {
+        onPressed:function(mouse) {
             isLeft = mouse.buttons === Qt.LeftButton
             startX = mouse.x;
             startY = mouse.y;

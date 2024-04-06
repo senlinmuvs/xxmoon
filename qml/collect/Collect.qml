@@ -1,6 +1,6 @@
-﻿import QtQuick 2.0
-import QtQuick.Controls 2.12
-import Qt.labs.platform 1.1
+﻿import QtQuick
+import QtQuick.Controls.Fusion
+import Qt.labs.platform
 
 import "../com"
 import "../com/com.js" as Com
@@ -47,7 +47,7 @@ Rectangle {
                 Collect.refreshAll(true);
             }
         }
-        Keys.onPressed: {
+        Keys.onPressed: function(event) {
             if(event.key === Qt.Key_Escape || event.key === Qt.Key_Return || event.key === Qt.Key_Tab) {
                 event.accepted = true;
                 col_list_view.forceActiveFocus();
@@ -316,33 +316,38 @@ Rectangle {
         }
         color: "#282828"
         clip: true
+        Rectangle {
+            id: e_col_header
+            width: parent.width
+            height: btn_add_col.height
+            color:"#000"
+            Btn {
+                id: btn_add_col
+                width: parent.width
+                text: "+"
+                text_size: UI.btn_font_smybol_size
+                text_color: "#EAEAEA"
+                radius: 1
+                function click() {
+                    Collect.onBtnClick_addCol();
+                }
+            }
+        }
         MyList {
             id: col_list_view
             showHighligh:true
-            Component {
-                id: col_list_header
-                Btn {
-                    width: parent.width
-                    text: "+"
-                    text_size: UI.btn_font_smybol_size
-                    text_color: "#EAEAEA"
-                    radius: 1
-                    function click() {
-                        Collect.onBtnClick_addCol();
-                    }
-                }
-            }
+            anchors.topMargin: e_col_header.height
             anchors.fill: col_list
             model: col_list_model
+            clip:true
             delegate: ComponentCol{}
-            header: col_list_header
             onCurrentIndexChanged: {
                 Collect.loadPk(true);
                 pk_list_view.currentIndex = 0;
             }
             focus: true
             highColor: "#000"
-            Keys.onPressed: {
+            Keys.onPressed:function(event){
                 Collect.onKeysPressed(event);
             }
         }
@@ -354,7 +359,7 @@ Rectangle {
             hoverEnabled: true
             property int startX:0
 
-            onPressed:{
+            onPressed:function(mouse){
                 startX = mouse.x
             }
             onReleased: {

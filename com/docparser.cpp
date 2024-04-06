@@ -62,7 +62,7 @@ void DocParser::addQmlList(QStringList& l, Doc& doc, uint maxWidth) {
         int i = cont.indexOf("\n");
         QString code = cont.mid(0, i);
         QString src = cont.mid(i+1);
-        QString html = Highlight(ut::str::strToChar(src), ut::str::strToChar(code));
+        QString html = Highlight(src.toUtf8().data(), code.toUtf8().data());
         //
         html = html.replace("\"", "\\\"");
         QString s = QString("Code{text:\"%1\";width:%2;color:'%3';}").arg(html, QString::number(maxWidth-20), "#ECECEC");
@@ -102,7 +102,7 @@ void DocParser::addHtmlList(QStringList& l, Doc& doc, uint maxWidth) {
         int i = cont.indexOf("\n");
         QString code = cont.mid(0, i);
         QString src = cont.mid(i+1);
-        QString html = Highlight(ut::str::strToChar(src), ut::str::strToChar(code));
+        QString html = Highlight(src.toUtf8().data(), code.toUtf8().data());
 //        html = html.replace("\"", "\\\"");
         QString x = "```"+code+"\n"+html+"```\n";
         html = parseCodeHtml(x, maxWidth);

@@ -1,5 +1,5 @@
-﻿import QtQuick 2.13
-import QtQuick.Controls 2.12
+﻿import QtQuick
+import QtQuick.Controls.Fusion
 import "com.js" as Com
 import "ui.js" as UI
 
@@ -38,7 +38,7 @@ Popup {
             onTextChanged: {
                 lastIndex = -1;
             }
-            Keys.onPressed: {
+            Keys.onPressed: function(event){
                 onKeysPressed(event);
             }
         }

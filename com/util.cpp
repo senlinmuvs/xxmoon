@@ -56,7 +56,7 @@ namespace ut {
             QFile file(path);
             if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
                 QTextStream in(&file);
-                in.setCodec("UTF-8");
+                in.setEncoding(QStringConverter::Utf8);
                 auto cont = in.readAll();
                 file.close();
                 return QString(cont);
@@ -414,12 +414,6 @@ namespace ut {
             str[n] = '\0';
             return QString(str);
         }
-        char* strToChar(QString s) {
-            QString str1 = s;
-            QByteArray ba = str1.toUtf8();
-            char *c_str2 = ba.data();
-            return c_str2;
-        }
         QString unescapedHtml(QString s) {
             return s.replace("&nbsp;"," ")
                     .replace("&quot;", "\"")
@@ -439,7 +433,7 @@ namespace ut {
             uint c = 0;
             uint n = s.endsWith("\n") ? 2 : 1;
             for(uint i = s.length()-1; i >= 0; i--) {
-                if(s.at(i) == "\n") {
+                if(s.at(i) == '\n') {
                     c++;
                 }
                 if(c == n) {

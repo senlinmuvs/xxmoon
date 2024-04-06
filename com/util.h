@@ -52,7 +52,6 @@ namespace ut {
         extern QString fillTmpl(QString tmpl, QMap<QString, QString> m);
         extern std::tuple<QString, int, int> findByTag(QString src, QString tag1, QString tag2, int from = 0);
         extern QString randomStr(int n);
-        extern char* strToChar(QString s);
         extern QString unescapedHtml(QString s);
         extern QString removeFirstLine(QString s);
         extern QString removeEndLine(QString s);

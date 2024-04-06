@@ -246,6 +246,9 @@ function isFile(x) {
 }
 function putFunc(cb) {
     let i = window.cbid;
+    if(!window.cbs) {
+        window.cbs = {0:null};
+    }
     window.cbs[i] = cb;
     window.cbid++;
     return i;

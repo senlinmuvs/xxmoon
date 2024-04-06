@@ -1,4 +1,4 @@
-﻿import QtQuick 2.0
+﻿import QtQuick
 import "ui.js" as UI
 
 ListView {

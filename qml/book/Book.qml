@@ -1,7 +1,7 @@
-﻿import QtQuick 2.0
-import QtQuick.Controls 2.12
-import QtQuick.Dialogs 1.1
-import Qt.labs.platform 1.1
+﻿import QtQuick
+import QtQuick.Controls.Fusion
+import QtQuick.Dialogs
+import Qt.labs.platform
 
 import "../com"
 import "../com/com.js" as Com
@@ -48,7 +48,7 @@ Rectangle {
             note_list_model.clear();
             loadWork();
         }
-        Keys.onPressed: {
+        Keys.onPressed: function(event) {
             if(event.key === Qt.Key_Escape || event.key === Qt.Key_Return || event.key === Qt.Key_Tab) {
                 event.accepted = true;
                 work_list_view.forceActiveFocus();
@@ -70,11 +70,14 @@ Rectangle {
         }
         color: "#282828"
         clip: true
-        MyList {
-            id: work_list_view
-            showHighligh: true
-            Component {
-                id: work_list_header
+        Rectangle {
+            id: e_work_header
+            width: parent.width
+            height: e_wlh_col.height
+            color:"#000"
+            Column {
+                id: e_wlh_col
+                width: parent.width
                 Btn {
                     width: parent.width
                     text: "+"
@@ -86,6 +89,11 @@ Rectangle {
                     }
                 }
             }
+        }
+        MyList {
+            id: work_list_view
+            showHighligh: true
+            clip: true
             Component {
                 id: workMoreBtn
                 MoreBtn {
@@ -100,10 +108,12 @@ Rectangle {
                 id: workNoMoreBtn
                 Rectangle{}
             }
-            anchors.fill: work_list
+            anchors.top: e_work_header.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
             model: work_list_model
             delegate: ComponentWork{}
-            header: work_list_header
             onCurrentIndexChanged: {
                 note_list_view.page = 0;
                 note_list_view.currentIndex = 0;
@@ -112,7 +122,7 @@ Rectangle {
 //            interactive: false
             focus: true
             highColor: "#000"
-            Keys.onPressed: {
+            Keys.onPressed: function(event) {
                 Book.onKeyPressed(event);
             }
         }
@@ -124,7 +134,7 @@ Rectangle {
             hoverEnabled: true
             property int startX:0
 
-            onPressed:{
+            onPressed:function(mouse){
                 startX = mouse.x
             }
             onReleased: {

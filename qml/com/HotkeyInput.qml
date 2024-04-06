@@ -1,5 +1,5 @@
-﻿import QtQuick 2.0
-import QtQuick.Controls 2.12
+﻿import QtQuick
+import QtQuick.Controls.Fusion
 import "../com/ui.js" as UI
 
 TextField {
@@ -12,7 +12,7 @@ TextField {
         anchors.fill: parent
         color:"#222"
     }
-    Keys.onPressed: {
+    Keys.onPressed: function(event) {
         let k = $app.getKeyName(event.key, event.modifiers);
         if(k.indexOf("+") < 0 && !/^F\d+$/.test(k)) {
             k = "Ctrl+Alt+" + k;

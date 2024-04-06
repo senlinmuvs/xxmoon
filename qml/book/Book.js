@@ -272,7 +272,7 @@ function detail() {
 }
 // book
 function onBtnClick_addBook() {
-    if(work_list_view.header) {
+    if(!work_edit_popup.visible) {
         work_edit_popup.op();
     }
 }

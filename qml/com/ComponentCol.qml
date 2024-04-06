@@ -1,4 +1,4 @@
-﻿import QtQuick 2.0
+﻿import QtQuick
 import "com.js" as Com
 import "../collect/Collect.js" as Collect
 import "ui.js" as UI
@@ -97,7 +97,7 @@ Rectangle {
         anchors.fill: parent
         anchors.rightMargin: 60
         acceptedButtons: Qt.LeftButton | Qt.RightButton
-        onClicked: {
+        onClicked: function(mouse){
             col_list_view.forceActiveFocus();
             col_list_view.currentIndex = index;
             if (mouse.button === Qt.RightButton) {

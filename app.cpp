@@ -948,7 +948,7 @@ void App::genFile(uint fileType, uint type, uint gid, uint id, bool batch, QStri
                 QFile pdf_file(file);
                 pdf_file.open(QIODevice::WriteOnly);
                 QPdfWriter *pdf_writer = new QPdfWriter(&pdf_file);
-                pdf_writer->setPageSize(QPagedPaintDevice::A4);
+                pdf_writer->setPageSize(QPageSize::A4);
     //            pdf_writer->setResolution(30);
     //            qDebug() << "pdf" << pdf_writer->pageSize() << pdf_writer->pageSizeMM();
                 pdf_writer->setCreator("xxmoon");
@@ -1252,9 +1252,9 @@ void openFile(QString file) {
                             QFile::Permission::ExeUser |
                             QFile::Permission::ExeGroup |
                             QFile::Permission::ExeOther);
-        process->startDetached("open "+ tmpCmdFile);
+        process->startDetached("open", QStringList() << tmpCmdFile);
     } else {
-        process->startDetached("open -a \"" + cfg->editor + "\" " + file);
+        process->startDetached("open", QStringList() << "-a" << cfg->editor << file);
     }
     #endif
     #ifdef Q_OS_WIN
@@ -1276,7 +1276,7 @@ void App::openInExternal(int type, QString param, uint obj) {
     if(type == 0) {
         QString img = ut::str::removePrefix(param, getFilePre());
         #ifdef Q_OS_MAC
-        process->start("open -a Preview "+img);
+        process->start("open", QStringList() << "-a" << "Preview" << img);
         #endif
         #ifdef Q_OS_WIN
         img = img.replace("/", "\\");
@@ -1316,19 +1316,23 @@ void App::openInExternal(int type, QString param, uint obj) {
     }
 }
 void App::openDir(QString path) {
-    if(lg->isDebug()){
-        lg->debug(QString("openDir %1").arg(path));
-    }
 #if defined(Q_OS_MAC)
-    process->start("open -R \"" + path+"\"");
+    if(lg->isDebug()){
+        lg->debug(QString("mac openDir %1").arg(path));
+    }
+    process->start("open", QStringList() << "-R" << path);
+    process->waitForFinished();
 #elif defined(Q_OS_WIN)
+    if(lg->isDebug()){
+        lg->debug(QString("win openDir %1").arg(path));
+    }
     const QString explorer = "explorer";
     QStringList param;
     if (!QFileInfo(path).isDir())
         param << QLatin1String("/select,");
     param << QDir::toNativeSeparators(path);
     QProcess::startDetached(explorer, param);
-    #endif
+#endif
 }
 
 void App::checkTmpFile() {
@@ -1922,7 +1926,7 @@ QString App::test() {
 uint App::calLine(QString txt, int index) {
     uint curLine = txt.isEmpty()?0:1;
     for(int i = 0; i < txt.length(); i++) {
-        if(txt[i] == "\u2029") {
+        if(QString(txt[i]) == "\u2029") {
             curLine++;
         }
         if(index == i) {

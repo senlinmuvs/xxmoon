@@ -7,3 +7,4 @@ Release
 .DS_Store
 xxmoon.xcodeproj/*
 .qmake.stash
+build

@@ -15,7 +15,7 @@ public:
 private:
     QSemaphore* waitingResult;
     QVariantList res;
-    QMutex* mtx;
+    QRecursiveMutex* mtx;
 
 public:
     QVariantList get();

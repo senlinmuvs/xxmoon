@@ -1,10 +1,13 @@
-﻿import QtQuick 2.0
-import QtQuick.Controls 2.13
+﻿import QtQuick
+import QtQuick.Controls.Fusion
 import "ui.js" as UI
 
 TextField {
     id: root
+    color: "white"
+    placeholderTextColor: "#808080"
     placeholderText: "____/__/__"
+    verticalAlignment: Text.AlignVCenter
     font.pointSize: 12
     onTextChanged: {
         text = vdate(text);

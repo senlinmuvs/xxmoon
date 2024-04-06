@@ -1,6 +1,6 @@
-﻿import QtQuick 2.13
-import QtQuick.Controls 2.12
-import Qt.labs.platform 1.1
+﻿import QtQuick
+import QtQuick.Controls.Fusion
+import Qt.labs.platform
 import "com.js" as Com
 import "ui.js" as UI
 
@@ -152,8 +152,8 @@ Popup {
             height: 30
             selectByMouse: true
             placeholderText: '123-456'
-            validator: RegExpValidator{
-                regExp: /[0-9]{1,9}-[0-9]{1,9}/
+            validator: RegularExpressionValidator {
+                regularExpression: /[0-9]{1,9}-[0-9]{1,9}/
             }
             background: Rectangle{
                 color: "transparent"
@@ -164,7 +164,7 @@ Popup {
                     color: "#181818"
                 }
             }
-            Keys.onPressed: {
+            Keys.onPressed: function(event) {
                 onKeys(event);
             }
             onFocusChanged: {
@@ -204,7 +204,7 @@ Popup {
                         id: fontMetrics
                         font.family: text.font
                     }
-                    Keys.onPressed: {
+                    Keys.onPressed: function(event) {
                         onKeys(event);
                     }
                     onTextChanged: {
@@ -252,7 +252,7 @@ Popup {
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.RightButton
-        onClicked: {
+        onClicked:function(mouse) {
             if (mouse.button === Qt.RightButton) {
                 menu_right.open();
             }
