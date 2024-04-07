@@ -18,7 +18,7 @@ public:
     void insert(Note *n);
     QList<Note*> insert(QList<Note*> list, std::function<void (int)> cb);
     virtual uint getMaxId() const;
-    vector<Work> getWorkList(QString k, ulong fromTime);
+    vector<Work> getWorkList(QString k, QString tag, ulong fromTime);
     QList<Note*> getNoteList(QString k, uint wid, uint page, QString sort);
     void updateNote(uint id, uint pos0, uint pos1, QString cont);
     void updateTags(uint id, QString tags);

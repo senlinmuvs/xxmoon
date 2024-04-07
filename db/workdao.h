@@ -19,7 +19,7 @@ public:
     void del(uint id);
     void update(Work *w);
     virtual uint getMaxId() const;
-    QList<Work> all();
+    QList<QString> getWorkTagList();
 };
 
 #endif // WORKDAO_H

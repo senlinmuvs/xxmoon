@@ -23,6 +23,9 @@ Rectangle {
     ListModel {
         id: work_list_model
     }
+    ListModel {
+        id: model_work_cat
+    }
     TextField {
         id: search_bar
         property var keys: []
@@ -40,12 +43,8 @@ Rectangle {
             color:"#222"
         }
         onTextChanged: {
-            note_list_view.page = 0;
             keys = Book.filterKey(text);
-//            console.log(JSON.stringify(keys));
-
-            work_list_model.clear();
-            note_list_model.clear();
+            clearData();
             loadWork();
         }
         Keys.onPressed: function(event) {
@@ -57,6 +56,27 @@ Rectangle {
         onFocusChanged: {
             if(focus) {
                 $app.regMenuReceiver(this);
+            }
+        }
+    }
+    Component {
+        id: com_work_cat
+        Rectangle {
+            color: "transparent"
+            width: e_txt.width + 20
+            height: 30
+            Text {
+                id: e_txt
+                text: name
+                color: "white"
+                anchors.centerIn: parent
+            }
+            MouseArea {
+                anchors.fill: parent
+                // acceptedButtons: Qt.LeftButton | Qt.RightButton
+                onClicked: function(mouse){
+                    list_work_cat.currentIndex = index;
+                }
             }
         }
     }
@@ -74,7 +94,7 @@ Rectangle {
             id: e_work_header
             width: parent.width
             height: e_wlh_col.height
-            color:"#000"
+            color:"#393939"
             Column {
                 id: e_wlh_col
                 width: parent.width
@@ -87,6 +107,21 @@ Rectangle {
                     radius: 1
                     function click() {
                         Book.onBtnClick_addBook();
+                    }
+                }
+                MyList {
+                    id: list_work_cat
+                    width: parent.width
+                    height: 30
+                    showHighligh: true
+                    highColor: "#292929"
+                    clip: true
+                    orientation: ListView.Horizontal
+                    model: model_work_cat
+                    delegate: com_work_cat
+                    onCurrentIndexChanged: {
+                        clearData();
+                        loadWork();
                     }
                 }
             }
@@ -142,7 +177,7 @@ Rectangle {
                 startX = 0
                 $app.setLocal($app.ENV_K_LAST_BOOK_LEFT_WIDTH, Math.floor(work_list.width));
             }
-            onPositionChanged:{
+            onPositionChanged:function(mouse){
                 if(startX > 0){
                     let left = mouse.x < startX;
                     if(left){
@@ -171,7 +206,7 @@ Rectangle {
                 let i = work_list_view.currentIndex;
                 let w = work_list_model.get(i);
                 if(w) {
-                    work_edit_popup.op(w.name, w.author, Com.parseTime(w.time,1)[0], w.id);
+                    work_edit_popup.op(w.name, w.author, Com.parseTime(w.time,1)[0], w.tag, w.id);
                 }
             }
         }
@@ -383,6 +418,9 @@ Rectangle {
 //            focus: true
         }
         function pushNote(list) {
+            if($l.isTrace()) {
+                console.log(JSON.stringify(list));
+            }
             let ar = Com.parseTime(Book.getNoteLastTime(), 1);
             let preDateStr = ar[0];
             let preTimeStr = ar[1];
@@ -527,6 +565,50 @@ Rectangle {
     }
     Component.onCompleted: {
         work_list_view.forceActiveFocus();
+
+        $bk.getWorkTagList(Com.putFunc(function(list){
+            let tagMap = {};
+            for(let i = 0; i < list.length; i++) {
+                let arr = list[i].split("#");
+                for(let j = 0; j < arr.length; j++) {
+                    let tag = arr[j];
+                    if(tag) {
+                        let n = tagMap[tag];
+                        if(!n) {
+                            n = 0;
+                        }
+                        tagMap[tag] = n+1;
+                    }
+                }
+            }
+            let tags = [];
+            let count = 0;
+            let x = 0;
+            while(true) {
+                let maxTag = '';
+                let maxN = 0;
+                for(let k in tagMap) {
+                    // console.log(k, tagMap[k]);
+                    let n = Number(tagMap[k]);
+                    if(n > maxN) {
+                        maxTag = k;
+                        maxN = n;
+                    }
+                    count++;
+                }
+                if(maxTag) {
+                    tags[tags.length] = maxTag;
+                    delete tagMap[maxTag];
+                }
+                if(x++ >= count) {
+                    break;
+                }
+            }
+            model_work_cat.append({name:"全部"});
+            for(let i = 0; i < tags.length; i++) {
+                model_work_cat.append({name:tags[i]});
+            }
+        }));
     }
     function init(data) {
         if(data) {
@@ -544,7 +626,11 @@ Rectangle {
     }
     function loadWork() {
         let k = search_bar.text.trim();
-        $bk.getWorkList(k, Book.getWorkLastTime(), root);
+        let tag = model_work_cat.get(list_work_cat.currentIndex).name;
+        if(tag==='全部') {
+            tag = '';
+        }
+        $bk.getWorkList(k, tag, Book.getWorkLastTime(), root);
     }
     function pushWork(list) {
         let preTimeStr = Com.parseTime(Book.getWorkLastTime())[0];
@@ -558,7 +644,8 @@ Rectangle {
                 time: e.time,
                 total: e.total,
                 t: e.t,
-                from_str: ''
+                from_str: '',
+                tag: e.tag
             };
             let arr = Com.parseTime(w.time);
             w.time_str = arr[0];
@@ -569,6 +656,9 @@ Rectangle {
                 w.from_str = '豆';
             } else if(e.fro === 2) {
                 w.from_str = '微';
+            }
+            if($l.isTrace()) {
+                console.log(JSON.stringify(w));
             }
             work_list_model.append(w);
             preTimeStr = w.time_str;
@@ -596,6 +686,7 @@ Rectangle {
                     w_[1].name = work.name;
                     w_[1].author = work.author;
                     w_[1].time = work.time;
+                    w_[1].tag = work.tag;
                 }
             }
         }
@@ -650,5 +741,10 @@ Rectangle {
     }
     function getListWidth() {
         return pk_list.width;
+    }
+    function clearData() {
+        note_list_view.page = 0;
+        work_list_model.clear();
+        note_list_model.clear();
     }
 }

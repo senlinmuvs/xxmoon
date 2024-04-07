@@ -25,7 +25,7 @@ Rectangle {
         id: scroll
         width: parent.width
         height: parent.height
-        contentWidth:  width
+        contentWidth:  width - 5
         contentHeight: col.height + 30
         clip: true
         Column {

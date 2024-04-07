@@ -618,6 +618,7 @@ Rectangle {
     }
     MyFieldPopup {
         id: col_edit_popup
+        placeholder: qsTr("Category Name")
         property bool add: false
 
         function submit() {

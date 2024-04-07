@@ -263,7 +263,7 @@ function loadNote(clear) {
     if(w){
         let k = search_bar.text.trim();
         let sort = sort_btn.text.trim();
-//        Com.log('load note', k, w.id, note_list_view.page, sort, JSON.stringify(w));
+        // console.log('load note', k, w.id, note_list_view.page, sort, JSON.stringify(w));
         $bk.getNoteList(k, w.id, note_list_view.page, sort, note_list_view.width, note_list);
     }
 }
@@ -281,12 +281,13 @@ function submitBook() {
     let name = arr[0];
     let author = arr[1];
     let date = arr[2];
-    if(!name || !author || !date) {
+    let tag = arr[3];
+    if(!name || !date) {
         return;
     }
     let time = Com.convStrToTime(date)/1000;
     if(work_edit_popup.bid) {
-        $bk.updateWork(work_edit_popup.bid, name, author, time, root);
+        $bk.updateWork(work_edit_popup.bid, name, author, time, tag, root);
     } else {
         let n = work_list_model.count;
         for(let x = 0; x < n; x++) {
@@ -296,7 +297,7 @@ function submitBook() {
                 return;
             }
         }
-        $bk.addWork(name, author, time, root);
+        $bk.addWork(name, author, time, tag, root);
     }
 }
 function getWorkById(bid) {

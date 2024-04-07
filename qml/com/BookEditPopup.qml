@@ -63,6 +63,18 @@ Popup {
             height: 40
             font.pointSize: UI.book_edit_label_font_size
         }
+        TextField {
+            id: tf_tag
+            width: parent.width
+            height: 40
+            placeholderTextColor: "#808080"
+            placeholderText: qsTr("Tag(separated by commas)")
+            font.pointSize: UI.book_edit_label_font_size
+            color: "white"
+            wrapMode: Text.Wrap
+            selectByMouse: true
+            maximumLength: 50
+        }
         Btn {
             x: parent.width/2 - width/2
             y: 8
@@ -101,19 +113,23 @@ Popup {
     }
     function cancel() {
     }
-    function setData(name='', author='', date='', bid=0) {
+    function setData(name='', author='', date='', tag='', bid=0) {
         tf_book_name.text = name;
         tf_author_name.text = author;
         di_date.text = date;
+        tf_tag.text = tag;
         root.bid = bid;
     }
-    function op(name='', author='', date='', bid=0) {
-        setData(name, author, date, bid);
+    function op(name='', author='', date='', tag='', bid=0) {
+        if($l.isTrace()) {
+            console.log("op", name, author, date, tag, bid);
+        }
+        setData(name, author, date, tag, bid);
         open();
         tf_book_name.forceActiveFocus();
     }
     function getData() {
-        return [tf_book_name.text, tf_author_name.text, di_date.text];
+        return [tf_book_name.text, tf_author_name.text, di_date.text, tf_tag.text];
     }
     function cl() {
         setData();

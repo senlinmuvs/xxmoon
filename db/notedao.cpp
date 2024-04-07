@@ -184,7 +184,7 @@ QString getSearchCondSql1(QString k) {
     sql = sql.mid(0, sql.length()-5);
     return sql + ")";
 }
-vector<Work> NoteDao::getWorkList(QString k, ulong fromTime) {
+vector<Work> NoteDao::getWorkList(QString k, QString tag, ulong fromTime) {
     vector<Work> list;
     ///
     QVariantList v = filterK(k);
@@ -196,7 +196,12 @@ vector<Work> NoteDao::getWorkList(QString k, ulong fromTime) {
     QString sql;
     QString pageSize = QString::number(PAGE_SIZE);
     if(hasK) {
-        sql = "select w.id, w.name,author,w.time,w.fro,count(*) as c from note n join work w on w.id=n.wid where del=0 #cond_time #cont #tags group by n.wid order by n.time desc limit "+ pageSize;
+        sql = "select w.id, w.name,author,w.time,w.fro,w.tag,count(*) as c from note n join work w on w.id=n.wid where del=0 #cond_time #cont #tags #cond_work_tag group by n.wid order by n.time desc limit "+ pageSize;
+        if(tag.isEmpty()) {
+            sql = sql.replace("#cond_work_tag", "");
+        } else {
+            sql = sql.replace("#cond_work_tag", "and w.tag like :wtag");
+        }
         if(searchAuthor) {
             if(k2.length() > 0) {
                 sql = sql.replace("#cont", "and w.author like :k1 and cont like :k2");
@@ -240,11 +245,18 @@ vector<Work> NoteDao::getWorkList(QString k, ulong fromTime) {
     } else {
         sql =
         "select t1.*,t2.c from "
-            "(select id,name,author,`time`,fro from work #cond_time_t1) t1 "
+            "(select id,name,author,`time`,fro,tag from work where 1=1 #cond_time_t1 #cond_work_tag1) t1 "
         "left outer join "
-            "(select wid, w.name,author,w.time,w.fro,count(*) as c from note n join work w on w.id=n.wid where del=0 #cond_time_t2 group by n.wid) t2 "
+            "(select wid, w.name,author,w.time,w.fro,w.tag,count(*) as c from note n join work w on w.id=n.wid where del=0 #cond_time_t2 #cond_work_tag2 group by n.wid) t2 "
         "on t1.id = t2.wid "
         "order by t1.time desc limit "+pageSize;
+        if(tag.isEmpty()) {
+            sql = sql.replace("#cond_work_tag1", "");
+            sql = sql.replace("#cond_work_tag2", "");
+        } else {
+            sql = sql.replace("#cond_work_tag1", "and tag like :wtag");
+            sql = sql.replace("#cond_work_tag2", "and w.tag like :wtag");
+        }
         if(fromTime > 0) {
             sql.replace("#cond_time_t1", "where `time`<:time");
             sql.replace("#cond_time_t2", "and n.time<:time");
@@ -256,6 +268,9 @@ vector<Work> NoteDao::getWorkList(QString k, ulong fromTime) {
     ///
     QSqlQuery q;
     q.prepare(sql);
+    if(!tag.isEmpty()) {
+        q.bindValue(":wtag", "%"+tag+"%");
+    }
     if(fromTime > 0) {
         q.bindValue(":time", uint(fromTime));
     }
@@ -268,7 +283,7 @@ vector<Work> NoteDao::getWorkList(QString k, ulong fromTime) {
     }
     bool suc = q.exec();
     if(!suc){
-        lg->error(QString("get getWorkList error %1").arg(q.lastError().text()));
+        lg->error(QString("get getWorkList error %1 [%2] [%3 %4 %5]").arg(q.lastError().text()).arg(sql).arg(k).arg(tag).arg(fromTime));
     }
     QSqlRecord rec = q.record();
     int colId = rec.indexOf("id");
@@ -277,6 +292,7 @@ vector<Work> NoteDao::getWorkList(QString k, ulong fromTime) {
     int colTime = rec.indexOf("time");
     int colC= rec.indexOf("c");
     int colFro= rec.indexOf("fro");
+    int colTag= rec.indexOf("tag");
     while (q.next()) {
         uint id = q.value(colId).toUInt();
         QString book = q.value(colBook).toString();
@@ -284,6 +300,7 @@ vector<Work> NoteDao::getWorkList(QString k, ulong fromTime) {
         uint time = q.value(colTime).toUInt();
         uint c = q.value(colC).toUInt();
         uint fro = q.value(colFro).toUInt();
+        QString tag = q.value(colTag).toString();
         Work w;
         w.id = id;
         w.time = time;
@@ -291,9 +308,10 @@ vector<Work> NoteDao::getWorkList(QString k, ulong fromTime) {
         w.author = author;
         w.name = book;
         w.fro = fro;
+        w.tag = tag;
         list.insert(list.end(), w);
     }
-//    qDebug() << sql << k1 << k2 << k << fromTime;
+    // qDebug() << sql << k << tag << fromTime;
     return list;
 }
 
@@ -364,8 +382,8 @@ QList<Note*> NoteDao::getNoteList(QString k, uint wid, uint page, QString sort) 
         lg->error(QString("getNoteList error %1").arg(q.lastError().text()));
     }
     QList<Note*> list = gets(q);
-//    qDebug() << sql;
-//    qDebug() << k << wid << page << start << sort << list.size();
+    // qDebug() << sql;
+    // qDebug() << k << wid << page << start << sort << list.size();
     return list;
 }
 

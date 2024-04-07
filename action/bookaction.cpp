@@ -4,28 +4,36 @@
 BookAction::BookAction() {
 }
 
-void BookAction::addWork(QString name,QString author,uint time, QObject *obj) {
+void BookAction::addWork(QString name,QString author,uint time, QString tag, QObject *obj) {
     DB_Async->exe([=] {
         Work *w = new Work();
         w->name = name;
         w->author = author;
         w->time = time;
+        w->tag = tag;
         w->t = 1;
+        w->convTagComma2Pound();
         workDao->add(w);
+        w->convTagPound2Comma();
         QMetaObject::invokeMethod(obj, "onAddWork", Q_ARG(QVariant, QVariant::fromValue(w->toVMap())));
+        delete w;
     });
 }
-void BookAction::updateWork(uint bid, QString name, QString author, uint time, QObject *obj) {
+void BookAction::updateWork(uint bid, QString name, QString author, uint time, QString tag, QObject *obj) {
     DB_Async->exe([=]{
         Work *w = workDao->get(bid);
         if(w) {
             w->name = name;
             w->author = author;
             w->time = time;
+            w->tag = tag;
             w->t = 1;
+            w->convTagComma2Pound();
             workDao->update(w);
+            w->convTagPound2Comma();
             QMetaObject::invokeMethod(obj, "onUpdateWork", Q_ARG(QVariant, QVariant::fromValue(w->toVMap())));
         }
+        delete w;
     });
 }
 void BookAction::delWork(uint id, uint cbid) {
@@ -42,11 +50,12 @@ void BookAction::getNote(uint id, uint cbid) {
     });
 }
 
-void BookAction::getWorkList(QString k, ulong fromTime, QObject *obj) {
+void BookAction::getWorkList(QString k, QString tag, ulong fromTime, QObject *obj) {
     DB_Async->exe([=]{
-        vector<Work> list = noteDao->getWorkList(k, fromTime);
+        vector<Work> list = noteDao->getWorkList(k, tag, fromTime);
         QVariantList rlist;
         for (Work w:list) {
+            w.convTagPound2Comma();
             rlist << w.toVMap();
         }
         QMetaObject::invokeMethod(obj, "pushWork",
@@ -109,5 +118,12 @@ void BookAction::deleteNote(uint id, QObject *obj) {
             }
         }
         QMetaObject::invokeMethod(obj, "onDeletedNote");
+    });
+}
+
+void BookAction::getWorkTagList(uint cbid) {
+    DB_Async->exe([=] {
+        QList<QString> list = workDao->getWorkTagList();
+        sendMsg(cbid, list);
     });
 }
