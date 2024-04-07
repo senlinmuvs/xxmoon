@@ -63,9 +63,12 @@ void DocParser::addQmlList(QStringList& l, Doc& doc, uint maxWidth) {
         QString code = cont.mid(0, i);
         QString src = cont.mid(i+1);
         QString html = Highlight(src.toUtf8().data(), code.toUtf8().data());
+        //fix bug:3018
+        if(!src.endsWith("\n")) {
+            html = html.replace("\n</span></pre>", "</span></pre>");
+        }
         //
-        html = html.replace("\"", "\\\"");
-        QString s = QString("Code{text:\"%1\";width:%2;color:'%3';}").arg(html, QString::number(maxWidth-20), "#ECECEC");
+        QString s = QString("Code{text:'%1';width:%2;color:'%3';}").arg(html, QString::number(maxWidth-20), "#ECECEC");
         l << s;
     } else {
         l << doc.cont.trimmed();

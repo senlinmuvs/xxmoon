@@ -26,7 +26,6 @@ Popup {
     leftPadding: 0
     bottomPadding: 0
     focus: true
-
     TextField {
         id: popup_text
         anchors.fill: parent

@@ -43,7 +43,7 @@ Rectangle {
             note_list_view.page = 0;
             keys = Book.filterKey(text);
 //            console.log(JSON.stringify(keys));
-            //
+
             work_list_model.clear();
             note_list_model.clear();
             loadWork();

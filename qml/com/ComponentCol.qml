@@ -4,7 +4,7 @@ import "../collect/Collect.js" as Collect
 import "ui.js" as UI
 
 Rectangle {
-    id: root
+    id: root_com_col
     width: col_list.width
     height: e_col_name.height + 20
     color: "transparent"
@@ -38,7 +38,7 @@ Rectangle {
     Text {
         id: flag_moving
         x: (parent.width-width)/2
-        y: root.height - 15
+        y: root_com_col.height - 15
         color:"#C9C9C9"
         text:qsTr("Sorting...")
         font.pointSize: 10
@@ -46,7 +46,7 @@ Rectangle {
     }
     Rectangle {
         x:0
-        y:root.height
+        y:root_com_col.height
         width: col_list.width
         height: 1
         color: "#686868"
@@ -104,13 +104,13 @@ Rectangle {
             if (mouse.button === Qt.RightButton) {
                 colRightMenu.open();
             }
-            root.color = "transparent";
+            root_com_col.color = "transparent";
         }
         onEntered: {
-            root.color = "#393939";
+            root_com_col.color = "#393939";
         }
         onExited: {
-            root.color = "transparent";
+            root_com_col.color = "transparent";
         }
     }
 }

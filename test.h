@@ -101,7 +101,8 @@ void test4() {
 
 void test5() {
     qDebug() << "------------------------- TEST 5 START -----------------------";
-    QString src = ut::file::readFile("/Users/sen/Desktop/src.txt");
+    // QString src = ut::file::readFile("/Users/sen/Desktop/src.txt");
+    QString src = "//aaa";
     QString code = "java";
     qDebug() << src.toUtf8().data();
     qDebug() << "-------------------------------------------------------------";
