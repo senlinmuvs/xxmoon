@@ -20,6 +20,7 @@ public:
     Q_INVOKABLE void deleteNote(uint id, QObject *obj);
     Q_INVOKABLE void getNote(uint id, uint cbid);
     Q_INVOKABLE void getWorkTagList(uint cbid);
+    Q_INVOKABLE void countWork(uint cbid);
 };
 
 #endif // BOOKACTION_H

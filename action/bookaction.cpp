@@ -127,3 +127,9 @@ void BookAction::getWorkTagList(uint cbid) {
         sendMsg(cbid, list);
     });
 }
+void BookAction::countWork(uint cbid) {
+    DB_Async->exe([=] {
+        uint c = workDao->count();
+        sendMsg(cbid, c);
+    });
+}

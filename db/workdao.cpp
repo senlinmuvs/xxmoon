@@ -158,3 +158,16 @@ QList<QString> WorkDao::getWorkTagList() {
     }
     return list;
 }
+uint WorkDao::count() {
+    QSqlQuery q;
+    q.prepare("select count(*) from work");
+    bool ok = q.exec();
+    if(!ok) {
+        lg->error(QString("count error %1").arg(q.lastError().text()));
+        return 0;
+    }
+    if(q.next()) {
+        return q.value(0).toUInt();
+    }
+    return 0;
+}

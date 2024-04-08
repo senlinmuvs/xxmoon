@@ -20,6 +20,7 @@ public:
     void update(Work *w);
     virtual uint getMaxId() const;
     QList<QString> getWorkTagList();
+    uint count();
 };
 
 #endif // WORKDAO_H

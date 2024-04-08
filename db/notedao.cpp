@@ -196,11 +196,11 @@ vector<Work> NoteDao::getWorkList(QString k, QString tag, ulong fromTime) {
     QString sql;
     QString pageSize = QString::number(PAGE_SIZE);
     if(hasK) {
-        sql = "select w.id, w.name,author,w.time,w.fro,w.tag,count(*) as c from note n join work w on w.id=n.wid where del=0 #cond_time #cont #tags #cond_work_tag group by n.wid order by n.time desc limit "+ pageSize;
+        sql = "select w.id, w.name,author,w.time,w.fro,w.tag as wtag,count(*) as c from note n join work w on w.id=n.wid where del=0 #cond_time #cont #tags #cond_work_tag group by n.wid order by n.time desc limit "+ pageSize;
         if(tag.isEmpty()) {
             sql = sql.replace("#cond_work_tag", "");
         } else {
-            sql = sql.replace("#cond_work_tag", "and w.tag like :wtag");
+            sql = sql.replace("#cond_work_tag", "and wtag like :wtag");
         }
         if(searchAuthor) {
             if(k2.length() > 0) {
@@ -245,17 +245,15 @@ vector<Work> NoteDao::getWorkList(QString k, QString tag, ulong fromTime) {
     } else {
         sql =
         "select t1.*,t2.c from "
-            "(select id,name,author,`time`,fro,tag from work where 1=1 #cond_time_t1 #cond_work_tag1) t1 "
+            "(select id,name,author,`time`,fro,tag as wtag from work where 1=1 #cond_time_t1 #cond_work_tag) t1 "
         "left outer join "
-            "(select wid, w.name,author,w.time,w.fro,w.tag,count(*) as c from note n join work w on w.id=n.wid where del=0 #cond_time_t2 #cond_work_tag2 group by n.wid) t2 "
+            "(select wid, w.name,author,w.time,w.fro,w.tag as wtag,count(*) as c from note n join work w on w.id=n.wid where del=0 #cond_time_t2 #cond_work_tag group by n.wid) t2 "
         "on t1.id = t2.wid "
         "order by t1.time desc limit "+pageSize;
         if(tag.isEmpty()) {
-            sql = sql.replace("#cond_work_tag1", "");
-            sql = sql.replace("#cond_work_tag2", "");
+            sql = sql.replace("#cond_work_tag", "");
         } else {
-            sql = sql.replace("#cond_work_tag1", "and tag like :wtag");
-            sql = sql.replace("#cond_work_tag2", "and w.tag like :wtag");
+            sql = sql.replace("#cond_work_tag", "and wtag like :wtag");
         }
         if(fromTime > 0) {
             sql.replace("#cond_time_t1", "where `time`<:time");
@@ -292,7 +290,7 @@ vector<Work> NoteDao::getWorkList(QString k, QString tag, ulong fromTime) {
     int colTime = rec.indexOf("time");
     int colC= rec.indexOf("c");
     int colFro= rec.indexOf("fro");
-    int colTag= rec.indexOf("tag");
+    int colTag= rec.indexOf("wtag");
     while (q.next()) {
         uint id = q.value(colId).toUInt();
         QString book = q.value(colBook).toString();

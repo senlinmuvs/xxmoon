@@ -77,7 +77,7 @@ Rectangle {
                 }
                 Text {
                     id: e_n
-                    text: n
+                    text: n>0?n:''
                     height: 30
                     color: "white"
                     font.pointSize: 10
@@ -580,7 +580,6 @@ Rectangle {
 
         $bk.getWorkTagList(Com.putFunc(function(list){
             let tagMap = {};
-            let total = 0;
             for(let i = 0; i < list.length; i++) {
                 let arr = list[i].split("#");
                 for(let j = 0; j < arr.length; j++) {
@@ -591,7 +590,6 @@ Rectangle {
                             n = 0;
                         }
                         tagMap[tag] = n+1;
-                        total++;
                     }
                 }
             }
@@ -619,11 +617,14 @@ Rectangle {
                     break;
                 }
             }
-            model_work_cat.append({name:"全部", n:total});
-            for(let i = 0; i < tags.length; i++) {
-                let name = tags[i];
-                model_work_cat.append({name:name, n:tagMapCopy[name]});
-            }
+            $bk.countWork(Com.putFunc(function(c){
+                model_work_cat.append({name:"全部", n:c});
+
+                for(let i = 0; i < tags.length; i++) {
+                    let name = tags[i];
+                    model_work_cat.append({name:name, n:tagMapCopy[name]});
+                }
+            }));
         }));
     }
     function init(data) {
@@ -642,9 +643,13 @@ Rectangle {
     }
     function loadWork() {
         let k = search_bar.text.trim();
-        let tag = model_work_cat.get(list_work_cat.currentIndex).name;
-        if(tag==='全部') {
-            tag = '';
+        let tag = '';
+        let wtag = model_work_cat.get(list_work_cat.currentIndex);
+        if(wtag) {
+            tag = wtag.name;
+            if(tag==='全部') {
+                tag = '';
+            }
         }
         $bk.getWorkList(k, tag, Book.getWorkLastTime(), root);
     }
