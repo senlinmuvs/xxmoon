@@ -2019,7 +2019,7 @@ bool App::importDouban() {
                 if(w->time <= 0) {
                     w->time = n->time;
                     Work *w_ = workDao->get(w->name);
-                    if(w_->id > 0) {
+                    if(w_ && w_->id > 0) {
                         wid = w_->id;
                     } else {
                         workDao->add(w);
@@ -2120,7 +2120,7 @@ bool App::importWechatRead() {
                 if(w->time <= 0) {
                     w->time = n->time;
                     Work *w_ = workDao->get(w->name, w->author);
-                    if(w_->id > 0) {
+                    if(w_ && w_->id > 0) {
                         wid = w_->id;
                     } else {
                         workDao->add(w);
@@ -2155,6 +2155,7 @@ bool App::importWechatRead() {
         delete w;
         st(0, QString("已添加 %1 条笔记").arg(c));
         ut::cpb::clear();
+        qDebug() << ">>>>>>>>>>>>>>> 6";
     });
     return true;
 }
