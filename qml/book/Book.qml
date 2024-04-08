@@ -63,17 +63,29 @@ Rectangle {
         id: com_work_cat
         Rectangle {
             color: "transparent"
-            width: e_txt.width + 20
+            width: e_name.width + e_n.width + 20
             height: 30
-            Text {
-                id: e_txt
-                text: name
-                color: "white"
+            Row {
                 anchors.centerIn: parent
+                spacing: 1
+                Text {
+                    id: e_name
+                    height: 30
+                    text: name
+                    color: "white"
+                    verticalAlignment: Text.AlignVCenter
+                }
+                Text {
+                    id: e_n
+                    text: n
+                    height: 30
+                    color: "white"
+                    font.pointSize: 10
+                    verticalAlignment: Text.AlignVCenter
+                }
             }
             MouseArea {
                 anchors.fill: parent
-                // acceptedButtons: Qt.LeftButton | Qt.RightButton
                 onClicked: function(mouse){
                     list_work_cat.currentIndex = index;
                 }
@@ -568,6 +580,7 @@ Rectangle {
 
         $bk.getWorkTagList(Com.putFunc(function(list){
             let tagMap = {};
+            let total = 0;
             for(let i = 0; i < list.length; i++) {
                 let arr = list[i].split("#");
                 for(let j = 0; j < arr.length; j++) {
@@ -578,9 +591,11 @@ Rectangle {
                             n = 0;
                         }
                         tagMap[tag] = n+1;
+                        total++;
                     }
                 }
             }
+            let tagMapCopy = Object.assign({},tagMap);
             let tags = [];
             let count = 0;
             let x = 0;
@@ -604,9 +619,10 @@ Rectangle {
                     break;
                 }
             }
-            model_work_cat.append({name:"全部"});
+            model_work_cat.append({name:"全部", n:total});
             for(let i = 0; i < tags.length; i++) {
-                model_work_cat.append({name:tags[i]});
+                let name = tags[i];
+                model_work_cat.append({name:name, n:tagMapCopy[name]});
             }
         }));
     }

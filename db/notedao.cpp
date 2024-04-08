@@ -269,7 +269,7 @@ vector<Work> NoteDao::getWorkList(QString k, QString tag, ulong fromTime) {
     QSqlQuery q;
     q.prepare(sql);
     if(!tag.isEmpty()) {
-        q.bindValue(":wtag", "%"+tag+"%");
+        q.bindValue(":wtag", "%#"+tag+"#%");
     }
     if(fromTime > 0) {
         q.bindValue(":time", uint(fromTime));
