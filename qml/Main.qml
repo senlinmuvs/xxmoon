@@ -33,6 +33,9 @@ ApplicationWindow {
     property int ctrlVal:Qt.ControlModifier;
     property string ctrlName:$app.getPlatform() === Com.platform_mac ? "Cmd" : "Ctrl";
 
+    property var win_detail_refs//{detail_win_name:1}保持详情分离窗口引用避免加载数据多了窗口消失
+    property int win_detail_index: 0//详情分离窗口的索引计数,即窗口名后缀
+
     Menu {
         id: trayMenu
         MenuItem {
@@ -462,22 +465,22 @@ ApplicationWindow {
         }
         $app.setLocal($app.ENV_K_LAST_WH, whxy);
     }
-    function openDetail(pk, delegate) {
+    function openDetail(pk, delegate, win=detailView) {
         if($l.isDebug()) {
-            Com.trace("openDetail pk", JSON.stringify(pk), "delegate", (delegate!==null));
+            Com.debug("openDetail pk", JSON.stringify(pk), "delegate", (delegate!==null));
         }
         if(pk) {
             if(delegate) {
-                detailView.delegate = delegate;
-                detailView.tagLine.delegate = delegate.getTagManager();
+                win.delegate = delegate;
+                win.tagLine.delegate = delegate.getTagManager();
             }
-            detailView.cl();
-            detailView.updateTags(pk.tags);
+            win.cl();
+            win.updateTags(pk.tags);
 //            console.log("jm_ensure", pk.jm_ensure, "pk.id", pk.id);
             if(pk.jm_ensure || pk.id === 0) {
-                detailView.op(pk);
+                win.op(pk);
             } else {
-                detailView.reloadData(pk.id);
+                win.reloadData(pk.id);
             }
             if(pk.id === 0) {
                 title_bar.showImportBtn = true;

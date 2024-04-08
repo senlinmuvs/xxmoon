@@ -240,6 +240,8 @@ function onKeysPressed(event) {
         search_bar.forceActiveFocus();
     } else if(event.key === Qt.Key_Return) {
         openImgView();
+    } else if(event.modifiers === Qt.ShiftModifier && event.key === Qt.Key_Space) {
+        detailWin();
     } else if(event.key === Qt.Key_Space) {
         detail();
     } else if(event.modifiers === ctrlVal && event.key === Qt.Key_N) {
@@ -275,6 +277,12 @@ function onKeysPressed(event) {
 
 function detail() {
     openDetail(getCurrentPK(), pk_list);
+}
+function detailWin() {
+    let com = Qt.createComponent("qrc:/qml/com/DetailWin.qml");
+    let win = com.createObject();
+    win.open(getCurrentPK(), pk_list);
+    win_detail_refs[win_detail_refs.length] = win;
 }
 function openColEditPopup() {
     let i = col_list_view.currentIndex;

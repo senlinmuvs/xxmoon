@@ -81,5 +81,6 @@
         <file>qml/Notify.qml</file>
         <file>assets/com.js</file>
         <file>qml/com/HR.qml</file>
+        <file>qml/com/DetailWin.qml</file>
     </qresource>
 </RCC>

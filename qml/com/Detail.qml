@@ -135,7 +135,10 @@ Rectangle {
         id: ma_root
         anchors.fill: parent
         acceptedButtons: Qt.RightButton
-        onClicked: function(mouse){
+        onClicked: function(mouse) {
+            if(root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
+                return;
+            }
             if (mouse.button === Qt.RightButton) {
                 mi_picture_model.visible = pk&&pk.imgs.length > 0;
                 menu_right.open();
@@ -216,11 +219,17 @@ Rectangle {
 
     function onKeysPressed(event) {
         if(event.modifiers === ctrlVal && event.key === Qt.Key_J) {
+            if(root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
+                return;
+            }
             if(delegate){
                 let pk = delegate.next();
                 openDetail(pk);
             }
         } else if(event.modifiers === ctrlVal && event.key === Qt.Key_K) {
+            if(root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
+                return;
+            }
             if(delegate){
                 let pk = delegate.previous();
                 openDetail(pk);
@@ -234,8 +243,14 @@ Rectangle {
         } else if(event.key === Qt.Key_K) {
             setToUp();
         } else if(event.modifiers === ctrlVal && event.key === Qt.Key_Return) {
+            if(root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
+                return;
+            }
             edit();
         } else if(event.modifiers === (ctrlVal | Qt.AltModifier) && event.key === Qt.Key_Return) {
+            if(root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
+                return;
+            }
             outEdit();
         } else if(event.key === Qt.Key_Left) {
             if(stack.length > 0) {
@@ -248,6 +263,12 @@ Rectangle {
                 delegate.openFinder();
             }
         } else if((event.modifiers === ctrlVal && event.key === Qt.Key_W) || event.key === Qt.Key_Escape) {
+            if(root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
+                if(event.modifiers === ctrlVal && event.key === Qt.Key_W) {
+                    root.delegate.close();
+                }
+                return;
+            }
             close();
         } else if(event.key === Qt.Key_Return){
             openImgView();
@@ -278,6 +299,9 @@ Rectangle {
         scroll.forceActiveFocus();
     }
     function close() {
+        if(root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
+            return;
+        }
         visible = false;
         for(let i = 0; i < items.length; i++) {
             items[i].destroy();
@@ -371,8 +395,14 @@ Rectangle {
         return false;
     }
     function reloadData(id, cb) {
+        if($l.isDebug()) {
+            Com.debug('reloadData', id);
+        }
         if(id > 0) {
             delegate.getData(id, root.width, function(pk) {
+                if($l.isDebug()) {
+                    Com.debug('reloadData suc pk', JSON.stringify(pk));
+                }
                 updateTags(pk.tags);
 //                console.log(JSON.stringify(pk.qmls));
                 op(pk);
