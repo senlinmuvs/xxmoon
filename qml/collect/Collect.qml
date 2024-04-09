@@ -74,14 +74,14 @@ Rectangle {
                 Collect.delCol();
             }
         }
-        MenuSeparator {}
-        MenuItem {
-            text: qsTr("Generate PDF")
-            onTriggered: {
-               let cid = Collect.getCurrentColId();
-               $app.genFile(Com.file_type_pdf, Com.type_pk, cid, 0);
-            }
-        }
+        // MenuSeparator {}
+        // MenuItem {
+        //     text: qsTr("Generate PDF")
+        //     onTriggered: {
+        //        let cid = Collect.getCurrentColId();
+        //        $app.genFile(Com.file_type_pdf, Com.type_pk, cid, 0);
+        //     }
+        // }
         MenuSeparator {}
         MenuItem {
             text: qsTr("Generate HTML")
@@ -90,25 +90,25 @@ Rectangle {
                $app.genFile(Com.file_type_html, Com.type_pk, cid, 0);
             }
         }
-        MenuSeparator {}
-        MenuItem {
-            text: qsTr("Export Single XM")
-            onTriggered: {
-                let cid = Collect.getCurrentColId();
-                $app.genFile(Com.file_type_xm, Com.type_pk, cid, 0, 0);
-            }
-        }
-        MenuSeparator {
-        }
-        MenuItem {
-            text: qsTr("Export Batch XM")
-            onTriggered: {
-                let col = Collect.getCurrentCol();
-                if(col){
-                    $app.genFile(Com.file_type_xm, Com.type_pk, col.id, 0, 1);
-                }
-            }
-        }
+        // MenuSeparator {}
+        // MenuItem {
+        //     text: qsTr("Export Single XM")
+        //     onTriggered: {
+        //         let cid = Collect.getCurrentColId();
+        //         $app.genFile(Com.file_type_xm, Com.type_pk, cid, 0, 0);
+        //     }
+        // }
+        // MenuSeparator {
+        // }
+        // MenuItem {
+        //     text: qsTr("Export Batch XM")
+        //     onTriggered: {
+        //         let col = Collect.getCurrentCol();
+        //         if(col){
+        //             $app.genFile(Com.file_type_xm, Com.type_pk, col.id, 0, 1);
+        //         }
+        //     }
+        // }
 //        MenuSeparator {
 //            visible: $app.getPlatform() === Com.platform_win
 //        }
