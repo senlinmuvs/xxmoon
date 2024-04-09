@@ -14,6 +14,7 @@ QList<Work*> gets(QSqlQuery *q) {
     int colT = rec.indexOf("t");
     int colFro = rec.indexOf("fro");
     int colTag = rec.indexOf("tag");
+    int colExtra = rec.indexOf("extra");
     if(q->next()) {
         uint id = q->value(colId).toUInt();
         QString name = q->value(colWork).toString();
@@ -22,6 +23,7 @@ QList<Work*> gets(QSqlQuery *q) {
         uint t = q->value(colT).toUInt();
         uint fro = q->value(colFro).toUInt();
         QString tag = q->value(colTag).toString();
+        QString extra = q->value(colExtra).toString();
         Work *w = new Work();
         w->id = id;
         w->name = name;
@@ -30,13 +32,14 @@ QList<Work*> gets(QSqlQuery *q) {
         w->t = t;
         w->fro = fro;
         w->tag = tag;
-        list.insert(list.end(), w);
+        w->extra = extra;
+        list << w;
     }
     return list;
 }
 Work* WorkDao::get(QString name, QString author) {
     QSqlQuery q;
-    q.prepare("select id,name,author,time,t,fro,tag from work where name=:name and author=:author limit 1");
+    q.prepare("select id,name,author,time,t,fro,tag,extra from work where name=:name and author=:author limit 1");
     q.bindValue(":name", name);
     q.bindValue(":author", author);
     bool suc = q.exec();
@@ -52,7 +55,7 @@ Work* WorkDao::get(QString name, QString author) {
 }
 Work* WorkDao::get(QString name) {
     QSqlQuery q;
-    q.prepare("select id,name,author,time,t,fro,tag from work where name=:name limit 1");
+    q.prepare("select id,name,author,time,t,fro,tag,extra from work where name=:name limit 1");
     q.bindValue(":name", name);
     bool suc = q.exec();
     if(!suc) {
@@ -86,7 +89,7 @@ void WorkDao::del(uint id) {
     });
 }
 void WorkDao::update(Work *w) {
-    QString sql = "update work set name=:name, author=:author, time=:time, t=:t, tag=:tag where id=:id";
+    QString sql = "update work set name=:name, author=:author, time=:time, t=:t, tag=:tag, extra=:extra where id=:id";
     db->execute("update work", sql, [=](QSqlQuery q) {
         q.bindValue(":id", w->id);
         q.bindValue(":name", w->name);
@@ -94,6 +97,7 @@ void WorkDao::update(Work *w) {
         q.bindValue(":time", w->time);
         q.bindValue(":t", w->t);
         q.bindValue(":tag", w->tag);
+        q.bindValue(":extra", w->extra);
     });
 }
 uint WorkDao::getMaxId() const {
@@ -116,7 +120,7 @@ void WorkDao::add(Work *w) {
     if(lg->isDebug()) {
         lg->trace(QString("add work %1").arg(w->toString()));
     }
-    QString insert_sql = "insert into work(id,name,author,time,t,fro,tag) values(:id,:name,:author,:time,:t,:fro,:tag)";
+    QString insert_sql = "insert into work(id,name,author,time,t,fro,tag,extra) values(:id,:name,:author,:time,:t,:fro,:tag,:extra)";
     db->execute("add work", insert_sql, [&w](QSqlQuery q) {
         q.bindValue(":id", w->id);
         q.bindValue(":name", w->name);
@@ -125,6 +129,7 @@ void WorkDao::add(Work *w) {
         q.bindValue(":t", w->t);
         q.bindValue(":fro", w->fro);
         q.bindValue(":tag", w->tag);
+        q.bindValue(":extra", w->extra);
     });
 }
 

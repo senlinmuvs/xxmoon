@@ -80,8 +80,8 @@ Rectangle {
             }
             Text {
                 id: e_extra
-                text: Com.parseTime(time, 1)[0] + " " + from_str
-                width: 70
+                text: Com.parseTime(time, 1)[0] + " " + from_str + " " + extra
+                wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignRight
                 font {
                     pointSize: UI.total_font_size

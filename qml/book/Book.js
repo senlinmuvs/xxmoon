@@ -282,12 +282,13 @@ function submitBook() {
     let author = arr[1];
     let date = arr[2];
     let tag = arr[3];
+    let extra = arr[4];
     if(!name || !date) {
         return;
     }
     let time = Com.convStrToTime(date)/1000;
     if(work_edit_popup.bid) {
-        $bk.updateWork(work_edit_popup.bid, name, author, time, tag, root);
+        $bk.updateWork(work_edit_popup.bid, name, author, time, tag, extra, root);
     } else {
         let n = work_list_model.count;
         for(let x = 0; x < n; x++) {
@@ -297,7 +298,7 @@ function submitBook() {
                 return;
             }
         }
-        $bk.addWork(name, author, time, tag, root);
+        $bk.addWork(name, author, time, tag, extra, root);
     }
 }
 function getWorkById(bid) {

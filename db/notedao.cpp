@@ -196,7 +196,7 @@ vector<Work> NoteDao::getWorkList(QString k, QString tag, ulong fromTime) {
     QString sql;
     QString pageSize = QString::number(PAGE_SIZE);
     if(hasK) {
-        sql = "select w.id, w.name,author,w.time,w.fro,w.tag as wtag,count(*) as c from note n join work w on w.id=n.wid where del=0 #cond_time #cont #tags #cond_work_tag group by n.wid order by n.time desc limit "+ pageSize;
+        sql = "select w.id, w.name,author,w.time,w.fro,w.tag as wtag,w.extra,count(*) as c from note n join work w on w.id=n.wid where del=0 #cond_time #cont #tags #cond_work_tag group by n.wid order by n.time desc limit "+ pageSize;
         if(tag.isEmpty()) {
             sql = sql.replace("#cond_work_tag", "");
         } else {
@@ -245,9 +245,9 @@ vector<Work> NoteDao::getWorkList(QString k, QString tag, ulong fromTime) {
     } else {
         sql =
         "select t1.*,t2.c from "
-            "(select id,name,author,`time`,fro,tag as wtag from work where 1=1 #cond_time_t1 #cond_work_tag) t1 "
+            "(select id,name,author,`time`,fro,tag as wtag,extra from work where 1=1 #cond_time_t1 #cond_work_tag) t1 "
         "left outer join "
-            "(select wid, w.name,author,w.time,w.fro,w.tag as wtag,count(*) as c from note n join work w on w.id=n.wid where del=0 #cond_time_t2 #cond_work_tag group by n.wid) t2 "
+            "(select wid, w.name,author,w.time,w.fro,w.tag as wtag,w.extra,count(*) as c from note n join work w on w.id=n.wid where del=0 #cond_time_t2 #cond_work_tag group by n.wid) t2 "
         "on t1.id = t2.wid "
         "order by t1.time desc limit "+pageSize;
         if(tag.isEmpty()) {
@@ -291,6 +291,7 @@ vector<Work> NoteDao::getWorkList(QString k, QString tag, ulong fromTime) {
     int colC= rec.indexOf("c");
     int colFro= rec.indexOf("fro");
     int colTag= rec.indexOf("wtag");
+    int colExtra= rec.indexOf("extra");
     while (q.next()) {
         uint id = q.value(colId).toUInt();
         QString book = q.value(colBook).toString();
@@ -299,6 +300,7 @@ vector<Work> NoteDao::getWorkList(QString k, QString tag, ulong fromTime) {
         uint c = q.value(colC).toUInt();
         uint fro = q.value(colFro).toUInt();
         QString tag = q.value(colTag).toString();
+        QString extra = q.value(colExtra).toString();
         Work w;
         w.id = id;
         w.time = time;
@@ -307,6 +309,7 @@ vector<Work> NoteDao::getWorkList(QString k, QString tag, ulong fromTime) {
         w.name = book;
         w.fro = fro;
         w.tag = tag;
+        w.extra = extra;
         list.insert(list.end(), w);
     }
     // qDebug() << sql << k << tag << fromTime;

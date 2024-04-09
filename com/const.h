@@ -11,7 +11,7 @@
 #define WIN 0
 #define UNIX 1
 #define MAC 2
-#define VERSION "1.33.0"
+#define VERSION "1.34.0"
 
 #define CB_VAR std::function<QVariantList()>
 
@@ -24,6 +24,7 @@ const static QString sql_work_table =
     "t INTEGER default 0 not null,"
     "fro INTEGER default 0 not null,"
     "tag TEXT default '' not null,"
+    "extra TEXT default '' not null"
 ")";
 
 const static QString sql_note_table =

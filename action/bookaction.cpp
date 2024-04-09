@@ -4,13 +4,14 @@
 BookAction::BookAction() {
 }
 
-void BookAction::addWork(QString name,QString author,uint time, QString tag, QObject *obj) {
+void BookAction::addWork(QString name,QString author,uint time, QString tag, QString extra, QObject *obj) {
     DB_Async->exe([=] {
         Work *w = new Work();
         w->name = name;
         w->author = author;
         w->time = time;
         w->tag = tag;
+        w->extra = extra;
         w->t = 1;
         w->convTagComma2Pound();
         workDao->add(w);
@@ -19,7 +20,7 @@ void BookAction::addWork(QString name,QString author,uint time, QString tag, QOb
         delete w;
     });
 }
-void BookAction::updateWork(uint bid, QString name, QString author, uint time, QString tag, QObject *obj) {
+void BookAction::updateWork(uint bid, QString name, QString author, uint time, QString tag, QString extra, QObject *obj) {
     DB_Async->exe([=]{
         Work *w = workDao->get(bid);
         if(w) {
@@ -27,6 +28,7 @@ void BookAction::updateWork(uint bid, QString name, QString author, uint time, Q
             w->author = author;
             w->time = time;
             w->tag = tag;
+            w->extra = extra;
             w->t = 1;
             w->convTagComma2Pound();
             workDao->update(w);

@@ -9,8 +9,8 @@ public:
     BookAction();
 
     Q_INVOKABLE void getWorkList(QString k, QString tag, ulong fromTime, QObject *obj);
-    Q_INVOKABLE void addWork(QString name,QString author,uint time, QString tag, QObject *obj);
-    Q_INVOKABLE void updateWork(uint bid, QString name, QString author, uint time, QString tag, QObject *obj);
+    Q_INVOKABLE void addWork(QString name,QString author,uint time, QString tag, QString extra, QObject *obj);
+    Q_INVOKABLE void updateWork(uint bid, QString name, QString author, uint time, QString tag, QString extra, QObject *obj);
     Q_INVOKABLE void delWork(uint id, uint cbid);
 
     Q_INVOKABLE void getNoteList(QString k, uint wid, uint page, QString sort, uint listWidth, QObject *obj);

@@ -218,7 +218,7 @@ Rectangle {
                 let i = work_list_view.currentIndex;
                 let w = work_list_model.get(i);
                 if(w) {
-                    work_edit_popup.op(w.name, w.author, Com.parseTime(w.time,1)[0], w.tag, w.id);
+                    work_edit_popup.op(w.name, w.author, Com.parseTime(w.time,1)[0], w.tag, w.extra, w.id);
                 }
             }
         }
@@ -654,10 +654,13 @@ Rectangle {
         $bk.getWorkList(k, tag, Book.getWorkLastTime(), root);
     }
     function pushWork(list) {
+        Com.info('pushWork', list.length);
         let preTimeStr = Com.parseTime(Book.getWorkLastTime())[0];
         for(let i in list) {
             let e = list[i];
-//            console.log(JSON.stringify(e));
+            if($l.isTrace()) {
+                Com.trace('work', JSON.stringify(e));
+            }
             let w = {
                 id: e.id,
                 name: e.name,
@@ -666,7 +669,8 @@ Rectangle {
                 total: e.total,
                 t: e.t,
                 from_str: '',
-                tag: e.tag
+                tag: e.tag,
+                extra: e.extra
             };
             let arr = Com.parseTime(w.time);
             w.time_str = arr[0];
@@ -708,6 +712,7 @@ Rectangle {
                     w_[1].author = work.author;
                     w_[1].time = work.time;
                     w_[1].tag = work.tag;
+                    w_[1].extra = work.extra;
                 }
             }
         }

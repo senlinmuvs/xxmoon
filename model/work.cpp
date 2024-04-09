@@ -18,6 +18,7 @@ QVariantMap Work::toVMap() {
     m.insert("fro", fro);
     m.insert("total", total);
     m.insert("tag", tag);
+    m.insert("extra", extra);
     return m;
 }
 
