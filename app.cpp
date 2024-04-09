@@ -1914,7 +1914,7 @@ void initDB() {
             pkDao->init();
             tagDao->init();
         } else {
-            qDebug("db open error");
+            l->error("db open error");
         }
     });
 }

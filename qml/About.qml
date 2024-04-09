@@ -41,10 +41,6 @@ Popup {
                 text: $app.getCfgVal("user") === "xxmoon" ? qsTr("xxmoon") : $app.getCfgVal("user")
                 color: "white"
             }
-            Title2 {
-                text: qsTr("Collecting & Clippings & Note")
-                color: "#a8a8a8"
-            }
         }
 
         Column {
