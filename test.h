@@ -161,4 +161,12 @@ void test9() {
     }
     qDebug() << "------------------------- TEST 9 END -------------------------";
 }
+
+void test10() {
+    qDebug() << "------------------------- TEST 10 Start -------------------------";
+    QString cont = ut::file::readFile("/Users/sen/Desktop/cont.txt");
+    QStringList list = extractImgsAsList(cont);
+    qDebug() << list;
+    qDebug() << "------------------------- TEST 10 END -------------------------";
+}
 #endif // TEST_H

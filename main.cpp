@@ -50,7 +50,7 @@ void initCfg();
 void exit_(int r);
 
 int main(int argc, char *argv[]) {
-    // test5();
+    // test10();
     // return 0;
     int r = start(argc, argv);
     exit_(r);

@@ -38,7 +38,7 @@ SM *sm = new SM();
 
 QRegularExpression Reg_Kindle_Note(cfg->reg_kindle_flag);
 QRegularExpression Reg_Text_Img(".+[.](txt|png|jpg|jpeg|bmp)$");
-QRegularExpression Reg_Find_Img("(?!`)![(](.+)[)]");
+QRegularExpression Reg_Find_Img("[^`]![(](.+)[)]");
 QRegularExpression Reg_Find_Refid("(?!`)![[](\\d+):?.*?[]]");
 QRegularExpression Reg_Win_Path("^[a-zA-Z]:.+$");
 

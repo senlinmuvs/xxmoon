@@ -510,14 +510,17 @@ Rectangle {
             }
         }
         function pushPK(list) {
-            if($l.isTrace()) {
-                Com.trace("pushPK list", list.length, JSON.stringify(list));
+            if($l.isDebug()) {
+                Com.debug("pushPK list", list.length);
             }
             let ar = Com.parseTime(Collect.getPKLastTime(), 1);
             let preDateStr = ar[0];
             let preTimeStr = ar[1];
             for(let i in list) {
                 let e = list[i];
+                if($l.isDebug()) {
+                    Com.debug("pk", JSON.stringify(e));
+                }
                 let pk = Com.convPK(preDateStr, preTimeStr, e);
                 pk_list_model.append(pk);
                 preDateStr = pk.date_str;

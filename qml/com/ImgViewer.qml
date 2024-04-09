@@ -246,6 +246,9 @@ Window {
             }
             let arr = pk.imgs.split(",");
             for(let i = 0; i < arr.length; i++) {
+                if($l.isDebug()) {
+                    Com.debug('append pk', pk.id, 'img', arr[i]);
+                }
                 if(arr[i]) {
                     let wh = Com.parseWithHeightInImgName(arr[i]);
                     list[list.length] = {i:curPKListViewIndex,img:Com.file_pre+$app.imgDir+'/'+arr[i], w:wh[0], h:wh[1]};
