@@ -62,7 +62,7 @@ Rectangle {
     Menu {
         id: colRightMenu
         MenuItem {
-            text: qsTr("Edit") + " ("+ctrlName+"+Shift+E)"
+            text: qsTr("Edit")
             onTriggered: {
                 Collect.openColEditPopup();
             }
