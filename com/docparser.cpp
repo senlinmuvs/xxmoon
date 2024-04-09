@@ -37,12 +37,12 @@ void DocParser::addQmlList(QStringList& l, Doc& doc, uint maxWidth) {
         QString html = parseTxtHtml(doc.cont, maxWidth);
         html = doESC(html);
         html = css+filterQml(html).trimmed();
-        QString s = QString("Txt{text:\"%1\";width:%2}")
-                .arg(html, QString::number(maxWidth - 20));
+        QString s = QString("Txt{text:\"%1\";width:parent.width}")
+                .arg(html);
         l << s;
     } else if(doc.ty == DocParser::TY_IMG) {
         QVariantList vl = calWinHeight(doc.cont, maxWidth);
-        QString s = QString("Img{src:\"%1/%2\";width:%3;height:%4}")
+        QString s = QString("Img{src:\"%1/%2\";width:Math.min(parent.width, %3);height:%4}")
                 .arg(getFilePre() + cfg->imgDir,
                      doc.cont.trimmed(),
                      vl.at(1).toString(),
@@ -53,8 +53,8 @@ void DocParser::addQmlList(QStringList& l, Doc& doc, uint maxWidth) {
         QString html = parseTxtHtml(doc.cont.trimmed(), maxWidth);
         html = doESC(html);
         html = (css+filterQml(html)).trimmed();
-        QString s = QString("Quote{text:\"%1\";width:%2;color:'%3';textColor:'%4';}")
-                .arg(html, QString::number(maxWidth-20), cfg->ui_quote_bg_color, cfg->ui_quote_text_color);
+        QString s = QString("Quote{text:\"%1\";width:parent.width;color:'%2';textColor:'%3';}")
+                        .arg(html, cfg->ui_quote_bg_color, cfg->ui_quote_text_color);
         l << s;
     } else if(doc.ty == DocParser::TY_CODE) {
         QString cont = doc.cont.trimmed();
@@ -68,7 +68,7 @@ void DocParser::addQmlList(QStringList& l, Doc& doc, uint maxWidth) {
             html = html.replace("\n</span></pre>", "</span></pre>");
         }
         //
-        QString s = QString("Code{text:'%1';width:%2;color:'%3';}").arg(html, QString::number(maxWidth-20), "#ECECEC");
+        QString s = QString("Code{text:'%1';width:parent.width;color:'%2';}").arg(html, "#ECECEC");
         l << s;
     } else {
         l << doc.cont.trimmed();

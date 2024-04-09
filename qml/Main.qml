@@ -12,8 +12,8 @@ ApplicationWindow {
 //    flags: $app.getPlatform() === Com.platform_win ? Qt.FramelessWindowHint|Qt.WindowSystemMenuHint|Qt.WindowMinimizeButtonHint|Qt.Window : 0
     width: Com.min(800, screen.width/3*2)
     height: Com.min(900, screen.height/5*4)
-    minimumWidth: Com.min(width, 600)
-    minimumHeight: Com.min(height, 800)
+    minimumWidth: Com.min(width, 100)
+    minimumHeight: Com.min(height, 100)
     x: screen.width/2 - width/2
     y: screen.height/2 - height/2
     property bool winIsMax: false

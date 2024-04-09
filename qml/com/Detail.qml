@@ -51,7 +51,7 @@ Rectangle {
             }
             Column {
                 id: cols
-                width: parent.width - 30
+                width: parent.width - 20
                 spacing: 2
                 function onClickImg(src) {
                     openImgView(src);
