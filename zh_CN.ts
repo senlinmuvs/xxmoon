@@ -9,6 +9,16 @@
         <translation>数据目录</translation>
     </message>
     <message>
+        <location filename="qml/About.qml" line="82"/>
+        <source>Please restart the app!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qml/About.qml" line="83"/>
+        <source>And copy the old data to the new directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="qml/About.qml" line="111"/>
         <source>Editor</source>
         <translation>编辑器</translation>
@@ -124,12 +134,12 @@
         <translation type="vanished">已保存</translation>
     </message>
     <message>
-        <location filename="qml/book/Book.js" line="296"/>
+        <location filename="qml/book/Book.js" line="297"/>
         <source>Exists Already</source>
         <translation>已存在</translation>
     </message>
     <message>
-        <location filename="qml/book/Book.js" line="318"/>
+        <location filename="qml/book/Book.js" line="319"/>
         <source>Can not delete, it not empty.</source>
         <translation>不能删除，其下有内容！</translation>
     </message>
@@ -152,9 +162,14 @@
         <translation>标签(逗号分隔)</translation>
     </message>
     <message>
-        <location filename="qml/com/BookEditPopup.qml" line="82"/>
+        <location filename="qml/com/BookEditPopup.qml" line="83"/>
+        <source>Extra</source>
+        <translation>额外信息</translation>
+    </message>
+    <message>
+        <location filename="qml/com/BookEditPopup.qml" line="94"/>
         <source>OK</source>
-        <translation>OK</translation>
+        <translation>确定</translation>
     </message>
 </context>
 <context>
@@ -180,12 +195,12 @@
         <translation>不能删除默认文件夹！</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.js" line="463"/>
+        <location filename="qml/collect/Collect.js" line="471"/>
         <source>decrypting...</source>
         <translation>解密中...</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.js" line="490"/>
+        <location filename="qml/collect/Collect.js" line="498"/>
         <source>encrypting...</source>
         <translation>加密中...</translation>
     </message>
@@ -325,8 +340,8 @@
         <translation>引用！</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.js" line="487"/>
-        <location filename="qml/collect/Collect.js" line="508"/>
+        <location filename="qml/collect/Collect.js" line="495"/>
+        <location filename="qml/collect/Collect.js" line="516"/>
         <source>Finished</source>
         <translation>完成</translation>
     </message>
@@ -357,7 +372,7 @@
     <name>Detail</name>
     <message>
         <location filename="qml/com/Detail.qml" line="96"/>
-        <location filename="qml/com/Detail.qml" line="319"/>
+        <location filename="qml/com/Detail.qml" line="343"/>
         <source>solved </source>
         <translation>解决</translation>
     </message>
@@ -372,37 +387,37 @@
         <translation>创建</translation>
     </message>
     <message>
-        <location filename="qml/com/Detail.qml" line="149"/>
+        <location filename="qml/com/Detail.qml" line="152"/>
         <source>Copy</source>
         <translation>复制</translation>
     </message>
     <message>
-        <location filename="qml/com/Detail.qml" line="159"/>
+        <location filename="qml/com/Detail.qml" line="162"/>
         <source>Paste</source>
         <translation>粘贴</translation>
     </message>
     <message>
-        <location filename="qml/com/Detail.qml" line="170"/>
+        <location filename="qml/com/Detail.qml" line="173"/>
         <source>Import</source>
         <translation>导入</translation>
     </message>
     <message>
-        <location filename="qml/com/Detail.qml" line="181"/>
+        <location filename="qml/com/Detail.qml" line="184"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="qml/com/Detail.qml" line="191"/>
+        <location filename="qml/com/Detail.qml" line="194"/>
         <source>Out Edit</source>
         <translation>外部编辑</translation>
     </message>
     <message>
-        <location filename="qml/com/Detail.qml" line="201"/>
+        <location filename="qml/com/Detail.qml" line="204"/>
         <source>Picture Model</source>
         <translation>图片模式</translation>
     </message>
     <message>
-        <location filename="qml/com/Detail.qml" line="210"/>
+        <location filename="qml/com/Detail.qml" line="213"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
@@ -465,32 +480,32 @@
 <context>
     <name>Main</name>
     <message>
-        <location filename="qml/Main.qml" line="50"/>
+        <location filename="qml/Main.qml" line="53"/>
         <source>xxmoon</source>
         <oldsource>Pickmoon</oldsource>
         <translation>摘月</translation>
     </message>
     <message>
-        <location filename="qml/Main.qml" line="39"/>
+        <location filename="qml/Main.qml" line="42"/>
         <source>Quit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="qml/Main.qml" line="111"/>
+        <location filename="qml/Main.qml" line="114"/>
         <source>Password</source>
         <translation>密码</translation>
     </message>
     <message>
-        <location filename="qml/Main.qml" line="230"/>
-        <location filename="qml/Main.qml" line="297"/>
-        <location filename="qml/Main.qml" line="323"/>
+        <location filename="qml/Main.qml" line="233"/>
+        <location filename="qml/Main.qml" line="300"/>
         <location filename="qml/Main.qml" line="326"/>
-        <location filename="qml/Main.qml" line="332"/>
+        <location filename="qml/Main.qml" line="329"/>
+        <location filename="qml/Main.qml" line="335"/>
         <source>Import</source>
         <translation>导入</translation>
     </message>
     <message>
-        <location filename="qml/Main.qml" line="282"/>
+        <location filename="qml/Main.qml" line="285"/>
         <source>Imported</source>
         <translation>导入完成</translation>
     </message>
@@ -507,12 +522,12 @@
         <translation type="vanished">正在导入……</translation>
     </message>
     <message>
-        <location filename="qml/Main.qml" line="394"/>
+        <location filename="qml/Main.qml" line="397"/>
         <source>generated success.</source>
         <translation>生成成功</translation>
     </message>
     <message>
-        <location filename="qml/Main.qml" line="403"/>
+        <location filename="qml/Main.qml" line="406"/>
         <source>generated failure.</source>
         <translation>生成失败</translation>
     </message>
@@ -566,7 +581,7 @@
     <message>
         <location filename="qml/com/MyFieldPopup.qml" line="79"/>
         <source>OK</source>
-        <translation>OK</translation>
+        <translation>确定</translation>
     </message>
     <message>
         <location filename="qml/com/MyFieldPopup.qml" line="101"/>
@@ -645,6 +660,16 @@
         <location filename="app.cpp" line="1018"/>
         <source>Delete Success!</source>
         <translation>删除成功！</translation>
+    </message>
+    <message>
+        <location filename="app.cpp" line="1821"/>
+        <source>cert gen fail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="app.cpp" line="1826"/>
+        <source>cert gen suc</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Xxmoon</source>
