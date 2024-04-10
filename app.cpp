@@ -363,6 +363,7 @@ void redoDuplicates(QList<Note*> list) {
 //检测是否上次未导入完成就关闭了,是就继续
 void App::checkImport() {
     DB_Async->exe([=] {
+        l->info("checkImport");
         QString lastPath = envDao->get(ENV_K_LAST_IMP_PATH);
         lastPath = ut::str::removePrefix(lastPath, getFilePre());
         QFileInfo fi(lastPath);
@@ -390,6 +391,7 @@ void App::checkExport() {
 
 void App::getLastPath(QObject *obj){
     DB_Async->exe([=]{
+        l->info("getLastPath");
         QString lastPath = envDao->get(ENV_K_LAST_IMP_PATH);
         QString lastTime = envDao->get(ENV_K_LAST_IMP_TIME);
         QVariantList list;
@@ -592,16 +594,24 @@ QVariantMap App::getUIData() {
         }
     }
 
-    QVariantMap data;
-    uint vt = envDao->getUInt(ENV_K_LAST_VIEW_TYPE);
-    QString sort = envDao->get(ENV_K_LAST_SORT, "p");
-    data.insert(ENV_K_LAST_VIEW_TYPE, vt);
-    data.insert(ENV_K_LAST_SORT, sort);
-    data.insert(ENV_K_LAST_WH, wh.split(","));
-    data.insert(ENV_K_LAST_COLLECT_LEFT_WIDTH, lastCollectLeftWidth);
-    data.insert(ENV_K_LAST_BOOK_LEFT_WIDTH, lastBookLeftWidth);
-    data.insert("maxWindow", maxWindow);
-    return data;
+    QVariantMap *data = new QVariantMap();
+    Future *f = new Future();
+    DB_Async->exe([f]{
+        uint vt = envDao->getUInt(ENV_K_LAST_VIEW_TYPE);
+        QString sort = envDao->get(ENV_K_LAST_SORT, "p");
+        f->set(QVariantList() << vt << sort);
+    });
+    QVariantList l = f->get();
+    data->insert(ENV_K_LAST_VIEW_TYPE, l.at(0));
+    data->insert(ENV_K_LAST_SORT, l.at(1));
+    data->insert(ENV_K_LAST_WH, wh.split(","));
+    data->insert(ENV_K_LAST_COLLECT_LEFT_WIDTH, lastCollectLeftWidth);
+    data->insert(ENV_K_LAST_BOOK_LEFT_WIDTH, lastBookLeftWidth);
+    data->insert("maxWindow", maxWindow);
+    QVariantMap d = *data;
+    delete data;
+    delete f;
+    return d;
 }
 void App::encrypt(uint id, QString k, uint listWidth, uint cbid) {
     if(lg->isDebug()){
@@ -882,6 +892,7 @@ void App::genFile(uint fileType, uint type, uint gid, uint id, bool batch, QStri
             if(gid > 0) {
                 uint page = 0;
                 QString xmCont;
+                l->info("genFile CONT_TYPE_BOOK");
                 while(true) {
                     QString sort = envDao->get(ENV_K_LAST_SORT);
                     QList<Note*> list = noteDao->getNoteList("", gid, page, sort);

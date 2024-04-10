@@ -74,7 +74,7 @@ int start(int argc, char* argv[]) {
 
 //    Timer::INS().init();
     return initGui(a);
-//    return 0;
+   // return 0;
 }
 int initGui(MyApplication* a) {
     engine = new QQmlApplicationEngine();

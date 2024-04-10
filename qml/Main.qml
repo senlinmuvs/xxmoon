@@ -197,10 +197,6 @@ ApplicationWindow {
         triggeredOnStart: true
         onTriggered: {
             $app.checkTmpFile();
-//            if($app.getPlatform() === Com.platform_win) {
-//                $app.checkWallpaper();
-//            }
-//            $app.checkExport();
         }
     }
     Tips {

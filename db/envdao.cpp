@@ -36,7 +36,7 @@ QString EnvDao::get(QString k) {
     q.bindValue(":k", k);
     bool suc = q.exec();
     if(!suc){
-        lg->error(QString("get env error %1").arg(q.lastError().text()));
+        lg->error(QString("get env error %1 [%2]").arg(q.lastError().text()).arg(k));
         return "";
     }
     QSqlRecord rec = q.record();
