@@ -35,5 +35,4 @@
 [所有操作](https://github.com/senlinmuvs/xxmoon/wiki)
 
 ## 后语
-虽然是跨平台的，但mac和win还是要分别处理一些东西，优先macOS的开发，Windows版的会有滞后，看起来可能会不如苹果版的。这个软件会一直更新，这也是我自己用得比较多的软件。
-(之前上了苹果App Store，现在已下架)
+优先macOS的开发，Win版暂时停滞处理。这个软件会一直更新，这也是我自己用得比较多的软件。(之前上了macOS App Store，现已下架，一心开源了一起开发)
