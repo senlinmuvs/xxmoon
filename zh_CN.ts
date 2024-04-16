@@ -4,33 +4,32 @@
 <context>
     <name>About</name>
     <message>
-        <location filename="qml/About.qml" line="68"/>
+        <location filename="qml/About.qml" line="64"/>
         <source>Data Path</source>
         <translation>数据目录</translation>
     </message>
     <message>
-        <location filename="qml/About.qml" line="82"/>
+        <location filename="qml/About.qml" line="78"/>
         <source>Please restart the app!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/About.qml" line="83"/>
+        <location filename="qml/About.qml" line="79"/>
         <source>And copy the old data to the new directory.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/About.qml" line="111"/>
+        <location filename="qml/About.qml" line="107"/>
         <source>Editor</source>
         <translation>编辑器</translation>
     </message>
     <message>
-        <location filename="qml/About.qml" line="45"/>
         <source>Collecting &amp; Clippings &amp; Note</source>
         <oldsource>Collection &amp; Clippings &amp; Note</oldsource>
-        <translation>收藏 &amp; 标注 &amp; 笔记</translation>
+        <translation type="vanished">收藏 &amp; 标注 &amp; 笔记</translation>
     </message>
     <message>
-        <location filename="qml/About.qml" line="151"/>
+        <location filename="qml/About.qml" line="147"/>
         <source>Pick Hotkey</source>
         <translation>摘录快捷键</translation>
     </message>
@@ -44,12 +43,12 @@
 <context>
     <name>App</name>
     <message>
-        <location filename="app.cpp" line="449"/>
+        <location filename="app.cpp" line="451"/>
         <source>Words</source>
         <translation>字数</translation>
     </message>
     <message>
-        <location filename="app.cpp" line="453"/>
+        <location filename="app.cpp" line="455"/>
         <source>Picture</source>
         <translation>图片</translation>
     </message>
@@ -63,13 +62,13 @@
     </message>
     <message>
         <location filename="qml/book/Book.qml" line="216"/>
-        <location filename="qml/book/Book.qml" line="319"/>
+        <location filename="qml/book/Book.qml" line="322"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
     <message>
         <location filename="qml/book/Book.qml" line="227"/>
-        <location filename="qml/book/Book.qml" line="335"/>
+        <location filename="qml/book/Book.qml" line="340"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
@@ -105,29 +104,27 @@
         <translation>详情</translation>
     </message>
     <message>
-        <location filename="qml/book/Book.qml" line="300"/>
+        <location filename="qml/book/Book.qml" line="301"/>
         <source>Picture Model</source>
         <translation>图片模式</translation>
     </message>
     <message>
-        <location filename="qml/book/Book.qml" line="310"/>
+        <location filename="qml/book/Book.qml" line="312"/>
         <source>Copy content</source>
         <translation>复制内容</translation>
     </message>
     <message>
-        <location filename="qml/book/Book.qml" line="327"/>
+        <location filename="qml/book/Book.qml" line="331"/>
         <source>Out Edit</source>
         <translation>外部编辑</translation>
     </message>
     <message>
-        <location filename="qml/book/Book.qml" line="344"/>
         <source>Send To Phone</source>
-        <translation>发送到手机</translation>
+        <translation type="vanished">发送到手机</translation>
     </message>
     <message>
-        <location filename="qml/book/Book.qml" line="349"/>
         <source>Success</source>
-        <translation>成功</translation>
+        <translation type="vanished">成功</translation>
     </message>
     <message>
         <source>Saved</source>
@@ -211,20 +208,19 @@
     </message>
     <message>
         <location filename="qml/collect/Collect.qml" line="65"/>
-        <location filename="qml/collect/Collect.qml" line="149"/>
+        <location filename="qml/collect/Collect.qml" line="136"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
     <message>
         <location filename="qml/collect/Collect.qml" line="72"/>
-        <location filename="qml/collect/Collect.qml" line="197"/>
+        <location filename="qml/collect/Collect.qml" line="299"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="79"/>
         <source>Generate PDF</source>
-        <translation>导出单个PDF</translation>
+        <translation type="vanished">导出单个PDF</translation>
     </message>
     <message>
         <location filename="qml/collect/Collect.qml" line="87"/>
@@ -232,42 +228,43 @@
         <translation>导出单个HTML</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="95"/>
         <source>Export Single XM</source>
         <oldsource>Export Single PM</oldsource>
-        <translation>导出单个XM</translation>
+        <translation type="vanished">导出单个XM</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="104"/>
         <source>Export Batch XM</source>
         <oldsource>Export Batch PM</oldsource>
-        <translation>导出批量XM</translation>
+        <translation type="vanished">导出批量XM</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="256"/>
+        <location filename="qml/collect/Collect.qml" line="241"/>
         <source>Export Site</source>
         <translation>导出站点</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="269"/>
+        <location filename="qml/collect/Collect.qml" line="255"/>
         <source>Delete from Site</source>
         <translation>从站点删除</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="282"/>
         <source>Send To Phone</source>
-        <translation>发送到手机</translation>
+        <translation type="vanished">发送到手机</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="287"/>
-        <location filename="qml/collect/Collect.qml" line="303"/>
+        <location filename="qml/collect/Collect.qml" line="274"/>
         <source>Success</source>
         <translation>成功</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="297"/>
+        <location filename="qml/collect/Collect.qml" line="268"/>
         <source>Clear Solved Time</source>
         <translation>清除解决时间</translation>
+    </message>
+    <message>
+        <location filename="qml/collect/Collect.qml" line="199"/>
+        <source>Export</source>
+        <translation>导出</translation>
     </message>
     <message>
         <location filename="qml/collect/Collect.qml" line="621"/>
@@ -275,37 +272,37 @@
         <translation>分类名称</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="131"/>
+        <location filename="qml/collect/Collect.qml" line="116"/>
         <source>Detail</source>
         <translation>详情</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="140"/>
+        <location filename="qml/collect/Collect.qml" line="126"/>
         <source>Picture Model</source>
         <translation>图片模式</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="157"/>
+        <location filename="qml/collect/Collect.qml" line="145"/>
         <source>Out Edit</source>
         <translation>外部编辑</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="166"/>
+        <location filename="qml/collect/Collect.qml" line="155"/>
         <source>Copy main image</source>
         <translation>复制主图</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="177"/>
+        <location filename="qml/collect/Collect.qml" line="167"/>
         <source>Copy main image link</source>
         <translation>复制主图链接</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="187"/>
+        <location filename="qml/collect/Collect.qml" line="178"/>
         <source>Copy content</source>
         <translation>复制内容</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="207"/>
+        <location filename="qml/collect/Collect.qml" line="189"/>
         <source>Encrypt | Decrypt</source>
         <translation>加密 | 解密</translation>
     </message>
@@ -314,17 +311,17 @@
         <translation type="vanished">导出批量PM</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="217"/>
+        <location filename="qml/collect/Collect.qml" line="202"/>
         <source>Export PDF</source>
         <translation>导出PDF</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="230"/>
+        <location filename="qml/collect/Collect.qml" line="215"/>
         <source>Export HTML</source>
         <translation>导出HTML</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="243"/>
+        <location filename="qml/collect/Collect.qml" line="228"/>
         <source>Export XM</source>
         <oldsource>Export PM</oldsource>
         <translation>导出XM</translation>
@@ -496,16 +493,16 @@
         <translation>密码</translation>
     </message>
     <message>
-        <location filename="qml/Main.qml" line="233"/>
-        <location filename="qml/Main.qml" line="300"/>
-        <location filename="qml/Main.qml" line="326"/>
-        <location filename="qml/Main.qml" line="329"/>
-        <location filename="qml/Main.qml" line="335"/>
+        <location filename="qml/Main.qml" line="229"/>
+        <location filename="qml/Main.qml" line="296"/>
+        <location filename="qml/Main.qml" line="322"/>
+        <location filename="qml/Main.qml" line="325"/>
+        <location filename="qml/Main.qml" line="331"/>
         <source>Import</source>
         <translation>导入</translation>
     </message>
     <message>
-        <location filename="qml/Main.qml" line="285"/>
+        <location filename="qml/Main.qml" line="281"/>
         <source>Imported</source>
         <translation>导入完成</translation>
     </message>
@@ -522,12 +519,12 @@
         <translation type="vanished">正在导入……</translation>
     </message>
     <message>
-        <location filename="qml/Main.qml" line="397"/>
+        <location filename="qml/Main.qml" line="393"/>
         <source>generated success.</source>
         <translation>生成成功</translation>
     </message>
     <message>
-        <location filename="qml/Main.qml" line="406"/>
+        <location filename="qml/Main.qml" line="402"/>
         <source>generated failure.</source>
         <translation>生成失败</translation>
     </message>
@@ -652,22 +649,22 @@
         <translation type="vanished">摘录成功！</translation>
     </message>
     <message>
-        <location filename="app.cpp" line="494"/>
+        <location filename="app.cpp" line="496"/>
         <source>Add Success!</source>
         <translation>添加成功！</translation>
     </message>
     <message>
-        <location filename="app.cpp" line="1018"/>
+        <location filename="app.cpp" line="1029"/>
         <source>Delete Success!</source>
         <translation>删除成功！</translation>
     </message>
     <message>
-        <location filename="app.cpp" line="1821"/>
+        <location filename="app.cpp" line="1832"/>
         <source>cert gen fail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="app.cpp" line="1826"/>
+        <location filename="app.cpp" line="1837"/>
         <source>cert gen suc</source>
         <translation type="unfinished"></translation>
     </message>

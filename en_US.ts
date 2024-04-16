@@ -9,32 +9,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/About.qml" line="45"/>
-        <source>Collecting &amp; Clippings &amp; Note</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qml/About.qml" line="68"/>
+        <location filename="qml/About.qml" line="64"/>
         <source>Data Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/About.qml" line="82"/>
+        <location filename="qml/About.qml" line="78"/>
         <source>Please restart the app!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/About.qml" line="83"/>
+        <location filename="qml/About.qml" line="79"/>
         <source>And copy the old data to the new directory.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/About.qml" line="111"/>
+        <location filename="qml/About.qml" line="107"/>
         <source>Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/About.qml" line="151"/>
+        <location filename="qml/About.qml" line="147"/>
         <source>Pick Hotkey</source>
         <translation type="unfinished"></translation>
     </message>
@@ -42,12 +37,12 @@
 <context>
     <name>App</name>
     <message>
-        <location filename="app.cpp" line="449"/>
+        <location filename="app.cpp" line="451"/>
         <source>Words</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="app.cpp" line="453"/>
+        <location filename="app.cpp" line="455"/>
         <source>Picture</source>
         <translation type="unfinished"></translation>
     </message>
@@ -61,13 +56,13 @@
     </message>
     <message>
         <location filename="qml/book/Book.qml" line="216"/>
-        <location filename="qml/book/Book.qml" line="319"/>
+        <location filename="qml/book/Book.qml" line="322"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="qml/book/Book.qml" line="227"/>
-        <location filename="qml/book/Book.qml" line="335"/>
+        <location filename="qml/book/Book.qml" line="340"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -103,29 +98,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/book/Book.qml" line="300"/>
+        <location filename="qml/book/Book.qml" line="301"/>
         <source>Picture Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/book/Book.qml" line="310"/>
+        <location filename="qml/book/Book.qml" line="312"/>
         <source>Copy content</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/book/Book.qml" line="327"/>
+        <location filename="qml/book/Book.qml" line="331"/>
         <source>Out Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/book/Book.qml" line="344"/>
-        <source>Send To Phone</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qml/book/Book.qml" line="349"/>
         <source>Success</source>
-        <translation type="unfinished">Success</translation>
+        <translation type="obsolete">Success</translation>
     </message>
     <message>
         <location filename="qml/book/Book.js" line="297"/>
@@ -221,20 +210,19 @@
     </message>
     <message>
         <location filename="qml/collect/Collect.qml" line="65"/>
-        <location filename="qml/collect/Collect.qml" line="149"/>
+        <location filename="qml/collect/Collect.qml" line="136"/>
         <source>Edit</source>
         <translation>Edit</translation>
     </message>
     <message>
         <location filename="qml/collect/Collect.qml" line="72"/>
-        <location filename="qml/collect/Collect.qml" line="197"/>
+        <location filename="qml/collect/Collect.qml" line="299"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="79"/>
         <source>Generate PDF</source>
-        <translation>Export Single PDF</translation>
+        <translation type="vanished">Export Single PDF</translation>
     </message>
     <message>
         <location filename="qml/collect/Collect.qml" line="87"/>
@@ -242,90 +230,87 @@
         <translation>Export Single HTML</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="95"/>
         <source>Export Single XM</source>
         <oldsource>Export Single PM</oldsource>
-        <translation>Export Single XM</translation>
+        <translation type="vanished">Export Single XM</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="104"/>
         <source>Export Batch XM</source>
         <oldsource>Export Batch PM</oldsource>
-        <translation>Export Batch XM</translation>
+        <translation type="vanished">Export Batch XM</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="131"/>
+        <location filename="qml/collect/Collect.qml" line="116"/>
         <source>Detail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="140"/>
+        <location filename="qml/collect/Collect.qml" line="126"/>
         <source>Picture Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="157"/>
+        <location filename="qml/collect/Collect.qml" line="145"/>
         <source>Out Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="166"/>
+        <location filename="qml/collect/Collect.qml" line="155"/>
         <source>Copy main image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="177"/>
+        <location filename="qml/collect/Collect.qml" line="167"/>
         <source>Copy main image link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="187"/>
+        <location filename="qml/collect/Collect.qml" line="178"/>
         <source>Copy content</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="207"/>
+        <location filename="qml/collect/Collect.qml" line="189"/>
         <source>Encrypt | Decrypt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="217"/>
+        <location filename="qml/collect/Collect.qml" line="199"/>
+        <source>Export</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qml/collect/Collect.qml" line="202"/>
         <source>Export PDF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="230"/>
+        <location filename="qml/collect/Collect.qml" line="215"/>
         <source>Export HTML</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="243"/>
+        <location filename="qml/collect/Collect.qml" line="228"/>
         <source>Export XM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="256"/>
+        <location filename="qml/collect/Collect.qml" line="241"/>
         <source>Export Site</source>
         <translation>Export Site</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="269"/>
+        <location filename="qml/collect/Collect.qml" line="255"/>
         <source>Delete from Site</source>
         <translation>Delete from Site</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="282"/>
-        <source>Send To Phone</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="287"/>
-        <location filename="qml/collect/Collect.qml" line="303"/>
+        <location filename="qml/collect/Collect.qml" line="274"/>
         <source>Success</source>
         <translation type="unfinished">Success</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="297"/>
+        <location filename="qml/collect/Collect.qml" line="268"/>
         <source>Clear Solved Time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -475,26 +460,26 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/Main.qml" line="233"/>
-        <location filename="qml/Main.qml" line="300"/>
-        <location filename="qml/Main.qml" line="326"/>
-        <location filename="qml/Main.qml" line="329"/>
-        <location filename="qml/Main.qml" line="335"/>
+        <location filename="qml/Main.qml" line="229"/>
+        <location filename="qml/Main.qml" line="296"/>
+        <location filename="qml/Main.qml" line="322"/>
+        <location filename="qml/Main.qml" line="325"/>
+        <location filename="qml/Main.qml" line="331"/>
         <source>Import</source>
         <translation type="unfinished">Import</translation>
     </message>
     <message>
-        <location filename="qml/Main.qml" line="285"/>
+        <location filename="qml/Main.qml" line="281"/>
         <source>Imported</source>
         <translation type="unfinished">Imported</translation>
     </message>
     <message>
-        <location filename="qml/Main.qml" line="397"/>
+        <location filename="qml/Main.qml" line="393"/>
         <source>generated success.</source>
         <translation>Generated successfully</translation>
     </message>
     <message>
-        <location filename="qml/Main.qml" line="406"/>
+        <location filename="qml/Main.qml" line="402"/>
         <source>generated failure.</source>
         <translation>Generated unnsuccessfully</translation>
     </message>
@@ -616,22 +601,22 @@
         <translation type="vanished">Pick Success!</translation>
     </message>
     <message>
-        <location filename="app.cpp" line="494"/>
+        <location filename="app.cpp" line="496"/>
         <source>Add Success!</source>
         <translation>Add Success!</translation>
     </message>
     <message>
-        <location filename="app.cpp" line="1018"/>
+        <location filename="app.cpp" line="1029"/>
         <source>Delete Success!</source>
         <translation>Delete Success!</translation>
     </message>
     <message>
-        <location filename="app.cpp" line="1821"/>
+        <location filename="app.cpp" line="1832"/>
         <source>cert gen fail</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="app.cpp" line="1826"/>
+        <location filename="app.cpp" line="1837"/>
         <source>cert gen suc</source>
         <translation></translation>
     </message>

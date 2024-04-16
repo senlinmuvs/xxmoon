@@ -11,7 +11,7 @@
 #define WIN 0
 #define UNIX 1
 #define MAC 2
-#define VERSION "1.34.3"
+#define VERSION "1.35.0"
 
 #define CB_VAR std::function<QVariantList()>
 
@@ -48,7 +48,8 @@ const static QString sql_col_table =
     "id INTEGER not null primary key,"
     "name TEXT default '' not null,"
     "i INTEGER default 0 not null,"
-    "x INTEGER default 0 not null"
+    "x INTEGER default 0 not null,"
+    "m TEXT default '' not null"
 ")";
 const static QString sql_pk_table =
 "CREATE TABLE IF NOT EXISTS `pk` ("

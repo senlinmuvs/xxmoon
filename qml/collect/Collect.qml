@@ -109,26 +109,12 @@ Rectangle {
         //         }
         //     }
         // }
-//        MenuSeparator {
-//            visible: $app.getPlatform() === Com.platform_win
-//        }
-//        MenuItem {
-//            visible: $app.getPlatform() === Com.platform_win
-//            text: wallpaper_cid === Collect.getCurrentColId() ? qsTr("Cancel Wallpaper Folder") : qsTr("As Wallpaper Folder")
-//            onTriggered: {
-//                let cid = Collect.getCurrentColId();
-//                if(wallpaper_cid === cid) {
-//                    $app.set($app.ENV_K_WALLPAPER_CID, 0);
-//                } else {
-//                    $app.set($app.ENV_K_WALLPAPER_CID, cid);
-//                }
-//            }
-//        }
     }
     Menu {
         id: menu_right_pk
         MenuItem {
-            text: qsTr("Detail") + " (Space)"
+            text: qsTr("Detail")
+            shortcut: "Space"
             onTriggered: {
                 Collect.detail();
             }
@@ -137,7 +123,8 @@ Rectangle {
         }
         MenuItem {
             id: mi_pic_model
-            text: qsTr("Picture Model") + " (Enter)"
+            text: qsTr("Picture Model")
+            shortcut: "Enter"
             onTriggered: {
                 Collect.openImgView();
             }
@@ -146,7 +133,8 @@ Rectangle {
             visible: mi_pic_model.visible
         }
         MenuItem {
-            text: qsTr("Edit") + " ("+ctrlName+"+Enter)"
+            text: qsTr("Edit")
+            shortcut: ctrlName+"+Enter"
             onTriggered: {
                 Collect.openEditPopup();
             }
@@ -154,7 +142,8 @@ Rectangle {
         MenuSeparator {
         }
         MenuItem {
-            text: qsTr("Out Edit") + " ("+ctrlName+"+Alt+Enter)"
+            text: qsTr("Out Edit")
+            shortcut: ctrlName+"+Alt+Enter"
             onTriggered: {
                 Collect.openOutEdit();
             }
@@ -163,7 +152,8 @@ Rectangle {
         }
         MenuItem {
             id: mi_cp_main_img
-            text: qsTr("Copy main image") + " (Alt+Shift+C)"
+            text: qsTr("Copy main image")
+            shortcut: "Alt+Shift+C"
             onTriggered: {
                 Collect.copyPK(0);
             }
@@ -174,7 +164,8 @@ Rectangle {
         MenuItem {
             id: mi_cp_link
             visible: mi_cp_main_img.visible
-            text: qsTr("Copy main image link") + " ("+ctrlName+"+Alt+C)"
+            text: qsTr("Copy main image link")
+            shortcut: ctrlName+"+Alt+C"
             onTriggered: {
                 Collect.copyPK(1);
             }
@@ -184,7 +175,8 @@ Rectangle {
         }
         MenuItem {
             id: mi_cont
-            text: qsTr("Copy content") + " ("+ctrlName+"+Shift+C)"
+            text: qsTr("Copy content")
+            shortcut: ctrlName+"+Shift+C"
             onTriggered: {
                 Collect.copyPK(2);
             }
@@ -193,18 +185,9 @@ Rectangle {
             visible: mi_cont.visible
         }
         MenuItem {
-            id: mi_del
-            text: qsTr("Delete") + " (Backspace/Del)"
-            onTriggered: {
-                ensure_popup.open();
-            }
-        }
-        MenuSeparator {
-            visible: mi_del.visible
-        }
-        MenuItem {
             id: mi_en_de
-            text: qsTr("Encrypt | Decrypt") + " ("+ctrlName+"+E)"
+            text: qsTr("Encrypt | Decrypt")
+            shortcut: ctrlName+"+E"
             onTriggered: {
                 Collect.openEncryptPopup();
             }
@@ -212,52 +195,55 @@ Rectangle {
         MenuSeparator {
             visible: mi_en_de.visible
         }
-        MenuItem {
-            id: mi_exp_pdf
-            text: qsTr("Export PDF")
-            onTriggered: {
-                let pk = Collect.getCurrentPK();
-                if(pk) {
-                    $app.genFile(Com.file_type_pdf, Com.type_pk, 0, pk.id);
+        Menu {
+            title: qsTr("Export")
+            MenuItem {
+                id: mi_exp_pdf
+                text: qsTr("Export PDF")
+                onTriggered: {
+                    let pk = Collect.getCurrentPK();
+                    if(pk) {
+                        $app.genFile(Com.file_type_pdf, Com.type_pk, 0, pk.id);
+                    }
                 }
             }
-        }
-        MenuSeparator {
-            visible: mi_exp_pdf.visible
-        }
-        MenuItem {
-            id: mi_exp_html
-            text: qsTr("Export HTML")
-            onTriggered: {
-                let pk = Collect.getCurrentPK();
-                if(pk){
-                    $app.genFile(Com.file_type_html, Com.type_pk, 0, pk.id);
+            MenuSeparator {
+                visible: mi_exp_pdf.visible
+            }
+            MenuItem {
+                id: mi_exp_html
+                text: qsTr("Export HTML")
+                onTriggered: {
+                    let pk = Collect.getCurrentPK();
+                    if(pk){
+                        $app.genFile(Com.file_type_html, Com.type_pk, 0, pk.id);
+                    }
                 }
             }
-        }
-        MenuSeparator {
-            visible: mi_exp_html.visible
-        }
-        MenuItem {
-            id: mi_exp_xm
-            text: qsTr("Export XM")
-            onTriggered: {
-                let pk = Collect.getCurrentPK();
-                if(pk){
-                    $app.genFile(Com.file_type_xm, Com.type_pk, 0, pk.id);
+            MenuSeparator {
+                visible: mi_exp_html.visible
+            }
+            MenuItem {
+                id: mi_exp_xm
+                text: qsTr("Export XM")
+                onTriggered: {
+                    let pk = Collect.getCurrentPK();
+                    if(pk){
+                        $app.genFile(Com.file_type_xm, Com.type_pk, 0, pk.id);
+                    }
                 }
             }
-        }
-        MenuSeparator {
-            visible: mi_exp_xm.visible
-        }
-        MenuItem {
-            id: mi_exp_site
-            text: qsTr("Export Site")
-            onTriggered: {
-                let pk = Collect.getCurrentPK();
-                if(pk){
-                    $app.genFile(Com.file_type_site, Com.type_pk, 0, pk.id);
+            MenuSeparator {
+                visible: mi_exp_xm.visible
+            }
+            MenuItem {
+                id: mi_exp_site
+                text: qsTr("Export Site")
+                onTriggered: {
+                    let pk = Collect.getCurrentPK();
+                    if(pk){
+                        $app.genFile(Com.file_type_site, Com.type_pk, 0, pk.id);
+                    }
                 }
             }
         }
@@ -278,21 +264,6 @@ Rectangle {
             visible: mi_del_site.visible
         }
         MenuItem {
-            id: mi_send_phone
-            text: qsTr("Send To Phone")
-            onTriggered: {
-                let pk = Collect.getCurrentPK();
-                if(pk){
-                    $app.sendToPhone(Com.type_pk, pk.id, Com.putFunc(function(r) {
-                        tipsInfo(qsTr("Success"));
-                    }));
-                }
-            }
-        }
-        MenuSeparator {
-            visible: mi_send_phone.visible
-        }
-        MenuItem {
             id: mi_clear_stime
             text: qsTr("Clear Solved Time")
             onTriggered: {
@@ -303,6 +274,32 @@ Rectangle {
                         tipsInfo(qsTr("Success"));
                     }));
                 }
+            }
+        }
+        // MenuSeparator {
+        //     visible: mi_del_site.visible
+        // }
+        // MenuItem {
+        //     id: mi_send_phone
+        //     text: qsTr("Send To Phone")
+        //     onTriggered: {
+        //         let pk = Collect.getCurrentPK();
+        //         if(pk){
+        //             $app.sendToPhone(Com.type_pk, pk.id, Com.putFunc(function(r) {
+        //                 tipsInfo(qsTr("Success"));
+        //             }));
+        //         }
+        //     }
+        // }
+        MenuSeparator {
+            visible: mi_clear_stime.visible
+        }
+        MenuItem {
+            id: mi_del
+            text: qsTr("Delete")
+            shortcut: "Backspace"
+            onTriggered: {
+                ensure_popup.open();
             }
         }
     }

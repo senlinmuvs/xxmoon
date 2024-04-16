@@ -288,7 +288,8 @@ Rectangle {
     Menu {
         id: menu_right_note
         MenuItem {
-            text: qsTr("Detail") + " (Space)"
+            text: qsTr("Detail")
+            shortcut: "Space"
             onTriggered: {
                 Book.detail();
             }
@@ -297,7 +298,8 @@ Rectangle {
         }
         MenuItem {
             id: mi_pic_model
-            text: qsTr("Picture Model") + " (Enter)"
+            text: qsTr("Picture Model")
+            shortcut: "Enter"
             onTriggered: {
                 Book.openImgView();
             }
@@ -307,7 +309,8 @@ Rectangle {
         }
         MenuItem {
             id: mi_cont
-            text: qsTr("Copy content") + " ("+ctrlName+"+Shift+C)"
+            text: qsTr("Copy content")
+            shortcut: ctrlName+"+Shift+C"
             onTriggered: {
                 Book.copyCont();
             }
@@ -316,7 +319,8 @@ Rectangle {
             visible: mi_cont.visible
         }
         MenuItem {
-            text: qsTr("Edit") + " ("+ctrlName+"+Enter)"
+            text: qsTr("Edit")
+            shortcut: ctrlName+"+Enter"
             onTriggered: {
                 Book.openEditPopup();
             }
@@ -324,7 +328,8 @@ Rectangle {
         MenuSeparator {
         }
         MenuItem {
-            text: qsTr("Out Edit") + " ("+ctrlName+"+Alt+Enter)"
+            text: qsTr("Out Edit")
+            shortcut: ctrlName+"+Alt+Enter"
             onTriggered: {
                 Book.outEdit();
             }
@@ -332,25 +337,26 @@ Rectangle {
         MenuSeparator {
         }
         MenuItem {
-            text: qsTr("Delete") + " (Backspace/Del)"
+            text: qsTr("Delete")
+            shortcut: "Backspace"
             onTriggered: {
                 ensure_popup.open();
             }
         }
-        MenuSeparator {
-        }
-        MenuItem {
-            id: mi_send_phone
-            text: qsTr("Send To Phone")
-            onTriggered: {
-                let n = Book.getCurrentNote();
-                if(n){
-                    $app.sendToPhone(Com.type_book, n.id, Com.putFunc(function(r) {
-                        tipsInfo(qsTr("Success"));
-                    }));
-                }
-            }
-        }
+        // MenuSeparator {
+        // }
+        // MenuItem {
+        //     id: mi_send_phone
+        //     text: qsTr("Send To Phone")
+        //     onTriggered: {
+        //         let n = Book.getCurrentNote();
+        //         if(n){
+        //             $app.sendToPhone(Com.type_book, n.id, Com.putFunc(function(r) {
+        //                 tipsInfo(qsTr("Success"));
+        //             }));
+        //         }
+        //     }
+        // }
     }
 
     ///

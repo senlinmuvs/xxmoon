@@ -1,6 +1,5 @@
 ﻿#include "coldao.h"
 #include "com/global.h"
-#include "com/util.h"
 
 ColDao::ColDao():BaseDao() {
 }
@@ -9,12 +8,13 @@ void ColDao::add(Collect *c) {
     if(c->id<=0){
         c->id = increID();
     }
-    QString insert_sql = "insert into col(id, name, i, x) values(:id,:name,:i,:x)";
+    QString insert_sql = "insert into col(id, name, i, x, m) values(:id,:name,:i,:x,:jm)";
     db->execute("add col", insert_sql, [&c](QSqlQuery q) {
         q.bindValue(":id", c->id);
         q.bindValue(":name", c->name);
         q.bindValue(":i", c->i);
         q.bindValue(":x", c->x);
+        q.bindValue(":m", c->m);
     });
 }
 void ColDao::del(uint id) {
@@ -74,7 +74,7 @@ uint ColDao::getMaxI() {
 }
 Collect* ColDao::getCollect(uint id) {
     QSqlQuery q;
-    q.prepare("select name,i,x from col where id=:id");
+    q.prepare("select name,i,x,m from col where id=:id");
     q.bindValue(":id", id);
     bool suc = q.exec();
     if(!suc){
@@ -84,11 +84,13 @@ Collect* ColDao::getCollect(uint id) {
         QString name = q.value(0).toString();
         uint i = q.value(1).toUInt();
         uint x = q.value(2).toUInt();
+        QString m = q.value(3).toString();
         Collect *c = new Collect();
         c->id = id;
         c->name = name;
         c->i = i;
         c->x = x;
+        c->m = m;
         return c;
     } else {
         return NULL;
@@ -96,7 +98,7 @@ Collect* ColDao::getCollect(uint id) {
 }
 Collect* ColDao::getCollectByIndex(uint index) {
     QSqlQuery q;
-    q.prepare("select id,name,i,x from col where i=:i");
+    q.prepare("select id,name,i,x,m from col where i=:i");
     q.bindValue(":i", index);
     bool suc = q.exec();
     if(!suc){
@@ -107,11 +109,13 @@ Collect* ColDao::getCollectByIndex(uint index) {
         QString name = q.value(1).toString();
         uint i = q.value(2).toUInt();
         uint x = q.value(3).toUInt();
+        QString m = q.value(4).toString();
         Collect *c = new Collect();
         c->id = id;
         c->name = name;
         c->i = i;
         c->x = x;
+        c->m = m;
         return c;
     } else {
         return NULL;
@@ -124,25 +128,28 @@ void fillData(QSqlQuery *q, vector<Collect> *list) {
     int colI = rec.indexOf("i");
     int colN = rec.indexOf("n");
     int colX = rec.indexOf("x");
+    int colM = rec.indexOf("m");
     while (q->next()) {
         uint id = q->value(colId).toUInt();
         QString name = q->value(colName).toString();
         uint n = q->value(colN).toUInt();
         uint i = q->value(colI).toUInt();
         uint x = q->value(colX).toUInt();
+        QString m = q->value(colM).toString();
         Collect c;
         c.id = id;
         c.name = name;
         c.i = i;
         c.total = n;
         c.x = x;
+        c.m = m;
         list->insert(list->end(), c);
     }
 }
 vector<Collect> ColDao::getAll() {
     vector<Collect> list;
     QSqlQuery q;
-    q.exec("select id,name,i,0 as n,x from col order by i");
+    q.exec("select id,name,i,0 as n,x,m from col order by i");
     fillData(&q, &list);
     return list;
 }
@@ -160,7 +167,7 @@ QString getSearchCondSql(QString k) {
 vector<Collect> ColDao::getCollects(QString k) {
     k = k.trimmed();
     vector<Collect> list;
-    QString sql = "select * from (select col.id, col.name, col.i, col.x, count(*) as n "
+    QString sql = "select * from (select col.id, col.name, col.i, col.x, col.m, count(*) as n "
                   "from pk "
                   "join col on pk.cid == col.id "
                   "where 1=1 #cont #tags "
