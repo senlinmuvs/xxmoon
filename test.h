@@ -4,6 +4,7 @@
 #include <QString>
 #include <QList>
 #include <QDebug>
+#include <QClipboard>
 #include "com/util.h"
 #include "com/global.h"
 #include "com/docparser.h"
@@ -168,5 +169,29 @@ void test10() {
     QStringList list = extractImgsAsList(cont);
     qDebug() << list;
     qDebug() << "------------------------- TEST 10 END -------------------------";
+}
+
+void test11() {
+    qDebug() << "------------------------- TEST 11 Start -------------------------";
+    QClipboard *board = QGuiApplication::clipboard();
+    QObject::connect(board, &QClipboard::dataChanged, app, [=](){
+        static bool finished = true;
+
+        qDebug() << "datachanged:" <<  board->text();
+
+        if(board->text() == "" || finished == false) {
+            return;
+        }
+
+        QString text = board->text();
+        text = text.replace("\n", "\t");
+
+        qDebug() << "new text:" << text;
+
+        finished = false;
+        board->setText(text);
+        finished = true;
+    }, Qt::DirectConnection);
+    qDebug() << "------------------------- TEST 11 End ----------------------------";
 }
 #endif // TEST_H

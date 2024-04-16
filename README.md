@@ -33,6 +33,3 @@
 ![](imgs/20211024135323.697.696.823.webp)
 
 [所有操作](https://github.com/senlinmuvs/xxmoon/wiki)
-
-## 后语
-优先macOS的开发，Win版暂时停滞处理。这个软件会一直更新，这也是我自己用得比较多的软件。(之前上了macOS App Store，现已下架，一心开源了一起开发)

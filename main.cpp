@@ -17,6 +17,7 @@
 #include <QStandardPaths>
 #include <QTranslator>
 #include <QThread>
+#include <QClipboard>
 #ifdef Q_OS_MAC
 #include "com/mac.h"
 #endif
@@ -50,7 +51,7 @@ void initCfg();
 void exit_(int r);
 
 int main(int argc, char *argv[]) {
-    // test10();
+    // test11();
     // return 0;
     int r = start(argc, argv);
     exit_(r);
@@ -110,6 +111,9 @@ int initGui(MyApplication* a) {
     //
     app->setGlobalHotkey(0, cfg->hot_key_pk);
     app->setGlobalHotkey(1, cfg->hot_key_show);
+
+    // test11();
+
 #ifdef Q_OS_MAC
     a->setWindowIcon(QIcon(":/assets/logo.icns"));
 //    w->setIcon(QIcon(":assets/logo.icns"));

@@ -170,6 +170,7 @@ Rectangle {
     }
     MouseArea {
         anchors.fill: parent
+        // propagateComposedEvents:
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         onPressed: {
             pk_list_view.currentIndex = index;

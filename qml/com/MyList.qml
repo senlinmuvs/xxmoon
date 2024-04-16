@@ -9,8 +9,8 @@ ListView {
 
     spacing: 1
     currentIndex: 0
-//    interactive: false
-//    flicking: false
+   // interactive: false
+   // flicking: false
     boundsBehavior: Flickable.StopAtBounds
     highlightMoveDuration: 100
     highlightMoveVelocity: -1

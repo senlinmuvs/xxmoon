@@ -17,6 +17,7 @@ TextArea {
         color: "transparent"
     }
     wrapMode: Text.WrapAnywhere
+
     onLinkActivated: {
         if(link) {
             if(Com.isNumber(link)) {
