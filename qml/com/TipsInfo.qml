@@ -7,6 +7,7 @@ Popup {
     height: rect_cont.height
     x: parent.width/2-width/2
     y: parent.height/2-height/2
+    z: 11
     modal: true
     focus: true
     clip: true

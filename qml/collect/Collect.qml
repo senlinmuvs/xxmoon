@@ -122,6 +122,7 @@ Rectangle {
                                     $col.deleteEncryption(c.id, Com.putFunc(function(){
                                         c.jm = false;
                                         alert('取消成功');
+                                        encrypt_cont_popup.close();
                                     }));
                                 } else {
                                     alert("密码错误");
@@ -136,6 +137,7 @@ Rectangle {
                             $col.encrypt(c.id, v, Com.putFunc(function(){
                                 c.jm = true;
                                 alert('设置成功');
+                                encrypt_cont_popup.close();
                             }));
                         }
                     };
@@ -392,6 +394,7 @@ Rectangle {
                                     Collect.loadPk(true, function(){
                                         pk_list_view.currentIndex = 0;
                                     });
+                                    encrypt_cont_popup.close();
                                 } else {
                                     alert("密码错误");
                                 }

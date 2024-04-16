@@ -121,7 +121,6 @@ Popup {
         if(delegate) {
             delegate.onSubmit(popup_text.text);
         }
-        close();
     }
     function cancel() {
         tmpPwd = '';
