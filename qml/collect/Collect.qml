@@ -109,6 +109,48 @@ Rectangle {
         //         }
         //     }
         // }
+        MenuSeparator {}
+        MenuItem {
+            id: mi_set_pwd
+            onTriggered: {
+                let c = Collect.getCurrentCol();
+                if(c.jm) {
+                    encrypt_cont_popup.delegate = {
+                        onSubmit:function(v) {
+                            $col.validateColPWD(c.id, v, Com.putFunc(function(y){
+                                if(y) {
+                                    $col.deleteEncryption(c.id, Com.putFunc(function(){
+                                        c.jm = false;
+                                        alert('取消成功');
+                                    }));
+                                } else {
+                                    alert("密码错误");
+                                }
+                            }));
+                        }
+                    };
+                    encrypt_cont_popup.op();
+                } else {
+                    encrypt_cont_popup.delegate = {
+                        onSubmit:function(v) {
+                            $col.encrypt(c.id, v, Com.putFunc(function(){
+                                c.jm = true;
+                                alert('设置成功');
+                            }));
+                        }
+                    };
+                    encrypt_cont_popup.op(1);
+                }
+            }
+        }
+        onAboutToShow: {
+            let c = Collect.getCurrentCol();
+            if(c.jm) {
+                mi_set_pwd.text = "取消密码";
+            } else {
+                mi_set_pwd.text = "设置密码";
+            }
+        }
     }
     Menu {
         id: menu_right_pk
@@ -340,8 +382,28 @@ Rectangle {
             clip:true
             delegate: ComponentCol{}
             onCurrentIndexChanged: {
-                Collect.loadPk(true);
-                pk_list_view.currentIndex = 0;
+                let c = Collect.getCurrentCol();
+                pk_list_model.clear();
+                if(c.jm) {
+                    encrypt_cont_popup.delegate = {
+                        onSubmit:function(v) {
+                            $col.validateColPWD(c.id, v, Com.putFunc(function(y){
+                                if(y) {
+                                    Collect.loadPk(true, function(){
+                                        pk_list_view.currentIndex = 0;
+                                    });
+                                } else {
+                                    alert("密码错误");
+                                }
+                            }));
+                        }
+                    };
+                    encrypt_cont_popup.op();
+                } else {
+                    Collect.loadPk(true, function(){
+                        pk_list_view.currentIndex = 0;
+                    });
+                }
             }
             focus: true
             highColor: "#000"
@@ -505,47 +567,6 @@ Rectangle {
                 pk_list_view.currentIndex = i;
                 return pk_list_model.get(i);
             }
-        }
-        function pushPK(list) {
-            if($l.isDebug()) {
-                Com.debug("pushPK list", list.length);
-            }
-            let ar = Com.parseTime(Collect.getPKLastTime(), 1);
-            let preDateStr = ar[0];
-            let preTimeStr = ar[1];
-            for(let i in list) {
-                let e = list[i];
-                if($l.isDebug()) {
-                    Com.debug("pk", JSON.stringify(e));
-                }
-                let pk = Com.convPK(preDateStr, preTimeStr, e);
-                pk_list_model.append(pk);
-                preDateStr = pk.date_str;
-                preTimeStr = pk.time_str;
-            }
-            if(list.length < $app.pageSize) {
-                pk_list_view.footer = pkNoMoreBtn;
-            } else {
-                pk_list_view.footer = pk_list_more_btn;
-            }
-
-            //定位当前选中项
-            if(pre_cid > 0) {
-                let i = Collect.getColIndexByCid(pre_cid);
-                if(i >= 0) {
-                    col_list_view.currentIndex = i;
-                    pre_cid = 0;
-                }
-            }
-            if(pre_pkid > 0) {
-                let arr = Collect.getPKByIdInCurrentList(pre_pkid);
-                if(arr) {
-                    let i = arr[0];
-                    pk_list_view.currentIndex = i;
-                    pre_pkid = 0;
-                }
-            }
-            $app.setUIVal(0, pk_list.width);
         }
         function onClose() {
             Collect.img_view_delegate.onClose();

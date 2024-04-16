@@ -33,7 +33,7 @@ void CollectAction::getCollects(QString k, QObject *obj) {
     });
 }
 
-void CollectAction::getPKList(QString k, uint id, uint fromId, uint pklistWidth, QObject *obj) {
+void CollectAction::getPKList(QString k, uint id, uint fromId, uint pklistWidth, uint cbid) {
     if(lg->isDebug()) {
         lg->debug(QString("getPKList k %1 id %2 fromId %3").arg(k).arg(id).arg(fromId));
     }
@@ -46,8 +46,7 @@ void CollectAction::getPKList(QString k, uint id, uint fromId, uint pklistWidth,
             rlist << p->toVMap(0,0,pklistWidth);
             delete p;
         }
-        QMetaObject::invokeMethod(obj, "pushPK",
-                    Q_ARG(QVariant, QVariant::fromValue(rlist)));
+        sendMsg(cbid, rlist);
     });
 }
 
@@ -355,5 +354,30 @@ void CollectAction::clearSolvedTime(uint pkid, uint cbid) {
         if(cbid>0) {
             sendMsg(cbid, 0);
         }
+    });
+}
+void CollectAction::encrypt(uint cid, QString pwd, uint cbid) {
+    QString encrypted = ut::cipher::encryptTextAES(pwd, QString::number(cid));
+    DB_Async->exe([=]{
+        colDao->updatePwd(cid, encrypted);
+        sendMsg(cbid, 0);
+    });
+}
+void CollectAction::deleteEncryption(uint cid, uint cbid) {
+    DB_Async->exe([=]{
+        colDao->updatePwd(cid, "");
+        sendMsg(cbid, 0);
+    });
+}
+void CollectAction::validateColPWD(uint cid, QString pwd, uint cbid) {
+    DB_Async->exe([=]{
+        Collect *c = colDao->getCollect(cid);
+        QString encrypted = ut::cipher::encryptTextAES(pwd, QString::number(cid));
+        if(c->m == encrypted) {
+            sendMsg(cbid, true);
+        } else {
+            sendMsg(cbid, false);
+        }
+        delete c;
     });
 }

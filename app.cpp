@@ -2166,7 +2166,6 @@ bool App::importWechatRead() {
         delete w;
         st(0, QString("已添加 %1 条笔记").arg(c));
         ut::cpb::clear();
-        qDebug() << ">>>>>>>>>>>>>>> 6";
     });
     return true;
 }

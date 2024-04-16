@@ -543,11 +543,6 @@ ApplicationWindow {
             Com.st(1, Com.msgs[st]);
         }
     }
-    function onAlert(msg,autoclose) {
-        if(msg) {
-            tips_info.popup(msg,autoclose);
-        }
-    }
     function onClose() {
         tray.hide();
         Qt.quit();
@@ -569,8 +564,10 @@ ApplicationWindow {
             }
         }
     }
-    function alert(msg, autoclose, cb) {
-        tips_info.popup(msg, autoclose, cb);
+    function alert(msg, autoclose=1, cb) {
+        if(msg) {
+            tips_info.popup(msg, autoclose, cb);
+        }
     }
     function ensure(msg) {
         e_ensure.text = msg;

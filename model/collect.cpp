@@ -14,6 +14,7 @@ QVariantMap Collect::toVMap() {
     m.insert("total", total);
     m.insert("i", i);
     m.insert("x", x);
-    m.insert("m", m);
+    // m.insert("m", this->m);
+    m.insert("jm", this->m.length() > 0);
     return m;
 }

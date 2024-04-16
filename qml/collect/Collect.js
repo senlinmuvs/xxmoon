@@ -108,7 +108,7 @@ function addOrUpdateCol(col) {
 }
 
 /// pk
-function loadPk(clear) {
+function loadPk(clear, cb) {
     let index = col_list_view.currentIndex;
     pk_list_view.footer = pk_list_more_btn;
     if(clear) {
@@ -119,9 +119,56 @@ function loadPk(clear) {
         let cid = c.id;
         let k = search_bar.text.trim();
         let lsId = getPKLastId();
-        $col.getPKList(k, cid, lsId, pk_list.width , pk_list);
+        $col.getPKList(k, cid, lsId, pk_list.width, Com.putFunc(function(list){
+            loadPk0(list);
+            if(cb) {
+                cb();
+            }
+        }));
     }
 }
+function loadPk0(list) {
+    if($l.isDebug()) {
+        Com.debug("pushPK list", list.length);
+    }
+    let ar = Com.parseTime(getPKLastTime(), 1);
+    let preDateStr = ar[0];
+    let preTimeStr = ar[1];
+    for(let i in list) {
+        let e = list[i];
+        if($l.isDebug()) {
+            Com.debug("pk", JSON.stringify(e));
+        }
+        let pk = Com.convPK(preDateStr, preTimeStr, e);
+        pk_list_model.append(pk);
+        preDateStr = pk.date_str;
+        preTimeStr = pk.time_str;
+    }
+    if(list.length < $app.pageSize) {
+        pk_list_view.footer = pkNoMoreBtn;
+    } else {
+        pk_list_view.footer = pk_list_more_btn;
+    }
+
+    //定位当前选中项
+    if(pre_cid > 0) {
+        let i = getColIndexByCid(pre_cid);
+        if(i >= 0) {
+            col_list_view.currentIndex = i;
+            pre_cid = 0;
+        }
+    }
+    if(pre_pkid > 0) {
+        let arr = getPKByIdInCurrentList(pre_pkid);
+        if(arr) {
+            let i = arr[0];
+            pk_list_view.currentIndex = i;
+            pre_pkid = 0;
+        }
+    }
+    $app.setUIVal(0, pk_list.width);
+}
+
 function deletePK(target) {
     let i = pk_list_view.currentIndex;
     if(i>=0){
@@ -298,7 +345,15 @@ function openEncryptPopup() {
         let pk = getCurrentPK();
         if(pk) {
             let twiceCheck = !pk.jm;
-            encrypt_cont_popup.delegate = encrypt_popup_delegate;
+            encrypt_cont_popup.delegate = {
+                onSubmit:function() {
+                    enOrDecrypt();
+                    col_list_view.forceActiveFocus();
+                },
+                onCancel:function() {
+                    col_list_view.forceActiveFocus();
+                }
+            };
             encrypt_cont_popup.op(twiceCheck);
         }
     }
@@ -328,16 +383,6 @@ let img_view_delegate = {
             pk.simple_qmls = "";
             pk.simple_qmls = tmp_qmls;
         }
-    }
-}
-
-let encrypt_popup_delegate = {
-    onSubmit:function() {
-        enOrDecrypt();
-        col_list_view.forceActiveFocus();
-    },
-    onCancel:function() {
-        col_list_view.forceActiveFocus();
     }
 }
 

@@ -28,6 +28,7 @@ public:
     uint getIDByName(QString name);
     uint getFirstID();
     void setX(uint id, uint x);
+    void updatePwd(uint id, QString encrypted);
 };
 
 #endif // COLDAO_H

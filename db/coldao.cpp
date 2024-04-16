@@ -259,3 +259,13 @@ void ColDao::setX(uint id, uint x) {
         lg->error(QString("coldao setX error %1 %2 %3").arg(q.lastError().text()).arg(id).arg(x));
     }
 }
+void ColDao::updatePwd(uint id, QString encrypted) {
+    QSqlQuery q;
+    q.prepare("update col set m=:m where id=:id");
+    q.bindValue(":m", encrypted);
+    q.bindValue(":id", id);
+    bool suc = q.exec();
+    if(!suc) {
+        lg->error(QString("coldao updatePwd error %1 %2 %3").arg(q.lastError().text()).arg(id).arg(encrypted));
+    }
+}

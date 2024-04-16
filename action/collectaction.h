@@ -17,7 +17,7 @@ public:
     Q_INVOKABLE void countCol(uint cid, uint cbid);
     Q_INVOKABLE void getNewPKList(uint cid, uint fromId, uint pklistWidth, QObject *obj);
 
-    Q_INVOKABLE void getPKList(QString k, uint id, uint fromId, uint pklistWidth, QObject *obj);
+    Q_INVOKABLE void getPKList(QString k, uint id, uint fromId, uint pklistWidth, uint cbid);
     Q_INVOKABLE void getPK(uint id, uint listWidth, uint cbid);
     Q_INVOKABLE void deletePK(uint id, QObject *obj);
     Q_INVOKABLE void updatePK(uint id, QString cont, QString k, uint pklistWidth, uint cbid);
@@ -27,6 +27,9 @@ public:
     Q_INVOKABLE void pk(QString file, uint cbid = 0);
     Q_INVOKABLE void updatePKTags(uint pkid, QString tags, uint cbid);
     Q_INVOKABLE void clearSolvedTime(uint pkid, uint cbid);
+    Q_INVOKABLE void encrypt(uint cid, QString pwd, uint cbid);
+    Q_INVOKABLE void deleteEncryption(uint cid, uint cbid);
+    Q_INVOKABLE void validateColPWD(uint cid, QString pwd, uint cbid);
 
     QString pk(QImage *img, QString cont, QString file);
 };

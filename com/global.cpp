@@ -311,7 +311,7 @@ QString extractPKSimpleCont(const QString& cont, const QString& k) {
 
 void alert(const QString &msg, bool autoclose) {
     QObject* root = engine->rootObjects()[0];
-    QMetaObject::invokeMethod(root, "onAlert",
+    QMetaObject::invokeMethod(root, "alert",
                 Q_ARG(QVariant, QVariant::fromValue(msg)),
                 Q_ARG(QVariant, QVariant::fromValue(autoclose)));
 }

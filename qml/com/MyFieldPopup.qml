@@ -119,23 +119,24 @@ Popup {
         }
         tmpPwd = '';
         if(delegate) {
-            delegate.onSubmit();
+            delegate.onSubmit(popup_text.text);
         }
+        close();
     }
     function cancel() {
         tmpPwd = '';
         tmpClose = false;
         clear();
         close();
-        if(delegate){
-            delegate.onCancel();
+        if(delegate && delegate.onCancel) {
+            delegate.onCancel(popup_text.text);
         }
     }
     function clear() {
         popup_text.text = '';
         closePolicy = Popup.CloseOnEscape;
     }
-    function op(twiceCheck) {
+    function op(twiceCheck=0) {
         enablePwdTwiceCheck = twiceCheck;
         popup_text.placeholderText = '';
         open();
