@@ -292,7 +292,7 @@ function onKeysPressed(event) {
     } else if(event.key === Qt.Key_Space) {
         detail();
     } else if(event.modifiers === ctrlVal && event.key === Qt.Key_N) {
-        btn_add.click();
+        navBtnClick('add');
     } else if(event.modifiers === (ctrlVal | Qt.ShiftModifier) && event.key === Qt.Key_N) {
         onBtnClick_addCol();
     } else if(event.modifiers === (Qt.AltModifier|Qt.ShiftModifier) && event.key === Qt.Key_C) {
@@ -302,7 +302,7 @@ function onKeysPressed(event) {
     } else if(event.modifiers === (ctrlVal|Qt.ShiftModifier) && event.key === Qt.Key_C) {
         copyPK(2);
     } else if(event.modifiers === ctrlVal && event.key === Qt.Key_T) {
-        btn_tag.click();
+        navBtnClick('tag');
     } else if(event.key === Qt.Key_Home) {
         pk_list_view.currentIndex = 0;
     } else if(event.key === Qt.Key_End) {

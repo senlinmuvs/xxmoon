@@ -172,17 +172,10 @@ Popup {
             Row {
                 spacing: 5
                 Text {
-                    text:"v"+ $app.getVersion() +" | "
+                    text:"v"+ $app.getVersion()
                     color: "white"
                     font.bold: true
                     font.pointSize: UI.font_size_title2
-                }
-                Link {
-                    font.bold: true
-                    text: "email"
-                    color: "white"
-                    font.pointSize: UI.font_size_title2
-                    url: "mailto:sen@senli.tech?subject=xxmoon"
                 }
                 Text {
                     text:"|"

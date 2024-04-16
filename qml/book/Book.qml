@@ -548,39 +548,6 @@ Rectangle {
             }
         }
     }
-    Column {
-        anchors {
-            bottom: parent.bottom
-            bottomMargin: 4
-            right: parent.right
-            rightMargin: 4
-        }
-        spacing: 10
-        Btn {
-            id: btn_tag
-            width: 35
-            height: 35
-            text: "#"
-            text_size: UI.book_btn_tag_font_size
-            color: Qt.rgba(0/255, 0/255, 0/255, 0.9)
-            radius: width/2
-            function click() {
-                tagManager.openTagView();
-            }
-        }
-        Btn {
-            id: btn_add
-            width: 35
-            height: 35
-            text: "+"
-            text_size: UI.book_btn_add_font_size
-            color: Qt.rgba(0/255, 0/255, 0/255, 0.9)
-            radius: width/2
-            function click() {
-                Book.openEditPopup(1);
-            }
-        }
-    }
     Component.onCompleted: {
         work_list_view.forceActiveFocus();
 
@@ -778,5 +745,12 @@ Rectangle {
         note_list_view.page = 0;
         work_list_model.clear();
         note_list_model.clear();
+    }
+    function navBtnClick(ty) {
+        if(ty === 'add') {
+            Book.openEditPopup(1);
+        } else if(ty === 'tag') {
+            tagManager.openTagView();
+        }
     }
 }

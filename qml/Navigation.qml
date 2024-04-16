@@ -124,6 +124,24 @@ Rectangle {
 //                }
 //            }
             Btn {
+                id: btn_add
+                text: "+"
+                text_size: UI.book_btn_add_font_size
+                color:"transparent"
+                function click() {
+                    navBtnClick('add');
+                }
+            }
+            Btn {
+                id: btn_tag
+                text: "#"
+                text_size: UI.book_btn_tag_font_size
+                color:"transparent"
+                function click() {
+                    navBtnClick('tag');
+                }
+            }
+            Btn {
                 id: btn_imp
                 text: "●"
                 color:"transparent"

@@ -592,4 +592,9 @@ ApplicationWindow {
         }
         w_notify.open(msg);
     }
+    function navBtnClick(ty) {
+        if(pageLoader.item.navBtnClick){
+            pageLoader.item.navBtnClick(ty);
+        }
+    }
 }

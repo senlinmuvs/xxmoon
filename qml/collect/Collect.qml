@@ -515,39 +515,6 @@ Rectangle {
             cellHeight: cellWidth
             delegate: ComponentGridPK{}
         }
-        Column {
-            anchors {
-                bottom: parent.bottom
-                bottomMargin: 4
-                right: parent.right
-                rightMargin: 4
-            }
-            spacing: 10
-            Btn {
-                id: btn_tag
-                width: 35
-                height: 35
-                text: "#"
-                text_size: UI.book_btn_tag_font_size
-                color: Qt.rgba(0/255, 0/255, 0/255, 0.9)
-                radius: width/2
-                function click() {
-                    tagManager.openTagView();
-                }
-            }
-            Btn {
-                id: btn_add
-                width: 35
-                height: 35
-                text: "+"
-                text_size: UI.book_btn_add_font_size
-                color: Qt.rgba(0/255, 0/255, 0/255, 0.9)
-                radius: width/2
-                function click() {
-                    Collect.openEditPopup(1);
-                }
-            }
-        }
         function next() {
             if(pk_list_view.currentIndex+1>=pk_list_view.count) {
                 Collect.loadPk();
@@ -800,6 +767,14 @@ Rectangle {
                     detailView.updateTags(data.tags);
                 }
             }
+        }
+    }
+
+    function navBtnClick(ty) {
+        if(ty === 'add') {
+            Collect.openEditPopup(1);
+        } else if(ty === 'tag') {
+            tagManager.openTagView();
         }
     }
 }

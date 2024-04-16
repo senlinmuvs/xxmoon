@@ -88,7 +88,7 @@ function onKeyPressed(event) {
     } else if(event.modifiers === ctrlVal && event.key === Qt.Key_F) {
         search_bar.forceActiveFocus();
     } else if(event.modifiers === ctrlVal && event.key === Qt.Key_T) {
-        btn_tag.click();
+        navBtnClick('tag');
     } else if(event.key === Qt.Key_Home) {
         note_list_view.currentIndex = 0;
     } else if(event.key === Qt.Key_End) {
