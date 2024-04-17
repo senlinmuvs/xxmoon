@@ -120,14 +120,14 @@ function loadXM(clear, cb) {
         let k = search_bar.text.trim();
         let lsId = getPKLastId();
         $cg.getXMList(k, cid, lsId, pk_list.width, Com.putFunc(function(list){
-            loadPk0(list);
+            loadXM0(list);
             if(cb) {
                 cb();
             }
         }));
     }
 }
-function loadPk0(list) {
+function loadXM0(list) {
     if($l.isDebug()) {
         Com.debug("pushPK list", list.length);
     }

@@ -71,7 +71,7 @@ Rectangle {
                                     col_list_model.remove(sorting_col_index);
                                     col_list_model.insert(dstIndex, cloneCol);
                                     if(sorting_col_index === col_list_view.currentIndex || dstIndex === col_list_view.currentIndex) {
-                                        Category.loadPk(true);
+                                        Category.loadXM(true);
                                     }
                                     sorting_col_index = 0;
                                 }

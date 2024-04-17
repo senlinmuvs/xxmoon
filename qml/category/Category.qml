@@ -391,7 +391,7 @@ Rectangle {
                         onSubmit:function(v) {
                             $cg.validateCategoryPWD(c.id, v, Com.putFunc(function(y){
                                 if(y) {
-                                    Category.loadPk(true, function(){
+                                    Category.loadXM(true, function(){
                                         pk_list_view.currentIndex = 0;
                                     });
                                     encrypt_cont_popup.close();
@@ -403,7 +403,7 @@ Rectangle {
                     };
                     encrypt_cont_popup.op();
                 } else {
-                    Category.loadPk(true, function(){
+                    Category.loadXM(true, function(){
                         pk_list_view.currentIndex = 0;
                     });
                 }
@@ -697,7 +697,7 @@ Rectangle {
             if(row0) {
                 $cg.getNewXMList(c.id, row0.id, pk_list.width, root);
             } else {
-                Category.loadPk(false);
+                Category.loadXM(false);
             }
         }
         if(col) {
