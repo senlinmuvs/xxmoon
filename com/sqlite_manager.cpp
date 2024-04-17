@@ -25,12 +25,12 @@ void SQLiteManager::init() {
     query.exec(sql_note_table);
     query.exec(sql_note_script);
     query.exec(sql_env_table);
-    query.exec(sql_col_table);
-    query.exec(sql_pk_table);
+    query.exec(sql_category_table);
+    query.exec(sql_xm_table);
     query.exec(sql_tag_table);
     //
     if(colDao->getMaxId() == 0) {
-        Collect *c = new Collect();
+        Category *c = new Category();
         c->id = 1;
         c->name = "Default";
         c->i = 0;

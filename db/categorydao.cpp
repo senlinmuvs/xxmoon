@@ -1,15 +1,15 @@
-﻿#include "coldao.h"
+﻿#include "categorydao.h"
 #include "com/global.h"
 
-ColDao::ColDao():BaseDao() {
+CategoryDao::CategoryDao():BaseDao() {
 }
 
-void ColDao::add(Collect *c) {
+void CategoryDao::add(Category *c) {
     if(c->id<=0){
         c->id = increID();
     }
-    QString insert_sql = "insert into col(id, name, i, x, m) values(:id,:name,:i,:x,:jm)";
-    db->execute("add col", insert_sql, [&c](QSqlQuery q) {
+    QString insert_sql = "insert into category(id, name, i, x, m) values(:id,:name,:i,:x,:jm)";
+    db->execute("add category", insert_sql, [&c](QSqlQuery q) {
         q.bindValue(":id", c->id);
         q.bindValue(":name", c->name);
         q.bindValue(":i", c->i);
@@ -17,29 +17,29 @@ void ColDao::add(Collect *c) {
         q.bindValue(":m", c->m);
     });
 }
-void ColDao::del(uint id) {
-    db->execute("del col", "delete from col where id=:id", [=](QSqlQuery q) {
+void CategoryDao::del(uint id) {
+    db->execute("del category", "delete from category where id=:id", [=](QSqlQuery q) {
         q.bindValue(":id", id);
     });
 }
-void ColDao::updateName(uint id, QString name) {
-    QString sql = "update col set name=:name where id=:id";
+void CategoryDao::updateName(uint id, QString name) {
+    QString sql = "update category set name=:name where id=:id";
     db->execute("update name", sql, [=](QSqlQuery q) {
         q.bindValue(":id", id);
         q.bindValue(":name", name);
     });
 }
-void ColDao::updateIndex(uint id, uint srcIndex, uint dstIndex) {
+void CategoryDao::updateIndex(uint id, uint srcIndex, uint dstIndex) {
     if(srcIndex == dstIndex) {
         return;
     }
     QString sql1, sql2;
     if(srcIndex < dstIndex) {
-        sql1 = "update col set i=i-1 where i > #srcIndex and i <=#dstIndex";
+        sql1 = "update category set i=i-1 where i > #srcIndex and i <=#dstIndex";
     } else {
-        sql1 = "update col set i=i+1 where i < #srcIndex and i >=#dstIndex";
+        sql1 = "update category set i=i+1 where i < #srcIndex and i >=#dstIndex";
     }
-    sql2 = "update col set i = #dstIndex where id = #id";
+    sql2 = "update category set i = #dstIndex where id = #id";
     sql1.replace("#srcIndex", QString::number(srcIndex));
     sql1.replace("#dstIndex", QString::number(dstIndex));
     sql2.replace("#dstIndex", QString::number(dstIndex));
@@ -48,8 +48,8 @@ void ColDao::updateIndex(uint id, uint srcIndex, uint dstIndex) {
     q.exec(sql1);
     q.exec(sql2);
 }
-uint ColDao::getMaxId() const {
-    QSqlQuery q("select max(id) as maxid from col");
+uint CategoryDao::getMaxId() const {
+    QSqlQuery q("select max(id) as maxid from category");
     bool suc = q.exec();
     if(!suc){
         lg->error(QString("getMaxId error %1").arg(q.lastError().text()));
@@ -60,8 +60,8 @@ uint ColDao::getMaxId() const {
     uint maxid = q.value(colMaxid).toUInt();
     return maxid;
 }
-uint ColDao::getMaxI() {
-    QSqlQuery q("select max(i) as maxI from col");
+uint CategoryDao::getMaxI() {
+    QSqlQuery q("select max(i) as maxI from category");
     bool suc = q.exec();
     if(!suc){
         lg->error(QString("getMaxI error %1").arg(q.lastError().text()));
@@ -72,20 +72,20 @@ uint ColDao::getMaxI() {
     uint maxI = q.value(colMaxI).toUInt();
     return maxI;
 }
-Collect* ColDao::getCollect(uint id) {
+Category* CategoryDao::getCategory(uint id) {
     QSqlQuery q;
-    q.prepare("select name,i,x,m from col where id=:id");
+    q.prepare("select name,i,x,m from category where id=:id");
     q.bindValue(":id", id);
     bool suc = q.exec();
     if(!suc){
-        lg->error(QString("getCollect error %1").arg(q.lastError().text()));
+        lg->error(QString("getCategory error %1").arg(q.lastError().text()));
     }
     if(q.next()) {
         QString name = q.value(0).toString();
         uint i = q.value(1).toUInt();
         uint x = q.value(2).toUInt();
         QString m = q.value(3).toString();
-        Collect *c = new Collect();
+        Category *c = new Category();
         c->id = id;
         c->name = name;
         c->i = i;
@@ -96,13 +96,13 @@ Collect* ColDao::getCollect(uint id) {
         return NULL;
     }
 }
-Collect* ColDao::getCollectByIndex(uint index) {
+Category* CategoryDao::getCategoryByIndex(uint index) {
     QSqlQuery q;
-    q.prepare("select id,name,i,x,m from col where i=:i");
+    q.prepare("select id,name,i,x,m from category where i=:i");
     q.bindValue(":i", index);
     bool suc = q.exec();
     if(!suc){
-        lg->error(QString("getCollectByIndex error %1").arg(q.lastError().text()));
+        lg->error(QString("getCategoryByIndex error %1").arg(q.lastError().text()));
     }
     if(q.next()) {
         uint id = q.value(0).toUInt();
@@ -110,7 +110,7 @@ Collect* ColDao::getCollectByIndex(uint index) {
         uint i = q.value(2).toUInt();
         uint x = q.value(3).toUInt();
         QString m = q.value(4).toString();
-        Collect *c = new Collect();
+        Category *c = new Category();
         c->id = id;
         c->name = name;
         c->i = i;
@@ -121,7 +121,7 @@ Collect* ColDao::getCollectByIndex(uint index) {
         return NULL;
     }
 }
-void fillData(QSqlQuery *q, vector<Collect> *list) {
+void fillData(QSqlQuery *q, vector<Category> *list) {
     QSqlRecord rec = q->record();
     int colId = rec.indexOf("id");
     int colName = rec.indexOf("name");
@@ -136,7 +136,7 @@ void fillData(QSqlQuery *q, vector<Collect> *list) {
         uint i = q->value(colI).toUInt();
         uint x = q->value(colX).toUInt();
         QString m = q->value(colM).toString();
-        Collect c;
+        Category c;
         c.id = id;
         c.name = name;
         c.i = i;
@@ -146,10 +146,10 @@ void fillData(QSqlQuery *q, vector<Collect> *list) {
         list->insert(list->end(), c);
     }
 }
-vector<Collect> ColDao::getAll() {
-    vector<Collect> list;
+vector<Category> CategoryDao::getAll() {
+    vector<Category> list;
     QSqlQuery q;
-    q.exec("select id,name,i,0 as n,x,m from col order by i");
+    q.exec("select id,name,i,0 as n,x,m from category order by i");
     fillData(&q, &list);
     return list;
 }
@@ -164,14 +164,14 @@ QString getSearchCondSql(QString k) {
     return sql + ")";
 }
 
-vector<Collect> ColDao::getCollects(QString k) {
+vector<Category> CategoryDao::getCategories(QString k) {
     k = k.trimmed();
-    vector<Collect> list;
-    QString sql = "select * from (select col.id, col.name, col.i, col.x, col.m, count(*) as n "
-                  "from pk "
-                  "join col on pk.cid == col.id "
+    vector<Category> list;
+    QString sql = "select * from (select c.id, c.name, c.i, c.x, c.m, count(*) as n "
+                  "from xm "
+                  "join category c on xm.cid == c.id "
                   "where 1=1 #cont #tags "
-                  "group by pk.cid)t order by t.i";
+                  "group by xm.cid)t order by t.i";
 
     bool hasK = k.length() > 0;
     if(hasK) {
@@ -206,18 +206,18 @@ vector<Collect> ColDao::getCollects(QString k) {
 //    }
     bool suc = q.exec();
     if(!suc){
-        lg->error(QString("getCollects error %1 sql[%2]").arg(q.lastError().text()).arg(sql));
+        lg->error(QString("getCategories error %1 sql[%2]").arg(q.lastError().text()).arg(sql));
     }
     fillData(&q, &list);
 //    qDebug() << sql;
     return list;
 }
 
-uint ColDao::count() {
-    QSqlQuery q("select count(*) as c from col");
+uint CategoryDao::count() {
+    QSqlQuery q("select count(*) as c from category");
     bool suc = q.exec();
     if(!suc){
-        lg->error(QString("count col error %1").arg(q.lastError().text()));
+        lg->error(QString("count category error %1").arg(q.lastError().text()));
     }
     QSqlRecord rec = q.record();
     int colCount = rec.indexOf("c");
@@ -225,9 +225,9 @@ uint ColDao::count() {
     return q.value(colCount).toUInt();
 }
 
-uint ColDao::getIDByName(QString name) {
+uint CategoryDao::getIDByName(QString name) {
     QSqlQuery q;
-    q.prepare("select id from col where name=:name");
+    q.prepare("select id from category where name=:name");
     q.bindValue(":name", name);
     bool suc = q.exec();
     if(!suc) {
@@ -241,17 +241,17 @@ uint ColDao::getIDByName(QString name) {
     return 0;
 }
 
-uint ColDao::getFirstID() {
-    Collect* col = getCollectByIndex(0);
+uint CategoryDao::getFirstID() {
+    Category* col = getCategoryByIndex(0);
     if(col) {
         return col->id;
     }
     return 0;
 }
 
-void ColDao::setX(uint id, uint x) {
+void CategoryDao::setX(uint id, uint x) {
     QSqlQuery q;
-    q.prepare("update col set x=:x where id=:id");
+    q.prepare("update category set x=:x where id=:id");
     q.bindValue(":x", x);
     q.bindValue(":id", id);
     bool suc = q.exec();
@@ -259,9 +259,9 @@ void ColDao::setX(uint id, uint x) {
         lg->error(QString("coldao setX error %1 %2 %3").arg(q.lastError().text()).arg(id).arg(x));
     }
 }
-void ColDao::updatePwd(uint id, QString encrypted) {
+void CategoryDao::updatePwd(uint id, QString encrypted) {
     QSqlQuery q;
-    q.prepare("update col set m=:m where id=:id");
+    q.prepare("update category set m=:m where id=:id");
     q.bindValue(":m", encrypted);
     q.bindValue(":id", id);
     bool suc = q.exec();

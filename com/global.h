@@ -11,14 +11,12 @@
 #include <QProcess>
 #include <QRegularExpression>
 #include <app.h>
-#include <regex>
-#include "com/const.h"
 #include "com/sqlite_manager.h"
 #include "com/log.h"
 #include "db/envdao.h"
 #include "db/notedao.h"
-#include "db/pkdao.h"
-#include "db/coldao.h"
+#include "db/xmdao.h"
+#include "db/categorydao.h"
 #include <QDateTime>
 #include <QFile>
 #include <QQmlApplicationEngine>
@@ -26,8 +24,8 @@
 #include <db/workdao.h>
 #include <model/cfg.h>
 #include <action/bookaction.h>
-#include <action/collectaction.h>
-#include "com/xm.h"
+#include <action/categoryaction.h>
+#include "com/xm_format.h"
 #include "com/sm.h"
 
 extern Async *Com_Async;
@@ -41,15 +39,15 @@ extern volatile bool running;
 extern QQmlApplicationEngine *engine;
 extern Cfg *cfg;
 extern App* app;
-extern CollectAction* colAction;
+extern CategoryAction* categoryAction;
 extern BookAction* bookAction;
 extern L* l;
 extern SQLiteManager *db;
 extern WorkDao *workDao;
 extern NoteDao *noteDao;
 extern EnvDao *envDao;
-extern PKDao *pkDao;
-extern ColDao *colDao;
+extern XMDao *xmDao;
+extern CategoryDao *colDao;
 extern TagDao *tagDao;
 #ifdef Q_OS_MAC
 extern Mac *mac;
@@ -58,7 +56,7 @@ extern MenuManager *menuManager;
 extern QProcess *process;
 extern DocParser *doc_parser;
 extern Log *lg;
-extern XM *xm;
+extern XMFormat *xm_format;
 extern SM *sm;
 
 extern QRegularExpression Reg_Kindle_Note;

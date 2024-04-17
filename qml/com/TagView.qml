@@ -1,7 +1,7 @@
 ﻿import QtQuick
 import QtQuick.Controls.Fusion
 import "com.js" as Com
-import "../collect/Collect.js" as Collect
+import "../category/Category.js" as Category
 
 Popup {
     id: root

@@ -1,10 +1,10 @@
-﻿#include "xm.h"
+﻿#include "xm_format.h"
 #include "com/util.h"
 #include "com/global.h"
 
 #include <QUuid>
 
-XM::XM() {
+XMFormat::XMFormat() {
 
 }
 
@@ -23,7 +23,7 @@ XM::XM() {
 //1byte格式+第n张图片数据
 //=============cont=================
 //剩下为内容
-QString XM::createXMFile(QString name, QString mainImg, QString& cont, QString pwd) {
+QString XMFormat::createXMFile(QString name, QString mainImg, QString& cont, QString pwd) {
     qint64 t1 = QDateTime::currentDateTime().currentMSecsSinceEpoch();
     //
     bool encrypt = pwd.length() > 0;
@@ -134,7 +134,7 @@ QString XM::createXMFile(QString name, QString mainImg, QString& cont, QString p
     delete data;
     return file;
 }
-PK* XM::openFile(QString file, QString pwd) {
+XM* XMFormat::openFile(QString file, QString pwd) {
     if(lg->isDebug()) {
         lg->debug(QString("openFile %1").arg(file));
     }
@@ -253,11 +253,11 @@ PK* XM::openFile(QString file, QString pwd) {
         lg->debug(QString("pwd len %1 cont len %2 -> %3").arg(pwd.length()).arg(contLen).arg(cont.length()));
     }
     //
-    PK *pk = new PK();
-    pk->img = mainImgLen > 0 ? imgFilePath + "/" + mainImgName : "";
-    pk->cont = cont;
-    pk->uuid = uuid;
-    pk->file = file;
-    pk->jm = pwd.length() > 0 ? false : jm;
-    return pk;
+    XM *xm = new XM();
+    xm->img = mainImgLen > 0 ? imgFilePath + "/" + mainImgName : "";
+    xm->cont = cont;
+    xm->uuid = uuid;
+    xm->file = file;
+    xm->jm = pwd.length() > 0 ? false : jm;
+    return xm;
 }

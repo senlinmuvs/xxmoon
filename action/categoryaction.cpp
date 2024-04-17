@@ -1,25 +1,25 @@
 #include "com/global.h"
-#include "collectaction.h"
+#include "categoryaction.h"
 #include "com/runmain.h"
 #ifdef Q_OS_MAC
 #include "com/mac.h"
 #endif
 
-CollectAction::CollectAction() {
+CategoryAction::CategoryAction() {
 }
-void CollectAction::getCollects(QString k, QObject *obj) {
+void CategoryAction::getCategories(QString k, QObject *obj) {
     DB_Async->exe([=]{
         QVariantList rlist;
         if(k.length() > 0){
-            vector<Collect> list = colDao->getCollects(k);
-            for (Collect c:list) {
+            vector<Category> list = colDao->getCategories(k);
+            for (Category c:list) {
                 rlist.insert(rlist.end(), c.toVMap());
             }
         } else {
-            vector<Collect> all = colDao->getAll();
-            vector<Collect> list = colDao->getCollects(k);
-            for (Collect c:all) {
-                for(Collect c2:list) {
+            vector<Category> all = colDao->getAll();
+            vector<Category> list = colDao->getCategories(k);
+            for (Category c:all) {
+                for(Category c2:list) {
                     if(c.id == c2.id) {
                         c = c2;
                         break;
@@ -28,44 +28,44 @@ void CollectAction::getCollects(QString k, QObject *obj) {
                 rlist.insert(rlist.end(), c.toVMap());
             }
         }
-        QMetaObject::invokeMethod(obj, "onGetCollects",
+        QMetaObject::invokeMethod(obj, "onGetCategories",
                     Q_ARG(QVariant, QVariant::fromValue(rlist)));
     });
 }
 
-void CollectAction::getPKList(QString k, uint id, uint fromId, uint pklistWidth, uint cbid) {
+void CategoryAction::getXMList(QString k, uint id, uint fromId, uint pklistWidth, uint cbid) {
     if(lg->isDebug()) {
-        lg->debug(QString("getPKList k %1 id %2 fromId %3").arg(k).arg(id).arg(fromId));
+        lg->debug(QString("getXMList k %1 id %2 fromId %3").arg(k).arg(id).arg(fromId));
     }
     k = k.trimmed();
     DB_Async->exe([=] {
-        QList<PK*> list = pkDao->getPKList(k, id, fromId);
+        QList<XM*> list = xmDao->getXMList(k, id, fromId);
         QVariantList rlist;
-        for (PK *p:list) {
-            p->simpleCont = extractPKSimpleCont(p->cont, k);
-            rlist << p->toVMap(0,0,pklistWidth);
-            delete p;
+        for (XM *xm:list) {
+            xm->simpleCont = extractPKSimpleCont(xm->cont, k);
+            rlist << xm->toVMap(0,0,pklistWidth);
+            delete xm;
         }
         sendMsg(cbid, rlist);
     });
 }
 
-void CollectAction::getPK(uint id, uint listWidth, uint cbid) {
+void CategoryAction::getXM(uint id, uint listWidth, uint cbid) {
     DB_Async->exe([=] {
-        PK* pk = pkDao->getPK(id);
-        if(pk) {
-            pk->simpleCont = extractPKSimpleCont(pk->cont, "");
-            sendMsg(cbid, pk->toVMap(1,1,listWidth));
+        XM* xm = xmDao->getXM(id);
+        if(xm) {
+            xm->simpleCont = extractPKSimpleCont(xm->cont, "");
+            sendMsg(cbid, xm->toVMap(1,1,listWidth));
         }
-        delete pk;
+        delete xm;
     });
 }
 
-void CollectAction::addCol(QString name, QObject *obj) {
+void CategoryAction::addCategory(QString name, QObject *obj) {
     DB_Async->exe([=] {
         QVariantMap m;
         QString err;
-        Collect *col = new Collect();
+        Category *col = new Category();
         uint maxI = colDao->getMaxI();
         col->name = name;
         col->i = maxI + 1;
@@ -79,37 +79,37 @@ void CollectAction::addCol(QString name, QObject *obj) {
     });
 }
 
-void CollectAction::editCol(uint id, QString name, QObject *obj) {
+void CategoryAction::editCategory(uint id, QString name, QObject *obj) {
     DB_Async->exe([=]{
         colDao->updateName(id, name);
         QMetaObject::invokeMethod(obj, "onUpdated");
     });
 }
 
-void CollectAction::delCol(uint id, uint cbid) {
+void CategoryAction::delCategory(uint id, uint cbid) {
     DB_Async->exe([=]{
         colDao->del(id);
         sendMsg(cbid, NULL);
     });
 }
 
-void CollectAction::sortingCol(uint cid, uint srcIndex, uint dstIndex, uint cbid) {
+void CategoryAction::sorting(uint cid, uint srcIndex, uint dstIndex, uint cbid) {
     DB_Async->exe([=]{
         colDao->updateIndex(cid, srcIndex, dstIndex);
         sendMsg(cbid, NULL);
     });
 }
-void CollectAction::countCol(uint cid, uint cbid) {
+void CategoryAction::countCategory(uint cid, uint cbid) {
     DB_Async->exe([=]{
-        uint n = pkDao->countCol(cid);
+        uint n = xmDao->countCol(cid);
         sendMsg(cbid, n);
     });
 }
-void CollectAction::getNewPKList(uint cid, uint fromId, uint pklistWidth, QObject *obj) {
+void CategoryAction::getNewXMList(uint cid, uint fromId, uint pklistWidth, QObject *obj) {
     DB_Async->exe([=]{
-        QList<PK*> list = pkDao->getNewPKList(cid, fromId);
+        QList<XM*> list = xmDao->getNewXMList(cid, fromId);
         QVariantList rlist;
-        for (PK *p:list) {
+        for (XM *p:list) {
             QVariantList eList;
             p->simpleCont = extractPKSimpleCont(p->cont, "");
             rlist.insert(rlist.end(), p->toVMap(0,0,pklistWidth));
@@ -119,40 +119,40 @@ void CollectAction::getNewPKList(uint cid, uint fromId, uint pklistWidth, QObjec
                     Q_ARG(QVariant, QVariant::fromValue(rlist)));
     });
 }
-void CollectAction::deletePK(uint id, QObject *obj) {
+void CategoryAction::deleteXM(uint id, QObject *obj) {
     DB_Async->exe([=]{
-        PK *pk = pkDao->getPK(id);
-        if(pk!=nullptr){
-            QString imgLink = pk->getImgLink();
+        XM *xm = xmDao->getXM(id);
+        if(xm!=nullptr){
+            QString imgLink = xm->getImgLink();
             if(imgLink.length()>0){
-                uint ref = pkDao->countImgRefrence(imgLink);
+                uint ref = xmDao->countImgRefrence(imgLink);
                 if(ref>0){
                     QMetaObject::invokeMethod(obj, "onDeleted", Q_ARG(QVariant, QVariant::fromValue(ref)));
                     return;
                 }
             }
-            pkDao->deletePK(id);
-            if(pk->img != "") {
-                deleteFile(cfg->imgDir + "/" + pk->img);
-                QString imgName = pk->img.mid(0, pk->img.lastIndexOf("."));
-                QString postfix = pk->img.mid(pk->img.lastIndexOf("."));
+            xmDao->deleteXM(id);
+            if(xm->img != "") {
+                deleteFile(cfg->imgDir + "/" + xm->img);
+                QString imgName = xm->img.mid(0, xm->img.lastIndexOf("."));
+                QString postfix = xm->img.mid(xm->img.lastIndexOf("."));
                 deleteFile(cfg->imgDir + "/" + imgName + "_original" + postfix);
 //                qDebug() << "<<<<<<<<<<<delete file" << imgName << postfix;
             }
             QMetaObject::invokeMethod(obj, "onDeleted",
                                       Q_ARG(QVariant, QVariant::fromValue(0)));
-            delete pk;
+            delete xm;
         }
     });
 }
-void CollectAction::updatePK(uint id, QString cont, QString k, uint pklistWidth, uint cbid) {
+void CategoryAction::updateXM(uint id, QString cont, QString k, uint pklistWidth, uint cbid) {
     DB_Async->exe([=]{
-        PK *pk = pkDao->getPK(id);
+        XM *xm = xmDao->getXM(id);
         int st = 0;
-        if(pk != nullptr) {
-            if(pk->cont != cont) {
-                if(!pk->jm) {
-                    pkDao->updatePK(id, cont, 0);
+        if(xm != nullptr) {
+            if(xm->cont != cont) {
+                if(!xm->jm) {
+                    xmDao->updateXM(id, cont, 0);
                     QString tmpFile = cfg->tmpDir + "/" + cfg->tmpPKPre + QString::number(id);
                     if(ut::file::exists(tmpFile)){
                         ut::file::writeText(tmpFile, cont);
@@ -177,43 +177,43 @@ void CollectAction::updatePK(uint id, QString cont, QString k, uint pklistWidth,
             param.insert("imgs", extractImgs(cont));
         }
         sendMsg(cbid, param);
-        delete pk;
+        delete xm;
     });
 }
 
-void CollectAction::updatePKCid(uint colIndex, uint pkId, uint cid, QObject *obj) {
+void CategoryAction::updateXMCid(uint colIndex, uint xmid, uint cid, QObject *obj) {
     DB_Async->exe([=] {
-        pkDao->updateCid(pkId, cid);
+        xmDao->updateCid(xmid, cid);
         QMetaObject::invokeMethod(obj, "onMoved",
                                   Q_ARG(QVariant, QVariant::fromValue(colIndex)));
     });
 }
 
-void CollectAction::addPK(uint cid, QString txt, uint pklistWidth, QObject *obj) {
+void CategoryAction::addXM(uint cid, QString txt, uint pklistWidth, QObject *obj) {
     DB_Async->exe([=]{
-        PK *pk = new PK();
-        pk->cont = txt;
-        pk->cid = cid;
-        pkDao->add(pk);
+        XM *xm = new XM();
+        xm->cont = txt;
+        xm->cid = cid;
+        xmDao->add(xm);
 
-        PK *newPK = pkDao->getPK(pk->id);
+        XM *newXM = xmDao->getXM(xm->id);
         QVariantMap m;
-        if(newPK!=nullptr) {
-            newPK->simpleCont = extractPKSimpleCont(newPK->cont, "");
-            m = newPK->toVMap(0,0,pklistWidth);
+        if(newXM!=nullptr) {
+            newXM->simpleCont = extractPKSimpleCont(newXM->cont, "");
+            m = newXM->toVMap(0,0,pklistWidth);
         } else {
             alert(QObject::tr("Failure.Not found the doc!"));
             return;
         }
         QMetaObject::invokeMethod(obj, "onAdded",
                                   Q_ARG(QVariant, QVariant::fromValue(m)));
-        delete newPK;
-        delete pk;
+        delete newXM;
+        delete xm;
     });
 }
-void CollectAction::copyPK(uint type, uint id) {
+void CategoryAction::copyXM(uint type, uint id) {
     DB_Async->exe([=] {
-        PK *pk = pkDao->getPK(id);
+        XM *pk = xmDao->getXM(id);
         if(pk!=nullptr) {
             if(lg->isDebug()){
                 lg->debug(QString("copy type %1 id %2 pk %3").arg(type).arg(id).arg(pk->toString()));
@@ -248,7 +248,7 @@ void CollectAction::copyPK(uint type, uint id) {
         }
     });
 }
-void CollectAction::pk(QString file, uint cbid) {
+void CategoryAction::xm(QString file, uint cbid) {
     file = ut::str::removePrefix(file, getFilePre());
     DB_Async->exe([=] {
         QImage *qimg = new QImage();
@@ -257,16 +257,16 @@ void CollectAction::pk(QString file, uint cbid) {
         path = path.replace("//", "\\").replace("/", "\\");
 #endif
         qimg->load(path);
-        QString pkimg = pk(qimg, "", path);
+        QString xmimg = xm(qimg, "", path);
         delete qimg;
 
         if(cbid>0) {
-            sendMsg(cbid, pkimg);
+            sendMsg(cbid, xmimg);
         }
     });
 }
-QString CollectAction::pk(QImage *img, QString cont, QString file) {
-    PK *pk = new PK();
+QString CategoryAction::xm(QImage *img, QString cont, QString file) {
+    XM *pk = new XM();
     pk->bj = false;
     pk->cont = cont;
     pk->cid = colDao->getFirstID();
@@ -306,7 +306,7 @@ QString CollectAction::pk(QImage *img, QString cont, QString file) {
         pk->img = (year + "/" + file_name);
         new_clipboard_text = "!("+pk->img+")";
     }
-    pkDao->add(pk);
+    xmDao->add(pk);
     if(lg->isDebug()){
         lg->debug(QString("add pk %1").arg(pk->toString()));
     }
@@ -327,10 +327,10 @@ QString CollectAction::pk(QImage *img, QString cont, QString file) {
     return pkimg;
 }
 
-void CollectAction::updatePKTags(uint pkid, QString tags, uint cbid) {
+void CategoryAction::updateXMTags(uint xmid, QString tags, uint cbid) {
     DB_Async->exe([=] {
-        QString oldTags = pkDao->getTags(pkid);
-        pkDao->updatePKTags(pkid, tags);
+        QString oldTags = xmDao->getTags(xmid);
+        xmDao->updateXMTags(xmid, tags);
         Tag *tag = tagDao->getByName("?");
         uint stime = 0;
         if(tag) {
@@ -338,40 +338,40 @@ void CollectAction::updatePKTags(uint pkid, QString tags, uint cbid) {
             bool oldExists = oldTags.contains(ques);
             bool newExists = tags.contains(ques);
             if(!oldExists && newExists) {
-                pkDao->setSolveTime(pkid, 0);
+                xmDao->setSolveTime(xmid, 0);
             }
             if(oldExists && !newExists) {
                 stime = ut::time::getCurSeconds();
-                pkDao->setSolveTime(pkid, stime);
+                xmDao->setSolveTime(xmid, stime);
             }
         }
-        sendMsg(cbid, ut::col::createMap("pkid", pkid, "tags", tags, "stime", stime));
+        sendMsg(cbid, ut::col::createMap("pkid", xmid, "tags", tags, "stime", stime));
     });
 }
-void CollectAction::clearSolvedTime(uint pkid, uint cbid) {
+void CategoryAction::clearSolvedTime(uint xmid, uint cbid) {
     DB_Async->exe([=] {
-        pkDao->setSolveTime(pkid, 0);
+        xmDao->setSolveTime(xmid, 0);
         if(cbid>0) {
             sendMsg(cbid, 0);
         }
     });
 }
-void CollectAction::encrypt(uint cid, QString pwd, uint cbid) {
+void CategoryAction::encrypt(uint cid, QString pwd, uint cbid) {
     QString encrypted = ut::cipher::encryptTextAES(pwd, QString::number(cid));
     DB_Async->exe([=]{
         colDao->updatePwd(cid, encrypted);
         sendMsg(cbid, 0);
     });
 }
-void CollectAction::deleteEncryption(uint cid, uint cbid) {
+void CategoryAction::deleteEncryption(uint cid, uint cbid) {
     DB_Async->exe([=]{
         colDao->updatePwd(cid, "");
         sendMsg(cbid, 0);
     });
 }
-void CollectAction::validateColPWD(uint cid, QString pwd, uint cbid) {
+void CategoryAction::validateCategoryPWD(uint cid, QString pwd, uint cbid) {
     DB_Async->exe([=]{
-        Collect *c = colDao->getCollect(cid);
+        Category *c = colDao->getCategory(cid);
         QString encrypted = ut::cipher::encryptTextAES(pwd, QString::number(cid));
         if(c->m == encrypted) {
             sendMsg(cbid, true);

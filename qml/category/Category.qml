@@ -5,7 +5,7 @@ import Qt.labs.platform
 import "../com"
 import "../com/com.js" as Com
 import "../com/tag.js" as Tag
-import "Collect.js" as Collect
+import "Category.js" as Category
 import "../com/ui.js" as UI
 
 Rectangle {
@@ -16,7 +16,7 @@ Rectangle {
     signal tipsInfo(string txt)
     property var tagCom: Qt.createComponent("qrc:/qml/com/Tag.qml")
 //    property var lineItemCom: Qt.createComponent("qrc:/com/LineItem.qml")
-    property var tagManager: new Tag.TagManager(tagCom, Com.type_pk, search_bar, tag_view, col_list_view, new Collect.PKTagDelegate())
+    property var tagManager: new Tag.TagManager(tagCom, Com.type_pk, search_bar, tag_view, col_list_view, new Category.PKTagDelegate())
     property int sorting_col_index: 0
     property int pre_cid: 0
     property int pre_pkid: 0
@@ -44,7 +44,7 @@ Rectangle {
             let txt = text;
             text = txt.replace("  ", " ");
             if(txt === text) {
-                Collect.refreshAll(true);
+                Category.refreshAll(true);
             }
         }
         Keys.onPressed: function(event) {
@@ -64,21 +64,21 @@ Rectangle {
         MenuItem {
             text: qsTr("Edit")
             onTriggered: {
-                Collect.openColEditPopup();
+                Category.openColEditPopup();
             }
         }
         MenuSeparator {}
         MenuItem {
             text: qsTr("Delete")
             onTriggered: {
-                Collect.delCol();
+                Category.delCol();
             }
         }
         // MenuSeparator {}
         // MenuItem {
         //     text: qsTr("Generate PDF")
         //     onTriggered: {
-        //        let cid = Collect.getCurrentColId();
+        //        let cid = Category.getCurrentColId();
         //        $app.genFile(Com.file_type_pdf, Com.type_pk, cid, 0);
         //     }
         // }
@@ -86,7 +86,7 @@ Rectangle {
         MenuItem {
             text: qsTr("Generate HTML")
             onTriggered: {
-               let cid = Collect.getCurrentColId();
+               let cid = Category.getCurrentColId();
                $app.genFile(Com.file_type_html, Com.type_pk, cid, 0);
             }
         }
@@ -94,7 +94,7 @@ Rectangle {
         // MenuItem {
         //     text: qsTr("Export Single XM")
         //     onTriggered: {
-        //         let cid = Collect.getCurrentColId();
+        //         let cid = Category.getCurrentColId();
         //         $app.genFile(Com.file_type_xm, Com.type_pk, cid, 0, 0);
         //     }
         // }
@@ -103,7 +103,7 @@ Rectangle {
         // MenuItem {
         //     text: qsTr("Export Batch XM")
         //     onTriggered: {
-        //         let col = Collect.getCurrentCol();
+        //         let col = Category.getCurrentCol();
         //         if(col){
         //             $app.genFile(Com.file_type_xm, Com.type_pk, col.id, 0, 1);
         //         }
@@ -113,13 +113,13 @@ Rectangle {
         MenuItem {
             id: mi_set_pwd
             onTriggered: {
-                let c = Collect.getCurrentCol();
+                let c = Category.getCurrentCol();
                 if(c.jm) {
                     encrypt_cont_popup.delegate = {
                         onSubmit:function(v) {
-                            $col.validateColPWD(c.id, v, Com.putFunc(function(y){
+                            $cg.validateCategoryPWD(c.id, v, Com.putFunc(function(y){
                                 if(y) {
-                                    $col.deleteEncryption(c.id, Com.putFunc(function(){
+                                    $cg.deleteEncryption(c.id, Com.putFunc(function(){
                                         c.jm = false;
                                         alert('取消成功');
                                         encrypt_cont_popup.close();
@@ -134,7 +134,7 @@ Rectangle {
                 } else {
                     encrypt_cont_popup.delegate = {
                         onSubmit:function(v) {
-                            $col.encrypt(c.id, v, Com.putFunc(function(){
+                            $cg.encrypt(c.id, v, Com.putFunc(function(){
                                 c.jm = true;
                                 alert('设置成功');
                                 encrypt_cont_popup.close();
@@ -146,7 +146,7 @@ Rectangle {
             }
         }
         onAboutToShow: {
-            let c = Collect.getCurrentCol();
+            let c = Category.getCurrentCol();
             if(c.jm) {
                 mi_set_pwd.text = "取消密码";
             } else {
@@ -160,7 +160,7 @@ Rectangle {
             text: qsTr("Detail")
             shortcut: "Space"
             onTriggered: {
-                Collect.detail();
+                Category.detail();
             }
         }
         MenuSeparator {
@@ -170,7 +170,7 @@ Rectangle {
             text: qsTr("Picture Model")
             shortcut: "Enter"
             onTriggered: {
-                Collect.openImgView();
+                Category.openImgView();
             }
         }
         MenuSeparator {
@@ -180,7 +180,7 @@ Rectangle {
             text: qsTr("Edit")
             shortcut: ctrlName+"+Enter"
             onTriggered: {
-                Collect.openEditPopup();
+                Category.openEditPopup();
             }
         }
         MenuSeparator {
@@ -189,7 +189,7 @@ Rectangle {
             text: qsTr("Out Edit")
             shortcut: ctrlName+"+Alt+Enter"
             onTriggered: {
-                Collect.openOutEdit();
+                Category.openOutEdit();
             }
         }
         MenuSeparator {
@@ -199,7 +199,7 @@ Rectangle {
             text: qsTr("Copy main image")
             shortcut: "Alt+Shift+C"
             onTriggered: {
-                Collect.copyPK(0);
+                Category.copyPK(0);
             }
         }
         MenuSeparator {
@@ -211,7 +211,7 @@ Rectangle {
             text: qsTr("Copy main image link")
             shortcut: ctrlName+"+Alt+C"
             onTriggered: {
-                Collect.copyPK(1);
+                Category.copyPK(1);
             }
         }
         MenuSeparator {
@@ -222,7 +222,7 @@ Rectangle {
             text: qsTr("Copy content")
             shortcut: ctrlName+"+Shift+C"
             onTriggered: {
-                Collect.copyPK(2);
+                Category.copyPK(2);
             }
         }
         MenuSeparator {
@@ -233,7 +233,7 @@ Rectangle {
             text: qsTr("Encrypt | Decrypt")
             shortcut: ctrlName+"+E"
             onTriggered: {
-                Collect.openEncryptPopup();
+                Category.openEncryptPopup();
             }
         }
         MenuSeparator {
@@ -245,7 +245,7 @@ Rectangle {
                 id: mi_exp_pdf
                 text: qsTr("Export PDF")
                 onTriggered: {
-                    let pk = Collect.getCurrentPK();
+                    let pk = Category.getCurrentPK();
                     if(pk) {
                         $app.genFile(Com.file_type_pdf, Com.type_pk, 0, pk.id);
                     }
@@ -258,7 +258,7 @@ Rectangle {
                 id: mi_exp_html
                 text: qsTr("Export HTML")
                 onTriggered: {
-                    let pk = Collect.getCurrentPK();
+                    let pk = Category.getCurrentPK();
                     if(pk){
                         $app.genFile(Com.file_type_html, Com.type_pk, 0, pk.id);
                     }
@@ -271,7 +271,7 @@ Rectangle {
                 id: mi_exp_xm
                 text: qsTr("Export XM")
                 onTriggered: {
-                    let pk = Collect.getCurrentPK();
+                    let pk = Category.getCurrentPK();
                     if(pk){
                         $app.genFile(Com.file_type_xm, Com.type_pk, 0, pk.id);
                     }
@@ -284,7 +284,7 @@ Rectangle {
                 id: mi_exp_site
                 text: qsTr("Export Site")
                 onTriggered: {
-                    let pk = Collect.getCurrentPK();
+                    let pk = Category.getCurrentPK();
                     if(pk){
                         $app.genFile(Com.file_type_site, Com.type_pk, 0, pk.id);
                     }
@@ -298,7 +298,7 @@ Rectangle {
             id: mi_del_site
             text: qsTr("Delete from Site")
             onTriggered: {
-                let pk = Collect.getCurrentPK();
+                let pk = Category.getCurrentPK();
                 if(pk){
                     $app.deleteFromSite(pk.id);
                 }
@@ -311,9 +311,9 @@ Rectangle {
             id: mi_clear_stime
             text: qsTr("Clear Solved Time")
             onTriggered: {
-                let pk = Collect.getCurrentPK();
+                let pk = Category.getCurrentPK();
                 if(pk){
-                    $col.clearSolvedTime(pk.id, Com.putFunc(function(r) {
+                    $cg.clearSolvedTime(pk.id, Com.putFunc(function(r) {
                         pk.stime = 0;
                         tipsInfo(qsTr("Success"));
                     }));
@@ -327,7 +327,7 @@ Rectangle {
         //     id: mi_send_phone
         //     text: qsTr("Send To Phone")
         //     onTriggered: {
-        //         let pk = Collect.getCurrentPK();
+        //         let pk = Category.getCurrentPK();
         //         if(pk){
         //             $app.sendToPhone(Com.type_pk, pk.id, Com.putFunc(function(r) {
         //                 tipsInfo(qsTr("Success"));
@@ -371,7 +371,7 @@ Rectangle {
                 hover_color: "#191919"
                 radius: 1
                 function click() {
-                    Collect.onBtnClick_addCol();
+                    Category.onBtnClick_addCol();
                 }
             }
         }
@@ -384,14 +384,14 @@ Rectangle {
             clip:true
             delegate: ComponentCol{}
             onCurrentIndexChanged: {
-                let c = Collect.getCurrentCol();
+                let c = Category.getCurrentCol();
                 pk_list_model.clear();
                 if(c.jm) {
                     encrypt_cont_popup.delegate = {
                         onSubmit:function(v) {
-                            $col.validateColPWD(c.id, v, Com.putFunc(function(y){
+                            $cg.validateCategoryPWD(c.id, v, Com.putFunc(function(y){
                                 if(y) {
-                                    Collect.loadPk(true, function(){
+                                    Category.loadPk(true, function(){
                                         pk_list_view.currentIndex = 0;
                                     });
                                     encrypt_cont_popup.close();
@@ -403,7 +403,7 @@ Rectangle {
                     };
                     encrypt_cont_popup.op();
                 } else {
-                    Collect.loadPk(true, function(){
+                    Category.loadPk(true, function(){
                         pk_list_view.currentIndex = 0;
                     });
                 }
@@ -411,7 +411,7 @@ Rectangle {
             focus: true
             highColor: "#000"
             Keys.onPressed:function(event){
-                Collect.onKeysPressed(event);
+                Category.onKeysPressed(event);
             }
         }
         MouseArea {
@@ -427,7 +427,7 @@ Rectangle {
             }
             onReleased: {
                 startX = 0
-                $app.setLocal($app.ENV_K_LAST_COLLECT_LEFT_WIDTH, Math.floor(col_list.width));
+                $app.setLocal($app.ENV_K_LAST_CATEGORY_LEFT_WIDTH, Math.floor(col_list.width));
             }
             onPositionChanged:{
                 if(startX > 0){
@@ -497,14 +497,14 @@ Rectangle {
                 MoreBtn {
                     function click() {
                         if(pk_list_view.footer) {
-                            Collect.loadPk();
+                            Category.loadXM();
                         }
                     }
                 }
             }
             anchors.fill: pk_list
             model: pk_list_model
-            delegate: ComponentPK {}
+            delegate: ComponentXM {}
 //            function click(){
 //                col_list_view.forceActiveFocus();
 //            }
@@ -513,11 +513,11 @@ Rectangle {
             id: grid
             cellWidth: 100
             cellHeight: cellWidth
-            delegate: ComponentGridPK{}
+            delegate: ComponentGridXM{}
         }
         function next() {
             if(pk_list_view.currentIndex+1>=pk_list_view.count) {
-                Collect.loadPk();
+                Category.loadXM();
             }
             let i = pk_list_view.currentIndex+1;
             if(i > pk_list_view.count-1) {
@@ -539,16 +539,16 @@ Rectangle {
             }
         }
         function onClose() {
-            Collect.img_view_delegate.onClose();
+            Category.img_view_delegate.onClose();
         }
         function getTagManager() {
             return tag_view.tagManager;
         }
         function openEditPopup(add, pk) {
-            Collect.openEditPopup(add, pk);
+            Category.openEditPopup(add, pk);
         }
         function getData(id, w, cb) {
-            $col.getPK(id, w, Com.putFunc(function(pk){
+            $cg.getXM(id, w, Com.putFunc(function(pk){
                 pk = Com.convPK(1, 1, pk);
                 if(cb){
                     cb(pk);
@@ -567,8 +567,8 @@ Rectangle {
             root.tagManager.loadTagList(all, list);
             //等标签加载完再加载主页数据
             if(col_list_model.count === 0) {
-                Com.info("loadCollects on init tags");
-                Collect.loadCollects();
+                Com.info("loadCategory on init tags");
+                Category.loadCategory();
             }
         }
         function onAddTag(st, tag) {
@@ -581,14 +581,14 @@ Rectangle {
     MyEditorPopup {
         id: edit_pk_popup
         function submit() {
-            Collect.submitPK();
+            Category.submitPK();
         }
         function cancel() {
-            Collect.cancelEditPK();
+            Category.cancelEditPK();
         }
         function onAdded(pk) {
             pk = Com.convPK(1, 1, pk);
-            Collect.colTotalIncrement();
+            Category.colTotalIncrement();
             if(pk_list_model.count > 0) {
                 let p = pk_list_model.get(0);
                 if(p.date_str === pk.date_str) {
@@ -603,7 +603,7 @@ Rectangle {
             edit_pk_popup.bid = pk.id;
 //                root.st(1, qsTr("Saved"));
             if(pending_close) {
-                Collect.closeEditPK();
+                Category.closeEditPK();
             }
         }
     }
@@ -613,7 +613,7 @@ Rectangle {
         property bool add: false
 
         function submit() {
-            Collect.submitCol(add);
+            Category.submitCol(add);
         }
         function cancel() {
             col_edit_popup.close();
@@ -648,7 +648,7 @@ Rectangle {
         function onSure(y) {
             col_list_view.forceActiveFocus();
             if(y) {
-                Collect.deletePK(ensure_popup);
+                Category.deletePK(ensure_popup);
             }
         }
         function onDeleted(ref) {
@@ -656,7 +656,7 @@ Rectangle {
             if(ref>0){
                 tipsInfo(qsTr("Can not delete! found")+ " "+ ref + " " + qsTr("referenced."));
             } else {
-                Collect.colTotalDecrement();
+                Category.colTotalDecrement();
                 pk_list_model.remove(pk_list_view.currentIndex);
             }
         }
@@ -665,9 +665,9 @@ Rectangle {
         col_list_view.forceActiveFocus();
     }
     function init(data) {
-        Com.info("Collect init data");
+        Com.info("Category init data");
         if(data) {
-            let lw = data[$app.ENV_K_LAST_COLLECT_LEFT_WIDTH];
+            let lw = data[$app.ENV_K_LAST_CATEGORY_LEFT_WIDTH];
             if(lw) {
                 col_list.width = lw;
             }
@@ -677,17 +677,17 @@ Rectangle {
             }
         }
     }
-    function onGetCollects(list) {
+    function onGetCategories(list) {
 //        console.log("--------------->>>>>>>>>>>", search_bar.text.trim(), list.length, pk_list_model.count);
         if($l.isDebug()) {
-            Com.trace("onGetCollects", JSON.stringify(list));
+            Com.trace("onGetCategories", JSON.stringify(list));
         }
         col_list_model.clear();
         for(let i = 0; i < list.length; i++) {
             col_list_model.append(list[i]);
         }
         if(pk_list_model.count === 0) {
-            Collect.loadPk();
+            Category.loadXM();
         }
     }
     function hasNewPK(col) {
@@ -695,16 +695,16 @@ Rectangle {
         if(col_list_view.currentIndex === 0) {
             let row0 = pk_list_model.get(0);
             if(row0) {
-                $col.getNewPKList(c.id, row0.id, pk_list.width, root);
+                $cg.getNewXMList(c.id, row0.id, pk_list.width, root);
             } else {
-                Collect.loadPk(false);
+                Category.loadPk(false);
             }
         }
         if(col) {
-            Collect.addOrUpdateCol(col);
+            Category.addOrUpdateCol(col);
         }
         //更新默认文件夹total
-        $col.countCol(c.id, Com.putFunc(function(n) {
+        $cg.countCategory(c.id, Com.putFunc(function(n) {
             c.total = n;
         }));
     }
@@ -731,7 +731,7 @@ Rectangle {
         pk_list_model.remove(pk_list_view.currentIndex);
     }
     function onUpdatePK(pk) {
-        let arr = Collect.getPKByIdInCurrentList(pk.id);
+        let arr = Category.getPKByIdInCurrentList(pk.id);
         if(arr) {
 //            console.log("onUpdatePK", JSON.stringify(pk));
             arr[1].simple_cont = pk.simple_cont;
@@ -759,7 +759,7 @@ Rectangle {
     }
     function onPush(ty, data) {
         if(ty === Com.PUSH_UP_TAGS) {
-            let pk = Collect.getCurrentPK();
+            let pk = Category.getCurrentPK();
             if(pk) {
                 pk.tags = data.tags;
                 pk_list_view.currentItem.updateTags(data.tags);
@@ -772,7 +772,7 @@ Rectangle {
 
     function navBtnClick(ty) {
         if(ty === 'add') {
-            Collect.openEditPopup(1);
+            Category.openEditPopup(1);
         } else if(ty === 'tag') {
             tagManager.openTagView();
         }

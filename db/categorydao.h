@@ -1,29 +1,29 @@
-﻿#ifndef COLDAO_H
-#define COLDAO_H
+﻿#ifndef CATEGORYDAO_H
+#define CATEGORYDAO_H
 
 #include "basedao.h"
 
-#include <model/collect.h>
+#include <model/category.h>
 #include <QString>
 #include <QVariantList>
 #include <vector>
 
 using namespace std;
 
-class ColDao : public BaseDao {
+class CategoryDao : public BaseDao {
 public:
-    ColDao();
+    CategoryDao();
 
-    void add(Collect *col);
+    void add(Category *col);
     void del(uint id);
     void updateName(uint id, QString name);
     void updateIndex(uint id, uint srcIndex, uint dstIndex);
     virtual uint getMaxId() const;
     uint getMaxI();
-    Collect* getCollect(uint id);
-    Collect* getCollectByIndex(uint index);
-    vector<Collect> getAll();
-    vector<Collect> getCollects(QString k);
+    Category* getCategory(uint id);
+    Category* getCategoryByIndex(uint index);
+    vector<Category> getAll();
+    vector<Category> getCategories(QString k);
     uint count();
     uint getIDByName(QString name);
     uint getFirstID();
@@ -31,4 +31,4 @@ public:
     void updatePwd(uint id, QString encrypted);
 };
 
-#endif // COLDAO_H
+#endif // CATEGORYDAO_H

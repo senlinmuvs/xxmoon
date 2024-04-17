@@ -1,13 +1,13 @@
-﻿#include "collect.h"
+﻿#include "category.h"
 #include "com/util.h"
 
-Collect::Collect() {
+Category::Category() {
 }
 
-QString Collect::toString() {
+QString Category::toString() {
     return ut::str::mapToStr(toVMap());
 }
-QVariantMap Collect::toVMap() {
+QVariantMap Category::toVMap() {
     QVariantMap m;
     m.insert("id", id);
     m.insert("name", name);

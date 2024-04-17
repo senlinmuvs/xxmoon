@@ -10,7 +10,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         action/bookaction.cpp \
-        action/collectaction.cpp \
+        action/categoryaction.cpp \
         com/async.cpp \
         com/docparser.cpp \
         com/future.cpp \
@@ -23,25 +23,25 @@ SOURCES += \
         com/sqlite_manager.cpp \
         com/sslhelper.cpp \
         com/util.cpp \
-        com/xm.cpp \
+        com/xm_format.cpp \
         db/basedao.cpp \
-        db/coldao.cpp \
+        db/categorydao.cpp \
         db/envdao.cpp \
         db/notedao.cpp \
-        db/pkdao.cpp \
         db/tagdao.cpp \
         db/workdao.cpp \
+        db/xmdao.cpp \
         hserver.cpp \
         menumanager.cpp \
+        model/category.cpp \
         model/cfg.cpp \
-        model/collect.cpp \
         model/note.cpp \
-        model/pk.cpp \
         model/tag.cpp \
         model/work.cpp \
         app.cpp \
         l.cpp \
         main.cpp \
+        model/xm.cpp \
         timer.cpp
 
 RESOURCES += qml.qrc
@@ -54,7 +54,7 @@ QML_DESIGNER_IMPORT_PATH =
 
 HEADERS += \
     action/bookaction.h \
-    action/collectaction.h \
+    action/categoryaction.h \
     com/async.h \
     com/const.h \
     com/docparser.h \
@@ -69,24 +69,24 @@ HEADERS += \
     com/sqlite_manager.h \
     com/sslhelper.h \
     com/util.h \
-    com/xm.h \
+    com/xm_format.h \
     db/basedao.h \
-    db/coldao.h \
+    db/categorydao.h \
     db/envdao.h \
     db/notedao.h \
-    db/pkdao.h \
     db/tagdao.h \
     db/workdao.h \
+    db/xmdao.h \
     hserver.h \
     menumanager.h \
+    model/category.h \
     model/cfg.h \
-    model/collect.h \
     model/note.h \
-    model/pk.h \
     model/tag.h \
     model/work.h \
     app.h \
     l.h \
+    model/xm.h \
     test.h \
     timer.h
 

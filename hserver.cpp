@@ -149,10 +149,10 @@ void HServer::putData(const Request &req, Response &resp) {
             if(lg->isDebug()) {
                 lg->debug(QString("putData pk %1").arg(data));
             }
-            PK *p = PK::convPK(jo);
-            Collect* defCol = colDao->getCollectByIndex(0);
+            XM *p = XM::convPK(jo);
+            Category* defCol = colDao->getCategoryByIndex(0);
             p->cid = defCol->id;
-            pkDao->add(p);
+            xmDao->add(p);
             delete p;
         } else {
             ty = CONT_TYPE_BOOK;

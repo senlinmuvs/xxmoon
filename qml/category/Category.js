@@ -14,10 +14,10 @@ function refreshAll(key_changed) {
     col_list_view.currentIndex = 0;
     col_list_model.clear();
     pk_list_model.clear();
-    loadCollects();
+    loadCategory();
 }
-function loadCollects() {
-    $col.getCollects(search_bar.text.trim(), root);
+function loadCategory() {
+    $cg.getCategories(search_bar.text.trim(), root);
 }
 function submitCol(add) {
     if(add) {
@@ -44,14 +44,14 @@ function addCol() {
             return;
         }
     }
-    $col.addCol(name, col_edit_popup);
+    $cg.addCategory(name, col_edit_popup);
 }
 function editCol(id) {
     let name = col_edit_popup.text.trim();
     if(name.length > 30) {
         tipsInfo(qsTr("too long"));
     } else {
-        $col.editCol(id, name, col_edit_popup);
+        $cg.editCategory(id, name, col_edit_popup);
     }
 }
 function delCol() {
@@ -61,23 +61,23 @@ function delCol() {
         if(c.total>0) {
             tipsInfo(qsTr("Can not delete, it not empty."));
         } else {
-            $col.delCol(c.id, Com.putFunc(function(){
+            $cg.delCategory(c.id, Com.putFunc(function(){
                 let i = col_list_view.currentIndex;
                 col_list_model.remove(i);
-                loadPk();
+                loadXM();
             }));
         }
     } else {
         tipsInfo(qsTr("Can not delete the default folder."));
     }
 }
-function moveToCollect(i) {
+function moveToCategory(i) {
     let currentPKIndex = pk_list_view.currentIndex;
     let pk = pk_list_model.get(currentPKIndex);
     if(pk) {
         let c = col_list_model.get(i);
         if(c.id !== pk.cid) {
-            $col.updatePKCid(i, pk.id, c.id, root);
+            $cg.updateXMCid(i, pk.id, c.id, root);
         }
     }
 }
@@ -108,7 +108,7 @@ function addOrUpdateCol(col) {
 }
 
 /// pk
-function loadPk(clear, cb) {
+function loadXM(clear, cb) {
     let index = col_list_view.currentIndex;
     pk_list_view.footer = pk_list_more_btn;
     if(clear) {
@@ -119,7 +119,7 @@ function loadPk(clear, cb) {
         let cid = c.id;
         let k = search_bar.text.trim();
         let lsId = getPKLastId();
-        $col.getPKList(k, cid, lsId, pk_list.width, Com.putFunc(function(list){
+        $cg.getXMList(k, cid, lsId, pk_list.width, Com.putFunc(function(list){
             loadPk0(list);
             if(cb) {
                 cb();
@@ -174,7 +174,7 @@ function deletePK(target) {
     if(i>=0){
         let p = pk_list_model.get(i);
         p.img_path = "";
-        $col.deletePK(p.id, target);
+        $cg.deleteXM(p.id, target);
     }
 }
 function openEditPopup(add, pk) {
@@ -186,7 +186,7 @@ function openEditPopup(add, pk) {
             pk = getCurrentPK();
         }
         if(pk) {
-            $col.getPK(pk.id, pk_list.width, Com.putFunc(function(pk2) {
+            $cg.getXM(pk.id, pk_list.width, Com.putFunc(function(pk2) {
                 edit_pk_popup.op(pk.cid, pk.id, pk2.cont);
             }));
         }
@@ -205,7 +205,7 @@ function submitPK() {
     let send = false;
     if(edit_pk_popup.bid <= 0) {
         if(txt!=='') {
-            $col.addPK(getCurrentColId(), txt, pk_list.width, edit_pk_popup);
+            $cg.addXM(getCurrentColId(), txt, pk_list.width, edit_pk_popup);
             send = true;
         }
     } else {
@@ -213,7 +213,7 @@ function submitPK() {
         if($l.isDebug()) {
             $l.debug("updatePK "+ edit_pk_popup.bid + " " + txt + " " + k);
         }
-        $col.updatePK(edit_pk_popup.bid, txt, k, pk_list.width, Com.putFunc(function(r) {
+        $cg.updateXM(edit_pk_popup.bid, txt, k, pk_list.width, Com.putFunc(function(r) {
             if(r.st === 0) {
                 let arr = getPKByIdInCurrentList(edit_pk_popup.bid);
                 if(arr) {
@@ -399,7 +399,7 @@ function openImgView() {
 function copyPK(type) {
     let pk = getCurrentPK();
     if(pk) {
-        $col.copyPK(type, pk.id);
+        $cg.copyXM(type, pk.id);
     }
 }
 function getPKByIdInCurrentList(id) {
@@ -480,7 +480,7 @@ function test() {
 //    }
     let pk = "fuck";
     for(let i = 0; i < 10000; i++) {
-        $col.addPK(8, pk+i, edit_pk_popup);
+        $cg.addXM(8, pk+i, edit_pk_popup);
     }
 }
 //test();
@@ -491,7 +491,7 @@ class PKTagDelegate extends Tag.TagDelegate {
         return getCurrentPK();
     }
     updateTags(id,tags) {
-        $col.updatePKTags(id, tags, Com.putFunc(function(r) {
+        $cg.updateXMTags(id, tags, Com.putFunc(function(r) {
             let pk = getCurrentPK();
             if(pk) {
                 pk.tags = r.tags;

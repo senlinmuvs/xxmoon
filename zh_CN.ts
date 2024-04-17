@@ -11,22 +11,17 @@
     <message>
         <location filename="qml/About.qml" line="78"/>
         <source>Please restart the app!</source>
-        <translation type="unfinished"></translation>
+        <translation>请重启软件</translation>
     </message>
     <message>
         <location filename="qml/About.qml" line="79"/>
         <source>And copy the old data to the new directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>然后复制数据到新的目录</translation>
     </message>
     <message>
         <location filename="qml/About.qml" line="107"/>
         <source>Editor</source>
         <translation>编辑器</translation>
-    </message>
-    <message>
-        <source>Collecting &amp; Clippings &amp; Note</source>
-        <oldsource>Collection &amp; Clippings &amp; Note</oldsource>
-        <translation type="vanished">收藏 &amp; 标注 &amp; 笔记</translation>
     </message>
     <message>
         <location filename="qml/About.qml" line="147"/>
@@ -119,18 +114,6 @@
         <translation>外部编辑</translation>
     </message>
     <message>
-        <source>Send To Phone</source>
-        <translation type="vanished">发送到手机</translation>
-    </message>
-    <message>
-        <source>Success</source>
-        <translation type="vanished">成功</translation>
-    </message>
-    <message>
-        <source>Saved</source>
-        <translation type="vanished">已保存</translation>
-    </message>
-    <message>
         <location filename="qml/book/Book.js" line="297"/>
         <source>Exists Already</source>
         <translation>已存在</translation>
@@ -170,191 +153,164 @@
     </message>
 </context>
 <context>
-    <name>Collect</name>
+    <name>Category</name>
     <message>
-        <location filename="qml/collect/Collect.js" line="43"/>
+        <location filename="qml/category/Category.js" line="43"/>
         <source>Exists Already</source>
         <translation>已存在</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.js" line="52"/>
+        <location filename="qml/category/Category.js" line="52"/>
         <source>too long</source>
         <translation>太长了</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.js" line="62"/>
+        <location filename="qml/category/Category.js" line="62"/>
         <source>Can not delete, it not empty.</source>
         <translation>不能删除，其下有内容！</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.js" line="71"/>
+        <location filename="qml/category/Category.js" line="71"/>
         <source>Can not delete the default folder.</source>
         <translation>不能删除默认文件夹！</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.js" line="471"/>
-        <source>decrypting...</source>
-        <translation>解密中...</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.js" line="498"/>
-        <source>encrypting...</source>
-        <translation>加密中...</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="34"/>
-        <source>Search...</source>
-        <translation>搜索...</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="65"/>
-        <location filename="qml/collect/Collect.qml" line="136"/>
-        <source>Edit</source>
-        <translation>编辑</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="72"/>
-        <location filename="qml/collect/Collect.qml" line="299"/>
-        <source>Delete</source>
-        <translation>删除</translation>
-    </message>
-    <message>
-        <source>Generate PDF</source>
-        <translation type="vanished">导出单个PDF</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="87"/>
-        <source>Generate HTML</source>
-        <translation>导出单个HTML</translation>
-    </message>
-    <message>
-        <source>Export Single XM</source>
-        <oldsource>Export Single PM</oldsource>
-        <translation type="vanished">导出单个XM</translation>
-    </message>
-    <message>
-        <source>Export Batch XM</source>
-        <oldsource>Export Batch PM</oldsource>
-        <translation type="vanished">导出批量XM</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="241"/>
-        <source>Export Site</source>
-        <translation>导出站点</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="255"/>
-        <source>Delete from Site</source>
-        <translation>从站点删除</translation>
-    </message>
-    <message>
-        <source>Send To Phone</source>
-        <translation type="vanished">发送到手机</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="274"/>
-        <source>Success</source>
-        <translation>成功</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="268"/>
-        <source>Clear Solved Time</source>
-        <translation>清除解决时间</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="199"/>
-        <source>Export</source>
-        <translation>导出</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="621"/>
-        <source>Category Name</source>
-        <translation>分类名称</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="116"/>
-        <source>Detail</source>
-        <translation>详情</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="126"/>
-        <source>Picture Model</source>
-        <translation>图片模式</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="145"/>
-        <source>Out Edit</source>
-        <translation>外部编辑</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="155"/>
-        <source>Copy main image</source>
-        <translation>复制主图</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="167"/>
-        <source>Copy main image link</source>
-        <translation>复制主图链接</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="178"/>
-        <source>Copy content</source>
-        <translation>复制内容</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="189"/>
-        <source>Encrypt | Decrypt</source>
-        <translation>加密 | 解密</translation>
-    </message>
-    <message>
-        <source>Generate PM</source>
-        <translation type="vanished">导出批量PM</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="202"/>
-        <source>Export PDF</source>
-        <translation>导出PDF</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="215"/>
-        <source>Export HTML</source>
-        <translation>导出HTML</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="228"/>
-        <source>Export XM</source>
-        <oldsource>Export PM</oldsource>
-        <translation>导出XM</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="666"/>
-        <source>Can not delete! found</source>
-        <translation>不能删除，有</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="666"/>
-        <source>referenced.</source>
-        <translation>引用！</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.js" line="495"/>
-        <location filename="qml/collect/Collect.js" line="516"/>
-        <source>Finished</source>
-        <translation>完成</translation>
-    </message>
-    <message>
-        <source>Saved</source>
-        <translation type="vanished">已保存</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.js" line="181"/>
+        <location filename="qml/category/Category.js" line="228"/>
         <source>Failure.Not found the doc!</source>
         <translation>失败，未找到此文档！</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.js" line="183"/>
+        <location filename="qml/category/Category.js" line="230"/>
         <source>Can not edit encrypted content.</source>
         <translation>不能修改已加密内容！</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.js" line="516"/>
+        <source>decrypting...</source>
+        <translation>解密中...</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.js" line="540"/>
+        <location filename="qml/category/Category.js" line="561"/>
+        <source>Finished</source>
+        <translation>完成</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.js" line="543"/>
+        <source>encrypting...</source>
+        <translation>加密中...</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="34"/>
+        <source>Search...</source>
+        <translation>搜索...</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="65"/>
+        <location filename="qml/category/Category.qml" line="180"/>
+        <source>Edit</source>
+        <translation>编辑</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="72"/>
+        <location filename="qml/category/Category.qml" line="343"/>
+        <source>Delete</source>
+        <translation>删除</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="87"/>
+        <source>Generate HTML</source>
+        <translation>导出单个HTML</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="160"/>
+        <source>Detail</source>
+        <translation>详情</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="170"/>
+        <source>Picture Model</source>
+        <translation>图片模式</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="189"/>
+        <source>Out Edit</source>
+        <translation>外部编辑</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="199"/>
+        <source>Copy main image</source>
+        <translation>复制主图</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="211"/>
+        <source>Copy main image link</source>
+        <translation>复制主图链接</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="222"/>
+        <source>Copy content</source>
+        <translation>复制内容</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="233"/>
+        <source>Encrypt | Decrypt</source>
+        <translation>加密 | 解密</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="243"/>
+        <source>Export</source>
+        <translation>导出</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="246"/>
+        <source>Export PDF</source>
+        <translation>导出PDF</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="259"/>
+        <source>Export HTML</source>
+        <translation>导出HTML</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="272"/>
+        <source>Export XM</source>
+        <translation>导出XM</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="285"/>
+        <source>Export Site</source>
+        <translation>导出站点</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="299"/>
+        <source>Delete from Site</source>
+        <translation>从站点删除</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="312"/>
+        <source>Clear Solved Time</source>
+        <translation>清除解决时间</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="318"/>
+        <source>Success</source>
+        <translation>成功</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="612"/>
+        <source>Category Name</source>
+        <translation>分类名称</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="657"/>
+        <source>Can not delete! found</source>
+        <translation>不能删除，有</translation>
+    </message>
+    <message>
+        <location filename="qml/category/Category.qml" line="657"/>
+        <source>referenced.</source>
+        <translation>引用！</translation>
     </message>
 </context>
 <context>
@@ -432,10 +388,6 @@
         <translation>确定</translation>
     </message>
     <message>
-        <source>Ensure</source>
-        <translation type="vanished">确定</translation>
-    </message>
-    <message>
         <location filename="qml/com/EnsurePopup.qml" line="59"/>
         <source>Cancel</source>
         <translation>取消</translation>
@@ -443,10 +395,6 @@
 </context>
 <context>
     <name>ImgViewer</name>
-    <message>
-        <source>As Wallpaper</source>
-        <translation type="vanished">设置为桌面</translation>
-    </message>
     <message>
         <location filename="qml/com/ImgViewer.qml" line="79"/>
         <source>Copy</source>
@@ -507,18 +455,6 @@
         <translation>导入完成</translation>
     </message>
     <message>
-        <source>First, please select a data storage directory!</source>
-        <translation type="vanished">首先，请选择数据存储目录！</translation>
-    </message>
-    <message>
-        <source>A xxmoon directory will be created in the directory you selected to store the data of this app.</source>
-        <translation type="vanished">将会在您选择的目录中创建一个叫xxmoon的文件夹来存储app数据。</translation>
-    </message>
-    <message>
-        <source>Import...</source>
-        <translation type="vanished">正在导入……</translation>
-    </message>
-    <message>
         <location filename="qml/Main.qml" line="393"/>
         <source>generated success.</source>
         <translation>生成成功</translation>
@@ -527,13 +463,6 @@
         <location filename="qml/Main.qml" line="402"/>
         <source>generated failure.</source>
         <translation>生成失败</translation>
-    </message>
-</context>
-<context>
-    <name>MenuManager</name>
-    <message>
-        <source>About</source>
-        <translation type="vanished">关于</translation>
     </message>
 </context>
 <context>
@@ -568,10 +497,6 @@
         <source>Close</source>
         <translation>关闭</translation>
     </message>
-    <message>
-        <source>Can not import external images</source>
-        <translation type="vanished">不能插入外部图片，请先导入</translation>
-    </message>
 </context>
 <context>
     <name>MyFieldPopup</name>
@@ -594,11 +519,7 @@
 <context>
     <name>Navigation</name>
     <message>
-        <source>Mobile connect to computer</source>
-        <translation type="vanished">手机连接电脑</translation>
-    </message>
-    <message>
-        <location filename="qml/Navigation.qml" line="145"/>
+        <location filename="qml/Navigation.qml" line="163"/>
         <source>Last imported path:</source>
         <translation>上次导入路径：</translation>
     </message>
@@ -619,34 +540,14 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="action/collectaction.cpp" line="206"/>
+        <location filename="action/categoryaction.cpp" line="205"/>
         <source>Failure.Not found the doc!</source>
         <translation>失败，未找到此文档！</translation>
     </message>
     <message>
-        <location filename="action/collectaction.cpp" line="276"/>
+        <location filename="action/categoryaction.cpp" line="275"/>
         <source>Text</source>
         <translation>文本</translation>
-    </message>
-    <message>
-        <source>IMAGE</source>
-        <translation type="vanished">图片</translation>
-    </message>
-    <message>
-        <source>Pick Success</source>
-        <translation type="vanished">摘录成功</translation>
-    </message>
-    <message>
-        <source>Pick Failure</source>
-        <translation type="vanished">摘录失败</translation>
-    </message>
-    <message>
-        <source>Waiting for import all finished.</source>
-        <translation type="vanished">正在等待导入完成</translation>
-    </message>
-    <message>
-        <source>Pick Success!</source>
-        <translation type="vanished">摘录成功！</translation>
     </message>
     <message>
         <location filename="app.cpp" line="496"/>
@@ -667,10 +568,6 @@
         <location filename="app.cpp" line="1837"/>
         <source>cert gen suc</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Xxmoon</source>
-        <translation type="vanished">摘月</translation>
     </message>
     <message>
         <location filename="menumanager.cpp" line="18"/>
@@ -787,92 +684,6 @@
     </message>
 </context>
 <context>
-    <name>Setup</name>
-    <message>
-        <source>Import...</source>
-        <translation type="vanished">正在导入……</translation>
-    </message>
-    <message>
-        <source>Imported</source>
-        <translation type="vanished">导入完成</translation>
-    </message>
-    <message>
-        <source>Import</source>
-        <translation type="vanished">导入</translation>
-    </message>
-    <message>
-        <source>Last import path:</source>
-        <translation type="vanished">上次导入路径：</translation>
-    </message>
-    <message>
-        <source>#TIPS1</source>
-        <translation type="vanished">&lt;p&gt;只需导一次，以后便自动从上次的路径导入。&lt;/p&gt;&lt;p&gt;提示：kindle笔记在-&gt;Kindle盘/documents/My Clippings.txt&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <source>Shortcut key</source>
-        <translation type="vanished">快捷键</translation>
-    </message>
-    <message>
-        <source>Book list:</source>
-        <translation type="vanished">书籍列表：</translation>
-    </message>
-    <message>
-        <source>#TIPS2</source>
-        <translation type="vanished">&lt;ul&gt;&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;上一个&lt;/font&gt; - Shift k&lt;/li&gt;&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;下一个&lt;/font&gt; - Shift j&lt;/li&gt;&lt;/ul&gt;</translation>
-    </message>
-    <message>
-        <source>Search:</source>
-        <translation type="vanished">搜索：</translation>
-    </message>
-    <message>
-        <source>TIPS3</source>
-        <translation type="vanished">&lt;ul&gt;&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;进入搜索框&lt;/font&gt; - Ctrl f&lt;/li&gt;&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;退出搜索框&lt;/font&gt; - Enter或Esc&lt;/li&gt;
-    &lt;li&gt;&lt;font color=&apos;gray&apos;&gt;按作者搜&lt;/font&gt; - a 作者名&lt;/li&gt;
-    &lt;li&gt;&lt;font color=&apos;gray&apos;&gt;按书籍搜&lt;/font&gt; - b 书籍名&lt;/li&gt;
-    &lt;li&gt;&lt;font color=&apos;gray&apos;&gt;按作者搜且过滤内容&lt;/font&gt; - a 作者名 内容&lt;/li&gt;
-    &lt;li&gt;&lt;font color=&apos;gray&apos;&gt;按书籍搜且过滤内容&lt;/font&gt; - b 书籍名 内容&lt;/li&gt;
-&lt;/ul&gt;</translation>
-    </message>
-    <message>
-        <source>Note list:</source>
-        <translation type="vanished">笔记列表：</translation>
-    </message>
-    <message>
-        <source>TIPS4</source>
-        <translation type="vanished">&lt;ul&gt;&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;上一个&lt;/font&gt; - k 或 ⬆︎&lt;/li&gt;&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;下一个&lt;/font&gt; - j 或 ⬇︎&lt;/li&gt;&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;进入编辑&lt;/font&gt; - Enter&lt;/li&gt;
- 	&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;提交&lt;/font&gt; - Ctrl Enter&lt;/li&gt;&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;关闭编辑框&lt;/font&gt; - Ctrl w&lt;/li&gt;&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;删除&lt;/font&gt; - Del或⬅︎&lt;/li&gt;
-&lt;/ul&gt;</translation>
-    </message>
-    <message>
-        <source>TIPS5</source>
-        <translation type="vanished">&lt;ul&gt;&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;打开(全局快捷键)&lt;/font&gt; - Ctrl Alt k&lt;/li&gt;&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;关闭(全局快捷键)&lt;/font&gt; - Esc或Ctrl Alt k&lt;/li&gt;&lt;/ul&gt;</translation>
-    </message>
-    <message>
-        <source>About</source>
-        <translation type="vanished">关于</translation>
-    </message>
-    <message>
-        <source>Version</source>
-        <translation type="vanished">版本：</translation>
-    </message>
-    <message>
-        <source>Site</source>
-        <translation type="vanished">官网：</translation>
-    </message>
-    <message>
-        <source>Feedback</source>
-        <translation type="vanished">反馈：</translation>
-    </message>
-    <message>
-        <source>Author</source>
-        <translation type="vanished">作者：</translation>
-    </message>
-    <message>
-        <source>Empty</source>
-        <translation type="vanished">从未导入过</translation>
-    </message>
-</context>
-<context>
     <name>TagView</name>
     <message>
         <location filename="qml/com/TagView.qml" line="49"/>
@@ -887,17 +698,6 @@
         <source>xxmoon</source>
         <oldsource>Pickmoon</oldsource>
         <translation>摘月</translation>
-    </message>
-</context>
-<context>
-    <name>Work</name>
-    <message>
-        <source>Search...</source>
-        <translation type="vanished">搜索...</translation>
-    </message>
-    <message>
-        <source>Finished</source>
-        <translation type="vanished">完成</translation>
     </message>
 </context>
 <context>

@@ -1,13 +1,13 @@
-﻿#ifndef COLLECT_H
-#define COLLECT_H
+﻿#ifndef CATEGORY_H
+#define CATEGORY_H
 #include <QString>
 #include <QVariantMap>
 
 using namespace std;
 
-class Collect {
+class Category {
 public:
-    Collect();
+    Category();
 
     uint id;
     QString name;
@@ -21,4 +21,4 @@ public:
     QVariantMap toVMap();
 };
 
-#endif // COLLECT_H
+#endif // CATEGORY_H

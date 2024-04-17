@@ -113,10 +113,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Success</source>
-        <translation type="obsolete">Success</translation>
-    </message>
-    <message>
         <location filename="qml/book/Book.js" line="297"/>
         <source>Exists Already</source>
         <translation type="unfinished">Exists Already</translation>
@@ -156,180 +152,162 @@
     </message>
 </context>
 <context>
-    <name>Collect</name>
+    <name>Category</name>
     <message>
-        <location filename="qml/collect/Collect.js" line="43"/>
+        <location filename="qml/category/Category.js" line="43"/>
         <source>Exists Already</source>
         <translation>Exists Already</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.js" line="52"/>
+        <location filename="qml/category/Category.js" line="52"/>
         <source>too long</source>
         <translation> Too Long</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.js" line="62"/>
+        <location filename="qml/category/Category.js" line="62"/>
         <source>Can not delete, it not empty.</source>
         <translation> Can not delete, it not empty!</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.js" line="71"/>
+        <location filename="qml/category/Category.js" line="71"/>
         <source>Can not delete the default folder.</source>
         <translation>Can not delete the default folder!</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.js" line="181"/>
+        <location filename="qml/category/Category.js" line="228"/>
         <source>Failure.Not found the doc!</source>
         <translation type="unfinished"> Failure.Not found the doc!</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.js" line="183"/>
+        <location filename="qml/category/Category.js" line="230"/>
         <source>Can not edit encrypted content.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.js" line="471"/>
+        <location filename="qml/category/Category.js" line="516"/>
         <source>decrypting...</source>
         <translation>Decrypting...</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.js" line="495"/>
-        <location filename="qml/collect/Collect.js" line="516"/>
+        <location filename="qml/category/Category.js" line="540"/>
+        <location filename="qml/category/Category.js" line="561"/>
         <source>Finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.js" line="498"/>
+        <location filename="qml/category/Category.js" line="543"/>
         <source>encrypting...</source>
         <translation>Encrypting...</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="34"/>
+        <location filename="qml/category/Category.qml" line="34"/>
         <source>Search...</source>
         <translation>Search...</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="65"/>
-        <location filename="qml/collect/Collect.qml" line="136"/>
+        <location filename="qml/category/Category.qml" line="65"/>
+        <location filename="qml/category/Category.qml" line="180"/>
         <source>Edit</source>
         <translation>Edit</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="72"/>
-        <location filename="qml/collect/Collect.qml" line="299"/>
+        <location filename="qml/category/Category.qml" line="72"/>
+        <location filename="qml/category/Category.qml" line="343"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Generate PDF</source>
-        <translation type="vanished">Export Single PDF</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="87"/>
+        <location filename="qml/category/Category.qml" line="87"/>
         <source>Generate HTML</source>
         <translation>Export Single HTML</translation>
     </message>
     <message>
-        <source>Export Single XM</source>
-        <oldsource>Export Single PM</oldsource>
-        <translation type="vanished">Export Single XM</translation>
-    </message>
-    <message>
-        <source>Export Batch XM</source>
-        <oldsource>Export Batch PM</oldsource>
-        <translation type="vanished">Export Batch XM</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="116"/>
+        <location filename="qml/category/Category.qml" line="160"/>
         <source>Detail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="126"/>
+        <location filename="qml/category/Category.qml" line="170"/>
         <source>Picture Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="145"/>
+        <location filename="qml/category/Category.qml" line="189"/>
         <source>Out Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="155"/>
+        <location filename="qml/category/Category.qml" line="199"/>
         <source>Copy main image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="167"/>
+        <location filename="qml/category/Category.qml" line="211"/>
         <source>Copy main image link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="178"/>
+        <location filename="qml/category/Category.qml" line="222"/>
         <source>Copy content</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="189"/>
+        <location filename="qml/category/Category.qml" line="233"/>
         <source>Encrypt | Decrypt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="199"/>
+        <location filename="qml/category/Category.qml" line="243"/>
         <source>Export</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="202"/>
+        <location filename="qml/category/Category.qml" line="246"/>
         <source>Export PDF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="215"/>
+        <location filename="qml/category/Category.qml" line="259"/>
         <source>Export HTML</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="228"/>
+        <location filename="qml/category/Category.qml" line="272"/>
         <source>Export XM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="241"/>
+        <location filename="qml/category/Category.qml" line="285"/>
         <source>Export Site</source>
         <translation>Export Site</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="255"/>
+        <location filename="qml/category/Category.qml" line="299"/>
         <source>Delete from Site</source>
         <translation>Delete from Site</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="274"/>
+        <location filename="qml/category/Category.qml" line="318"/>
         <source>Success</source>
         <translation type="unfinished">Success</translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="268"/>
+        <location filename="qml/category/Category.qml" line="312"/>
         <source>Clear Solved Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="621"/>
+        <location filename="qml/category/Category.qml" line="612"/>
         <source>Category Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qml/collect/Collect.qml" line="666"/>
+        <location filename="qml/category/Category.qml" line="657"/>
         <source>Can not delete! found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Generate PM</source>
-        <translation type="vanished">Export Batch PM</translation>
-    </message>
-    <message>
-        <location filename="qml/collect/Collect.qml" line="666"/>
+        <location filename="qml/category/Category.qml" line="657"/>
         <source>referenced.</source>
         <translation>Referenced!</translation>
     </message>
@@ -487,10 +465,6 @@
 <context>
     <name>MyEditorPopup</name>
     <message>
-        <source>Can not import external images</source>
-        <translation type="vanished">Can not insert external images,please import first</translation>
-    </message>
-    <message>
         <location filename="qml/com/MyEditorPopup.qml" line="137"/>
         <source>Done</source>
         <translation type="unfinished"></translation>
@@ -542,11 +516,7 @@
 <context>
     <name>Navigation</name>
     <message>
-        <source>Mobile connect to computer</source>
-        <translation type="vanished">Connect Phone to Computer</translation>
-    </message>
-    <message>
-        <location filename="qml/Navigation.qml" line="145"/>
+        <location filename="qml/Navigation.qml" line="163"/>
         <source>Last imported path:</source>
         <translation>Last import path:</translation>
     </message>
@@ -567,38 +537,14 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>Please activate</source>
-        <translation type="vanished">Please activate</translation>
-    </message>
-    <message>
-        <location filename="action/collectaction.cpp" line="206"/>
+        <location filename="action/categoryaction.cpp" line="205"/>
         <source>Failure.Not found the doc!</source>
         <translation> Failure.Not found the doc!</translation>
     </message>
     <message>
-        <location filename="action/collectaction.cpp" line="276"/>
+        <location filename="action/categoryaction.cpp" line="275"/>
         <source>Text</source>
         <translation>Text</translation>
-    </message>
-    <message>
-        <source>IMAGE</source>
-        <translation type="vanished">IMAGE</translation>
-    </message>
-    <message>
-        <source>Pick Success</source>
-        <translation type="vanished">Pick Success</translation>
-    </message>
-    <message>
-        <source>Pick Failure</source>
-        <translation type="vanished"> Pick Failure</translation>
-    </message>
-    <message>
-        <source>Waiting for import all finished.</source>
-        <translation type="vanished"> Waiting for import all finished.</translation>
-    </message>
-    <message>
-        <source>Pick Success!</source>
-        <translation type="vanished">Pick Success!</translation>
     </message>
     <message>
         <location filename="app.cpp" line="496"/>
@@ -732,69 +678,6 @@
         <location filename="qml/Server.qml" line="194"/>
         <source>Del</source>
         <translation>Del</translation>
-    </message>
-</context>
-<context>
-    <name>Setup</name>
-    <message>
-        <source>Import...</source>
-        <translation type="vanished">Import...</translation>
-    </message>
-    <message>
-        <source>Imported</source>
-        <translation type="vanished">Imported</translation>
-    </message>
-    <message>
-        <source>Import</source>
-        <translation type="vanished">Import</translation>
-    </message>
-    <message>
-        <source>Last import path:</source>
-        <translation type="vanished">Last import path:</translation>
-    </message>
-    <message>
-        <source>#TIPS1</source>
-        <translation type="vanished">&lt;p&gt;Just import it once and automatically import it from the last path.&lt;/p&gt;&lt;p&gt;Tips: kindle notes in -&gt; Kindle / documents / My Clippings.txt&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <source>Shortcut key</source>
-        <translation type="vanished">Shortcut key</translation>
-    </message>
-    <message>
-        <source>Book list:</source>
-        <translation type="vanished">Book list:</translation>
-    </message>
-    <message>
-        <source>#TIPS2</source>
-        <translation type="vanished">&lt;ul&gt;&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;Last&lt;/font&gt; - Shift k&lt;/li&gt;&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;Next&lt;/font&gt; - Shift j&lt;/li&gt;&lt;/ul&gt;</translation>
-    </message>
-    <message>
-        <source>Search:</source>
-        <translation type="vanished">Search:</translation>
-    </message>
-    <message>
-        <source>TIPS3</source>
-        <translation type="vanished">&lt;ul&gt;&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;Enter search box&lt;/font&gt; - Ctrl f&lt;/li&gt;
-&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;Exit search box&lt;/font&gt; - Enter/Esc&lt;/li&gt;
-    &lt;li&gt;&lt;font color=&apos;gray&apos;&gt;Search by anthor&lt;/font&gt; - a anthor&lt;/li&gt;
-    &lt;li&gt;&lt;font color=&apos;gray&apos;&gt;Search by book&lt;/font&gt; - b book&lt;/li&gt;
-    &lt;li&gt;&lt;font color=&apos;gray&apos;&gt;Search by anthor and filter note&lt;/font&gt; - a anthor note&lt;/li&gt;
-    &lt;li&gt;&lt;font color=&apos;gray&apos;&gt;Search by book and filter note&lt;/font&gt; - b book note&lt;/li&gt;
-&lt;/ul&gt;</translation>
-    </message>
-    <message>
-        <source>Note list:</source>
-        <translation type="vanished">Note list:</translation>
-    </message>
-    <message>
-        <source>TIPS4</source>
-        <translation type="vanished">&lt;ul&gt;&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;Last&lt;/font&gt; - k / ⬆︎&lt;/li&gt;&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;Next&lt;/font&gt; - j / ⬇︎&lt;/li&gt;&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;Enter editor&lt;/font&gt; - Enter&lt;/li&gt;
- 	&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;Submit&lt;/font&gt; - Ctrl Enter&lt;/li&gt;&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;Close editor&lt;/font&gt; - Ctrl w&lt;/li&gt;&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;Delete&lt;/font&gt; - Del/⬅︎&lt;/li&gt;
-&lt;/ul&gt;</translation>
-    </message>
-    <message>
-        <source>TIPS5</source>
-        <translation type="vanished">&lt;ul&gt;&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;Open(global shortcut key)&lt;/font&gt; - Ctrl Alt k&lt;/li&gt;&lt;li&gt;&lt;font color=&apos;gray&apos;&gt;Close(global shortcut key)&lt;/font&gt; - Esc/Ctrl Alt k&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
 </context>
 <context>

@@ -1,6 +1,5 @@
 ﻿#include "tagdao.h"
 #include "com/global.h"
-#include "com/util.h"
 
 void fillData(QSqlQuery *q, vector<Tag> *list);
 
@@ -103,9 +102,9 @@ void TagDao::del(uint id) {
     });
 }
 QMap<uint,uint> TagDao::countTag(uint target) {
-    QString table = target == 0 ? "pk" : "note";
+    QString table = target == 0 ? "xm" : "note";
     QString sql = "select tags,count(*) as n from "+ table +" where tags!='' #del group by tags";
-    if(table == "pk") {
+    if(table == "xm") {
         sql.replace("#del", "");
     } else {
         sql.replace("#del", "and del=0");
@@ -131,9 +130,9 @@ QMap<uint,uint> TagDao::countTag(uint target) {
     return map;
 }
 uint TagDao::countTag(uint tid, uint target) {
-    QString table = target == 0 ? "pk" : "note";
+    QString table = target == 0 ? "xm" : "note";
     QString sql = "select count(*) as n from "+ table +" where tags like :tid #del";
-    if(table == "pk") {
+    if(table == "xm") {
         sql.replace("#del", "");
     } else {
         sql.replace("#del", "and del=0");

@@ -1,7 +1,7 @@
 ﻿import QtQuick
 import QtQuick.Controls
 import "../com/com.js" as Com
-import "../collect/Collect.js" as Collect
+import "../category/Category.js" as Category
 import "ui.js" as UI
 
 Rectangle {
@@ -61,7 +61,7 @@ Rectangle {
                     color: Qt.rgba(0/255, 0/255, 0/255, 0.9)
                     function click() {
                         if(btn_no.visible) {
-                            $col.getPK(Collect.getCurrentPkId(), pk_list.width, Com.putFunc(function(pk) {
+                            $cg.getXM(Category.getCurrentPkId(), pk_list.width, Com.putFunc(function(pk) {
                                 simple_cont = pk.simple_cont;
                                 cont = pk.cont;
 //                                simple_html = pk.simple_html;
@@ -80,7 +80,7 @@ Rectangle {
                     function click() {
                         $app.ensureEncryptOrDecrypt(id, cont, Com.putFunc(function(st) {
                             if(st === 0) {
-                                let pk = Collect.getCurrentPK();
+                                let pk = Category.getCurrentPK();
                                 if(pk){
                                     pk.jm_ensure = false;
                                     pk.img_path = Com.file_pre + $app.getCfgVal("img_dir") + "/" + img;
@@ -177,7 +177,7 @@ Rectangle {
 //            col_list.forceActiveFocus();
         }
         onDoubleClicked: {
-            Collect.openEditPopup();
+            Category.openEditPopup();
         }
         onClicked:function(mouse){
             if (mouse.button === Qt.RightButton) {
@@ -206,7 +206,7 @@ Rectangle {
     function updateTags(tags) {
         tag_line.tag_ids = tags;
         if($l.isDebug()) {
-            Com.debug("ComponentPK updateTags", tags);
+            Com.debug("ComponentXM updateTags", tags);
         }
     }
     function updateImage() {

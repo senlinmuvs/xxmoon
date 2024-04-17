@@ -37,7 +37,7 @@ public:
             QFileOpenEvent *openEvent = static_cast<QFileOpenEvent *>(event);
             QString curXM = openEvent->file();
             qDebug() << "Open file" << curXM;
-            PK *pk = xm->openFile(curXM, "");
+            XM *pk = xm_format->openFile(curXM, "");
             QObject* root = engine->rootObjects()[0];
             QMetaObject::invokeMethod(root, "openXM", Q_ARG(QVariant, QVariant::fromValue(pk->toVMap(true))));
         }
@@ -84,7 +84,7 @@ int initGui(MyApplication* a) {
 
     engine->rootContext()->setContextProperty("$app", app);
     engine->rootContext()->setContextProperty("$l", l);
-    engine->rootContext()->setContextProperty("$col", colAction);
+    engine->rootContext()->setContextProperty("$cg", categoryAction);
     engine->rootContext()->setContextProperty("$bk", bookAction);
 
     //语言国际化

@@ -11,7 +11,7 @@
 #define WIN 0
 #define UNIX 1
 #define MAC 2
-#define VERSION "1.36.0"
+#define VERSION "1.36.1"
 
 #define CB_VAR std::function<QVariantList()>
 
@@ -43,16 +43,16 @@ const static QString sql_note_table =
 ")";
 const static QString sql_note_script = "create unique index note_time_uindex on note (time);";
 
-const static QString sql_col_table =
-"CREATE TABLE IF NOT EXISTS `col` ("
+const static QString sql_category_table =
+"CREATE TABLE IF NOT EXISTS `category` ("
     "id INTEGER not null primary key,"
     "name TEXT default '' not null,"
     "i INTEGER default 0 not null,"
     "x INTEGER default 0 not null,"
     "m TEXT default '' not null"
 ")";
-const static QString sql_pk_table =
-"CREATE TABLE IF NOT EXISTS `pk` ("
+const static QString sql_xm_table =
+"CREATE TABLE IF NOT EXISTS `xm` ("
     "id INTEGER not null primary key,"
     "cid INTEGER default 0 not null,"
     "cont TEXT default '' not null,"
@@ -84,7 +84,7 @@ const static QString ENV_K_LAST_EXCHANGE_VERSION = "LAST_EXCHANGE_VERSION";
 const static QString ENV_K_LAST_SORT = "LAST_SORT";
 const static QString ENV_K_LAST_VIEW_TYPE = "LAST_VIEW_TYPE";
 const static QString ENV_K_LAST_WH = "LAST_WH";
-const static QString ENV_K_LAST_COLLECT_LEFT_WIDTH = "LAST_COLLECT_LEFT_WIDTH";
+const static QString ENV_K_LAST_CATEGORY_LEFT_WIDTH = "LAST_CATEGORY_LEFT_WIDTH";
 const static QString ENV_K_LAST_BOOK_LEFT_WIDTH = "LAST_BOOK_LEFT_WIDTH";
 const static QString Tag1 = "<font color='red'>";
 const static QString Tag2 = "</font>";

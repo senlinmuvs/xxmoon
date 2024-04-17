@@ -1,6 +1,6 @@
 ﻿import QtQuick
 import "com.js" as Com
-import "../collect/Collect.js" as Collect
+import "../category/Category.js" as Category
 import "ui.js" as UI
 
 Rectangle {
@@ -64,14 +64,14 @@ Rectangle {
                         if(sorting_col_index !== index) {
                             let c = col_list_model.get(sorting_col_index);
                             let dstIndex = index;
-                            $col.sortingCol(c.id, sorting_col_index, dstIndex, Com.putFunc(function() {
+                            $cg.sorting(c.id, sorting_col_index, dstIndex, Com.putFunc(function() {
                                 let c = col_list_model.get(sorting_col_index);
                                 let cloneCol = {id: c.id, name: c.name, total: c.total};
                                 if(c) {
                                     col_list_model.remove(sorting_col_index);
                                     col_list_model.insert(dstIndex, cloneCol);
                                     if(sorting_col_index === col_list_view.currentIndex || dstIndex === col_list_view.currentIndex) {
-                                        Collect.loadPk(true);
+                                        Category.loadPk(true);
                                     }
                                     sorting_col_index = 0;
                                 }
@@ -85,12 +85,12 @@ Rectangle {
                 }
             } else {
                 if(stopX > 0 && Com.abs(startX-stopX) > 20) {
-                    Collect.moveToCollect(index);
+                    Category.moveToCategory(index);
                 }
             }
         }
         function onDoubleClicked0() {
-            Collect.moveToCollect(index);
+            Category.moveToCategory(index);
         }
     }
     MouseArea {

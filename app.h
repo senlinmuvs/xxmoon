@@ -3,8 +3,6 @@
 
 #include <QObject>
 #include "com/const.h"
-#include "model/work.h"
-#include "model/note.h"
 #include <QQuickTextDocument>
 
 using namespace std;
@@ -22,7 +20,7 @@ class App: public QObject {
     Q_PROPERTY(QString ENV_K_LAST_SORT READ getENV_K_LAST_SORT CONSTANT)
     Q_PROPERTY(QString ENV_K_LAST_VIEW_TYPE READ getLAST_VIEW_TYPE CONSTANT)
     Q_PROPERTY(QString ENV_K_LAST_WH READ getLAST_WH CONSTANT)
-    Q_PROPERTY(QString ENV_K_LAST_COLLECT_LEFT_WIDTH READ getLAST_COLLECT_LEFT_WIDTH CONSTANT)
+    Q_PROPERTY(QString ENV_K_LAST_CATEGORY_LEFT_WIDTH READ getLAST_CATEGORY_LEFT_WIDTH CONSTANT)
     Q_PROPERTY(QString ENV_K_LAST_BOOK_LEFT_WIDTH READ getLAST_BOOK_LEFT_WIDTH CONSTANT)
     Q_PROPERTY(QString cfgFile READ getCfgFile CONSTANT)
 
@@ -51,7 +49,7 @@ public:
     QString getImgDir();
     QString getENV_K_LAST_SORT() const{return ENV_K_LAST_SORT;}
     QString getLAST_VIEW_TYPE() const{return ENV_K_LAST_VIEW_TYPE;}
-    QString getLAST_COLLECT_LEFT_WIDTH() const{return ENV_K_LAST_COLLECT_LEFT_WIDTH;}
+    QString getLAST_CATEGORY_LEFT_WIDTH() const{return ENV_K_LAST_CATEGORY_LEFT_WIDTH;}
     QString getLAST_BOOK_LEFT_WIDTH() const{return ENV_K_LAST_BOOK_LEFT_WIDTH;}
     QString getLAST_WH() const{return ENV_K_LAST_WH;}
     QString getCfgFile();

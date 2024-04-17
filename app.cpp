@@ -444,7 +444,7 @@ void App::pk() {
         QMetaObject::invokeMethod(qmlRoot, "startPK",
                                   Qt::ConnectionType::DirectConnection,
                                   Q_RETURN_ARG(QVariant, suc));
-        colAction->pk(&img, cont, "");
+        categoryAction->xm(&img, cont, "");
         if(suc.toBool()) {
             if(img.isNull()) {
                 if(cont.length() > 0) {
@@ -567,7 +567,7 @@ void App::init0() {
                 Q_ARG(QVariant, QVariant::fromValue(this->getUIData())));
 }
 QVariantMap App::getUIData() {
-    uint lastCollectLeftWidth = 0;
+    uint lastCategoryLeftWidth = 0;
     uint lastBookLeftWidth = 0;
     QString wh = "";
     uint maxWindow = 0;
@@ -582,8 +582,8 @@ QVariantMap App::getUIData() {
                     QString v = kv.at(1).trimmed();
                     if(k == ENV_K_LAST_BOOK_LEFT_WIDTH) {
                         lastBookLeftWidth = v.toUInt();
-                    } else if(k == ENV_K_LAST_COLLECT_LEFT_WIDTH) {
-                        lastCollectLeftWidth = v.toUInt();
+                    } else if(k == ENV_K_LAST_CATEGORY_LEFT_WIDTH) {
+                        lastCategoryLeftWidth = v.toUInt();
                     } else if(k == ENV_K_LAST_WH) {
                         wh = v;
                     } else if(k == "maxWindow") {
@@ -605,7 +605,7 @@ QVariantMap App::getUIData() {
     data->insert(ENV_K_LAST_VIEW_TYPE, l.at(0));
     data->insert(ENV_K_LAST_SORT, l.at(1));
     data->insert(ENV_K_LAST_WH, wh.split(","));
-    data->insert(ENV_K_LAST_COLLECT_LEFT_WIDTH, lastCollectLeftWidth);
+    data->insert(ENV_K_LAST_CATEGORY_LEFT_WIDTH, lastCategoryLeftWidth);
     data->insert(ENV_K_LAST_BOOK_LEFT_WIDTH, lastBookLeftWidth);
     data->insert("maxWindow", maxWindow);
     QVariantMap d = *data;
@@ -618,7 +618,7 @@ void App::encrypt(uint id, QString k, uint listWidth, uint cbid) {
         lg->debug(QString("encrypt pk id %1").arg(id));
     }
     DB_Async->exe([=]{
-        PK *pk = pkDao->getPK(id);
+        XM *pk = xmDao->getXM(id);
         Com_Async->exe([=]{
             if(pk && !pk->jm) {
                 if(pk->cont.length() > 0) {
@@ -660,7 +660,7 @@ void App::decrypt(uint id, QString k, uint listWidth, uint cbid) {
         lg->debug(QString("decrypt %1").arg(id));
     }
     DB_Async->exe([=]{
-        PK *pk = pkDao->getPK(id);
+        XM *pk = xmDao->getXM(id);
         Com_Async->exe([=]{
             if(pk && pk->jm) {
                 if(pk->cont.length() > 0) {
@@ -696,7 +696,7 @@ void App::decrypt(uint id, QString k, uint listWidth, uint cbid) {
 void App::ensureEncryptOrDecrypt(uint id, QString cont, uint cbid) {
     DB_Async->exe([=]{
         int st = 0;
-        PK *pk = pkDao->getPK(id);
+        XM *pk = xmDao->getXM(id);
         if(pk) {
             bool up = false;
             if(cont.length() > 0) {
@@ -719,7 +719,7 @@ void App::ensureEncryptOrDecrypt(uint id, QString cont, uint cbid) {
             }
             if(up) {
                 pk->jm = !pk->jm;
-                pkDao->updatePK(id, pk->cont, pk->jm);
+                xmDao->updateXM(id, pk->cont, pk->jm);
             }
         } else {
             st = 1;
@@ -772,7 +772,7 @@ void setXMBlogTag(uint id) {
             tag->tag = cfg->site_xmblog_tag;
             tagDao->add(tag);
         }
-        PK *pk = pkDao->getPK(id);
+        XM *pk = xmDao->getXM(id);
         QString tagId_ = QString("#%1#").arg(tag->id);
         if(!pk->tags.contains(tagId_)) {
             QString tags = pk->tags;
@@ -781,7 +781,7 @@ void setXMBlogTag(uint id) {
             } else {
                 tags = tags + QString::number(tag->id) + "#";
             }
-            pkDao->updatePKTags(id, tags);
+            xmDao->updateXMTags(id, tags);
             pushMsg(PUSH_UP_TAGS, ut::col::createMap("id", id, "tags", tags));
         }
         delete tag;
@@ -794,13 +794,13 @@ void delXMBlogTag(uint id) {
         if(!tag) {
             return;
         }
-        PK *pk = pkDao->getPK(id);
+        XM *pk = xmDao->getXM(id);
         if(pk) {
             QString tagId_ = QString("#%1#").arg(tag->id);
             if(pk->tags.contains(tagId_)) {
                 //#1#2#3#4#5#
                 pk->tags = pk->tags.replace("#"+QString::number(tag->id), "");
-                pkDao->updatePKTags(id, pk->tags);
+                xmDao->updateXMTags(id, pk->tags);
                 pushMsg(PUSH_UP_TAGS, ut::col::createMap("id", id, "tags", pk->tags));
             }
             delete pk;
@@ -821,7 +821,7 @@ void App::genFile(uint fileType, uint type, uint gid, uint id, bool batch, QStri
             if(gid > 0) {
                 uint fromId = 0;
                 while(true) {
-                    QList<PK*> list = pkDao->getPKList("", gid, fromId);
+                    QList<XM*> list = xmDao->getXMList("", gid, fromId);
                     if(lg->isDebug()) {
                         lg->debug(QString("gen pk file %1 %2 %3 fromId %4").arg(fileType).arg(gid).arg(list.size()).arg(fromId));
                     }
@@ -829,37 +829,37 @@ void App::genFile(uint fileType, uint type, uint gid, uint id, bool batch, QStri
                         break;
                     }
                     for(int i = 0; i < list.size(); i++) {
-                        PK *pk = list.at(i);
+                        XM *xm = list.at(i);
                         if(fileType == FILE_TYPE_XM) {
                             if(batch) {
-                                if(!pk->jm) {
-                                    file = xm->createXMFile(extractName(pk->cont), pk->img, pk->cont, pwd);
+                                if(!xm->jm) {
+                                    file = xm_format->createXMFile(extractName(xm->cont), xm->img, xm->cont, pwd);
                                 }
                             } else {
-                                if(!pk->jm) {
-                                    if(pk->img.length() > 0) {
-                                        cont->append("!(" + pk->img + ")\n");
+                                if(!xm->jm) {
+                                    if(xm->img.length() > 0) {
+                                        cont->append("!(" + xm->img + ")\n");
                                     }
-                                    if(pk->cont.length() > 0) {
-                                        cont->append(pk->cont+"\n\n");
+                                    if(xm->cont.length() > 0) {
+                                        cont->append(xm->cont+"\n\n");
                                     }
                                 }
                             }
                         } else {
-                            if(!pk->jm) {
-                                if(pk->img.length() > 0) {
-                                    cont->append("<p>"+mainImgConvHtml(pk->img)+"</p>");
+                            if(!xm->jm) {
+                                if(xm->img.length() > 0) {
+                                    cont->append("<p>"+mainImgConvHtml(xm->img)+"</p>");
                                 }
-                                if(pk->cont.length() > 0){
-                                    cont->append("<p>"+doc_parser->parseHtml(pk->cont, maxWidth)+"</p>");
+                                if(xm->cont.length() > 0){
+                                    cont->append("<p>"+doc_parser->parseHtml(xm->cont, maxWidth)+"</p>");
                                 }
                             }
                         }
-                        delete pk;
+                        delete xm;
                     }
                     fromId = list.last()->id;
                 }
-                Collect *c = colDao->getCollect(gid);
+                Category *c = colDao->getCategory(gid);
                 if(c) {
                     filename = extractName(c->name, c->name.length());
                 }
@@ -868,11 +868,11 @@ void App::genFile(uint fileType, uint type, uint gid, uint id, bool batch, QStri
                 if(lg->isDebug()) {
                     lg->debug(QString("gen pk file %1 %2").arg(fileType).arg(id));
                 }
-                PK *pk = pkDao->getPK(id);
+                XM *pk = xmDao->getXM(id);
                 if(pk) {
                     filename = extractName(pk->cont, fileType == FILE_TYPE_SITE?50:16);
                     if(fileType == FILE_TYPE_XM) {
-                        file = xm->createXMFile(filename, pk->img, pk->cont, pwd);
+                        file = xm_format->createXMFile(filename, pk->img, pk->cont, pwd);
                     } else {
                         if(pk->img.length() > 0) {
                             cont->append(mainImgConvHtml(pk->img));
@@ -923,7 +923,7 @@ void App::genFile(uint fileType, uint type, uint gid, uint id, bool batch, QStri
                     delete w;
                 }
                 if(fileType == FILE_TYPE_XM) {
-                    file = xm->createXMFile(filename, "", xmCont, "");
+                    file = xm_format->createXMFile(filename, "", xmCont, "");
                 } else {
                     if(fileType == FILE_TYPE_SITE) {
                         file = createSiteFile(filename, *cont, w->time);
@@ -936,7 +936,7 @@ void App::genFile(uint fileType, uint type, uint gid, uint id, bool batch, QStri
                     if(n->cont.length() > 0) {
                         filename = extractName(n->cont);
                         if(fileType == FILE_TYPE_XM){
-                            file = xm->createXMFile(filename, "", n->cont, "");
+                            file = xm_format->createXMFile(filename, "", n->cont, "");
                         } else {
                             if(n->bj) {
                                 cont->append("<p"+NOTE_BJ_STYLE+">"+doc_parser->parseHtml(n->cont, maxWidth)+"</p>");
@@ -975,7 +975,7 @@ void App::genFile(uint fileType, uint type, uint gid, uint id, bool batch, QStri
                 cont->append("</div>");
                 ut::file::writeText(file, *cont);
             } else if(fileType == FILE_TYPE_XM) {
-                file = xm->createXMFile(filename, "", *cont, "");
+                file = xm_format->createXMFile(filename, "", *cont, "");
             }
         }
         QObject *root = engine->rootObjects()[0];
@@ -989,7 +989,7 @@ void App::deleteFromSite(uint id, uint type) {
     DB_Async->exe([id, type]() {
         QString filename = "";
         if(type == CONT_TYPE_PK) {
-            PK *pk = pkDao->getPK(id);
+            XM *pk = xmDao->getXM(id);
             if(pk) {
                 filename = extractName(pk->cont, 50);
             }
@@ -1036,7 +1036,7 @@ QString getExtra(QString filename) {
     if(cfg->site_detail_extra_id == 0) {
         return "";
     }
-    PK *pk = pkDao->getPK(cfg->site_detail_extra_id);
+    XM *pk = xmDao->getXM(cfg->site_detail_extra_id);
     QString cont = pk->cont;
     if(cont.length() > 0) {
         QString tag1 = "---\n";
@@ -1300,7 +1300,7 @@ void App::openInExternal(int type, QString param, uint obj) {
             QString cont = "";
             QString pre = "";
             if(obj == 0) {
-                PK* pk = pkDao->getPK(id);
+                XM* pk = xmDao->getXM(id);
                 if(pk) {
                     cont = pk->cont;
                     pre = cfg->tmpPKPre;
@@ -1364,7 +1364,7 @@ void App::checkTmpFile() {
                 QStringList arr = data.split("\n");
                 if(arr.length() > 0){
                     QString xmFile = arr[0].trimmed();
-                    PK *pk = xm->openFile(xmFile, "");
+                    XM *pk = xm_format->openFile(xmFile, "");
                     if(pk) {
                         QMetaObject::invokeMethod(qmlRoot, "openXM",
                                                   Q_ARG(QVariant, QVariant::fromValue(pk->toVMap(true))));
@@ -1401,12 +1401,12 @@ void App::checkTmpFile() {
 }
 void App::updatePK0(uint id, QString cont) {
     DB_Async->exe([=]{
-        PK *pk = pkDao->getPK(id);
+        XM *pk = xmDao->getXM(id);
         if(pk != NULL) {
             if(pk->cont != cont) {
                 if(!pk->jm) {
                     uint lst = ut::time::getCurSeconds();
-                    pkDao->updatePK(id, cont, 0, lst);
+                    xmDao->updateXM(id, cont, 0, lst);
 
                     pk->simpleCont = extractPKSimpleCont(cont, "");
                     pk->cont = cont;
@@ -1552,7 +1552,7 @@ void App::setCfg(QString k, QString v) {
 
 void App::openXMFile(QString file, QString pwd, uint cbid) {
     file = ut::str::removePrefix(file, getFilePre());
-    PK *pk = xm->openFile(file, pwd);
+    XM *pk = xm_format->openFile(file, pwd);
     if(pk) {
         sendMsg(cbid, pk->toVMap(true));
         delete pk;
@@ -1561,7 +1561,7 @@ void App::openXMFile(QString file, QString pwd, uint cbid) {
 
 void App::importXM(QVariantMap pkdata) {
     DB_Async->exe([=]{
-        PK *pk = new PK();
+        XM *pk = new XM();
         pk->fill(pkdata);
         if(lg->isDebug()) {
             lg->trace(QString("importXM pkdata %1 -> %2").arg(ut::str::mapToStr(pkdata)).arg(pk->toString()));
@@ -1613,7 +1613,7 @@ void App::importXM(QVariantMap pkdata) {
                        .arg(pk->img.length()>0).arg(refs.size()));
         }
         //如果有图片则创建一个Resource Folder
-        Collect* resCol = NULL;
+        Category* resCol = NULL;
         uint resColID = colDao->getIDByName(FOLDER_RESOURCES);
         if(lg->isDebug()){
             lg->debug(QString("find res folder %1 %2").arg(resColID).arg(FOLDER_RESOURCES));
@@ -1621,7 +1621,7 @@ void App::importXM(QVariantMap pkdata) {
         if(pk->img.length() > 0 || refs.size() > 0) {
             if(resColID <= 0) {
                 uint maxI = colDao->getMaxI();
-                resCol = new Collect();
+                resCol = new Category();
                 resCol->name = FOLDER_RESOURCES;
                 resCol->i = maxI + 1;
                 colDao->add(resCol);
@@ -1652,10 +1652,10 @@ void App::importXM(QVariantMap pkdata) {
                         lg->debug(QString("replace ref %1 to %2").arg(ref, newName));
                     }
                     //
-                    PK *refPK = new PK();
+                    XM *refPK = new XM();
                     refPK->cid = resColID;
                     refPK->img = newName;
-                    pkDao->add(refPK);
+                    xmDao->add(refPK);
                     if(lg->isDebug()) {
                         lg->debug(QString("add ref pk %1").arg(refPK->toString()));
                     }
@@ -1664,20 +1664,20 @@ void App::importXM(QVariantMap pkdata) {
             }
         }
         //
-        Collect* defCol = colDao->getCollectByIndex(0);
+        Category* defCol = colDao->getCategoryByIndex(0);
         if(defCol) {
             pk->cid = defCol->id;
         }
-        pkDao->add(pk);
+        xmDao->add(pk);
         if(lg->isDebug()) {
             lg->debug(QString("add pk %1").arg(pk->toString()));
         }
         //
         if(resCol == NULL && resColID > 0) {
-            resCol = colDao->getCollect(resColID);
+            resCol = colDao->getCategory(resColID);
         }
         if(resCol) {
-            resCol->total = pkDao->countCol(resCol->id);
+            resCol->total = xmDao->countCol(resCol->id);
             if(lg->isDebug()) {
                 lg->debug(QString("ret resCol %1").arg(resCol->toString()));
             }
@@ -1789,7 +1789,7 @@ void App::sendToPhone(int ty, int id, int cbid) {
     DB_Async->exe([ty, id, cbid](){
         QString data = "";
         if(ty == CONT_TYPE_PK) {
-            PK *pk = pkDao->getPK(id);
+            XM *pk = xmDao->getXM(id);
             QJsonObject jo = QJsonObject::fromVariantMap(pk->toVMap(true, false));
             data = QJsonDocument(jo).toJson(QJsonDocument::Compact);
             delete pk;
@@ -1922,7 +1922,7 @@ void initDB() {
             workDao->init();
             noteDao->init();
             colDao->init();
-            pkDao->init();
+            xmDao->init();
             tagDao->init();
         } else {
             l->error("db open error");

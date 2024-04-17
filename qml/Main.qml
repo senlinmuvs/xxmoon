@@ -142,7 +142,7 @@ ApplicationWindow {
             anchors.left: navigation.right
             anchors.top: parent.top
             anchors.topMargin: e_top_sep.height
-            source: "qrc:/qml/collect/Collect.qml"
+            source: "qrc:/qml/category/Category.qml"
             focus: true
             onLoaded: {
                 if(pageLoader.item.init) {
@@ -320,7 +320,7 @@ ApplicationWindow {
                 if(type > 0) {
                     if(type === Com.file_type_img) {
                         Com.st(0, qsTr("Import") + (import_n+"/"+import_total));
-                        $col.pk(file);
+                        $cg.xm(file);
                     } else if(type === Com.file_type_txt) {
                         Com.st(0, qsTr("Import"));
                         $app.import(file, window);

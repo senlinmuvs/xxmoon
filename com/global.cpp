@@ -17,15 +17,15 @@ MenuManager *menuManager = new MenuManager();
 #endif
 Cfg *cfg = new Cfg();
 App *app = new App();
-CollectAction* colAction = new CollectAction();
+CategoryAction* categoryAction = new CategoryAction();
 BookAction* bookAction = new BookAction();
 L* l = new L();
 SQLiteManager *db = new SQLiteManager();
 WorkDao *workDao = new WorkDao();
 NoteDao *noteDao = new NoteDao();
 EnvDao *envDao = new EnvDao();
-PKDao *pkDao = new PKDao();
-ColDao *colDao = new ColDao();
+XMDao *xmDao = new XMDao();
+CategoryDao *colDao = new CategoryDao();
 TagDao *tagDao = new TagDao();
 #ifdef Q_OS_MAC
 Mac *mac = new Mac();
@@ -33,7 +33,7 @@ Mac *mac = new Mac();
 QProcess *process = new QProcess();
 DocParser *doc_parser = new DocParser();
 Log *lg = new Log();
-XM *xm = new XM();
+XMFormat *xm_format = new XMFormat();
 SM *sm = new SM();
 
 QRegularExpression Reg_Kindle_Note(cfg->reg_kindle_flag);
@@ -158,7 +158,7 @@ QString extractRefimgids(QString cont) {
     QString s;
     QStringList imgs = extractImgsAsList(cont, true);
     for(QString img:imgs) {
-        uint id = pkDao->getIDByImg(img);
+        uint id = xmDao->getIDByImg(img);
         if(id > 0) {
             s += "#" + QString::number(id);
         }

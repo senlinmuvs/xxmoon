@@ -1,12 +1,12 @@
-﻿#include "pkdao.h"
+﻿#include "xmdao.h"
 #include "com/global.h"
 #include "com/util.h"
 
-PKDao::PKDao() : BaseDao() {
+XMDao::XMDao() : BaseDao() {
 }
 
-QList<PK*> PKDao::gets(QSqlQuery q, QSqlRecord rec) {
-    QList<PK*> list;
+QList<XM*> XMDao::gets(QSqlQuery q, QSqlRecord rec) {
+    QList<XM*> list;
     int colId = rec.indexOf("id");
     int colCid = rec.indexOf("cid");
     int colCont = rec.indexOf("cont");
@@ -32,7 +32,7 @@ QList<PK*> PKDao::gets(QSqlQuery q, QSqlRecord rec) {
         uint jm = q.value(colJm).toBool();
         QString refids = q.value(colRefids).toString();
         QString refimgids = q.value(colRefimgids).toString();
-        PK *p = new PK();
+        XM *p = new XM();
         p->id = id;
         p->cid = cid;
         p->cont = cont;
@@ -49,7 +49,7 @@ QList<PK*> PKDao::gets(QSqlQuery q, QSqlRecord rec) {
     }
     return list;
 }
-void PKDao::add(PK *p) {
+void XMDao::add(XM *p) {
     if(p->id <= 0){
         p->id = increID();
     }
@@ -60,7 +60,7 @@ void PKDao::add(PK *p) {
         p->refimgids = extractRefimgids(p->refimgids);
     }
     //
-    QString sql = "insert into pk(id, cid, cont, img, time, lst, stime, tags, bj, jm, refids, refimgids) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+    QString sql = "insert into xm(id, cid, cont, img, time, lst, stime, tags, bj, jm, refids, refimgids) values(?,?,?,?,?,?,?,?,?,?,?,?)";
     if(p->time <= 0) {
         p->time = ut::time::getCurSeconds();
     }
@@ -80,7 +80,7 @@ void PKDao::add(PK *p) {
     q.addBindValue(p->refimgids.isNull() ? "" : p->refimgids);
     bool r = q.exec();
     if(!r) {
-        lg->error(QString("add pk error %1 %2").arg(q.lastError().text()).arg(p->toString()));
+        lg->error(QString("add xm error %1 %2").arg(q.lastError().text()).arg(p->toString()));
     }
 }
 QString getSearchCondSql0(QString k) {
@@ -92,8 +92,8 @@ QString getSearchCondSql0(QString k) {
     sql = sql.mid(0, sql.length()-5);
     return sql + ")";
 }
-QList<PK*> PKDao::getPKList(QString k, uint cid, uint fromId) {
-    QString sql = "select id,cid,cont,img,time,lst,stime,tags,bj,jm,refids,refimgids from pk where cid=:cid #id #cont #tags order by id desc limit :size";
+QList<XM*> XMDao::getXMList(QString k, uint cid, uint fromId) {
+    QString sql = "select id,cid,cont,img,time,lst,stime,tags,bj,jm,refids,refimgids from xm where cid=:cid #id #cont #tags order by id desc limit :size";
     bool hasK = k.length() > 0;
     if(hasK) {
         k = k.replace("'","");
@@ -137,18 +137,19 @@ QList<PK*> PKDao::getPKList(QString k, uint cid, uint fromId) {
 //    }
     bool r = q.exec();
     if(!r) {
-        lg->error(QString("getPKList error %1 sql[%2]").arg(q.lastError().text()).arg(sql));
+        lg->error(QString("getXMList error %1 sql[%2]").arg(q.lastError().text()).arg(sql));
+        return QList<XM*>();
     }
     QSqlRecord rec = q.record();
-    QList<PK*> list = gets(q, rec);
+    QList<XM*> list = gets(q, rec);
     if(lg->isDebug()) {
-        lg->debug(QString("getPKList sql [%1] args [%2 %3 %4] res %5").arg(sql).arg(k).arg(cid).arg(fromId).arg(list.size()));
+        lg->debug(QString("getXMList sql[%1] args [%2 %3 %4] res %5").arg(sql).arg(k).arg(cid).arg(fromId).arg(list.size()));
     }
     return list;
 }
 
-QList<PK*> PKDao::getNewPKList(uint cid, uint fromId) {
-    QString sql = "select id,cid,cont,img,time,lst,stime,tags,bj,jm,refids,refimgids from pk where cid=:cid and id>:id order by id asc limit :size";
+QList<XM*> XMDao::getNewXMList(uint cid, uint fromId) {
+    QString sql = "select id,cid,cont,img,time,lst,stime,tags,bj,jm,refids,refimgids from xm where cid=:cid and id>:id order by id asc limit :size";
     QSqlQuery q;
     q.prepare(sql);
     q.bindValue(":cid", cid);
@@ -156,17 +157,19 @@ QList<PK*> PKDao::getNewPKList(uint cid, uint fromId) {
     q.bindValue(":size", PAGE_SIZE);
     bool r = q.exec();
     if(!r) {
-        lg->error(QString("getNewPKList error %1").arg(q.lastError().text()));
+        lg->error(QString("getNewXMList error %1").arg(q.lastError().text()));
+        return QList<XM*>();
     }
     QSqlRecord rec = q.record();
     return gets(q, rec);
 }
 
-uint PKDao::getMaxId() const {
-    QSqlQuery q("select max(id) as maxid from pk");
+uint XMDao::getMaxId() const {
+    QSqlQuery q("select max(id) as maxid from xm");
     bool r = q.exec();
     if(!r) {
         lg->error(QString("getMaxId error %1").arg(q.lastError().text()));
+        return 0;
     }
     QSqlRecord rec = q.record();
     int colMaxid = rec.indexOf("maxid");
@@ -175,26 +178,28 @@ uint PKDao::getMaxId() const {
     return maxid;
 }
 
-PK* PKDao::getPK(uint id) {
-    QSqlQuery q("select id,cid,cont,img,time,lst,stime,bj,tags,jm,refids,refimgids from pk where id=" + QString::number(id));
+XM* XMDao::getXM(uint id) {
+    QSqlQuery q("select id,cid,cont,img,time,lst,stime,bj,tags,jm,refids,refimgids from xm where id=" + QString::number(id));
     bool r = q.exec();
     if(!r) {
-        lg->error(QString("getPK error %1").arg(q.lastError().text()));
+        lg->error(QString("getXM error %1").arg(q.lastError().text()));
+        return NULL;
     }
     QSqlRecord rec = q.record();
-    QList<PK*> list = gets(q, rec);
+    QList<XM*> list = gets(q, rec);
     if(list.size() > 0) {
-        PK* pk = list.first();
+        XM* pk = list.first();
         return pk;
     } else {
         return NULL;
     }
 }
-QString PKDao::getTags(uint id) {
-    QSqlQuery q("select tags from pk where id=" + QString::number(id));
+QString XMDao::getTags(uint id) {
+    QSqlQuery q("select tags from xm where id=" + QString::number(id));
     bool r = q.exec();
     if(!r) {
         lg->error(QString("getTags error %1").arg(q.lastError().text()));
+        return "";
     }
     QSqlRecord rec = q.record();
     if(q.next()) {
@@ -202,18 +207,18 @@ QString PKDao::getTags(uint id) {
     }
     return "";
 }
-void PKDao::deletePK(uint id) {
-    db->execute("deletePK", "delete from pk where id=:id", [=](QSqlQuery q) {
+void XMDao::deleteXM(uint id) {
+    db->execute("deleteXM", "delete from xm where id=:id", [=](QSqlQuery q) {
         q.bindValue(":id", id);
     });
 }
-void PKDao::updatePK(uint id, QString cont, uint jm, uint lst) {
+void XMDao::updateXM(uint id, QString cont, uint jm, uint lst) {
     QString refids = extractRefIDs(cont);
     QString refimgids = extractRefimgids(cont);
     if(lg->isDebug()){
-        lg->trace(QString("updatePK id %1 cont %2 jm %3 lst %4").arg(id).arg(cont.length()).arg(jm).arg(lst));
+        lg->trace(QString("updateXM id %1 cont %2 jm %3 lst %4").arg(id).arg(cont.length()).arg(jm).arg(lst));
     }
-    db->execute("updatePK", "update pk set cont=:cont,lst=:lst,jm=:jm,refids=:refids,refimgids=:refimgids where id=:id", [=](QSqlQuery q) {
+    db->execute("updateXM", "update xm set cont=:cont,lst=:lst,jm=:jm,refids=:refids,refimgids=:refimgids where id=:id", [=](QSqlQuery q) {
         q.bindValue(":id", id);
         q.bindValue(":lst", lst);
         q.bindValue(":cont", cont.isNull() ? "" : cont);
@@ -222,19 +227,20 @@ void PKDao::updatePK(uint id, QString cont, uint jm, uint lst) {
         q.bindValue(":refimgids", refimgids.isNull() ? "" : refimgids);
     });
 }
-void PKDao::updateCid(uint pkId, uint cid) {
+void XMDao::updateCid(uint xmid, uint cid) {
     db->execute("updateCid", "update pk set cid=:cid where id=:id", [=](QSqlQuery q) {
         q.bindValue(":cid", cid);
-        q.bindValue(":id", pkId);
+        q.bindValue(":id", xmid);
     });
 }
-uint PKDao::countImgRefrence(QString imgLink) {
+uint XMDao::countImgRefrence(QString imgLink) {
     QSqlQuery q;
-    q.prepare("select count(*) as ref from pk where cont like :k");
+    q.prepare("select count(*) as ref from xm where cont like :k");
     q.bindValue(":k", "%"+imgLink+"%");
     bool suc = q.exec();
     if(!suc){
         lg->error(QString("countImgRefrence error %1").arg(q.lastError().text()));
+        return 0;
     }
     QSqlRecord rec = q.record();
     int colRef = rec.indexOf("ref");
@@ -243,20 +249,21 @@ uint PKDao::countImgRefrence(QString imgLink) {
     return cid;
 }
 
-void PKDao::updatePKTags(uint pkid, QString tags) {
-    db->execute("updatePKTags", "update pk set tags=:tags where id=:id", [=](QSqlQuery q) {
+void XMDao::updateXMTags(uint xmid, QString tags) {
+    db->execute("updateXMTags", "update xm set tags=:tags where id=:id", [=](QSqlQuery q) {
         q.bindValue(":tags", tags.toStdString().c_str());
-        q.bindValue(":id", pkid);
+        q.bindValue(":id", xmid);
     });
 }
 
-uint PKDao::countCol(uint cid) {
+uint XMDao::countCol(uint cid) {
     QSqlQuery q;
-    q.prepare("select count(*) as n from pk where cid=:cid");
+    q.prepare("select count(*) as n from xm where cid=:cid");
     q.bindValue(":cid", cid);
     bool suc = q.exec();
     if(!suc){
         lg->error(QString("countCol error %1").arg(q.lastError().text()));
+        return 0;
     }
     QSqlRecord rec = q.record();
     if(q.next()){
@@ -266,21 +273,22 @@ uint PKDao::countCol(uint cid) {
     return 0;
 }
 
-uint PKDao::getNextID(uint cid, uint id) {
+uint XMDao::getNextID(uint cid, uint id) {
     QSqlQuery q;
-    q.prepare("select id from pk where cid=:cid and id>:id order by id limit 1");
+    q.prepare("select id from xm where cid=:cid and id>:id order by id limit 1");
     q.bindValue(":cid", cid);
     q.bindValue(":id", id);
     bool suc = q.exec();
     if(!suc) {
         lg->error(QString("getNextID error %1").arg(q.lastError().text()));
+        return 0;
     }
     QSqlRecord rec = q.record();
     if(q.next()){
         uint id = q.value(0).toUInt();
         return id;
     } else {
-        q.prepare("select id from pk where cid=:cid order by id limit 1");
+        q.prepare("select id from xm where cid=:cid order by id limit 1");
         q.bindValue(":cid", cid);
         bool suc = q.exec();
         if(!suc){
@@ -295,13 +303,14 @@ uint PKDao::getNextID(uint cid, uint id) {
     return 0;
 }
 
-uint PKDao::getIDByImg(QString img) {
+uint XMDao::getIDByImg(QString img) {
     QSqlQuery q;
-    q.prepare("select id from pk where img=:img");
+    q.prepare("select id from xm where img=:img");
     q.bindValue(":img", img);
     bool suc = q.exec();
     if(!suc){
         lg->error(QString("getIDByImg error %1").arg(q.lastError().text()));
+        return 0;
     }
     QSqlRecord rec = q.record();
     if(q.next()){
@@ -310,13 +319,14 @@ uint PKDao::getIDByImg(QString img) {
     }
     return 0;
 }
-uint PKDao::getSolveTime(uint id) {
+uint XMDao::getSolveTime(uint id) {
     QSqlQuery q;
-    q.prepare("select stime from pk where id=:id");
+    q.prepare("select stime from xm where id=:id");
     q.bindValue(":id", id);
     bool suc = q.exec();
     if(!suc){
         lg->error(QString("getSolveTime error %1").arg(q.lastError().text()));
+        return 0;
     }
     QSqlRecord rec = q.record();
     if(q.next()){
@@ -325,8 +335,8 @@ uint PKDao::getSolveTime(uint id) {
     }
     return 0;
 }
-void PKDao::setSolveTime(uint id, uint stime) {
-    db->execute("setSolveTime", "update pk set stime=:stime where id=:id", [=](QSqlQuery q) {
+void XMDao::setSolveTime(uint id, uint stime) {
+    db->execute("setSolveTime", "update xm set stime=:stime where id=:id", [=](QSqlQuery q) {
         q.bindValue(":stime", stime);
         q.bindValue(":id", id);
     });

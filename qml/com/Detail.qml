@@ -4,7 +4,7 @@ import QtQuick.Controls 2.12
 import Qt.labs.platform 1.1
 import '../com'
 import "../com/com.js" as Com
-import "../collect/Collect.js" as Collect
+import "../category/Category.js" as Category
 import "ui.js" as UI
 
 Rectangle {

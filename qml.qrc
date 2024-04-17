@@ -12,7 +12,7 @@
         <file>qml/com/ComponentCol.qml</file>
         <file>qml/com/ComponentNote.qml</file>
         <file>qml/com/ComponentNoteSimple.qml</file>
-        <file>qml/com/ComponentPK.qml</file>
+        <file>qml/com/ComponentXM.qml</file>
         <file>qml/com/ComponentWork.qml</file>
         <file>qml/com/DateInput.qml</file>
         <file>qml/com/Detail.qml</file>
@@ -54,11 +54,10 @@
         <file>qml/Navigation.qml</file>
         <file>qml/book/Book.js</file>
         <file>qml/book/Book.qml</file>
-        <file>qml/collect/Collect.js</file>
-        <file>qml/collect/Collect.qml</file>
+        <file>qml/category/Category.js</file>
+        <file>qml/category/Category.qml</file>
         <file>assets/logo.icns</file>
         <file>assets/logo.ico</file>
-        <file>en_US.qm</file>
         <file>en_US.ts</file>
         <file>zh_CN.qm</file>
         <file>zh_CN.ts</file>
@@ -77,7 +76,7 @@
         <file>qml/com/Code.qml</file>
         <file>qml/com/BtnImg.qml</file>
         <file>assets/tips.png</file>
-        <file>qml/com/ComponentGridPK.qml</file>
+        <file>qml/com/ComponentGridXM.qml</file>
         <file>qml/Notify.qml</file>
         <file>assets/com.js</file>
         <file>qml/com/HR.qml</file>

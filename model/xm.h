@@ -1,6 +1,5 @@
-﻿#ifndef PK_H
-#define PK_H
-#include <string>
+#ifndef XM_H
+#define XM_H
 #include <QString>
 #include <QVariantMap>
 #include <QJsonObject>
@@ -8,9 +7,9 @@
 
 using namespace std;
 
-class PK {
+class XM {
 public:
-    PK();
+    XM();
 
     uint id = 0;
     uint cid = 0;
@@ -37,9 +36,9 @@ public:
 
     void fill(QVariantMap m);
 
-    static PK* convPK(QJsonObject jo) {
+    static XM* convPK(QJsonObject jo) {
         using namespace ut::json;
-        PK* p = new PK();
+        XM* p = new XM();
         p->cont = getString(jo, "cont", "");
         p->img = getString(jo, "img", "");
         p->time = getQint64(jo, "ctime", 0)/1000;
@@ -47,4 +46,4 @@ public:
     }
 };
 
-#endif // PK_H
+#endif // XM_H

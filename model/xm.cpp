@@ -1,14 +1,14 @@
-﻿#include "pk.h"
+﻿#include "xm.h"
 #include "com/global.h"
 
-PK::PK() {
+XM::XM() {
 }
 
-QString PK::toString() {
+QString XM::toString() {
     return ut::str::mapToStr(toVMap(true));
 }
 
-QVariantMap PK::toVMap(bool detail, bool parse, uint maxWidth) {
+QVariantMap XM::toVMap(bool detail, bool parse, uint maxWidth) {
     QVariantMap m;
     m.insert("id", id);
     m.insert("cid", cid);
@@ -38,7 +38,7 @@ QVariantMap PK::toVMap(bool detail, bool parse, uint maxWidth) {
     return m;
 }
 
-QString PK::getImgLink() {
+QString XM::getImgLink() {
     if(img.length()>0){
         return "!("+img+")";
     } else {
@@ -46,11 +46,11 @@ QString PK::getImgLink() {
     }
 }
 
-bool PK::hasTagId(uint tid) {
+bool XM::hasTagId(uint tid) {
     return tags.contains("#"+QString::number(tid)+"#");
 }
 
-void PK::fill(QVariantMap m) {
+void XM::fill(QVariantMap m) {
     id = m.value("id", 0).toUInt();
     cid = m.value("cid", 0).toUInt();
     cont = m.value("cont", "").toString();
