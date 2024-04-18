@@ -54,8 +54,8 @@
         <file>qml/Navigation.qml</file>
         <file>qml/book/Book.js</file>
         <file>qml/book/Book.qml</file>
-        <file>qml/category/Category.js</file>
-        <file>qml/category/Category.qml</file>
+        <file>qml/xm/XM.js</file>
+        <file>qml/xm/XM.qml</file>
         <file>assets/logo.icns</file>
         <file>assets/logo.ico</file>
         <file>en_US.ts</file>

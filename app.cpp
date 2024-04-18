@@ -444,7 +444,7 @@ void App::pk() {
         QMetaObject::invokeMethod(qmlRoot, "startPK",
                                   Qt::ConnectionType::DirectConnection,
                                   Q_RETURN_ARG(QVariant, suc));
-        categoryAction->xm(&img, cont, "");
+        xmAction->xm(&img, cont, "");
         if(suc.toBool()) {
             if(img.isNull()) {
                 if(cont.length() > 0) {

@@ -153,167 +153,6 @@
     </message>
 </context>
 <context>
-    <name>Category</name>
-    <message>
-        <location filename="qml/category/Category.js" line="43"/>
-        <source>Exists Already</source>
-        <translation>已存在</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.js" line="52"/>
-        <source>too long</source>
-        <translation>太长了</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.js" line="62"/>
-        <source>Can not delete, it not empty.</source>
-        <translation>不能删除，其下有内容！</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.js" line="71"/>
-        <source>Can not delete the default folder.</source>
-        <translation>不能删除默认文件夹！</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.js" line="228"/>
-        <source>Failure.Not found the doc!</source>
-        <translation>失败，未找到此文档！</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.js" line="230"/>
-        <source>Can not edit encrypted content.</source>
-        <translation>不能修改已加密内容！</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.js" line="516"/>
-        <source>decrypting...</source>
-        <translation>解密中...</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.js" line="540"/>
-        <location filename="qml/category/Category.js" line="561"/>
-        <source>Finished</source>
-        <translation>完成</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.js" line="543"/>
-        <source>encrypting...</source>
-        <translation>加密中...</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="34"/>
-        <source>Search...</source>
-        <translation>搜索...</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="65"/>
-        <location filename="qml/category/Category.qml" line="180"/>
-        <source>Edit</source>
-        <translation>编辑</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="72"/>
-        <location filename="qml/category/Category.qml" line="343"/>
-        <source>Delete</source>
-        <translation>删除</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="87"/>
-        <source>Generate HTML</source>
-        <translation>导出单个HTML</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="160"/>
-        <source>Detail</source>
-        <translation>详情</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="170"/>
-        <source>Picture Model</source>
-        <translation>图片模式</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="189"/>
-        <source>Out Edit</source>
-        <translation>外部编辑</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="199"/>
-        <source>Copy main image</source>
-        <translation>复制主图</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="211"/>
-        <source>Copy main image link</source>
-        <translation>复制主图链接</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="222"/>
-        <source>Copy content</source>
-        <translation>复制内容</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="233"/>
-        <source>Encrypt | Decrypt</source>
-        <translation>加密 | 解密</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="243"/>
-        <source>Export</source>
-        <translation>导出</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="246"/>
-        <source>Export PDF</source>
-        <translation>导出PDF</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="259"/>
-        <source>Export HTML</source>
-        <translation>导出HTML</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="272"/>
-        <source>Export XM</source>
-        <translation>导出XM</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="285"/>
-        <source>Export Site</source>
-        <translation>导出站点</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="299"/>
-        <source>Delete from Site</source>
-        <translation>从站点删除</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="312"/>
-        <source>Clear Solved Time</source>
-        <translation>清除解决时间</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="318"/>
-        <source>Success</source>
-        <translation>成功</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="612"/>
-        <source>Category Name</source>
-        <translation>分类名称</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="657"/>
-        <source>Can not delete! found</source>
-        <translation>不能删除，有</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="657"/>
-        <source>referenced.</source>
-        <translation>引用！</translation>
-    </message>
-</context>
-<context>
     <name>ComponentCol</name>
     <message>
         <location filename="qml/com/ComponentCol.qml" line="43"/>
@@ -540,12 +379,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="action/categoryaction.cpp" line="205"/>
+        <location filename="action/xmaction.cpp" line="205"/>
         <source>Failure.Not found the doc!</source>
         <translation>失败，未找到此文档！</translation>
     </message>
     <message>
-        <location filename="action/categoryaction.cpp" line="275"/>
+        <location filename="action/xmaction.cpp" line="275"/>
         <source>Text</source>
         <translation>文本</translation>
     </message>
@@ -698,6 +537,167 @@
         <source>xxmoon</source>
         <oldsource>Pickmoon</oldsource>
         <translation>摘月</translation>
+    </message>
+</context>
+<context>
+    <name>XM</name>
+    <message>
+        <location filename="qml/xm/XM.js" line="43"/>
+        <source>Exists Already</source>
+        <translation>已存在</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.js" line="52"/>
+        <source>too long</source>
+        <translation>太长了</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.js" line="62"/>
+        <source>Can not delete, it not empty.</source>
+        <translation>不能删除，其下有内容！</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.js" line="71"/>
+        <source>Can not delete the default folder.</source>
+        <translation>不能删除默认文件夹！</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.js" line="228"/>
+        <source>Failure.Not found the doc!</source>
+        <translation>失败，未找到此文档！</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.js" line="230"/>
+        <source>Can not edit encrypted content.</source>
+        <translation>不能修改已加密内容！</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.js" line="516"/>
+        <source>decrypting...</source>
+        <translation>解密中...</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.js" line="540"/>
+        <location filename="qml/xm/XM.js" line="561"/>
+        <source>Finished</source>
+        <translation>完成</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.js" line="543"/>
+        <source>encrypting...</source>
+        <translation>加密中...</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="34"/>
+        <source>Search...</source>
+        <translation>搜索...</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="65"/>
+        <location filename="qml/xm/XM.qml" line="180"/>
+        <source>Edit</source>
+        <translation>编辑</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="72"/>
+        <location filename="qml/xm/XM.qml" line="343"/>
+        <source>Delete</source>
+        <translation>删除</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="87"/>
+        <source>Generate HTML</source>
+        <translation>导出单个HTML</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="160"/>
+        <source>Detail</source>
+        <translation>详情</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="170"/>
+        <source>Picture Model</source>
+        <translation>图片模式</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="189"/>
+        <source>Out Edit</source>
+        <translation>外部编辑</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="199"/>
+        <source>Copy main image</source>
+        <translation>复制主图</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="211"/>
+        <source>Copy main image link</source>
+        <translation>复制主图链接</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="222"/>
+        <source>Copy content</source>
+        <translation>复制内容</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="233"/>
+        <source>Encrypt | Decrypt</source>
+        <translation>加密 | 解密</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="243"/>
+        <source>Export</source>
+        <translation>导出</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="246"/>
+        <source>Export PDF</source>
+        <translation>导出PDF</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="259"/>
+        <source>Export HTML</source>
+        <translation>导出HTML</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="272"/>
+        <source>Export XM</source>
+        <translation>导出XM</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="285"/>
+        <source>Export Site</source>
+        <translation>导出站点</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="299"/>
+        <source>Delete from Site</source>
+        <translation>从站点删除</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="312"/>
+        <source>Clear Solved Time</source>
+        <translation>清除解决时间</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="318"/>
+        <source>Success</source>
+        <translation>成功</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="612"/>
+        <source>Category Name</source>
+        <translation>分类名称</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="657"/>
+        <source>Can not delete! found</source>
+        <translation>不能删除，有</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="657"/>
+        <source>referenced.</source>
+        <translation>引用！</translation>
     </message>
 </context>
 <context>

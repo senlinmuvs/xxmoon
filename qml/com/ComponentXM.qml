@@ -1,7 +1,7 @@
 ﻿import QtQuick
 import QtQuick.Controls
 import "../com/com.js" as Com
-import "../category/Category.js" as Category
+import "../xm/XM.js" as XM
 import "ui.js" as UI
 
 Rectangle {
@@ -61,7 +61,7 @@ Rectangle {
                     color: Qt.rgba(0/255, 0/255, 0/255, 0.9)
                     function click() {
                         if(btn_no.visible) {
-                            $cg.getXM(Category.getCurrentPkId(), pk_list.width, Com.putFunc(function(pk) {
+                            $xm.getXM(XM.getCurrentPkId(), pk_list.width, Com.putFunc(function(pk) {
                                 simple_cont = pk.simple_cont;
                                 cont = pk.cont;
 //                                simple_html = pk.simple_html;
@@ -80,7 +80,7 @@ Rectangle {
                     function click() {
                         $app.ensureEncryptOrDecrypt(id, cont, Com.putFunc(function(st) {
                             if(st === 0) {
-                                let pk = Category.getCurrentPK();
+                                let pk = XM.getCurrentPK();
                                 if(pk){
                                     pk.jm_ensure = false;
                                     pk.img_path = Com.file_pre + $app.getCfgVal("img_dir") + "/" + img;
@@ -177,7 +177,7 @@ Rectangle {
 //            col_list.forceActiveFocus();
         }
         onDoubleClicked: {
-            Category.openEditPopup();
+            XM.openEditPopup();
         }
         onClicked:function(mouse){
             if (mouse.button === Qt.RightButton) {

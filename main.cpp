@@ -84,7 +84,7 @@ int initGui(MyApplication* a) {
 
     engine->rootContext()->setContextProperty("$app", app);
     engine->rootContext()->setContextProperty("$l", l);
-    engine->rootContext()->setContextProperty("$cg", categoryAction);
+    engine->rootContext()->setContextProperty("$xm", xmAction);
     engine->rootContext()->setContextProperty("$bk", bookAction);
 
     //语言国际化

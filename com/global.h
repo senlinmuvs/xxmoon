@@ -24,7 +24,7 @@
 #include <db/workdao.h>
 #include <model/cfg.h>
 #include <action/bookaction.h>
-#include <action/categoryaction.h>
+#include <action/xmaction.h>
 #include "com/xm_format.h"
 #include "com/sm.h"
 
@@ -39,7 +39,7 @@ extern volatile bool running;
 extern QQmlApplicationEngine *engine;
 extern Cfg *cfg;
 extern App* app;
-extern CategoryAction* categoryAction;
+extern XMAction* xmAction;
 extern BookAction* bookAction;
 extern L* l;
 extern SQLiteManager *db;

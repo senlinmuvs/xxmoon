@@ -43,7 +43,7 @@ Rectangle {
                             img = Com.img_logo;
                             currentNavBtn = colBtn;
                             curTabLabel.y = initYOffset;
-                            pageLoader.source = "qrc:/qml/category/Category.qml";
+                            pageLoader.source = "qrc:/qml/xm/XM.qml";
                             st = 1;
                             curIndex = 0;
                             parent.color = "transparent";

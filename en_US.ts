@@ -6,32 +6,32 @@
     <message>
         <location filename="qml/About.qml" line="41"/>
         <source>xxmoon</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/About.qml" line="64"/>
         <source>Data Path</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/About.qml" line="78"/>
         <source>Please restart the app!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/About.qml" line="79"/>
         <source>And copy the old data to the new directory.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/About.qml" line="107"/>
         <source>Editor</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/About.qml" line="147"/>
         <source>Pick Hotkey</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -39,12 +39,12 @@
     <message>
         <location filename="app.cpp" line="451"/>
         <source>Words</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="app.cpp" line="455"/>
         <source>Picture</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -52,19 +52,19 @@
     <message>
         <location filename="qml/book/Book.qml" line="36"/>
         <source>Search...</source>
-        <translation type="unfinished">Search...</translation>
+        <translation>Search...</translation>
     </message>
     <message>
         <location filename="qml/book/Book.qml" line="216"/>
         <location filename="qml/book/Book.qml" line="322"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/book/Book.qml" line="227"/>
         <location filename="qml/book/Book.qml" line="340"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/book/Book.qml" line="234"/>
@@ -85,37 +85,37 @@
     <message>
         <location filename="qml/book/Book.qml" line="267"/>
         <source>Export Site</source>
-        <translation type="unfinished">Export Site</translation>
+        <translation>Export Site</translation>
     </message>
     <message>
         <location filename="qml/book/Book.qml" line="279"/>
         <source>Delete from Site</source>
-        <translation type="unfinished">Delete from Site</translation>
+        <translation>Delete from Site</translation>
     </message>
     <message>
         <location filename="qml/book/Book.qml" line="291"/>
         <source>Detail</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/book/Book.qml" line="301"/>
         <source>Picture Model</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/book/Book.qml" line="312"/>
         <source>Copy content</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/book/Book.qml" line="331"/>
         <source>Out Edit</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/book/Book.js" line="297"/>
         <source>Exists Already</source>
-        <translation type="unfinished">Exists Already</translation>
+        <translation>Exists Already</translation>
     </message>
     <message>
         <location filename="qml/book/Book.js" line="319"/>
@@ -138,12 +138,12 @@
     <message>
         <location filename="qml/com/BookEditPopup.qml" line="71"/>
         <source>Tag(separated by commas)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/com/BookEditPopup.qml" line="83"/>
         <source>Extra</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/com/BookEditPopup.qml" line="94"/>
@@ -152,172 +152,11 @@
     </message>
 </context>
 <context>
-    <name>Category</name>
-    <message>
-        <location filename="qml/category/Category.js" line="43"/>
-        <source>Exists Already</source>
-        <translation>Exists Already</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.js" line="52"/>
-        <source>too long</source>
-        <translation> Too Long</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.js" line="62"/>
-        <source>Can not delete, it not empty.</source>
-        <translation> Can not delete, it not empty!</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.js" line="71"/>
-        <source>Can not delete the default folder.</source>
-        <translation>Can not delete the default folder!</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.js" line="228"/>
-        <source>Failure.Not found the doc!</source>
-        <translation type="unfinished"> Failure.Not found the doc!</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.js" line="230"/>
-        <source>Can not edit encrypted content.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.js" line="516"/>
-        <source>decrypting...</source>
-        <translation>Decrypting...</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.js" line="540"/>
-        <location filename="qml/category/Category.js" line="561"/>
-        <source>Finished</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.js" line="543"/>
-        <source>encrypting...</source>
-        <translation>Encrypting...</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="34"/>
-        <source>Search...</source>
-        <translation>Search...</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="65"/>
-        <location filename="qml/category/Category.qml" line="180"/>
-        <source>Edit</source>
-        <translation>Edit</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="72"/>
-        <location filename="qml/category/Category.qml" line="343"/>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="87"/>
-        <source>Generate HTML</source>
-        <translation>Export Single HTML</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="160"/>
-        <source>Detail</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="170"/>
-        <source>Picture Model</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="189"/>
-        <source>Out Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="199"/>
-        <source>Copy main image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="211"/>
-        <source>Copy main image link</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="222"/>
-        <source>Copy content</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="233"/>
-        <source>Encrypt | Decrypt</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="243"/>
-        <source>Export</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="246"/>
-        <source>Export PDF</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="259"/>
-        <source>Export HTML</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="272"/>
-        <source>Export XM</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="285"/>
-        <source>Export Site</source>
-        <translation>Export Site</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="299"/>
-        <source>Delete from Site</source>
-        <translation>Delete from Site</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="318"/>
-        <source>Success</source>
-        <translation type="unfinished">Success</translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="312"/>
-        <source>Clear Solved Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="612"/>
-        <source>Category Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="657"/>
-        <source>Can not delete! found</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qml/category/Category.qml" line="657"/>
-        <source>referenced.</source>
-        <translation>Referenced!</translation>
-    </message>
-</context>
-<context>
     <name>ComponentCol</name>
     <message>
         <location filename="qml/com/ComponentCol.qml" line="43"/>
         <source>Sorting...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -326,7 +165,7 @@
         <location filename="qml/com/Detail.qml" line="96"/>
         <location filename="qml/com/Detail.qml" line="343"/>
         <source>solved </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/com/Detail.qml" line="103"/>
@@ -341,37 +180,37 @@
     <message>
         <location filename="qml/com/Detail.qml" line="152"/>
         <source>Copy</source>
-        <translation type="unfinished">Copy</translation>
+        <translation>Copy</translation>
     </message>
     <message>
         <location filename="qml/com/Detail.qml" line="162"/>
         <source>Paste</source>
-        <translation type="unfinished">Paste</translation>
+        <translation>Paste</translation>
     </message>
     <message>
         <location filename="qml/com/Detail.qml" line="173"/>
         <source>Import</source>
-        <translation type="unfinished">Import</translation>
+        <translation>Import</translation>
     </message>
     <message>
         <location filename="qml/com/Detail.qml" line="184"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/com/Detail.qml" line="194"/>
         <source>Out Edit</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/com/Detail.qml" line="204"/>
         <source>Picture Model</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/com/Detail.qml" line="213"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -379,17 +218,17 @@
     <message>
         <location filename="qml/com/EnsurePopup.qml" line="33"/>
         <source>Ensure delete?</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/com/EnsurePopup.qml" line="43"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="qml/com/EnsurePopup.qml" line="59"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -397,27 +236,27 @@
     <message>
         <location filename="qml/com/ImgViewer.qml" line="79"/>
         <source>Copy</source>
-        <translation type="unfinished">Copy</translation>
+        <translation>Copy</translation>
     </message>
     <message>
         <location filename="qml/com/ImgViewer.qml" line="86"/>
         <source>Copy Link</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/com/ImgViewer.qml" line="93"/>
         <source>Out Edit</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/com/ImgViewer.qml" line="100"/>
         <source>Reveal in File Manager</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/com/ImgViewer.qml" line="107"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -425,17 +264,17 @@
     <message>
         <location filename="qml/Main.qml" line="42"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/Main.qml" line="53"/>
         <source>xxmoon</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/Main.qml" line="114"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/Main.qml" line="229"/>
@@ -444,12 +283,12 @@
         <location filename="qml/Main.qml" line="325"/>
         <location filename="qml/Main.qml" line="331"/>
         <source>Import</source>
-        <translation type="unfinished">Import</translation>
+        <translation>Import</translation>
     </message>
     <message>
         <location filename="qml/Main.qml" line="281"/>
         <source>Imported</source>
-        <translation type="unfinished">Imported</translation>
+        <translation>Imported</translation>
     </message>
     <message>
         <location filename="qml/Main.qml" line="393"/>
@@ -467,32 +306,32 @@
     <message>
         <location filename="qml/com/MyEditorPopup.qml" line="137"/>
         <source>Done</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/com/MyEditorPopup.qml" line="239"/>
         <source>If you want to constantly switch between editing and preview, please enter the details first and then enter the editing, then C+W -&gt; C+Enter -&gt; C+W ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qml/com/MyEditorPopup.qml" line="266"/>
         <source>Copy</source>
-        <translation type="unfinished">Copy</translation>
+        <translation>Copy</translation>
     </message>
     <message>
         <location filename="qml/com/MyEditorPopup.qml" line="276"/>
         <source>Paste</source>
-        <translation type="unfinished">Paste</translation>
+        <translation>Paste</translation>
     </message>
     <message>
         <location filename="qml/com/MyEditorPopup.qml" line="286"/>
         <source>Cut</source>
-        <translation type="unfinished">Cut</translation>
+        <translation>Cut</translation>
     </message>
     <message>
         <location filename="qml/com/MyEditorPopup.qml" line="295"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -537,12 +376,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="action/categoryaction.cpp" line="205"/>
+        <location filename="action/xmaction.cpp" line="205"/>
         <source>Failure.Not found the doc!</source>
         <translation> Failure.Not found the doc!</translation>
     </message>
     <message>
-        <location filename="action/categoryaction.cpp" line="275"/>
+        <location filename="action/xmaction.cpp" line="275"/>
         <source>Text</source>
         <translation>Text</translation>
     </message>
@@ -559,12 +398,12 @@
     <message>
         <location filename="app.cpp" line="1832"/>
         <source>cert gen fail</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="app.cpp" line="1837"/>
         <source>cert gen suc</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="menumanager.cpp" line="18"/>
@@ -694,6 +533,167 @@
         <location filename="qml/com/TitleBar.qml" line="31"/>
         <source>xxmoon</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>XM</name>
+    <message>
+        <location filename="qml/xm/XM.js" line="43"/>
+        <source>Exists Already</source>
+        <translation>Exists Already</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.js" line="52"/>
+        <source>too long</source>
+        <translation> Too Long</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.js" line="62"/>
+        <source>Can not delete, it not empty.</source>
+        <translation> Can not delete, it not empty!</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.js" line="71"/>
+        <source>Can not delete the default folder.</source>
+        <translation>Can not delete the default folder!</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.js" line="228"/>
+        <source>Failure.Not found the doc!</source>
+        <translation> Failure.Not found the doc!</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.js" line="230"/>
+        <source>Can not edit encrypted content.</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.js" line="516"/>
+        <source>decrypting...</source>
+        <translation>Decrypting...</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.js" line="540"/>
+        <location filename="qml/xm/XM.js" line="561"/>
+        <source>Finished</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.js" line="543"/>
+        <source>encrypting...</source>
+        <translation>Encrypting...</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="34"/>
+        <source>Search...</source>
+        <translation>Search...</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="65"/>
+        <location filename="qml/xm/XM.qml" line="180"/>
+        <source>Edit</source>
+        <translation>Edit</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="72"/>
+        <location filename="qml/xm/XM.qml" line="343"/>
+        <source>Delete</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="87"/>
+        <source>Generate HTML</source>
+        <translation>Export Single HTML</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="160"/>
+        <source>Detail</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="170"/>
+        <source>Picture Model</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="189"/>
+        <source>Out Edit</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="199"/>
+        <source>Copy main image</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="211"/>
+        <source>Copy main image link</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="222"/>
+        <source>Copy content</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="233"/>
+        <source>Encrypt | Decrypt</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="243"/>
+        <source>Export</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="246"/>
+        <source>Export PDF</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="259"/>
+        <source>Export HTML</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="272"/>
+        <source>Export XM</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="285"/>
+        <source>Export Site</source>
+        <translation>Export Site</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="299"/>
+        <source>Delete from Site</source>
+        <translation>Delete from Site</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="312"/>
+        <source>Clear Solved Time</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="318"/>
+        <source>Success</source>
+        <translation>Success</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="612"/>
+        <source>Category Name</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="657"/>
+        <source>referenced.</source>
+        <translation>Referenced!</translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="657"/>
+        <source>Can not delete! found</source>
+        <translation></translation>
     </message>
 </context>
 <context>

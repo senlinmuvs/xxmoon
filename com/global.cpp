@@ -17,7 +17,7 @@ MenuManager *menuManager = new MenuManager();
 #endif
 Cfg *cfg = new Cfg();
 App *app = new App();
-CategoryAction* categoryAction = new CategoryAction();
+XMAction* xmAction = new XMAction();
 BookAction* bookAction = new BookAction();
 L* l = new L();
 SQLiteManager *db = new SQLiteManager();

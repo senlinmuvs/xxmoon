@@ -1,13 +1,13 @@
 #include "com/global.h"
-#include "categoryaction.h"
+#include "xmaction.h"
 #include "com/runmain.h"
 #ifdef Q_OS_MAC
 #include "com/mac.h"
 #endif
 
-CategoryAction::CategoryAction() {
+XMAction::XMAction() {
 }
-void CategoryAction::getCategories(QString k, QObject *obj) {
+void XMAction::getCategories(QString k, QObject *obj) {
     DB_Async->exe([=]{
         QVariantList rlist;
         if(k.length() > 0){
@@ -33,7 +33,7 @@ void CategoryAction::getCategories(QString k, QObject *obj) {
     });
 }
 
-void CategoryAction::getXMList(QString k, uint id, uint fromId, uint pklistWidth, uint cbid) {
+void XMAction::getXMList(QString k, uint id, uint fromId, uint pklistWidth, uint cbid) {
     if(lg->isDebug()) {
         lg->debug(QString("getXMList k %1 id %2 fromId %3").arg(k).arg(id).arg(fromId));
     }
@@ -50,7 +50,7 @@ void CategoryAction::getXMList(QString k, uint id, uint fromId, uint pklistWidth
     });
 }
 
-void CategoryAction::getXM(uint id, uint listWidth, uint cbid) {
+void XMAction::getXM(uint id, uint listWidth, uint cbid) {
     DB_Async->exe([=] {
         XM* xm = xmDao->getXM(id);
         if(xm) {
@@ -61,7 +61,7 @@ void CategoryAction::getXM(uint id, uint listWidth, uint cbid) {
     });
 }
 
-void CategoryAction::addCategory(QString name, QObject *obj) {
+void XMAction::addCategory(QString name, QObject *obj) {
     DB_Async->exe([=] {
         QVariantMap m;
         QString err;
@@ -79,33 +79,33 @@ void CategoryAction::addCategory(QString name, QObject *obj) {
     });
 }
 
-void CategoryAction::editCategory(uint id, QString name, QObject *obj) {
+void XMAction::editCategory(uint id, QString name, QObject *obj) {
     DB_Async->exe([=]{
         colDao->updateName(id, name);
         QMetaObject::invokeMethod(obj, "onUpdated");
     });
 }
 
-void CategoryAction::delCategory(uint id, uint cbid) {
+void XMAction::delCategory(uint id, uint cbid) {
     DB_Async->exe([=]{
         colDao->del(id);
         sendMsg(cbid, NULL);
     });
 }
 
-void CategoryAction::sorting(uint cid, uint srcIndex, uint dstIndex, uint cbid) {
+void XMAction::sorting(uint cid, uint srcIndex, uint dstIndex, uint cbid) {
     DB_Async->exe([=]{
         colDao->updateIndex(cid, srcIndex, dstIndex);
         sendMsg(cbid, NULL);
     });
 }
-void CategoryAction::countCategory(uint cid, uint cbid) {
+void XMAction::countCategory(uint cid, uint cbid) {
     DB_Async->exe([=]{
         uint n = xmDao->countCol(cid);
         sendMsg(cbid, n);
     });
 }
-void CategoryAction::getNewXMList(uint cid, uint fromId, uint pklistWidth, QObject *obj) {
+void XMAction::getNewXMList(uint cid, uint fromId, uint pklistWidth, QObject *obj) {
     DB_Async->exe([=]{
         QList<XM*> list = xmDao->getNewXMList(cid, fromId);
         QVariantList rlist;
@@ -119,7 +119,7 @@ void CategoryAction::getNewXMList(uint cid, uint fromId, uint pklistWidth, QObje
                     Q_ARG(QVariant, QVariant::fromValue(rlist)));
     });
 }
-void CategoryAction::deleteXM(uint id, QObject *obj) {
+void XMAction::deleteXM(uint id, QObject *obj) {
     DB_Async->exe([=]{
         XM *xm = xmDao->getXM(id);
         if(xm!=nullptr){
@@ -145,7 +145,7 @@ void CategoryAction::deleteXM(uint id, QObject *obj) {
         }
     });
 }
-void CategoryAction::updateXM(uint id, QString cont, QString k, uint pklistWidth, uint cbid) {
+void XMAction::updateXM(uint id, QString cont, QString k, uint pklistWidth, uint cbid) {
     DB_Async->exe([=]{
         XM *xm = xmDao->getXM(id);
         int st = 0;
@@ -181,7 +181,7 @@ void CategoryAction::updateXM(uint id, QString cont, QString k, uint pklistWidth
     });
 }
 
-void CategoryAction::updateXMCid(uint colIndex, uint xmid, uint cid, QObject *obj) {
+void XMAction::updateXMCid(uint colIndex, uint xmid, uint cid, QObject *obj) {
     DB_Async->exe([=] {
         xmDao->updateCid(xmid, cid);
         QMetaObject::invokeMethod(obj, "onMoved",
@@ -189,7 +189,7 @@ void CategoryAction::updateXMCid(uint colIndex, uint xmid, uint cid, QObject *ob
     });
 }
 
-void CategoryAction::addXM(uint cid, QString txt, uint pklistWidth, QObject *obj) {
+void XMAction::addXM(uint cid, QString txt, uint pklistWidth, QObject *obj) {
     DB_Async->exe([=]{
         XM *xm = new XM();
         xm->cont = txt;
@@ -211,7 +211,7 @@ void CategoryAction::addXM(uint cid, QString txt, uint pklistWidth, QObject *obj
         delete xm;
     });
 }
-void CategoryAction::copyXM(uint type, uint id) {
+void XMAction::copyXM(uint type, uint id) {
     DB_Async->exe([=] {
         XM *pk = xmDao->getXM(id);
         if(pk!=nullptr) {
@@ -248,7 +248,7 @@ void CategoryAction::copyXM(uint type, uint id) {
         }
     });
 }
-void CategoryAction::xm(QString file, uint cbid) {
+void XMAction::xm(QString file, uint cbid) {
     file = ut::str::removePrefix(file, getFilePre());
     DB_Async->exe([=] {
         QImage *qimg = new QImage();
@@ -265,7 +265,7 @@ void CategoryAction::xm(QString file, uint cbid) {
         }
     });
 }
-QString CategoryAction::xm(QImage *img, QString cont, QString file) {
+QString XMAction::xm(QImage *img, QString cont, QString file) {
     XM *pk = new XM();
     pk->bj = false;
     pk->cont = cont;
@@ -327,7 +327,7 @@ QString CategoryAction::xm(QImage *img, QString cont, QString file) {
     return pkimg;
 }
 
-void CategoryAction::updateXMTags(uint xmid, QString tags, uint cbid) {
+void XMAction::updateXMTags(uint xmid, QString tags, uint cbid) {
     DB_Async->exe([=] {
         QString oldTags = xmDao->getTags(xmid);
         xmDao->updateXMTags(xmid, tags);
@@ -348,7 +348,7 @@ void CategoryAction::updateXMTags(uint xmid, QString tags, uint cbid) {
         sendMsg(cbid, ut::col::createMap("pkid", xmid, "tags", tags, "stime", stime));
     });
 }
-void CategoryAction::clearSolvedTime(uint xmid, uint cbid) {
+void XMAction::clearSolvedTime(uint xmid, uint cbid) {
     DB_Async->exe([=] {
         xmDao->setSolveTime(xmid, 0);
         if(cbid>0) {
@@ -356,20 +356,20 @@ void CategoryAction::clearSolvedTime(uint xmid, uint cbid) {
         }
     });
 }
-void CategoryAction::encrypt(uint cid, QString pwd, uint cbid) {
+void XMAction::encrypt(uint cid, QString pwd, uint cbid) {
     QString encrypted = ut::cipher::encryptTextAES(pwd, QString::number(cid));
     DB_Async->exe([=]{
         colDao->updatePwd(cid, encrypted);
         sendMsg(cbid, 0);
     });
 }
-void CategoryAction::deleteEncryption(uint cid, uint cbid) {
+void XMAction::deleteEncryption(uint cid, uint cbid) {
     DB_Async->exe([=]{
         colDao->updatePwd(cid, "");
         sendMsg(cbid, 0);
     });
 }
-void CategoryAction::validateCategoryPWD(uint cid, QString pwd, uint cbid) {
+void XMAction::validateCategoryPWD(uint cid, QString pwd, uint cbid) {
     DB_Async->exe([=]{
         Category *c = colDao->getCategory(cid);
         QString encrypted = ut::cipher::encryptTextAES(pwd, QString::number(cid));
@@ -379,5 +379,34 @@ void CategoryAction::validateCategoryPWD(uint cid, QString pwd, uint cbid) {
             sendMsg(cbid, false);
         }
         delete c;
+    });
+}
+void XMAction::setTop(uint cid, uint xmid, uint cbid) {
+    // DB_Async->exe([=]{
+    //     Category *c = colDao->getCategory(cid);
+    //     QStringList arr = c->zdids.split(",");
+    //     bool found = false;
+    //     for(int i = 0; i < arr.length(); i++) {
+    //         if(arr[i]==QString::number(xmid)) {
+    //             found = true;
+    //             break;
+    //         }
+    //     }
+    //     if(!found) {
+    //         arr.append(QString::number(xmid));
+    //     }
+    //     QString zdids = "";
+    //     for(int i = 0; i < arr.length(); i++) {
+    //         zdids += arr[i] + ",";
+    //     }
+    //     if(!found) {
+    //         colDao.updateZdids(cid, zdids);
+    //     }
+    //     sendMsg(cbid, false);
+    // });
+}
+void XMAction::delTop(uint cid, uint xmid, uint cbid) {
+    DB_Async->exe([=]{
+
     });
 }

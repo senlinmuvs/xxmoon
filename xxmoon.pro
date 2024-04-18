@@ -10,7 +10,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         action/bookaction.cpp \
-        action/categoryaction.cpp \
+        action/xmaction.cpp \
         com/async.cpp \
         com/docparser.cpp \
         com/future.cpp \
@@ -54,7 +54,7 @@ QML_DESIGNER_IMPORT_PATH =
 
 HEADERS += \
     action/bookaction.h \
-    action/categoryaction.h \
+    action/xmaction.h \
     com/async.h \
     com/const.h \
     com/docparser.h \

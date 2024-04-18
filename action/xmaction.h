@@ -1,12 +1,12 @@
-#ifndef CATEGORYACTION_H
-#define CATEGORYACTION_H
+#ifndef XMACTION_H
+#define XMACTION_H
 
 #include <QObject>
 
-class CategoryAction : public QObject {
+class XMAction : public QObject {
     Q_OBJECT
 public:
-    explicit CategoryAction();
+    explicit XMAction();
 
     ///
     Q_INVOKABLE void getCategories(QString k, QObject *obj);
@@ -30,8 +30,10 @@ public:
     Q_INVOKABLE void encrypt(uint cid, QString pwd, uint cbid);
     Q_INVOKABLE void deleteEncryption(uint cid, uint cbid);
     Q_INVOKABLE void validateCategoryPWD(uint cid, QString pwd, uint cbid);
+    Q_INVOKABLE void setTop(uint cid, uint xmid, uint cbid);
+    Q_INVOKABLE void delTop(uint cid, uint xmid, uint cbid);
 
     QString xm(QImage *img, QString cont, QString file);
 };
 
-#endif // CATEGORYACTION_H
+#endif // XMACTION_H

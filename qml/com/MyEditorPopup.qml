@@ -609,7 +609,7 @@ Popup {
                     img = f.substring(pre.length).trim();
                 } else {
                     import_total += 1;
-                    $cg.xm(f, Com.putFunc(function(pkimg){
+                    $xm.xm(f, Com.putFunc(function(pkimg){
                         fuck(pkimg);
                     }));
                     return;

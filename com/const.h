@@ -11,7 +11,7 @@
 #define WIN 0
 #define UNIX 1
 #define MAC 2
-#define VERSION "1.36.1"
+#define VERSION "1.36.2"
 
 #define CB_VAR std::function<QVariantList()>
 
@@ -49,7 +49,8 @@ const static QString sql_category_table =
     "name TEXT default '' not null,"
     "i INTEGER default 0 not null,"
     "x INTEGER default 0 not null,"
-    "m TEXT default '' not null"
+    "m TEXT default '' not null,"
+    "zdids TEXT default '' not null"
 ")";
 const static QString sql_xm_table =
 "CREATE TABLE IF NOT EXISTS `xm` ("
