@@ -302,6 +302,14 @@
     </message>
 </context>
 <context>
+    <name>MoreBtn</name>
+    <message>
+        <location filename="qml/com/MoreBtn.qml" line="5"/>
+        <source>More</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
     <name>MyEditorPopup</name>
     <message>
         <location filename="qml/com/MyEditorPopup.qml" line="137"/>
@@ -309,27 +317,22 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="qml/com/MyEditorPopup.qml" line="239"/>
-        <source>If you want to constantly switch between editing and preview, please enter the details first and then enter the editing, then C+W -&gt; C+Enter -&gt; C+W ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="qml/com/MyEditorPopup.qml" line="266"/>
+        <location filename="qml/com/MyEditorPopup.qml" line="252"/>
         <source>Copy</source>
         <translation>Copy</translation>
     </message>
     <message>
-        <location filename="qml/com/MyEditorPopup.qml" line="276"/>
+        <location filename="qml/com/MyEditorPopup.qml" line="262"/>
         <source>Paste</source>
         <translation>Paste</translation>
     </message>
     <message>
-        <location filename="qml/com/MyEditorPopup.qml" line="286"/>
+        <location filename="qml/com/MyEditorPopup.qml" line="272"/>
         <source>Cut</source>
         <translation>Cut</translation>
     </message>
     <message>
-        <location filename="qml/com/MyEditorPopup.qml" line="295"/>
+        <location filename="qml/com/MyEditorPopup.qml" line="281"/>
         <source>Close</source>
         <translation></translation>
     </message>
@@ -532,7 +535,7 @@
     <message>
         <location filename="qml/com/TitleBar.qml" line="31"/>
         <source>xxmoon</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -568,18 +571,18 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="qml/xm/XM.js" line="516"/>
+        <location filename="qml/xm/XM.js" line="523"/>
         <source>decrypting...</source>
         <translation>Decrypting...</translation>
     </message>
     <message>
-        <location filename="qml/xm/XM.js" line="540"/>
-        <location filename="qml/xm/XM.js" line="561"/>
+        <location filename="qml/xm/XM.js" line="547"/>
+        <location filename="qml/xm/XM.js" line="568"/>
         <source>Finished</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qml/xm/XM.js" line="543"/>
+        <location filename="qml/xm/XM.js" line="550"/>
         <source>encrypting...</source>
         <translation>Encrypting...</translation>
     </message>

@@ -305,6 +305,14 @@
     </message>
 </context>
 <context>
+    <name>MoreBtn</name>
+    <message>
+        <location filename="qml/com/MoreBtn.qml" line="5"/>
+        <source>More</source>
+        <translation>更多</translation>
+    </message>
+</context>
+<context>
     <name>MyEditorPopup</name>
     <message>
         <location filename="qml/com/MyEditorPopup.qml" line="137"/>
@@ -312,27 +320,26 @@
         <translation>完成</translation>
     </message>
     <message>
-        <location filename="qml/com/MyEditorPopup.qml" line="239"/>
         <source>If you want to constantly switch between editing and preview, please enter the details first and then enter the editing, then C+W -&gt; C+Enter -&gt; C+W ...</source>
-        <translation>如果要在编辑与预览不断切换，请先进入详情再进入编辑，然后 C+W -&gt; C+Enter -&gt; C+W ...</translation>
+        <translation type="vanished">如果要在编辑与预览不断切换，请先进入详情再进入编辑，然后 C+W -&gt; C+Enter -&gt; C+W ...</translation>
     </message>
     <message>
-        <location filename="qml/com/MyEditorPopup.qml" line="266"/>
+        <location filename="qml/com/MyEditorPopup.qml" line="252"/>
         <source>Copy</source>
         <translation>复制</translation>
     </message>
     <message>
-        <location filename="qml/com/MyEditorPopup.qml" line="276"/>
+        <location filename="qml/com/MyEditorPopup.qml" line="262"/>
         <source>Paste</source>
         <translation>粘贴</translation>
     </message>
     <message>
-        <location filename="qml/com/MyEditorPopup.qml" line="286"/>
+        <location filename="qml/com/MyEditorPopup.qml" line="272"/>
         <source>Cut</source>
         <translation>剪切</translation>
     </message>
     <message>
-        <location filename="qml/com/MyEditorPopup.qml" line="295"/>
+        <location filename="qml/com/MyEditorPopup.qml" line="281"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
@@ -572,18 +579,18 @@
         <translation>不能修改已加密内容！</translation>
     </message>
     <message>
-        <location filename="qml/xm/XM.js" line="516"/>
+        <location filename="qml/xm/XM.js" line="523"/>
         <source>decrypting...</source>
         <translation>解密中...</translation>
     </message>
     <message>
-        <location filename="qml/xm/XM.js" line="540"/>
-        <location filename="qml/xm/XM.js" line="561"/>
+        <location filename="qml/xm/XM.js" line="547"/>
+        <location filename="qml/xm/XM.js" line="568"/>
         <source>Finished</source>
         <translation>完成</translation>
     </message>
     <message>
-        <location filename="qml/xm/XM.js" line="543"/>
+        <location filename="qml/xm/XM.js" line="550"/>
         <source>encrypting...</source>
         <translation>加密中...</translation>
     </message>
