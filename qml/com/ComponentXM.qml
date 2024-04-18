@@ -8,7 +8,7 @@ Rectangle {
     id: xm_list_rect
     width: xm_list_view.width
     height: wrap.height + row_time.height + 15
-    color: sticky ? "#e2e2e2" : "transparent"
+    color: sticky ? "#ececec" : "transparent"
 //    clip: true
     property alias btn_no: btn_no
 

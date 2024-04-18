@@ -127,8 +127,7 @@ Rectangle {
             fkExited();
         }
     }
-    function click() {
-    }
+    function click(){}
     function rightClick() {
     }
     function moved(mouse) {

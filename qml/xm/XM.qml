@@ -532,12 +532,12 @@ Rectangle {
 //                category_list_view.forceActiveFocus();
 //            }
         }
-        GridView {
-            id: grid
-            cellWidth: 100
-            cellHeight: cellWidth
-            delegate: ComponentGridXM{}
-        }
+        // GridView {
+        //     id: grid
+        //     cellWidth: 100
+        //     cellHeight: cellWidth
+        //     delegate: ComponentGridXM{}
+        // }
         function next() {
             if(xm_list_view.currentIndex+1>=xm_list_view.count) {
                 XM.loadXM();

@@ -225,20 +225,6 @@ Popup {
             anchors.bottom: parent.bottom
             height: 18
             color:"transparent"
-            BtnImg {
-                id: btn_tip
-                anchors.right: counter.left
-                anchors.rightMargin: 5
-                anchors.verticalCenter: parent.verticalCenter
-                xx: 5
-                imgWidth: 13
-                imgHeight: width
-                src: "qrc:/assets/tips.png"
-                function click() {
-                    //如果要在编辑与预览不断切换，请先进入详情再进入编辑，然后 C+W -> C+Enter -> C+W ...
-                    alert(qsTr("If you want to constantly switch between editing and preview, please enter the details first and then enter the editing, then C+W -> C+Enter -> C+W ..."), false);
-                }
-            }
             Text {
                 id: counter
                 anchors.right: parent.right
