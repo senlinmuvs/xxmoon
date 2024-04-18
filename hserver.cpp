@@ -149,8 +149,8 @@ void HServer::putData(const Request &req, Response &resp) {
             if(lg->isDebug()) {
                 lg->debug(QString("putData pk %1").arg(data));
             }
-            XM *p = XM::convPK(jo);
-            Category* defCol = colDao->getCategoryByIndex(0);
+            XM *p = XM::convXM(jo);
+            Category* defCol = categoryDao->getCategoryByIndex(0);
             p->cid = defCol->id;
             xmDao->add(p);
             delete p;

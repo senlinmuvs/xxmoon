@@ -25,7 +25,7 @@ WorkDao *workDao = new WorkDao();
 NoteDao *noteDao = new NoteDao();
 EnvDao *envDao = new EnvDao();
 XMDao *xmDao = new XMDao();
-CategoryDao *colDao = new CategoryDao();
+CategoryDao *categoryDao = new CategoryDao();
 TagDao *tagDao = new TagDao();
 #ifdef Q_OS_MAC
 Mac *mac = new Mac();

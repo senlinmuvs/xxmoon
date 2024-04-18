@@ -20,13 +20,12 @@ Popup {
     Component {
         id: delegate
         Rectangle {
-            width: parent.width
+            width: text.width + 20
             height: text.height
             color:"transparent"
             Text {
                 id:text
                 y: -15
-                width: parent.width
                 font.pointSize: 15
                 text: cont
                 wrapMode: Text.WrapAnywhere

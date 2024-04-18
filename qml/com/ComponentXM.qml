@@ -5,10 +5,10 @@ import "../xm/XM.js" as XM
 import "ui.js" as UI
 
 Rectangle {
-    id: pk_list_rect
-    width: pk_list_view.width
+    id: xm_list_rect
+    width: xm_list_view.width
     height: wrap.height + row_time.height + 15
-    color: "transparent"
+    color: sticky ? "#e2e2e2" : "transparent"
 //    clip: true
     property alias btn_no: btn_no
 
@@ -16,29 +16,29 @@ Rectangle {
         id: wrap
         anchors.top: parent.top
         width: parent.width
-        height:Com.min(pk_list_col.height+10, 400)
+        height:Com.min(xm_list_col.height+10, 400)
         clip: true
         color: "transparent"
 //        color: "gray"
         Column {
-            id: pk_list_col
+            id: xm_list_col
             spacing: UI.ui_pk_cont_space
             anchors {
                 top:parent.top
-                topMargin: UI.ui_pk_list_margin
+                topMargin: UI.ui_xm_list_margin
                 left: parent.left
-                leftMargin: UI.ui_pk_list_margin
+                leftMargin: UI.ui_xm_list_margin
                 right: parent.right
-                rightMargin: UI.ui_pk_list_margin
+                rightMargin: UI.ui_xm_list_margin
             }
 //            Rectangle {
 //                height: UI.ui_date_height
 //                width: 100
 //                radius: 10
 //                visible: visible_date
-//                anchors.topMargin: UI.ui_pk_list_margin
+//                anchors.topMargin: UI.ui_xm_list_margin
 //                anchors.left: parent.left
-//                anchors.leftMargin: pk_list.width/2 - width/2
+//                anchors.leftMargin: xm_list.width/2 - width/2
 //                color:"black"
 //                Text {
 //                    anchors.centerIn: parent
@@ -61,7 +61,7 @@ Rectangle {
                     color: Qt.rgba(0/255, 0/255, 0/255, 0.9)
                     function click() {
                         if(btn_no.visible) {
-                            $xm.getXM(XM.getCurrentPkId(), pk_list.width, Com.putFunc(function(pk) {
+                            $xm.getXM(XM.getCurrentXMId(), xm_list.width, Com.putFunc(function(pk) {
                                 simple_cont = pk.simple_cont;
                                 cont = pk.cont;
 //                                simple_html = pk.simple_html;
@@ -80,7 +80,7 @@ Rectangle {
                     function click() {
                         $app.ensureEncryptOrDecrypt(id, cont, Com.putFunc(function(st) {
                             if(st === 0) {
-                                let pk = XM.getCurrentPK();
+                                let pk = XM.getCurrentXM();
                                 if(pk){
                                     pk.jm_ensure = false;
                                     pk.img_path = Com.file_pre + $app.getCfgVal("img_dir") + "/" + img;
@@ -95,8 +95,8 @@ Rectangle {
                 visible: img
                 source: jm? Com.img_logo : img_path
                 img_radius: 5
-                width: jm ? 48 : Com.calImgSizeByWidth(src_w,src_h,pk_list.width-100)[0]
-                height: jm ? 48 : Com.calImgSizeByWidth(src_w,src_h,pk_list.width-100)[1]
+                width: jm ? 48 : Com.calImgSizeByWidth(src_w,src_h,xm_list.width-100)[0]
+                height: jm ? 48 : Com.calImgSizeByWidth(src_w,src_h,xm_list.width-100)[1]
                 anchors.horizontalCenter: parent.horizontalCenter
             }
             Column {
@@ -145,17 +145,17 @@ Rectangle {
     }
     Rectangle {
         x: 0
-        y: pk_list_rect.height - 2
-        width: pk_list.width
+        y: xm_list_rect.height - 2
+        width: xm_list.width
         height: UI.ui_separate_height
         color: UI.ui_separate_color
     }
     Rectangle {
         x:0
         y:0
-        visible: index === pk_list_view.currentIndex
+        visible: index === xm_list_view.currentIndex
         width: 10
-        height: Com.max(Com.min(pk_list_rect.height, 50), e_num.height)
+        height: Com.max(Com.min(xm_list_rect.height, 50), e_num.height)
         color: UI.ui_highlight_color
         Text {
             id: e_num
@@ -173,15 +173,15 @@ Rectangle {
         // propagateComposedEvents:
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         onPressed: {
-            pk_list_view.currentIndex = index;
-//            col_list.forceActiveFocus();
+            xm_list_view.currentIndex = index;
+//            category_list.forceActiveFocus();
         }
         onDoubleClicked: {
             XM.openEditPopup();
         }
         onClicked:function(mouse){
             if (mouse.button === Qt.RightButton) {
-                pk_list_view.currentIndex = index;
+                xm_list_view.currentIndex = index;
                 mi_cp_main_img.visible = !jm && img.length > 0;
                 mi_pic_model.visible = !jm && (img.length > 0 || imgs.length > 0);
                 mi_cont.visible = !jm && simple_cont.length > 0;

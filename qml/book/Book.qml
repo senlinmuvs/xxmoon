@@ -739,7 +739,7 @@ Rectangle {
         }
     }
     function getListWidth() {
-        return pk_list.width;
+        return xm_list.width;
     }
     function clearData() {
         note_list_view.page = 0;

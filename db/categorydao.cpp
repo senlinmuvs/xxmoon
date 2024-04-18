@@ -8,14 +8,13 @@ void CategoryDao::add(Category *c) {
     if(c->id<=0){
         c->id = increID();
     }
-    QString insert_sql = "insert into category(id, name, i, x, m, zdids) values(:id,:name,:i,:x,:jm,:zdids)";
+    QString insert_sql = "insert into category(id, name, i, x, m) values(:id,:name,:i,:x,:jm)";
     db->execute("add category", insert_sql, [&c](QSqlQuery q) {
         q.bindValue(":id", c->id);
         q.bindValue(":name", c->name);
         q.bindValue(":i", c->i);
         q.bindValue(":x", c->x);
         q.bindValue(":m", c->m);
-        q.bindValue(":zdids", c->zdids);
     });
 }
 void CategoryDao::del(uint id) {
@@ -75,7 +74,7 @@ uint CategoryDao::getMaxI() {
 }
 Category* CategoryDao::getCategory(uint id) {
     QSqlQuery q;
-    q.prepare("select name,i,x,m,zdids from category where id=:id");
+    q.prepare("select name,i,x,m from category where id=:id");
     q.bindValue(":id", id);
     bool suc = q.exec();
     if(!suc){
@@ -99,7 +98,7 @@ Category* CategoryDao::getCategory(uint id) {
 }
 Category* CategoryDao::getCategoryByIndex(uint index) {
     QSqlQuery q;
-    q.prepare("select id,name,i,x,m,zdids from category where i=:i");
+    q.prepare("select id,name,i,x,m from category where i=:i");
     q.bindValue(":i", index);
     bool suc = q.exec();
     if(!suc){
@@ -130,7 +129,6 @@ void fillData(QSqlQuery *q, vector<Category> *list) {
     int colN = rec.indexOf("n");
     int colX = rec.indexOf("x");
     int colM = rec.indexOf("m");
-    int colZdids = rec.indexOf("zdids");
     while (q->next()) {
         uint id = q->value(colId).toUInt();
         QString name = q->value(colName).toString();
@@ -138,7 +136,6 @@ void fillData(QSqlQuery *q, vector<Category> *list) {
         uint i = q->value(colI).toUInt();
         uint x = q->value(colX).toUInt();
         QString m = q->value(colM).toString();
-        QString zdids = q->value(colZdids).toString();
         Category c;
         c.id = id;
         c.name = name;
@@ -146,14 +143,13 @@ void fillData(QSqlQuery *q, vector<Category> *list) {
         c.total = n;
         c.x = x;
         c.m = m;
-        c.zdids = zdids;
         list->insert(list->end(), c);
     }
 }
 vector<Category> CategoryDao::getAll() {
     vector<Category> list;
     QSqlQuery q;
-    q.exec("select id,name,i,0 as n,x,m,zdids from category order by i");
+    q.exec("select id,name,i,0 as n,x,m from category order by i");
     fillData(&q, &list);
     return list;
 }
@@ -171,7 +167,7 @@ QString getSearchCondSql(QString k) {
 vector<Category> CategoryDao::getCategories(QString k) {
     k = k.trimmed();
     vector<Category> list;
-    QString sql = "select * from (select c.id, c.name, c.i, c.x, c.m, c.zdids, count(*) as n "
+    QString sql = "select * from (select c.id, c.name, c.i, c.x, c.m, count(*) as n "
                   "from xm "
                   "join category c on xm.cid == c.id "
                   "where 1=1 #cont #tags "
@@ -260,7 +256,7 @@ void CategoryDao::setX(uint id, uint x) {
     q.bindValue(":id", id);
     bool suc = q.exec();
     if(!suc) {
-        lg->error(QString("coldao setX error %1 %2 %3").arg(q.lastError().text()).arg(id).arg(x));
+        lg->error(QString("categorydao setX error %1 %2 %3").arg(q.lastError().text()).arg(id).arg(x));
     }
 }
 void CategoryDao::updatePwd(uint id, QString encrypted) {
@@ -270,6 +266,6 @@ void CategoryDao::updatePwd(uint id, QString encrypted) {
     q.bindValue(":id", id);
     bool suc = q.exec();
     if(!suc) {
-        lg->error(QString("coldao updatePwd error %1 %2 %3").arg(q.lastError().text()).arg(id).arg(encrypted));
+        lg->error(QString("categorydao updatePwd error %1 %2 %3").arg(q.lastError().text()).arg(id).arg(encrypted));
     }
 }

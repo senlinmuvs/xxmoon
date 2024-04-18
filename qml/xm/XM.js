@@ -7,13 +7,13 @@ function refreshAll(key_changed) {
         Com.debug("refreshAll", key_changed);
     }
     let k = search_bar.text.trim();
-    if(key_changed && k.length === 0 && col_list_model.count > 0) {
-        pre_cid = getCurrentColId();
-        pre_pkid = getCurrentPkId();
+    if(key_changed && k.length === 0 && list_model_category.count > 0) {
+        pre_cid = getCurrentCategoryId();
+        pre_pkid = getCurrentXMId();
     }
-    col_list_view.currentIndex = 0;
-    col_list_model.clear();
-    pk_list_model.clear();
+    category_list_view.currentIndex = 0;
+    list_model_category.clear();
+    list_model_xm.clear();
     loadCategory();
 }
 function loadCategory() {
@@ -23,8 +23,8 @@ function submitCol(add) {
     if(add) {
         addCol();
     } else {
-        let i = col_list_view.currentIndex;
-        let c = col_list_model.get(i);
+        let i = category_list_view.currentIndex;
+        let c = list_model_category.get(i);
         if(c) {
             editCol(c.id);
         }
@@ -36,9 +36,9 @@ function addCol() {
         return;
     }
 
-    let n = col_list_model.count;
+    let n = list_model_category.count;
     for(let x = 0; x < n; x++) {
-        let m = col_list_model.get(x);
+        let m = list_model_category.get(x);
         if(m.name === name) {
             tipsInfo(qsTr("Exists Already"));
             return;
@@ -55,15 +55,15 @@ function editCol(id) {
     }
 }
 function delCol() {
-    let i = col_list_view.currentIndex;
+    let i = category_list_view.currentIndex;
     if(i > 0) {
-        let c = col_list_model.get(i);
+        let c = list_model_category.get(i);
         if(c.total>0) {
             tipsInfo(qsTr("Can not delete, it not empty."));
         } else {
             $xm.delCategory(c.id, Com.putFunc(function(){
-                let i = col_list_view.currentIndex;
-                col_list_model.remove(i);
+                let i = category_list_view.currentIndex;
+                list_model_category.remove(i);
                 loadXM();
             }));
         }
@@ -72,54 +72,54 @@ function delCol() {
     }
 }
 function moveToCategory(i) {
-    let currentPKIndex = pk_list_view.currentIndex;
-    let pk = pk_list_model.get(currentPKIndex);
+    let currentPKIndex = xm_list_view.currentIndex;
+    let pk = list_model_xm.get(currentPKIndex);
     if(pk) {
-        let c = col_list_model.get(i);
+        let c = list_model_category.get(i);
         if(c.id !== pk.cid) {
             $xm.updateXMCid(i, pk.id, c.id, root);
         }
     }
 }
 function colTotalIncrement() {
-    let i = col_list_view.currentIndex;
-    let c = col_list_model.get(i);
+    let i = category_list_view.currentIndex;
+    let c = list_model_category.get(i);
     c.total = c.total + 1;
 }
 function colTotalDecrement() {
-    let i = col_list_view.currentIndex;
-    let c = col_list_model.get(i);
+    let i = category_list_view.currentIndex;
+    let c = list_model_category.get(i);
     c.total = Com.max(0, c.total - 1);
 }
 
 function addOrUpdateCol(col) {
-    let n = col_list_model.count;
+    let n = list_model_category.count;
     let add = true;
     for(let i = 0; i < n; i++) {
-        let m = col_list_model.get(i);
+        let m = list_model_category.get(i);
         if(m.id === col.id) {
             m.total = col.total;
             add = false;
         }
     }
     if(add) {
-        col_list_model.append(col);
+        list_model_category.append(col);
     }
 }
 
 /// pk
 function loadXM(clear, cb) {
-    let index = col_list_view.currentIndex;
-    pk_list_view.footer = pk_list_more_btn;
+    let index = category_list_view.currentIndex;
+    xm_list_view.footer = xm_list_more_btn;
     if(clear) {
-        pk_list_model.clear();
+        list_model_xm.clear();
     }
-    let c = col_list_model.get(index);
+    let c = list_model_category.get(index);
     if(c){
         let cid = c.id;
         let k = search_bar.text.trim();
         let lsId = getPKLastId();
-        $xm.getXMList(k, cid, lsId, pk_list.width, Com.putFunc(function(list){
+        $xm.getXMList(k, cid, lsId, xm_list.width, Com.putFunc(function(list){
             loadXM0(list);
             if(cb) {
                 cb();
@@ -139,22 +139,22 @@ function loadXM0(list) {
         if($l.isDebug()) {
             Com.debug("xm", JSON.stringify(e));
         }
-        let pk = Com.convPK(preDateStr, preTimeStr, e);
-        pk_list_model.append(pk);
-        preDateStr = pk.date_str;
-        preTimeStr = pk.time_str;
+        let xm = Com.convXM(preDateStr, preTimeStr, e);
+        list_model_xm.append(xm);
+        preDateStr = xm.date_str;
+        preTimeStr = xm.time_str;
     }
     if(list.length < $app.pageSize) {
-        pk_list_view.footer = pkNoMoreBtn;
+        xm_list_view.footer = pkNoMoreBtn;
     } else {
-        pk_list_view.footer = pk_list_more_btn;
+        xm_list_view.footer = xm_list_more_btn;
     }
 
     //定位当前选中项
     if(pre_cid > 0) {
         let i = getColIndexByCid(pre_cid);
         if(i >= 0) {
-            col_list_view.currentIndex = i;
+            category_list_view.currentIndex = i;
             pre_cid = 0;
         }
     }
@@ -162,38 +162,38 @@ function loadXM0(list) {
         let arr = getPKByIdInCurrentList(pre_pkid);
         if(arr) {
             let i = arr[0];
-            pk_list_view.currentIndex = i;
+            xm_list_view.currentIndex = i;
             pre_pkid = 0;
         }
     }
-    $app.setUIVal(0, pk_list.width);
+    $app.setUIVal(0, xm_list.width);
 }
 
 function deletePK(target) {
-    let i = pk_list_view.currentIndex;
+    let i = xm_list_view.currentIndex;
     if(i>=0){
-        let p = pk_list_model.get(i);
+        let p = list_model_xm.get(i);
         p.img_path = "";
         $xm.deleteXM(p.id, target);
     }
 }
 function openEditPopup(add, pk) {
     if(add) {
-        let cid = getCurrentColId();
+        let cid = getCurrentCategoryId();
         edit_pk_popup.op(cid);
     } else {
         if(!pk) {
-            pk = getCurrentPK();
+            pk = getCurrentXM();
         }
         if(pk) {
-            $xm.getXM(pk.id, pk_list.width, Com.putFunc(function(pk2) {
+            $xm.getXM(pk.id, xm_list.width, Com.putFunc(function(pk2) {
                 edit_pk_popup.op(pk.cid, pk.id, pk2.cont);
             }));
         }
     }
 }
 function openOutEdit() {
-    let pk = getCurrentPK();
+    let pk = getCurrentXM();
     if(pk && !pk.jm) {
         $app.openInExternal(1, pk.id);
     }
@@ -205,7 +205,7 @@ function submitPK() {
     let send = false;
     if(edit_pk_popup.bid <= 0) {
         if(txt!=='') {
-            $xm.addXM(getCurrentColId(), txt, pk_list.width, edit_pk_popup);
+            $xm.addXM(getCurrentCategoryId(), txt, xm_list.width, edit_pk_popup);
             send = true;
         }
     } else {
@@ -213,11 +213,11 @@ function submitPK() {
         if($l.isDebug()) {
             $l.debug("updateXM "+ edit_pk_popup.bid + " " + txt + " " + k);
         }
-        $xm.updateXM(edit_pk_popup.bid, txt, k, pk_list.width, Com.putFunc(function(r) {
+        $xm.updateXM(edit_pk_popup.bid, txt, k, xm_list.width, Com.putFunc(function(r) {
             if(r.st === 0) {
                 let arr = getPKByIdInCurrentList(edit_pk_popup.bid);
                 if(arr) {
-                    let pk = pk_list_model.get(arr[0]);
+                    let pk = list_model_xm.get(arr[0]);
                     arr[1].simple_cont = r.simple_cont;
                     arr[1].cont = r.cont;
                     arr[1].simple_qmls = JSON.stringify(r.simple_qmls);
@@ -245,11 +245,11 @@ function cancelEditPK() {
 }
 function closeEditPK() {
     edit_pk_popup.cl();
-    col_list_view.forceActiveFocus();
+    category_list_view.forceActiveFocus();
     if(detailView.visible) {
        let suc = detailView.reopen();
        if(!suc) {
-           openDetail(getCurrentPK(), pk_list);
+           openDetail(getCurrentXM(), xm_list);
        }
     }
 }
@@ -258,20 +258,27 @@ function onKeysPressed(event) {
     event.accepted = true;
     let jump = false;
     if(event.modifiers === Qt.ShiftModifier && event.key === Qt.Key_J) {
-        col_list_view.currentIndex = (col_list_view.currentIndex+1) % col_list_view.count;
+        category_list_view.currentIndex = (category_list_view.currentIndex+1) % category_list_view.count;
     } else if(event.modifiers === ctrlVal && event.key === Qt.Key_E) {
         openEncryptPopup();
-    } else if(event.modifiers === Qt.ShiftModifier && event.key === Qt.Key_K) {
-        let i = col_list_view.currentIndex - 1;
-        if(i < 0){
-            i = col_list_view.count - 1;
+    } else if(event.modifiers === ctrlVal && event.key === Qt.Key_Home) {
+        let xm = getCurrentXM();
+        if(xm.sticky) {
+            cancelSticky(xm.id);
+        } else {
+            sticky(xm.id);
         }
-        col_list_view.currentIndex = i;
+    } else if(event.modifiers === Qt.ShiftModifier && event.key === Qt.Key_K) {
+        let i = category_list_view.currentIndex - 1;
+        if(i < 0){
+            i = category_list_view.count - 1;
+        }
+        category_list_view.currentIndex = i;
     } else if(event.key === Qt.Key_J || event.key === Qt.Key_Down) {
-        pk_list.next();
+        xm_list.next();
         jump = true;
     } else if(event.key === Qt.Key_K || event.key === Qt.Key_Up) {
-        pk_list.previous();
+        xm_list.previous();
         jump = true;
     } else if(event.modifiers === (ctrlVal | Qt.ShiftModifier) && event.key === Qt.Key_E) {
         openColEditPopup();
@@ -280,7 +287,7 @@ function onKeysPressed(event) {
     } else if(event.modifiers === (ctrlVal | Qt.AltModifier) && event.key === Qt.Key_Return) {
         openOutEdit();
     } else if(event.key === Qt.Key_Delete || event.key === Qt.Key_Backspace) {
-        if(pk_list_model.count > 0){
+        if(list_model_xm.count > 0){
             ensure_popup.open();
         }
     } else if(event.modifiers === ctrlVal && event.key === Qt.Key_F) {
@@ -304,12 +311,12 @@ function onKeysPressed(event) {
     } else if(event.modifiers === ctrlVal && event.key === Qt.Key_T) {
         navBtnClick('tag');
     } else if(event.key === Qt.Key_Home) {
-        pk_list_view.currentIndex = 0;
+        xm_list_view.currentIndex = 0;
     } else if(event.key === Qt.Key_End) {
-        pk_list_view.currentIndex = pk_list_view.count - 1;
+        xm_list_view.currentIndex = xm_list_view.count - 1;
     } else if(event.key === Qt.Key_Escape) {
-        if(pk_list_model.count > 0 && pk_list_view.currentItem.btn_no) {
-            pk_list_view.currentItem.btn_no.click();
+        if(list_model_xm.count > 0 && xm_list_view.currentItem.btn_no) {
+            xm_list_view.currentItem.btn_no.click();
         }
         jump = true;
     } else {
@@ -317,23 +324,23 @@ function onKeysPressed(event) {
     }
 
     if(jump) {
-        Com.jump(event, col_list_model, col_list_view);
+        Com.jump(event, list_model_category, category_list_view);
     }
     root.key(event);
 }
 
 function detail() {
-    openDetail(getCurrentPK(), pk_list);
+    openDetail(getCurrentXM(), xm_list);
 }
 function detailWin() {
     let com = Qt.createComponent("qrc:/qml/com/DetailWin.qml");
     let win = com.createObject();
-    win.open(getCurrentPK(), pk_list);
+    win.open(getCurrentXM(), xm_list);
     win_detail_refs[win_detail_refs.length] = win;
 }
 function openColEditPopup() {
-    let i = col_list_view.currentIndex;
-    let c = col_list_model.get(i);
+    let i = category_list_view.currentIndex;
+    let c = list_model_category.get(i);
     if(c) {
         col_edit_popup.text = c.name;
         col_edit_popup.open();
@@ -341,17 +348,17 @@ function openColEditPopup() {
 }
 
 function openEncryptPopup() {
-    if(pk_list_model.count > 0) {
-        let pk = getCurrentPK();
+    if(list_model_xm.count > 0) {
+        let pk = getCurrentXM();
         if(pk) {
             let twiceCheck = !pk.jm;
             encrypt_cont_popup.delegate = {
                 onSubmit:function() {
                     enOrDecrypt();
-                    col_list_view.forceActiveFocus();
+                    category_list_view.forceActiveFocus();
                 },
                 onCancel:function() {
-                    col_list_view.forceActiveFocus();
+                    category_list_view.forceActiveFocus();
                 }
             };
             encrypt_cont_popup.op(twiceCheck);
@@ -361,20 +368,20 @@ function openEncryptPopup() {
 
 let img_view_delegate = {
     setIndex:function(i) {
-        pk_list_view.currentIndex = i;
+        xm_list_view.currentIndex = i;
     },
     getCurrentIndex:function() {
-        return pk_list_view.currentIndex;
+        return xm_list_view.currentIndex;
     },
     previous:function(){
-        return pk_list.previous();
+        return xm_list.previous();
     },
     next:function(){
-        return pk_list.next();
+        return xm_list.next();
     },
     onClose:function() {
-        col_list_view.forceActiveFocus();
-        let pk = getCurrentPK();
+        category_list_view.forceActiveFocus();
+        let pk = getCurrentXM();
         if(pk) {
             let tmp = pk.img_path;
             pk.img_path = "";
@@ -387,7 +394,7 @@ let img_view_delegate = {
 }
 
 function openImgView() {
-    let pk = getCurrentPK();
+    let pk = getCurrentXM();
     if(pk && !pk.jm) {
         imgViewer.delegate = img_view_delegate;
         let n = imgViewer.append(pk);
@@ -397,40 +404,40 @@ function openImgView() {
     }
 }
 function copyPK(type) {
-    let pk = getCurrentPK();
+    let pk = getCurrentXM();
     if(pk) {
         $xm.copyXM(type, pk.id);
     }
 }
 function getPKByIdInCurrentList(id) {
-    let ct = pk_list_model.count;
+    let ct = list_model_xm.count;
     for(let i = 0; i < ct; i++) {
-        let pk = pk_list_model.get(i);
+        let pk = list_model_xm.get(i);
         if(pk.id === id) {
             return [i,pk];
         }
     }
     return null;
 }
-function getCurrentColId() {
-    let ci = col_list_view.currentIndex;
-    let c = col_list_model.get(ci);
+function getCurrentCategoryId() {
+    let ci = category_list_view.currentIndex;
+    let c = list_model_category.get(ci);
     if(c) {
         return c.id;
     }
     return 0;
 }
-function getCurrentCol() {
-    let i = col_list_view.currentIndex;
-    return col_list_model.get(i);
+function getCurrentCategory() {
+    let i = category_list_view.currentIndex;
+    return list_model_category.get(i);
 }
-function getCurrentPK() {
-    let i = pk_list_view.currentIndex;
-    let pk = pk_list_model.get(i);
+function getCurrentXM() {
+    let i = xm_list_view.currentIndex;
+    let pk = list_model_xm.get(i);
     return pk;
 }
-function getCurrentPkId() {
-    let pk = getCurrentPK();
+function getCurrentXMId() {
+    let pk = getCurrentXM();
     if(pk){
         return pk.id;
     }
@@ -438,9 +445,9 @@ function getCurrentPkId() {
 }
 
 function getColIndexByCid(cid) {
-    let len = col_list_model.count;
+    let len = list_model_category.count;
     for(let i = 0; i < len; i++){
-        let c = col_list_model.get(i);
+        let c = list_model_category.get(i);
         if(c && c.id === cid) {
             return i;
         }
@@ -457,16 +464,16 @@ function onBtnClick_addCol() {
 }
 
 function getPKLastTime() {
-    if(pk_list_model.count > 0) {
-        let last = pk_list_model.get(pk_list_model.count - 1);
+    if(list_model_xm.count > 0) {
+        let last = list_model_xm.get(list_model_xm.count - 1);
         return last.time;
     } else {
         return 0;
     }
 }
 function getPKLastId() {
-    if(pk_list_model.count > 0) {
-        let last = pk_list_model.get(pk_list_model.count - 1);
+    if(list_model_xm.count > 0) {
+        let last = list_model_xm.get(list_model_xm.count - 1);
         return last.id;
     } else {
         return 0;
@@ -488,15 +495,15 @@ function test() {
 ///
 class PKTagDelegate extends Tag.TagDelegate {
     getCurrentItem() {
-        return getCurrentPK();
+        return getCurrentXM();
     }
     updateTags(id,tags) {
         $xm.updateXMTags(id, tags, Com.putFunc(function(r) {
-            let pk = getCurrentPK();
+            let pk = getCurrentXM();
             if(pk) {
                 pk.tags = r.tags;
                 pk.stime = r.stime;
-                pk_list_view.currentItem.updateTags(r.tags);
+                xm_list_view.currentItem.updateTags(r.tags);
                 if(detailView.visible) {
                     detailView.updateTags(r.tags, r.stime);
                 }
@@ -509,17 +516,17 @@ class PKTagDelegate extends Tag.TagDelegate {
 }
 
 function enOrDecrypt() {
-    let pk = getCurrentPK();
+    let pk = getCurrentXM();
     if(pk) {
         let pwd = encrypt_cont_popup.text.trim();
         if(pk.jm) {
             Com.st(0, qsTr("decrypting..."));
-            $app.decrypt(pk.id, pwd, pk_list.width, Com.putFunc(function(pk2) {
+            $app.decrypt(pk.id, pwd, xm_list.width, Com.putFunc(function(pk2) {
                 if($l.isDebug()) {
                     $l.debug("decrypt pk " + JSON.stringify(pk2));
                 }
-                if(getCurrentColId() === pk2.cid) {
-                    let pk = getCurrentPK();
+                if(getCurrentCategoryId() === pk2.cid) {
+                    let pk = getCurrentXM();
                     if(pk) {
                         pk.jm = 0;
                         pk.jm_ensure = true;
@@ -541,12 +548,12 @@ function enOrDecrypt() {
             }));
         } else {
             Com.st(0, qsTr("encrypting..."));
-            $app.encrypt(pk.id, pwd, pk_list.width, Com.putFunc(function(pk2) {
+            $app.encrypt(pk.id, pwd, xm_list.width, Com.putFunc(function(pk2) {
                 if($l.isDebug()) {
                     $l.trace("encrypt pk " + JSON.stringify(pk2));
                 }
-                if(getCurrentColId() === pk2.cid) {
-                    let pk = getCurrentPK();
+                if(getCurrentCategoryId() === pk2.cid) {
+                    let pk = getCurrentXM();
                     if(pk) {
                         pk.jm = 1;
                         pk.jm_ensure = true;
@@ -563,4 +570,24 @@ function enOrDecrypt() {
         }
         encrypt_cont_popup.clear();
     }
+}
+function sticky(id) {
+    let xm = getCurrentXM();
+    $xm.sticky(id, Com.putFunc(function(){
+        xm.sticky = 1;
+        alert("置顶成功");
+        loadXM(true, function(){
+            xm_list_view.currentIndex = 0;
+        });
+    }));
+}
+function cancelSticky(id) {
+    let xm = getCurrentXM();
+    $xm.cancelSticky(id, Com.putFunc(function(){
+        xm.sticky = 0;
+        alert("取消置顶成功");
+        loadXM(true, function(){
+            xm_list_view.currentIndex = 0;
+        });
+    }));
 }

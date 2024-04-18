@@ -25,6 +25,7 @@ public:
     QString refs = "";
     QString refids = "";
     QString refimgids = "";
+    uint sticky = 0;
 
     QString uuid;
     QString file;
@@ -36,7 +37,7 @@ public:
 
     void fill(QVariantMap m);
 
-    static XM* convPK(QJsonObject jo) {
+    static XM* convXM(QJsonObject jo) {
         using namespace ut::json;
         XM* p = new XM();
         p->cont = getString(jo, "cont", "");

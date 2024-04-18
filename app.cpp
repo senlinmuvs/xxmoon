@@ -859,7 +859,7 @@ void App::genFile(uint fileType, uint type, uint gid, uint id, bool batch, QStri
                     }
                     fromId = list.last()->id;
                 }
-                Category *c = colDao->getCategory(gid);
+                Category *c = categoryDao->getCategory(gid);
                 if(c) {
                     filename = extractName(c->name, c->name.length());
                 }
@@ -1614,18 +1614,18 @@ void App::importXM(QVariantMap pkdata) {
         }
         //如果有图片则创建一个Resource Folder
         Category* resCol = NULL;
-        uint resColID = colDao->getIDByName(FOLDER_RESOURCES);
+        uint resColID = categoryDao->getIDByName(FOLDER_RESOURCES);
         if(lg->isDebug()){
             lg->debug(QString("find res folder %1 %2").arg(resColID).arg(FOLDER_RESOURCES));
         }
         if(pk->img.length() > 0 || refs.size() > 0) {
             if(resColID <= 0) {
-                uint maxI = colDao->getMaxI();
+                uint maxI = categoryDao->getMaxI();
                 resCol = new Category();
                 resCol->name = FOLDER_RESOURCES;
                 resCol->i = maxI + 1;
-                colDao->add(resCol);
-                resColID = colDao->getIDByName(FOLDER_RESOURCES);
+                categoryDao->add(resCol);
+                resColID = categoryDao->getIDByName(FOLDER_RESOURCES);
                 if(lg->isDebug()) {
                     lg->debug(QString("add folder %1").arg(resCol->toString()));
                 }
@@ -1664,7 +1664,7 @@ void App::importXM(QVariantMap pkdata) {
             }
         }
         //
-        Category* defCol = colDao->getCategoryByIndex(0);
+        Category* defCol = categoryDao->getCategoryByIndex(0);
         if(defCol) {
             pk->cid = defCol->id;
         }
@@ -1674,7 +1674,7 @@ void App::importXM(QVariantMap pkdata) {
         }
         //
         if(resCol == NULL && resColID > 0) {
-            resCol = colDao->getCategory(resColID);
+            resCol = categoryDao->getCategory(resColID);
         }
         if(resCol) {
             resCol->total = xmDao->countCol(resCol->id);
@@ -1921,7 +1921,7 @@ void initDB() {
             db->init();
             workDao->init();
             noteDao->init();
-            colDao->init();
+            categoryDao->init();
             xmDao->init();
             tagDao->init();
         } else {

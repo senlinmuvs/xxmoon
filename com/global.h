@@ -47,7 +47,7 @@ extern WorkDao *workDao;
 extern NoteDao *noteDao;
 extern EnvDao *envDao;
 extern XMDao *xmDao;
-extern CategoryDao *colDao;
+extern CategoryDao *categoryDao;
 extern TagDao *tagDao;
 #ifdef Q_OS_MAC
 extern Mac *mac;

@@ -27,6 +27,7 @@ public:
     uint getIDByImg(QString img);
     uint getSolveTime(uint id);
     void setSolveTime(uint id, uint stime);
+    void setTop(uint xmid, uint top);
 private:
     QList<XM*> gets(QSqlQuery q, QSqlRecord rec);
 };

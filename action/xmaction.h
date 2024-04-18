@@ -30,8 +30,8 @@ public:
     Q_INVOKABLE void encrypt(uint cid, QString pwd, uint cbid);
     Q_INVOKABLE void deleteEncryption(uint cid, uint cbid);
     Q_INVOKABLE void validateCategoryPWD(uint cid, QString pwd, uint cbid);
-    Q_INVOKABLE void setTop(uint cid, uint xmid, uint cbid);
-    Q_INVOKABLE void delTop(uint cid, uint xmid, uint cbid);
+    Q_INVOKABLE void sticky(uint xmid, uint cbid);
+    Q_INVOKABLE void cancelSticky(uint xmid, uint cbid);
 
     QString xm(QImage *img, QString cont, QString file);
 };

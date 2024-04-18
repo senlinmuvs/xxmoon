@@ -29,12 +29,12 @@ void SQLiteManager::init() {
     query.exec(sql_xm_table);
     query.exec(sql_tag_table);
     //
-    if(colDao->getMaxId() == 0) {
+    if(categoryDao->getMaxId() == 0) {
         Category *c = new Category();
         c->id = 1;
         c->name = "Default";
         c->i = 0;
-        colDao->add(c);
+        categoryDao->add(c);
         delete c;
     }
 }

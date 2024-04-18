@@ -261,7 +261,7 @@ function wrapKey(cont, k) {
     }
 }
 
-function convPK(preDateStr, preTimeStr, e) {
+function convXM(preDateStr, preTimeStr, e) {
     let simpleQmlsStr = JSON.stringify(e.simple_qmls);
 //    console.log("convPK", simpleQmlsStr);
     let n = {
@@ -295,7 +295,8 @@ function convPK(preDateStr, preTimeStr, e) {
         uuid: e.uuid,
         file: e.file,
         extra: "",
-        forceMaxWidth: false
+        forceMaxWidth: false,
+        sticky: e.sticky
     };
 
     let arr = parseTime(n.time, 1);

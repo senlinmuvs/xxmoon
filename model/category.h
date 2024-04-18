@@ -16,7 +16,6 @@ public:
     uint x;
     QString m;
     bool jm;
-    QString zdids;
 
     QString toString();
     QVariantMap toVMap();

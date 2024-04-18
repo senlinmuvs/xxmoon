@@ -9,7 +9,7 @@
         <file>qml/com/com.css</file>
         <file>qml/com/com.js</file>
         <file>qml/com/com_ext.js</file>
-        <file>qml/com/ComponentCol.qml</file>
+        <file>qml/com/ComponentCategory.qml</file>
         <file>qml/com/ComponentNote.qml</file>
         <file>qml/com/ComponentNoteSimple.qml</file>
         <file>qml/com/ComponentXM.qml</file>

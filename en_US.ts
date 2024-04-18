@@ -152,9 +152,9 @@
     </message>
 </context>
 <context>
-    <name>ComponentCol</name>
+    <name>ComponentCategory</name>
     <message>
-        <location filename="qml/com/ComponentCol.qml" line="43"/>
+        <location filename="qml/com/ComponentCategory.qml" line="43"/>
         <source>Sorting...</source>
         <translation></translation>
     </message>
@@ -596,7 +596,7 @@
     </message>
     <message>
         <location filename="qml/xm/XM.qml" line="72"/>
-        <location filename="qml/xm/XM.qml" line="343"/>
+        <location filename="qml/xm/XM.qml" line="358"/>
         <source>Delete</source>
         <translation></translation>
     </message>
@@ -622,76 +622,87 @@
     </message>
     <message>
         <location filename="qml/xm/XM.qml" line="199"/>
+        <location filename="qml/xm/XM.qml" line="369"/>
+        <source>Sticky</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="214"/>
         <source>Copy main image</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qml/xm/XM.qml" line="211"/>
+        <location filename="qml/xm/XM.qml" line="226"/>
         <source>Copy main image link</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qml/xm/XM.qml" line="222"/>
+        <location filename="qml/xm/XM.qml" line="237"/>
         <source>Copy content</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qml/xm/XM.qml" line="233"/>
+        <location filename="qml/xm/XM.qml" line="248"/>
         <source>Encrypt | Decrypt</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qml/xm/XM.qml" line="243"/>
+        <location filename="qml/xm/XM.qml" line="258"/>
         <source>Export</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qml/xm/XM.qml" line="246"/>
+        <location filename="qml/xm/XM.qml" line="261"/>
         <source>Export PDF</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qml/xm/XM.qml" line="259"/>
+        <location filename="qml/xm/XM.qml" line="274"/>
         <source>Export HTML</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qml/xm/XM.qml" line="272"/>
+        <location filename="qml/xm/XM.qml" line="287"/>
         <source>Export XM</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qml/xm/XM.qml" line="285"/>
+        <location filename="qml/xm/XM.qml" line="300"/>
         <source>Export Site</source>
         <translation>Export Site</translation>
     </message>
     <message>
-        <location filename="qml/xm/XM.qml" line="299"/>
+        <location filename="qml/xm/XM.qml" line="314"/>
         <source>Delete from Site</source>
         <translation>Delete from Site</translation>
     </message>
     <message>
-        <location filename="qml/xm/XM.qml" line="312"/>
+        <location filename="qml/xm/XM.qml" line="327"/>
         <source>Clear Solved Time</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qml/xm/XM.qml" line="318"/>
+        <location filename="qml/xm/XM.qml" line="333"/>
         <source>Success</source>
         <translation>Success</translation>
     </message>
     <message>
-        <location filename="qml/xm/XM.qml" line="612"/>
+        <location filename="qml/xm/XM.qml" line="367"/>
+        <source>Cancel Sticky</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="qml/xm/XM.qml" line="635"/>
         <source>Category Name</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qml/xm/XM.qml" line="657"/>
+        <location filename="qml/xm/XM.qml" line="680"/>
         <source>referenced.</source>
         <translation>Referenced!</translation>
     </message>
     <message>
-        <location filename="qml/xm/XM.qml" line="657"/>
+        <location filename="qml/xm/XM.qml" line="680"/>
         <source>Can not delete! found</source>
         <translation></translation>
     </message>

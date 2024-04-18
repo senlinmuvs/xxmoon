@@ -24,7 +24,7 @@ let tag_off = 18;
 let about_label_font_size = 12;
 let my_feild_font_size = 12;
 
-let ui_pk_list_margin = 10;
+let ui_xm_list_margin = 10;
 let ui_pk_text_margin = 10;
 let ui_date_height = 20;
 let ui_col_row_height = 30;
@@ -70,7 +70,7 @@ if(platform === Com.platform_win) {
     about_label_font_size = 10;
     my_feild_font_size = 8;
 
-    ui_pk_list_margin = 10;
+    ui_xm_list_margin = 10;
     ui_pk_text_margin = 10;
     ui_date_height = 20;
     ui_col_row_height = 30;
@@ -107,7 +107,7 @@ if(platform === Com.platform_linux) {
     about_label_font_size = 8;
     my_feild_font_size = 8;
 
-    ui_pk_list_margin = 10;
+    ui_xm_list_margin = 10;
     ui_pk_text_margin = 10;
     ui_date_height = 20;
     ui_col_row_height = 30;

@@ -19,6 +19,7 @@ QList<XM*> XMDao::gets(QSqlQuery q, QSqlRecord rec) {
     int colJm = rec.indexOf("jm");
     int colRefids = rec.indexOf("refids");
     int colRefimgids = rec.indexOf("refimgids");
+    int colTop = rec.indexOf("top");
     while (q.next()) {
         uint id = q.value(colId).toUInt();
         uint cid = q.value(colCid).toUInt();
@@ -32,6 +33,7 @@ QList<XM*> XMDao::gets(QSqlQuery q, QSqlRecord rec) {
         uint jm = q.value(colJm).toBool();
         QString refids = q.value(colRefids).toString();
         QString refimgids = q.value(colRefimgids).toString();
+        uint top = q.value(colTop).toUInt();
         XM *p = new XM();
         p->id = id;
         p->cid = cid;
@@ -45,6 +47,7 @@ QList<XM*> XMDao::gets(QSqlQuery q, QSqlRecord rec) {
         p->jm = jm;
         p->refids = refids;
         p->refimgids = refimgids;
+        p->sticky = top;
         list.insert(list.end(), p);
     }
     return list;
@@ -60,7 +63,7 @@ void XMDao::add(XM *p) {
         p->refimgids = extractRefimgids(p->refimgids);
     }
     //
-    QString sql = "insert into xm(id, cid, cont, img, time, lst, stime, tags, bj, jm, refids, refimgids) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+    QString sql = "insert into xm(id, cid, cont, img, time, lst, stime, tags, bj, jm, refids, refimgids, top) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
     if(p->time <= 0) {
         p->time = ut::time::getCurSeconds();
     }
@@ -78,6 +81,7 @@ void XMDao::add(XM *p) {
     q.addBindValue(p->jm);
     q.addBindValue(p->refids.isNull() ? "" : p->refids);
     q.addBindValue(p->refimgids.isNull() ? "" : p->refimgids);
+    q.addBindValue(p->sticky);
     bool r = q.exec();
     if(!r) {
         lg->error(QString("add xm error %1 %2").arg(q.lastError().text()).arg(p->toString()));
@@ -93,7 +97,7 @@ QString getSearchCondSql0(QString k) {
     return sql + ")";
 }
 QList<XM*> XMDao::getXMList(QString k, uint cid, uint fromId) {
-    QString sql = "select id,cid,cont,img,time,lst,stime,tags,bj,jm,refids,refimgids from xm where cid=:cid #id #cont #tags order by id desc limit :size";
+    QString sql = "select id,cid,cont,img,time,lst,stime,tags,bj,jm,refids,refimgids,top from xm where cid=:cid #id #cont #tags order by top desc,id desc limit :size";
     bool hasK = k.length() > 0;
     if(hasK) {
         k = k.replace("'","");
@@ -149,7 +153,7 @@ QList<XM*> XMDao::getXMList(QString k, uint cid, uint fromId) {
 }
 
 QList<XM*> XMDao::getNewXMList(uint cid, uint fromId) {
-    QString sql = "select id,cid,cont,img,time,lst,stime,tags,bj,jm,refids,refimgids from xm where cid=:cid and id>:id order by id asc limit :size";
+    QString sql = "select id,cid,cont,img,time,lst,stime,tags,bj,jm,refids,refimgids,top from xm where cid=:cid and id>:id order by id asc limit :size";
     QSqlQuery q;
     q.prepare(sql);
     q.bindValue(":cid", cid);
@@ -179,7 +183,7 @@ uint XMDao::getMaxId() const {
 }
 
 XM* XMDao::getXM(uint id) {
-    QSqlQuery q("select id,cid,cont,img,time,lst,stime,bj,tags,jm,refids,refimgids from xm where id=" + QString::number(id));
+    QSqlQuery q("select id,cid,cont,img,time,lst,stime,bj,tags,jm,refids,refimgids,top from xm where id=" + QString::number(id));
     bool r = q.exec();
     if(!r) {
         lg->error(QString("getXM error %1").arg(q.lastError().text()));
@@ -188,8 +192,8 @@ XM* XMDao::getXM(uint id) {
     QSqlRecord rec = q.record();
     QList<XM*> list = gets(q, rec);
     if(list.size() > 0) {
-        XM* pk = list.first();
-        return pk;
+        XM* xm = list.first();
+        return xm;
     } else {
         return NULL;
     }
@@ -228,8 +232,14 @@ void XMDao::updateXM(uint id, QString cont, uint jm, uint lst) {
     });
 }
 void XMDao::updateCid(uint xmid, uint cid) {
-    db->execute("updateCid", "update pk set cid=:cid where id=:id", [=](QSqlQuery q) {
+    db->execute("updateCid", "update xm set cid=:cid where id=:id", [=](QSqlQuery q) {
         q.bindValue(":cid", cid);
+        q.bindValue(":id", xmid);
+    });
+}
+void XMDao::setTop(uint xmid, uint top) {
+    db->execute("setTop", "update xm set top=:top where id=:id", [=](QSqlQuery q) {
+        q.bindValue(":top", top);
         q.bindValue(":id", xmid);
     });
 }

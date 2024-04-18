@@ -3,7 +3,7 @@ import QtQuick.Controls 2.12
 
 Popup {
     id: root
-    width: 300
+    width: rect_cont.width + 50
     height: rect_cont.height
     x: parent.width/2-width/2
     y: parent.height/2-height/2
@@ -27,13 +27,13 @@ Popup {
         anchors.right: parent.right
         height: text.height + 20
         radius: 5
+        width: text.width + 20
         Text {
             id: text
             y: 10
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
             color:"white"
-            width: parent.width - 20
             font.pixelSize: 16
             wrapMode: Text.WordWrap
             horizontalAlignment: Text.AlignHCenter

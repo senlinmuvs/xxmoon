@@ -241,7 +241,7 @@ class TagDelegate {
                 let newTagIds = dstTags.toArr('#');
 //                Com.log(JSON.stringify(newTagIds));
                 if(newTagIds.length <= Com.MAX_TAG) {
-//                    $app.updatePKTags(it.id, dstTags, pk_list);
+//                    $app.updatePKTags(it.id, dstTags, xm_list);
                     this.updateTags(it.id,dstTags);
                 } else {
                     tipsInfo(qsTr("Cant more than") + Com.MAX_TAG + qsTr("tags"));

@@ -16,14 +16,14 @@ Rectangle {
     signal tipsInfo(string txt)
     property var tagCom: Qt.createComponent("qrc:/qml/com/Tag.qml")
 //    property var lineItemCom: Qt.createComponent("qrc:/com/LineItem.qml")
-    property var tagManager: new Tag.TagManager(tagCom, Com.type_pk, search_bar, tag_view, col_list_view, new XM.PKTagDelegate())
+    property var tagManager: new Tag.TagManager(tagCom, Com.type_pk, search_bar, tag_view, category_list_view, new XM.PKTagDelegate())
     property int sorting_col_index: 0
     property int pre_cid: 0
     property int pre_pkid: 0
     property int wallpaper_cid: 0
 
     ListModel {
-        id: col_list_model
+        id: list_model_category
     }
     TextField {
         id: search_bar
@@ -50,7 +50,7 @@ Rectangle {
         Keys.onPressed: function(event) {
             if(event.key === Qt.Key_Escape || event.key === Qt.Key_Return || event.key === Qt.Key_Tab) {
                 event.accepted = true;
-                col_list_view.forceActiveFocus();
+                category_list_view.forceActiveFocus();
             }
         }
         onFocusChanged: {
@@ -78,7 +78,7 @@ Rectangle {
         // MenuItem {
         //     text: qsTr("Generate PDF")
         //     onTriggered: {
-        //        let cid = XM.getCurrentColId();
+        //        let cid = XM.getCurrentCategoryId();
         //        $app.genFile(Com.file_type_pdf, Com.type_pk, cid, 0);
         //     }
         // }
@@ -86,7 +86,7 @@ Rectangle {
         MenuItem {
             text: qsTr("Generate HTML")
             onTriggered: {
-               let cid = XM.getCurrentColId();
+               let cid = XM.getCurrentCategoryId();
                $app.genFile(Com.file_type_html, Com.type_pk, cid, 0);
             }
         }
@@ -94,7 +94,7 @@ Rectangle {
         // MenuItem {
         //     text: qsTr("Export Single XM")
         //     onTriggered: {
-        //         let cid = XM.getCurrentColId();
+        //         let cid = XM.getCurrentCategoryId();
         //         $app.genFile(Com.file_type_xm, Com.type_pk, cid, 0, 0);
         //     }
         // }
@@ -103,7 +103,7 @@ Rectangle {
         // MenuItem {
         //     text: qsTr("Export Batch XM")
         //     onTriggered: {
-        //         let col = XM.getCurrentCol();
+        //         let col = XM.getCurrentCategory();
         //         if(col){
         //             $app.genFile(Com.file_type_xm, Com.type_pk, col.id, 0, 1);
         //         }
@@ -113,7 +113,7 @@ Rectangle {
         MenuItem {
             id: mi_set_pwd
             onTriggered: {
-                let c = XM.getCurrentCol();
+                let c = XM.getCurrentCategory();
                 if(c.jm) {
                     encrypt_cont_popup.delegate = {
                         onSubmit:function(v) {
@@ -146,7 +146,7 @@ Rectangle {
             }
         }
         onAboutToShow: {
-            let c = XM.getCurrentCol();
+            let c = XM.getCurrentCategory();
             if(c.jm) {
                 mi_set_pwd.text = "取消密码";
             } else {
@@ -190,6 +190,21 @@ Rectangle {
             shortcut: ctrlName+"+Alt+Enter"
             onTriggered: {
                 XM.openOutEdit();
+            }
+        }
+        MenuSeparator {
+        }
+        MenuItem {
+            id: mi_sticky
+            text: qsTr("Sticky")
+            shortcut: ctrlName+"+Home"
+            onTriggered: {
+                let xm = XM.getCurrentXM();
+                if(xm.sticky) {
+                    XM.cancelSticky(xm.id);
+                } else {
+                    XM.sticky(xm.id);
+                }
             }
         }
         MenuSeparator {
@@ -245,7 +260,7 @@ Rectangle {
                 id: mi_exp_pdf
                 text: qsTr("Export PDF")
                 onTriggered: {
-                    let pk = XM.getCurrentPK();
+                    let pk = XM.getCurrentXM();
                     if(pk) {
                         $app.genFile(Com.file_type_pdf, Com.type_pk, 0, pk.id);
                     }
@@ -258,7 +273,7 @@ Rectangle {
                 id: mi_exp_html
                 text: qsTr("Export HTML")
                 onTriggered: {
-                    let pk = XM.getCurrentPK();
+                    let pk = XM.getCurrentXM();
                     if(pk){
                         $app.genFile(Com.file_type_html, Com.type_pk, 0, pk.id);
                     }
@@ -271,7 +286,7 @@ Rectangle {
                 id: mi_exp_xm
                 text: qsTr("Export XM")
                 onTriggered: {
-                    let pk = XM.getCurrentPK();
+                    let pk = XM.getCurrentXM();
                     if(pk){
                         $app.genFile(Com.file_type_xm, Com.type_pk, 0, pk.id);
                     }
@@ -284,7 +299,7 @@ Rectangle {
                 id: mi_exp_site
                 text: qsTr("Export Site")
                 onTriggered: {
-                    let pk = XM.getCurrentPK();
+                    let pk = XM.getCurrentXM();
                     if(pk){
                         $app.genFile(Com.file_type_site, Com.type_pk, 0, pk.id);
                     }
@@ -298,7 +313,7 @@ Rectangle {
             id: mi_del_site
             text: qsTr("Delete from Site")
             onTriggered: {
-                let pk = XM.getCurrentPK();
+                let pk = XM.getCurrentXM();
                 if(pk){
                     $app.deleteFromSite(pk.id);
                 }
@@ -311,7 +326,7 @@ Rectangle {
             id: mi_clear_stime
             text: qsTr("Clear Solved Time")
             onTriggered: {
-                let pk = XM.getCurrentPK();
+                let pk = XM.getCurrentXM();
                 if(pk){
                     $xm.clearSolvedTime(pk.id, Com.putFunc(function(r) {
                         pk.stime = 0;
@@ -327,7 +342,7 @@ Rectangle {
         //     id: mi_send_phone
         //     text: qsTr("Send To Phone")
         //     onTriggered: {
-        //         let pk = XM.getCurrentPK();
+        //         let pk = XM.getCurrentXM();
         //         if(pk){
         //             $app.sendToPhone(Com.type_pk, pk.id, Com.putFunc(function(r) {
         //                 tipsInfo(qsTr("Success"));
@@ -346,9 +361,17 @@ Rectangle {
                 ensure_popup.open();
             }
         }
+        onAboutToShow: {
+            let xm = XM.getCurrentXM();
+            if(xm.sticky) {
+                mi_sticky.text = qsTr("Cancel Sticky");
+            } else {
+                mi_sticky.text = qsTr("Sticky");
+            }
+        }
     }
     Rectangle {
-        id: col_list
+        id: category_list
         width: 160
         anchors {
             left: parent.left
@@ -376,23 +399,23 @@ Rectangle {
             }
         }
         MyList {
-            id: col_list_view
+            id: category_list_view
             showHighligh:true
             anchors.topMargin: e_col_header.height
-            anchors.fill: col_list
-            model: col_list_model
+            anchors.fill: category_list
+            model: list_model_category
             clip:true
-            delegate: ComponentCol{}
+            delegate: ComponentCategory{}
             onCurrentIndexChanged: {
-                let c = XM.getCurrentCol();
-                pk_list_model.clear();
+                let c = XM.getCurrentCategory();
+                list_model_xm.clear();
                 if(c.jm) {
                     encrypt_cont_popup.delegate = {
                         onSubmit:function(v) {
                             $xm.validateCategoryPWD(c.id, v, Com.putFunc(function(y){
                                 if(y) {
                                     XM.loadXM(true, function(){
-                                        pk_list_view.currentIndex = 0;
+                                        xm_list_view.currentIndex = 0;
                                     });
                                     encrypt_cont_popup.close();
                                 } else {
@@ -404,7 +427,7 @@ Rectangle {
                     encrypt_cont_popup.op();
                 } else {
                     XM.loadXM(true, function(){
-                        pk_list_view.currentIndex = 0;
+                        xm_list_view.currentIndex = 0;
                     });
                 }
             }
@@ -427,19 +450,19 @@ Rectangle {
             }
             onReleased: {
                 startX = 0
-                $app.setLocal($app.ENV_K_LAST_CATEGORY_LEFT_WIDTH, Math.floor(col_list.width));
+                $app.setLocal($app.ENV_K_LAST_CATEGORY_LEFT_WIDTH, Math.floor(category_list.width));
             }
             onPositionChanged:{
                 if(startX > 0){
                     let left = mouse.x < startX;
                     if(left){
                         let delta = startX - mouse.x
-                        col_list.width = Com.max(100,col_list.width - delta);
+                        category_list.width = Com.max(100,category_list.width - delta);
                     } else {
                         let delta = mouse.x - startX
-                        col_list.width = Com.min(root.width/3*2,col_list.width + delta);
+                        category_list.width = Com.min(root.width/3*2,category_list.width + delta);
                     }
-                    $app.setUIVal(0, pk_list.width);
+                    $app.setUIVal(0, xm_list.width);
                 }
             }
             onEntered: {
@@ -475,38 +498,38 @@ Rectangle {
 
     ///
     ListModel {
-        id: pk_list_model
+        id: list_model_xm
     }
     Component {
         id: pkNoMoreBtn
         Rectangle{}
     }
     Rectangle {
-        id: pk_list
+        id: xm_list
         anchors {
-            left: col_list.right
+            left: category_list.right
             top: parent.top
             bottom: parent.bottom
             right: parent.right
         }
         color: "white"
         MyList {
-            id: pk_list_view
+            id: xm_list_view
             Component {
-                id: pk_list_more_btn
+                id: xm_list_more_btn
                 MoreBtn {
                     function click() {
-                        if(pk_list_view.footer) {
+                        if(xm_list_view.footer) {
                             XM.loadXM();
                         }
                     }
                 }
             }
-            anchors.fill: pk_list
-            model: pk_list_model
+            anchors.fill: xm_list
+            model: list_model_xm
             delegate: ComponentXM {}
 //            function click(){
-//                col_list_view.forceActiveFocus();
+//                category_list_view.forceActiveFocus();
 //            }
         }
         GridView {
@@ -516,26 +539,26 @@ Rectangle {
             delegate: ComponentGridXM{}
         }
         function next() {
-            if(pk_list_view.currentIndex+1>=pk_list_view.count) {
+            if(xm_list_view.currentIndex+1>=xm_list_view.count) {
                 XM.loadXM();
             }
-            let i = pk_list_view.currentIndex+1;
-            if(i > pk_list_view.count-1) {
-                pk_list_view.currentIndex = pk_list_view.count-1;
+            let i = xm_list_view.currentIndex+1;
+            if(i > xm_list_view.count-1) {
+                xm_list_view.currentIndex = xm_list_view.count-1;
                 return null;
             } else {
-                pk_list_view.currentIndex = i;
-                return pk_list_model.get(i);
+                xm_list_view.currentIndex = i;
+                return list_model_xm.get(i);
             }
         }
         function previous() {
-            let i = pk_list_view.currentIndex-1;
+            let i = xm_list_view.currentIndex-1;
             if(i < 0){
-                pk_list_view.currentIndex = 0;
+                xm_list_view.currentIndex = 0;
                 return null;
             } else {
-                pk_list_view.currentIndex = i;
-                return pk_list_model.get(i);
+                xm_list_view.currentIndex = i;
+                return list_model_xm.get(i);
             }
         }
         function onClose() {
@@ -549,7 +572,7 @@ Rectangle {
         }
         function getData(id, w, cb) {
             $xm.getXM(id, w, Com.putFunc(function(pk){
-                pk = Com.convPK(1, 1, pk);
+                pk = Com.convXM(1, 1, pk);
                 if(cb){
                     cb(pk);
                 }
@@ -566,7 +589,7 @@ Rectangle {
         function onTagList(all, list) {
             root.tagManager.loadTagList(all, list);
             //等标签加载完再加载主页数据
-            if(col_list_model.count === 0) {
+            if(list_model_category.count === 0) {
                 Com.info("loadCategory on init tags");
                 XM.loadCategory();
             }
@@ -587,10 +610,10 @@ Rectangle {
             XM.cancelEditPK();
         }
         function onAdded(pk) {
-            pk = Com.convPK(1, 1, pk);
+            pk = Com.convXM(1, 1, pk);
             XM.colTotalIncrement();
-            if(pk_list_model.count > 0) {
-                let p = pk_list_model.get(0);
+            if(list_model_xm.count > 0) {
+                let p = list_model_xm.get(0);
                 if(p.date_str === pk.date_str) {
                     p.visible_date = false;
                     if(p.time_str === pk.time_str) {
@@ -598,8 +621,8 @@ Rectangle {
                     }
                 }
             }
-            pk_list_model.insert(0, pk);
-            pk_list_view.currentIndex = 0;
+            list_model_xm.insert(0, pk);
+            xm_list_view.currentIndex = 0;
             edit_pk_popup.bid = pk.id;
 //                root.st(1, qsTr("Saved"));
             if(pending_close) {
@@ -617,16 +640,16 @@ Rectangle {
         }
         function cancel() {
             col_edit_popup.close();
-            col_list_view.forceActiveFocus();
+            category_list_view.forceActiveFocus();
             add = false;
         }
         function onUpdated() {
-            let i = col_list_view.currentIndex;
-            let c = col_list_model.get(i);
+            let i = category_list_view.currentIndex;
+            let c = list_model_category.get(i);
             c.name = col_edit_popup.text.trim();
             col_edit_popup.clear();
             col_edit_popup.close();
-            col_list_view.forceActiveFocus();
+            category_list_view.forceActiveFocus();
             add = false;
         }
         function onAdded(err, c) {
@@ -635,8 +658,8 @@ Rectangle {
                 tipsInfo(err);
                 return;
             }
-            col_list_model.append(c);
-            col_list_view.forceActiveFocus();
+            list_model_category.append(c);
+            category_list_view.forceActiveFocus();
             col_edit_popup.clear();
             col_edit_popup.close();
             add = false;
@@ -646,7 +669,7 @@ Rectangle {
     EnsurePopup {
         id: ensure_popup
         function onSure(y) {
-            col_list_view.forceActiveFocus();
+            category_list_view.forceActiveFocus();
             if(y) {
                 XM.deletePK(ensure_popup);
             }
@@ -657,45 +680,45 @@ Rectangle {
                 tipsInfo(qsTr("Can not delete! found")+ " "+ ref + " " + qsTr("referenced."));
             } else {
                 XM.colTotalDecrement();
-                pk_list_model.remove(pk_list_view.currentIndex);
+                list_model_xm.remove(xm_list_view.currentIndex);
             }
         }
     }
     Component.onCompleted: {
-        col_list_view.forceActiveFocus();
+        category_list_view.forceActiveFocus();
     }
     function init(data) {
         Com.info("XM init data");
         if(data) {
             let lw = data[$app.ENV_K_LAST_CATEGORY_LEFT_WIDTH];
             if(lw) {
-                col_list.width = lw;
+                category_list.width = lw;
             }
-            if(col_list_model.count === 0) {
-                col_list_view.forceActiveFocus();
+            if(list_model_category.count === 0) {
+                category_list_view.forceActiveFocus();
                 tagManager.initData();
             }
         }
     }
     function onGetCategories(list) {
-//        console.log("--------------->>>>>>>>>>>", search_bar.text.trim(), list.length, pk_list_model.count);
+//        console.log("--------------->>>>>>>>>>>", search_bar.text.trim(), list.length, list_model_xm.count);
         if($l.isDebug()) {
             Com.trace("onGetCategories", JSON.stringify(list));
         }
-        col_list_model.clear();
+        list_model_category.clear();
         for(let i = 0; i < list.length; i++) {
-            col_list_model.append(list[i]);
+            list_model_category.append(list[i]);
         }
-        if(pk_list_model.count === 0) {
+        if(list_model_xm.count === 0) {
             XM.loadXM();
         }
     }
     function hasNewPK(col) {
-        let c = col_list_model.get(0);
-        if(col_list_view.currentIndex === 0) {
-            let row0 = pk_list_model.get(0);
+        let c = list_model_category.get(0);
+        if(category_list_view.currentIndex === 0) {
+            let row0 = list_model_xm.get(0);
             if(row0) {
-                $xm.getNewXMList(c.id, row0.id, pk_list.width, root);
+                $xm.getNewXMList(c.id, row0.id, xm_list.width, root);
             } else {
                 XM.loadXM(false);
             }
@@ -719,16 +742,16 @@ Rectangle {
                 nextDateStr = arr[0];
                 nextTimeStr = arr[1];
             }
-            pk = Com.convPK(nextDateStr, nextTimeStr, list[i]);
-            pk_list_model.insert(0, pk);
+            pk = Com.convXM(nextDateStr, nextTimeStr, list[i]);
+            list_model_xm.insert(0, pk);
         }
     }
     function onMoved(colIndex) {
-        let oldC = col_list_model.get(col_list_view.currentIndex);
+        let oldC = list_model_category.get(category_list_view.currentIndex);
         oldC.total = Com.max(0, oldC.total - 1);
-        let c = col_list_model.get(colIndex);
+        let c = list_model_category.get(colIndex);
         c.total = c.total + 1;
-        pk_list_model.remove(pk_list_view.currentIndex);
+        list_model_xm.remove(xm_list_view.currentIndex);
     }
     function onUpdatePK(pk) {
         let arr = XM.getPKByIdInCurrentList(pk.id);
@@ -752,17 +775,17 @@ Rectangle {
         }
     }
     function fuckFocus() {
-        col_list_view.forceActiveFocus();
+        category_list_view.forceActiveFocus();
     }
     function getListWidth() {
-        return pk_list.width;
+        return xm_list.width;
     }
     function onPush(ty, data) {
         if(ty === Com.PUSH_UP_TAGS) {
-            let pk = XM.getCurrentPK();
+            let pk = XM.getCurrentXM();
             if(pk) {
                 pk.tags = data.tags;
-                pk_list_view.currentItem.updateTags(data.tags);
+                xm_list_view.currentItem.updateTags(data.tags);
                 if(detailView.visible) {
                     detailView.updateTags(data.tags);
                 }

@@ -35,6 +35,7 @@ QVariantMap XM::toVMap(bool detail, bool parse, uint maxWidth) {
     m.insert("file", file);
     m.insert("refids", refids);
     m.insert("refimgids", refimgids);
+    m.insert("sticky", sticky);
     return m;
 }
 

@@ -5,7 +5,7 @@ import "ui.js" as UI
 
 Rectangle {
     id: root_com_col
-    width: col_list.width
+    width: category_list.width
     height: e_col_name.height + 20
     color: "transparent"
 
@@ -47,7 +47,7 @@ Rectangle {
     Rectangle {
         x:0
         y:root_com_col.height
-        width: col_list.width
+        width: category_list.width
         height: 1
         color: "#686868"
     }
@@ -62,15 +62,15 @@ Rectangle {
                 if(index > 0 && (stopX > 0 && Com.abs(startX-stopX) > 20)) {
                     if(sorting_col_index > 0) {
                         if(sorting_col_index !== index) {
-                            let c = col_list_model.get(sorting_col_index);
+                            let c = list_model_category.get(sorting_col_index);
                             let dstIndex = index;
                             $xm.sorting(c.id, sorting_col_index, dstIndex, Com.putFunc(function() {
-                                let c = col_list_model.get(sorting_col_index);
+                                let c = list_model_category.get(sorting_col_index);
                                 let cloneCol = {id: c.id, name: c.name, total: c.total};
                                 if(c) {
-                                    col_list_model.remove(sorting_col_index);
-                                    col_list_model.insert(dstIndex, cloneCol);
-                                    if(sorting_col_index === col_list_view.currentIndex || dstIndex === col_list_view.currentIndex) {
+                                    list_model_category.remove(sorting_col_index);
+                                    list_model_category.insert(dstIndex, cloneCol);
+                                    if(sorting_col_index === category_list_view.currentIndex || dstIndex === category_list_view.currentIndex) {
                                         XM.loadXM(true);
                                     }
                                     sorting_col_index = 0;
@@ -99,8 +99,8 @@ Rectangle {
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         hoverEnabled: true
         onClicked: function(mouse){
-            col_list_view.forceActiveFocus();
-            col_list_view.currentIndex = index;
+            category_list_view.forceActiveFocus();
+            category_list_view.currentIndex = index;
             if (mouse.button === Qt.RightButton) {
                 colRightMenu.open();
             }

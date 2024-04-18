@@ -484,7 +484,7 @@ ApplicationWindow {
         }
     }
     function openXM(pk) {
-        pk = Com.convPK(1, 1, pk);
+        pk = Com.convXM(1, 1, pk);
         xmfile = pk.file;
         let delegate = {
             onClose:function() {

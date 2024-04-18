@@ -11,13 +11,13 @@ void XMAction::getCategories(QString k, QObject *obj) {
     DB_Async->exe([=]{
         QVariantList rlist;
         if(k.length() > 0){
-            vector<Category> list = colDao->getCategories(k);
+            vector<Category> list = categoryDao->getCategories(k);
             for (Category c:list) {
                 rlist.insert(rlist.end(), c.toVMap());
             }
         } else {
-            vector<Category> all = colDao->getAll();
-            vector<Category> list = colDao->getCategories(k);
+            vector<Category> all = categoryDao->getAll();
+            vector<Category> list = categoryDao->getCategories(k);
             for (Category c:all) {
                 for(Category c2:list) {
                     if(c.id == c2.id) {
@@ -66,10 +66,10 @@ void XMAction::addCategory(QString name, QObject *obj) {
         QVariantMap m;
         QString err;
         Category *col = new Category();
-        uint maxI = colDao->getMaxI();
+        uint maxI = categoryDao->getMaxI();
         col->name = name;
         col->i = maxI + 1;
-        colDao->add(col);
+        categoryDao->add(col);
         m.insert("id", col->id);
         m.insert("i", col->i);
         m.insert("name", col->name);
@@ -81,21 +81,21 @@ void XMAction::addCategory(QString name, QObject *obj) {
 
 void XMAction::editCategory(uint id, QString name, QObject *obj) {
     DB_Async->exe([=]{
-        colDao->updateName(id, name);
+        categoryDao->updateName(id, name);
         QMetaObject::invokeMethod(obj, "onUpdated");
     });
 }
 
 void XMAction::delCategory(uint id, uint cbid) {
     DB_Async->exe([=]{
-        colDao->del(id);
+        categoryDao->del(id);
         sendMsg(cbid, NULL);
     });
 }
 
 void XMAction::sorting(uint cid, uint srcIndex, uint dstIndex, uint cbid) {
     DB_Async->exe([=]{
-        colDao->updateIndex(cid, srcIndex, dstIndex);
+        categoryDao->updateIndex(cid, srcIndex, dstIndex);
         sendMsg(cbid, NULL);
     });
 }
@@ -269,7 +269,7 @@ QString XMAction::xm(QImage *img, QString cont, QString file) {
     XM *pk = new XM();
     pk->bj = false;
     pk->cont = cont;
-    pk->cid = colDao->getFirstID();
+    pk->cid = categoryDao->getFirstID();
     QString tip = "";
     if(pk->cont != "") {
         tip += QString("%1 %2").arg(QObject::tr("Text")).arg(pk->cont.length());
@@ -359,19 +359,19 @@ void XMAction::clearSolvedTime(uint xmid, uint cbid) {
 void XMAction::encrypt(uint cid, QString pwd, uint cbid) {
     QString encrypted = ut::cipher::encryptTextAES(pwd, QString::number(cid));
     DB_Async->exe([=]{
-        colDao->updatePwd(cid, encrypted);
+        categoryDao->updatePwd(cid, encrypted);
         sendMsg(cbid, 0);
     });
 }
 void XMAction::deleteEncryption(uint cid, uint cbid) {
     DB_Async->exe([=]{
-        colDao->updatePwd(cid, "");
+        categoryDao->updatePwd(cid, "");
         sendMsg(cbid, 0);
     });
 }
 void XMAction::validateCategoryPWD(uint cid, QString pwd, uint cbid) {
     DB_Async->exe([=]{
-        Category *c = colDao->getCategory(cid);
+        Category *c = categoryDao->getCategory(cid);
         QString encrypted = ut::cipher::encryptTextAES(pwd, QString::number(cid));
         if(c->m == encrypted) {
             sendMsg(cbid, true);
@@ -381,32 +381,15 @@ void XMAction::validateCategoryPWD(uint cid, QString pwd, uint cbid) {
         delete c;
     });
 }
-void XMAction::setTop(uint cid, uint xmid, uint cbid) {
-    // DB_Async->exe([=]{
-    //     Category *c = colDao->getCategory(cid);
-    //     QStringList arr = c->zdids.split(",");
-    //     bool found = false;
-    //     for(int i = 0; i < arr.length(); i++) {
-    //         if(arr[i]==QString::number(xmid)) {
-    //             found = true;
-    //             break;
-    //         }
-    //     }
-    //     if(!found) {
-    //         arr.append(QString::number(xmid));
-    //     }
-    //     QString zdids = "";
-    //     for(int i = 0; i < arr.length(); i++) {
-    //         zdids += arr[i] + ",";
-    //     }
-    //     if(!found) {
-    //         colDao.updateZdids(cid, zdids);
-    //     }
-    //     sendMsg(cbid, false);
-    // });
-}
-void XMAction::delTop(uint cid, uint xmid, uint cbid) {
+void XMAction::sticky(uint xmid, uint cbid) {
     DB_Async->exe([=]{
-
+        xmDao->setTop(xmid, 1);
+        sendMsg(cbid, 0);
+    });
+}
+void XMAction::cancelSticky(uint xmid, uint cbid) {
+    DB_Async->exe([=]{
+        xmDao->setTop(xmid, 0);
+        sendMsg(cbid, 0);
     });
 }
