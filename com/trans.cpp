@@ -15,11 +15,10 @@ Trans::Trans() {
     trans_zh_map.insert("Paste", "粘贴");
     trans_zh_map.insert("Cut", "剪切");
     trans_zh_map.insert("Select All", "全选");
-    trans_zh_map.insert("Minizime", "最小化");
-    trans_zh_map.insert("Zoom", "最大化");
+    trans_zh_map.insert("Minimize", "最小化");
+    trans_zh_map.insert("Zoom", "缩放");
     trans_zh_map.insert("How to use ...", "如何使用 ...");
-
-    //About
+    //关于
     trans_zh_map.insert("Data Path", "数据目录");
     trans_zh_map.insert("Please restart the app!", "请重启软件");
     trans_zh_map.insert("And copy the old data to the new directory.", "然后复制数据到新的目录");
@@ -29,7 +28,6 @@ Trans::Trans() {
     trans_zh_map.insert("Words", "字数");
     trans_zh_map.insert("Picture", "图片");
     trans_zh_map.insert("Search...", "搜索...");
-    trans_zh_map.insert("Edit", "编辑");
     trans_zh_map.insert("Delete", "删除");
     trans_zh_map.insert("Generate PDF", "导出单个PDF");
     trans_zh_map.insert("Generate HTML", "导出单个HTML");
@@ -51,8 +49,6 @@ Trans::Trans() {
     trans_zh_map.insert("solved ", "解决");
     trans_zh_map.insert("up ", "更新");
     trans_zh_map.insert("created ", "创建");
-    trans_zh_map.insert("Copy", "复制");
-    trans_zh_map.insert("Paste", "粘贴");
     trans_zh_map.insert("Import", "导入");
     trans_zh_map.insert("Close", "关闭");
     trans_zh_map.insert("Ensure delete?", "确定删除？");
@@ -67,26 +63,17 @@ Trans::Trans() {
     trans_zh_map.insert("More", "更多");
     trans_zh_map.insert("Done", "完成");
     trans_zh_map.insert("If you want to constantly switch between editing and preview, please enter the details first and then enter the editing, then C+W -> C+Enter -> C+W ...", "如果要在编辑与预览不断切换，请先进入详情再进入编辑，然后 C+W -> C+Enter -> C+W ...");
-    trans_zh_map.insert("Cut", "剪切");
     trans_zh_map.insert("Input agian", "再次输入");
     trans_zh_map.insert("Two inputs are not equal!", "两次输入不相等");
     trans_zh_map.insert("Last imported path:", "上次导入路径：");
-    trans_zh_map.insert("Failed to register %1. Error: %2", "None");
-    trans_zh_map.insert("Failed to unregister %1. Error: %2", "None");
+    trans_zh_map.insert("Failed to register %1. Error: %2", "");
+    trans_zh_map.insert("Failed to unregister %1. Error: %2", "");
     trans_zh_map.insert("Failure.Not found the doc!", "失败，未找到此文档！");
     trans_zh_map.insert("Text", "文本");
     trans_zh_map.insert("Add Success!", "添加成功！");
     trans_zh_map.insert("Delete Success!", "删除成功！");
-    trans_zh_map.insert("cert gen fail", "None");
-    trans_zh_map.insert("cert gen suc", "None");
-    trans_zh_map.insert("File", "文件");
-    trans_zh_map.insert("Window", "窗口");
-    trans_zh_map.insert("Help", "帮助");
-    trans_zh_map.insert("Open", "打开");
-    trans_zh_map.insert("Undo", "撤消");
-    trans_zh_map.insert("Redo", "重做");
-    trans_zh_map.insert("Select All", "全选");
-    trans_zh_map.insert("Minizime", "最小化");
+    trans_zh_map.insert("cert gen fail", "");
+    trans_zh_map.insert("cert gen suc", "");
     trans_zh_map.insert("Zoom", "缩放");
     trans_zh_map.insert("How to use ...", "如何使用 ...");
     trans_zh_map.insert("Contact ...", "联系 ...");
@@ -117,7 +104,7 @@ Trans::Trans() {
     trans_zh_map.insert("Cancel Sticky", "取消置顶");
     trans_zh_map.insert("Category Name", "分类名称");
     trans_zh_map.insert("Can not delete! found", "不能删除，有");
-    trans_zh_map.insert("referenced.", "引用！");
+    trans_zh_map.insert("```referenced.", "引用！");
     trans_zh_map.insert("Failure", "失败");
     trans_zh_map.insert("Cant more than", "不能超过");
     trans_zh_map.insert("tags", "个标签");
