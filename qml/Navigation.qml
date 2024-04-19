@@ -1,5 +1,5 @@
-﻿import QtQuick 2.9
-import QtQuick.Controls 2.2
+﻿import QtQuick
+import QtQuick.Controls
 import "com"
 import "com/com.js" as Com
 import "com/ui.js" as UI
@@ -163,17 +163,6 @@ Rectangle {
                     Com.st(0, $a.tr("Last imported path:") + arr[0]);
                 }
             }
-            // BtnImg {
-            //     id: btn_recycle
-            //     src: "qrc:/assets/icon_recycle.png"
-            //     xx: 20
-            //     imgWidth: 20
-            //     imgHeight: imgWidth
-            //     anchors.horizontalCenter: parent.horizontalCenter
-            //     function click() {
-            //         pageLoader.source = "qrc:/qml/Recycle.qml";
-            //     }
-            // }
             Btn {
                 id: btn_more
                 text: "≡"
