@@ -117,7 +117,7 @@ Rectangle {
 //                    serv.op();
 //                }
 //                function fkEntered() {
-//                    Com.st(0, qsTr('Mobile connect to computer'));
+//                    Com.st(0, $a.tr('Mobile connect to computer'));
 //                }
 //                function fkExited() {
 //                    Com.st(0, '');
@@ -147,20 +147,20 @@ Rectangle {
                 color:"transparent"
                 text_size: UI.nav_btn_imp_font_size
                 function click() {
-                    if(!$app.importDouban()) {
-                        if(!$app.importWechatRead()) {
+                    if(!$a.importDouban()) {
+                        if(!$a.importWechatRead()) {
                             fileDialog.open();
                         }
                     }
                 }
                 function fkEntered() {
-                    $app.getLastPath(btn_imp);
+                    $a.getLastPath(btn_imp);
                 }
                 function fkExited() {
                     Com.st(0, '');
                 }
                 function onGetLastPath(arr) {
-                    Com.st(0, qsTr("Last imported path:") + arr[0]);
+                    Com.st(0, $a.tr("Last imported path:") + arr[0]);
                 }
             }
             // BtnImg {

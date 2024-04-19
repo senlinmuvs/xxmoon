@@ -40,7 +40,7 @@ Rectangle {
         x: (parent.width-width)/2
         y: root_com_col.height - 15
         color:"#C9C9C9"
-        text:qsTr("Sorting...")
+        text:$a.tr("Sorting...")
         font.pointSize: 10
         visible: index > 0 && index === sorting_col_index
     }

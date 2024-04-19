@@ -66,8 +66,8 @@ Window {
         id:menu
 //        MenuItem {
 //            id: mi_set_wallpaper
-//            visible: $app.getPlatform() === Com.platform_win
-//            text: qsTr("As Wallpaper") + " (Ctrl+Enter)"
+//            visible: $a.getPlatform() === Com.platform_win
+//            text: $a.tr("As Wallpaper") + " (Ctrl+Enter)"
 //            onTriggered: {
 //                setWallpaper();
 //            }
@@ -76,35 +76,35 @@ Window {
 //            visible: mi_set_wallpaper.visible
 //        }
         MenuItem {
-            text: qsTr("Copy") + " (" + ctrlName + "+C)"
+            text: $a.tr("Copy") + " (" + ctrlName + "+C)"
             onTriggered: {
                 copyImg();
             }
         }
         MenuSeparator {}
         MenuItem {
-            text: qsTr("Copy Link") + " (" + ctrlName + "+Alt+C)"
+            text: $a.tr("Copy Link") + " (" + ctrlName + "+Alt+C)"
             onTriggered: {
                 copyLink();
             }
         }
         MenuSeparator {}
         MenuItem {
-            text: qsTr("Out Edit") + " (Enter)"
+            text: $a.tr("Out Edit") + " (Enter)"
             onTriggered: {
                 openInExternal();
             }
         }
         MenuSeparator {}
         MenuItem {
-            text: qsTr("Reveal in File Manager") + " (" + ctrlName + "+Enter)"
+            text: $a.tr("Reveal in File Manager") + " (" + ctrlName + "+Enter)"
             onTriggered: {
                 revealInFinder();
             }
         }
         MenuSeparator {}
         MenuItem {
-            text: qsTr("Close") + " (Esc)"
+            text: $a.tr("Close") + " (Esc)"
             onTriggered: {
                 close();
             }
@@ -158,14 +158,14 @@ Window {
             let isOriginal = file.lastIndexOf("_original"+postfix) > 0;
             if(isOriginal) {
                 name = name.replace("_original", "");
-                let ok0 = $app.existFile(name+postfix);
+                let ok0 = $a.existFile(name+postfix);
                 if(ok0) {
                     img.source = "";
                     img.source = "file://" + name + postfix;
                 }
                 console.log("切换为缩略图", img.source);
             } else {
-                let ok1 = $app.existFile(name+"_original"+postfix);
+                let ok1 = $a.existFile(name+"_original"+postfix);
                 if(ok1) {
                     img.source = "";
                     img.source = "file://" + name + "_original"+postfix;
@@ -251,7 +251,7 @@ Window {
                 }
                 if(arr[i]) {
                     let wh = Com.parseWithHeightInImgName(arr[i]);
-                    list[list.length] = {i:curPKListViewIndex,img:Com.file_pre+$app.imgDir+'/'+arr[i], w:wh[0], h:wh[1]};
+                    list[list.length] = {i:curPKListViewIndex,img:Com.file_pre+$a.imgDir+'/'+arr[i], w:wh[0], h:wh[1]};
                     n++;
                 }
             }
@@ -271,7 +271,7 @@ Window {
             for(let i = 0; i < arr.length; i++) {
                 if(arr[i]) {
                     let wh = Com.parseWithHeightInImgName(arr[i]);
-                    list.unshift({i:curPKListViewIndex,img:Com.file_pre+$app.imgDir+'/'+arr[i], w:wh[0], h:wh[1]});
+                    list.unshift({i:curPKListViewIndex,img:Com.file_pre+$a.imgDir+'/'+arr[i], w:wh[0], h:wh[1]});
                     n++;
                 }
             }
@@ -315,7 +315,7 @@ Window {
         }
     }
     function setBottom() {
-        if($app.getPlatform() === Com.platform_mac){
+        if($a.getPlatform() === Com.platform_mac){
             if(root.height > screen.height - imgBottom){
                 img.state = "has_bottom";
             } else {
@@ -395,12 +395,12 @@ Window {
     }
     function openInExternal() {
         let img = list[curIndex];
-        $app.openInExternal(0, img.img);
+        $a.openInExternal(0, img.img);
         e_iv_timer.start();
     }
     function revealInFinder() {
         let img = list[curIndex];
-        $app.openDir(img.img);
+        $a.openDir(img.img);
     }
     function setWallpaper() {
         if(list.length > 0 && curIndex>=0){
@@ -408,20 +408,20 @@ Window {
             path = path.replace(Com.file_pre, "")
                      .replace("//", "\\")
                      .replace("/", "\\");
-            $app.setWallpaper(path);
+            $a.setWallpaper(path);
         }
     }
     function copyImg() {
         if(list.length > 0 && curIndex>=0) {
             let path = list[curIndex].img;
-            $app.copyImg(path);
+            $a.copyImg(path);
         }
     }
     function copyLink() {
         if(list.length > 0 && curIndex>=0){
             let path = list[curIndex].img;
             let imglink = "!("+Com.extraImgname(path)+")";
-            $app.copy(imglink);
+            $a.copy(imglink);
         }
     }
 }

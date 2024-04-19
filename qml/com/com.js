@@ -9,9 +9,9 @@ const PUSH_OPENFILE = 1;
 const PUSH_OPEN_ABOUT = 2;
 const PUSH_UP_TAGS = 3;
 
-let tag1 = $app.tag1;
-let tag2 = $app.tag2;
-let MAX_TAG = $app.maxTag;
+let tag1 = $a.tag1;
+let tag2 = $a.tag2;
+let MAX_TAG = $a.maxTag;
 
 let img_logo = "/assets/logo64.png";
 let img_kindle = "/assets/kindle64.png";
@@ -30,10 +30,10 @@ let platform_win = 0;
 let platform_linux = 1;
 let platform_mac = 2;
 
-let file_pre = $app.getPlatform() === platform_win ? "file:///" : "file://";
+let file_pre = $a.getPlatform() === platform_win ? "file:///" : "file://";
 let msgs = {
-    0: qsTr("Success"),
-    1: qsTr("Failure")
+    0: $a.tr("Success"),
+    1: $a.tr("Failure")
 };
 ///error code
 //let ret_e
@@ -307,7 +307,7 @@ function convXM(preDateStr, preTimeStr, e) {
     n.visible_time = true;
     //
     if(n.img) {
-        n.img_path = file_pre + $app.imgDir + "/" + n.img;
+        n.img_path = file_pre + $a.imgDir + "/" + n.img;
         let arr = parseWithHeightInImgName(n.img_path);
         n.src_w = arr[0];
         n.src_h = arr[1];
@@ -388,7 +388,7 @@ function extraImgname(path) {
     return "";
 }
 function getWinKey() {
-    let plat = $app.getPlatform();
+    let plat = $a.getPlatform();
     if(plat === platform_win) {
         return "Win";
     } else if(plat === platform_mac) {

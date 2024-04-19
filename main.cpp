@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
 
 int start(int argc, char* argv[]) {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    MyApplication *a = new MyApplication(argc, argv);
+    MyApplication *ma = new MyApplication(argc, argv);
 #ifdef Q_OS_MAC
     mac->loadBookmarks();
 #endif
@@ -71,45 +71,39 @@ int start(int argc, char* argv[]) {
     SM_Async->start();
 
 //    HServer::INS().loop();
-    app->init();
+    a->init();
 
 //    Timer::INS().init();
-    return initGui(a);
+    return initGui(ma);
    // return 0;
 }
-int initGui(MyApplication* a) {
+int initGui(MyApplication* ma) {
     engine = new QQmlApplicationEngine();
 
 //    app->checkAuth(ut::file::readFile(cfg->auth_file), false);
 
-    engine->rootContext()->setContextProperty("$app", app);
+    engine->rootContext()->setContextProperty("$a", a);
     engine->rootContext()->setContextProperty("$l", l);
     engine->rootContext()->setContextProperty("$xm", xmAction);
     engine->rootContext()->setContextProperty("$bk", bookAction);
 
-    //语言国际化
-    QTranslator translator;
-    bool loadSuc = translator.load(":/" + cfg->lang);
-    a->installTranslator(&translator);
-    lg->info(QString("load translator file %1 %2").arg(cfg->lang).arg(loadSuc));
-
     //
     QString mainQml = QStringLiteral("qrc:/qml/Main.qml");
     const QUrl url(mainQml);
-    QObject::connect(engine, &QQmlApplicationEngine::objectCreated, app, [url](QObject *obj, const QUrl &objUrl) {
+    QObject::connect(engine, &QQmlApplicationEngine::objectCreated, a, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl) {
             QCoreApplication::exit(-1);
         }
     }, Qt::QueuedConnection);
     engine->load(url);
     //
-    app->setGlobalHotkey(0, cfg->hot_key_pk);
-    app->setGlobalHotkey(1, cfg->hot_key_show);
+    a->setGlobalHotkey(0, cfg->hot_key_pk);
+    a->setGlobalHotkey(1, cfg->hot_key_show);
 
     // test11();
 
 #ifdef Q_OS_MAC
-    a->setWindowIcon(QIcon(":/assets/logo.icns"));
+    ma->setWindowIcon(QIcon(":/assets/logo.icns"));
 //    w->setIcon(QIcon(":assets/logo.icns"));
 //    mac->initWindow(w);
 #endif
@@ -128,7 +122,7 @@ int initGui(MyApplication* a) {
     font.setFamily("微软雅黑");
 #endif
     qApp->setFont(font);
-    return a->exec();
+    return ma->exec();
 }
 void initCfg() {
     if(ut::file::exists(cfg->cfgFileName)) {
@@ -194,10 +188,10 @@ void initCfg() {
     qDebug() << cfg->toString().toUtf8().data();
     qDebug() << "================================ cfg ================================";
     //
-    app->genCert();
+    a->genCert();
 }
 void exit_(int r) {
-    app->close(r);
+    a->close(r);
 #ifdef Q_OS_MAC
     mac->close();
 #endif

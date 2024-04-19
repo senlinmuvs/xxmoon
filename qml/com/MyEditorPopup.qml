@@ -134,7 +134,7 @@ Popup {
                     color: "#000000"
                     font_family: "Arail"
                     text_color: "white"
-                    text: qsTr("Done")
+                    text: $a.tr("Done")
                     text_size: UI.font_size_btn
                     function click() {
                         cl();
@@ -170,7 +170,7 @@ Popup {
             }
             onFocusChanged: {
                 if(focus) {
-                    $app.regMenuReceiver(this);
+                    $a.regMenuReceiver(this);
                 }
             }
         }
@@ -213,7 +213,7 @@ Popup {
                     }
                     onFocusChanged: {
                         if(focus) {
-                            $app.regMenuReceiver(text);
+                            $a.regMenuReceiver(text);
                         }
                     }
                 }
@@ -249,9 +249,9 @@ Popup {
         id: menu_right
         MenuItem {
             id: mi_copy
-            text: qsTr("Copy")
+            text: $a.tr("Copy")
             onTriggered: {
-                $app.triggerMenu(3);
+                $a.triggerMenu(3);
             }
         }
         MenuSeparator {
@@ -259,9 +259,9 @@ Popup {
         }
         MenuItem {
             id: mi_paste
-            text: qsTr("Paste")
+            text: $a.tr("Paste")
             onTriggered: {
-                $app.triggerMenu(4);
+                $a.triggerMenu(4);
             }
         }
         MenuSeparator {
@@ -269,16 +269,16 @@ Popup {
         }
         MenuItem {
             id: mi_cut
-            text: qsTr("Cut")
+            text: $a.tr("Cut")
             onTriggered: {
-                $app.triggerMenu(5);
+                $a.triggerMenu(5);
             }
         }
         MenuSeparator {
             visible: mi_cut.visible
         }
         MenuItem {
-            text: qsTr("Close") + " ("+ctrlName+"+W)"
+            text: $a.tr("Close") + " ("+ctrlName+"+W)"
             onTriggered: {
                 timer.stop();
                 cancel();
@@ -311,7 +311,7 @@ Popup {
     }
     function setPosition() {
         if(first_field.visible) {
-            let arr_ = $app.getUIVal(3);
+            let arr_ = $a.getUIVal(3);
             let arr = arr_.split(',');
             let id = arr[0];
             if(id > 0 && Number(id) === root.bid) {
@@ -319,7 +319,7 @@ Popup {
                 text.cursorPosition = pos;
             }
         } else {
-            let arr_ = $app.getUIVal(2);
+            let arr_ = $a.getUIVal(2);
             let arr = arr_.split(',');
             let id = arr[0];
             if(id > 0 && Number(id) === root.bid) {
@@ -450,14 +450,14 @@ Popup {
         open();
         setCounter();
         setPosition();
-        $app.regMenuReceiver(text);
+        $a.regMenuReceiver(text);
     }
     function cl() {
 //        console.log("---->>>>>> edit clo", gid, bid, delegate);
         if(first_field.visible) {
-            $app.setUIVal(3, root.bid+","+text.cursorPosition);
+            $a.setUIVal(3, root.bid+","+text.cursorPosition);
         } else {
-            $app.setUIVal(2, root.bid+","+text.cursorPosition);
+            $a.setUIVal(2, root.bid+","+text.cursorPosition);
         }
         //
         if(delegate) {
@@ -572,7 +572,7 @@ Popup {
     }
     function img() {
         let index = text.cursorPosition;
-        let dataDir = $app.dataDir;
+        let dataDir = $a.dataDir;
         normalFileDialog.nameFilters = ["Image(*.png *.jpg *.jpeg *.bmp *.gif)"];
         normalFileDialog.folder = "file://" + dataDir + "/xxmoon/imgs";
         normalFileDialog.fileMode = FileDialog.OpenFiles;

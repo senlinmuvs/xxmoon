@@ -40,7 +40,7 @@ function addCol() {
     for(let x = 0; x < n; x++) {
         let m = list_model_category.get(x);
         if(m.name === name) {
-            tipsInfo(qsTr("Exists Already"));
+            tipsInfo($a.tr("Exists Already"));
             return;
         }
     }
@@ -49,7 +49,7 @@ function addCol() {
 function editCol(id) {
     let name = col_edit_popup.text.trim();
     if(name.length > 30) {
-        tipsInfo(qsTr("too long"));
+        tipsInfo($a.tr("too long"));
     } else {
         $xm.editCategory(id, name, col_edit_popup);
     }
@@ -59,7 +59,7 @@ function delCol() {
     if(i > 0) {
         let c = list_model_category.get(i);
         if(c.total>0) {
-            tipsInfo(qsTr("Can not delete, it not empty."));
+            tipsInfo($a.tr("Can not delete, it not empty."));
         } else {
             $xm.delCategory(c.id, Com.putFunc(function(){
                 let i = category_list_view.currentIndex;
@@ -68,7 +68,7 @@ function delCol() {
             }));
         }
     } else {
-        tipsInfo(qsTr("Can not delete the default folder."));
+        tipsInfo($a.tr("Can not delete the default folder."));
     }
 }
 function moveToCategory(i) {
@@ -144,7 +144,7 @@ function loadXM0(list) {
         preDateStr = xm.date_str;
         preTimeStr = xm.time_str;
     }
-    if(list.length < $app.pageSize) {
+    if(list.length < $a.pageSize) {
         xm_list_view.footer = pkNoMoreBtn;
     } else {
         xm_list_view.footer = xm_list_more_btn;
@@ -166,7 +166,7 @@ function loadXM0(list) {
             pre_pkid = 0;
         }
     }
-    $app.setUIVal(0, xm_list.width);
+    $a.setUIVal(0, xm_list.width);
 }
 
 function deletePK(target) {
@@ -195,7 +195,7 @@ function openEditPopup(add, pk) {
 function openOutEdit() {
     let pk = getCurrentXM();
     if(pk && !pk.jm) {
-        $app.openInExternal(1, pk.id);
+        $a.openInExternal(1, pk.id);
     }
 }
 
@@ -225,9 +225,9 @@ function submitPK() {
                     pk.imgs = r.imgs;
                 }
             } else if(r.st === 1) {
-                tipsInfo(qsTr("Failure.Not found the doc!"));
+                tipsInfo($a.tr("Failure.Not found the doc!"));
             } else if(r.st === 3) {
-                tipsInfo(qsTr("Can not edit encrypted content."));
+                tipsInfo($a.tr("Can not edit encrypted content."));
             }
             if(edit_pk_popup.pending_close) {
                 closeEditPK();
@@ -483,7 +483,7 @@ function getPKLastId() {
 function test() {
 //    let col = "fuck";
 //    for(let i = 0; i < 1000; i++) {
-//        $app.addCol(col+i, col_edit_popup);
+//        $a.addCol(col+i, col_edit_popup);
 //    }
     let pk = "fuck";
     for(let i = 0; i < 10000; i++) {
@@ -520,8 +520,8 @@ function enOrDecrypt() {
     if(pk) {
         let pwd = encrypt_cont_popup.text.trim();
         if(pk.jm) {
-            Com.st(0, qsTr("decrypting..."));
-            $app.decrypt(pk.id, pwd, xm_list.width, Com.putFunc(function(pk2) {
+            Com.st(0, $a.tr("decrypting..."));
+            $a.decrypt(pk.id, pwd, xm_list.width, Com.putFunc(function(pk2) {
                 if($l.isDebug()) {
                     $l.debug("decrypt pk " + JSON.stringify(pk2));
                 }
@@ -535,7 +535,7 @@ function enOrDecrypt() {
 //                        pk.simple_html = pk2.simple_html;
 //                        pk.html = pk2.html;
                         pk.simple_qmls = JSON.stringify(pk2.simple_qmls);
-                        pk.img_path = Com.file_pre + $app.getCfgVal("tmp_dir") + "/" + pk2.img;
+                        pk.img_path = Com.file_pre + $a.getCfgVal("tmp_dir") + "/" + pk2.img;
                         pk.qmls_ = JSON.stringify(pk2.qmls);
                         pk.forceMaxWidth = true;
                         if($l.isDebug()) {
@@ -544,11 +544,11 @@ function enOrDecrypt() {
                     }
                 }
                 encrypt_cont_popup.cancel();
-                Com.st(1, qsTr("Finished"));
+                Com.st(1, $a.tr("Finished"));
             }));
         } else {
-            Com.st(0, qsTr("encrypting..."));
-            $app.encrypt(pk.id, pwd, xm_list.width, Com.putFunc(function(pk2) {
+            Com.st(0, $a.tr("encrypting..."));
+            $a.encrypt(pk.id, pwd, xm_list.width, Com.putFunc(function(pk2) {
                 if($l.isDebug()) {
                     $l.trace("encrypt pk " + JSON.stringify(pk2));
                 }
@@ -565,7 +565,7 @@ function enOrDecrypt() {
                     }
                 }
                 encrypt_cont_popup.cancel();
-                Com.st(1, qsTr("Finished"));
+                Com.st(1, $a.tr("Finished"));
             }));
         }
         encrypt_cont_popup.clear();

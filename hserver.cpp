@@ -51,7 +51,7 @@ void HServer::hi(const Request &req, Response &resp) {
         header += k + "=" + v + "\n";
     }
     QString body =
-            "xxmoon v"+app->getVersion() + "\n\n"
+            "xxmoon v"+a->getVersion() + "\n\n"
             + header;
     resp.set_content(body.toStdString(), "text/plain");
 }

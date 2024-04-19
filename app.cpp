@@ -2169,3 +2169,7 @@ bool App::importWechatRead() {
     });
     return true;
 }
+
+QString App::tr(QString k) {
+    return trans->tr(k);
+}

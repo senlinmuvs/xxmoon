@@ -70,7 +70,7 @@ class TagManager {
     //    searchTags();
     }
     searchTags(k="") {
-        $app.tagList(k, this.type, this.tag_view);
+        $a.tagList(k, this.type, this.tag_view);
         if($l.isDebug()) {
             Com.debug("tag.js searchTags", "k", k, "type", this.type, "tag_view", this.tag_view!==null);
         }
@@ -115,7 +115,7 @@ class TagManager {
     }
     createTag(id, parent, state, flag) {
         let t = this;
-        $app.getTagById(id, Com.putFunc(function(r) {
+        $a.getTagById(id, Com.putFunc(function(r) {
             if(r) {
                 t.createTag0(r, parent, state, flag);
             } else {
@@ -172,7 +172,7 @@ class TagManager {
             let tagItem = this.tag_view.flows.data[t[0]];
             tagItem.click();
         } else {
-            $app.addTag(tag, this.tag_view);
+            $a.addTag(tag, this.tag_view);
         }
     }
     selectTag(tag) {
@@ -241,10 +241,10 @@ class TagDelegate {
                 let newTagIds = dstTags.toArr('#');
 //                Com.log(JSON.stringify(newTagIds));
                 if(newTagIds.length <= Com.MAX_TAG) {
-//                    $app.updatePKTags(it.id, dstTags, xm_list);
+//                    $a.updatePKTags(it.id, dstTags, xm_list);
                     this.updateTags(it.id,dstTags);
                 } else {
-                    tipsInfo(qsTr("Cant more than") + Com.MAX_TAG + qsTr("tags"));
+                    tipsInfo($a.tr("Cant more than") + Com.MAX_TAG + $a.tr("tags"));
                 }
             }
         }
@@ -252,7 +252,7 @@ class TagDelegate {
     onMoved(flag, mouse, btn, tag) {
         if(flag === 0) {
             if(btn.x < -btn.width/2 || btn.x > this.tagManager.tag_view.width - btn.width/2) {
-                $app.delTag(tag.id, this.tagManager.tag_view);
+                $a.delTag(tag.id, this.tagManager.tag_view);
             }
         } else {
             if(Com.abs(btn.x) >= btn.width*2) {

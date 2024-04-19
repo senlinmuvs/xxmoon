@@ -1,6 +1,6 @@
 .import "com.js" as Com
 
-let platform = $app.getPlatform();
+let platform = $a.getPlatform();
 
 /////////////////MAC/////////////////
 let nav_width = 70;
@@ -34,7 +34,7 @@ let ui_separate_color = "#cacaca";
 let ui_font_pk = 16;
 let ui_font_pk_time = 11;
 let ui_line_height_pk = 1.2;
-let ui_highlight_color = $app.getCfgVal("ui_highlight_color");
+let ui_highlight_color = $a.getCfgVal("ui_highlight_color");
 
 let font_size_title1 = 18;
 let font_size_title2 = 12;

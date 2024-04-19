@@ -24,7 +24,7 @@ Popup {
             width: parent.width
             height: 40
             placeholderTextColor: "#808080"
-            placeholderText: qsTr("Book Name")
+            placeholderText: $a.tr("Book Name")
             font.pointSize: UI.book_edit_label_font_size
             color: "white"
             wrapMode: Text.Wrap
@@ -32,7 +32,7 @@ Popup {
             maximumLength: 50
             onFocusChanged: {
                 if(focus) {
-                    $app.regMenuReceiver(tf_book_name);
+                    $a.regMenuReceiver(tf_book_name);
                 }
             }
             // background: Rectangle {
@@ -45,7 +45,7 @@ Popup {
             width: parent.width
             height: 40
             placeholderTextColor: "#808080"
-            placeholderText: qsTr("Author Name")
+            placeholderText: $a.tr("Author Name")
             font.pointSize: UI.book_edit_label_font_size
             color: "white"
             wrapMode: Text.Wrap
@@ -53,7 +53,7 @@ Popup {
             maximumLength: 50
             onFocusChanged: {
                 if(focus) {
-                    $app.regMenuReceiver(tf_author_name);
+                    $a.regMenuReceiver(tf_author_name);
                 }
             }
         }
@@ -68,7 +68,7 @@ Popup {
             width: parent.width
             height: 40
             placeholderTextColor: "#808080"
-            placeholderText: qsTr("Tag(separated by commas)")
+            placeholderText: $a.tr("Tag(separated by commas)")
             font.pointSize: UI.book_edit_label_font_size
             color: "white"
             wrapMode: Text.Wrap
@@ -80,7 +80,7 @@ Popup {
             width: parent.width
             height: 40
             placeholderTextColor: "#808080"
-            placeholderText: qsTr("Extra")
+            placeholderText: $a.tr("Extra")
             font.pointSize: UI.book_edit_label_font_size
             color: "white"
             wrapMode: Text.Wrap
@@ -91,7 +91,7 @@ Popup {
             x: parent.width/2 - width/2
             y: 8
             color: "black"
-            text: qsTr("OK")
+            text: $a.tr("OK")
             function click() {
                 submit();
             }

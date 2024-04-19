@@ -46,7 +46,7 @@ Popup {
         anchors.left: parent.left
         anchors.right: parent.right
         height: 40
-        placeholderText: qsTr("input tag")
+        placeholderText: $a.tr("input tag")
         font.pointSize: 16
         font.family: "Arial"
         color: "white"
@@ -70,7 +70,7 @@ Popup {
         }
         onFocusChanged: {
             if(focus) {
-                $app.regMenuReceiver(this);
+                $a.regMenuReceiver(this);
             }
         }
     }
@@ -91,7 +91,7 @@ Popup {
     function op() {
         open();
         if(input.focus) {
-            $app.regMenuReceiver(input);
+            $a.regMenuReceiver(input);
         }
     }
 }

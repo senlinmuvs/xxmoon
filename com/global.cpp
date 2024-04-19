@@ -16,7 +16,7 @@ QQmlApplicationEngine *engine;
 MenuManager *menuManager = new MenuManager();
 #endif
 Cfg *cfg = new Cfg();
-App *app = new App();
+App *a = new App();
 XMAction* xmAction = new XMAction();
 BookAction* bookAction = new BookAction();
 L* l = new L();

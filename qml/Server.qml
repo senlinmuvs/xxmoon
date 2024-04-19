@@ -30,7 +30,7 @@ Popup {
             anchors.right: parent.right
             spacing: dp(10)
             Text {
-                text: qsTr("Server")
+                text: $a.tr("Server")
                 width: parent.width
                 font.pointSize: sp(20)
                 font.weight: Font.Black
@@ -46,14 +46,14 @@ Popup {
                 MyRadioBtn {
                     id: btn_enserv
                     width: dp(150)
-                    text: st ? qsTr("Disable Server") : qsTr("Enable Server")
+                    text: st ? $a.tr("Disable Server") : $a.tr("Enable Server")
                     anchors.verticalCenter: parent.verticalCenter
                     function click() {
                         if(st) {
-                            $app.disableServer();
+                            $a.disableServer();
                             st = 0;
                         } else {
-                            $app.enableServer();
+                            $a.enableServer();
                             st = 1;
                         }
                     }
@@ -76,7 +76,7 @@ Popup {
                     height: btn_enserv.height
                     anchors.verticalCenter: parent.verticalCenter
                     function click() {
-                        $app.genCert(1, 1);
+                        $a.genCert(1, 1);
                     }
                     function fkEntered() {
                         e_st.text = "若自动生成的丢失，可点此生成新的SSL证书。";
@@ -88,7 +88,7 @@ Popup {
                 Btn {
                     visible: btn_enserv.st === 1
                     text_size: sp(10)
-                    text: qsTr("Gen QR Code")
+                    text: $a.tr("Gen QR Code")
                     border.width: dp(1)
                     border.color: "#afafaf"
                     color: "transparent"
@@ -98,7 +98,7 @@ Popup {
                     height: btn_enserv.height
                     anchors.verticalCenter: parent.verticalCenter
                     function click() {
-                        $app.genQRCode(Com.putFunc(function(r) {
+                        $a.genQRCode(Com.putFunc(function(r) {
                             qrimg.value = r;
                         }));
                     }
@@ -134,14 +134,14 @@ Popup {
                         width: parent.width
                         height: parent.height - dp(2)
                         Text {
-                            text: qsTr("Device")
+                            text: $a.tr("Device")
                             font.bold: true
                             font.pointSize: sp(14)
                             width: parent.width/10 * 5
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         Text {
-                            text: qsTr("Time")
+                            text: $a.tr("Time")
                             font.bold: true
                             font.pointSize: sp(14)
                             width: parent.width/10 * 3
@@ -191,7 +191,7 @@ Popup {
                             anchors.verticalCenter: parent.verticalCenter
                             Btn {
                                 text_size: sp(10)
-                                text: qsTr("Del")
+                                text: $a.tr("Del")
                                 border.width: dp(1)
                                 border.color: "#afafaf"
                                 color: "transparent"
@@ -234,11 +234,11 @@ Popup {
 
     function op() {
         open();
-        $app.getCurQRCode(Com.putFunc(function(r){
+        $a.getCurQRCode(Com.putFunc(function(r){
             qrimg.value = r;
         }));
         model.clear();
-        $app.devices(Com.putFunc(function(r) {
+        $a.devices(Com.putFunc(function(r) {
             if(r && r.length > 0) {
                 JSON.stringify(r);
                 model.append(r);
@@ -251,7 +251,7 @@ Popup {
         }
     }
     function delDev(dev, i) {
-        $app.delDev(dev, Com.putFunc(function(r) {
+        $a.delDev(dev, Com.putFunc(function(r) {
             if(r === 0) {
                 model.remove(i);
             }

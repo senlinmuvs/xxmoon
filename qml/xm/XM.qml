@@ -31,7 +31,7 @@ Rectangle {
         anchors.left:parent.left
         anchors.right: parent.right
         height: 40
-        placeholderText: qsTr("Search...")
+        placeholderText: $a.tr("Search...")
         font.pointSize: UI.btn_font_size
         font.family: "Arial"
         color: "white"
@@ -55,57 +55,57 @@ Rectangle {
         }
         onFocusChanged: {
             if(focus) {
-                $app.regMenuReceiver(this);
+                $a.regMenuReceiver(this);
             }
         }
     }
     Menu {
         id: colRightMenu
         MenuItem {
-            text: qsTr("Edit")
+            text: $a.tr("Edit")
             onTriggered: {
                 XM.openColEditPopup();
             }
         }
         MenuSeparator {}
         MenuItem {
-            text: qsTr("Delete")
+            text: $a.tr("Delete")
             onTriggered: {
                 XM.delCol();
             }
         }
         // MenuSeparator {}
         // MenuItem {
-        //     text: qsTr("Generate PDF")
+        //     text: $a.tr("Generate PDF")
         //     onTriggered: {
         //        let cid = XM.getCurrentCategoryId();
-        //        $app.genFile(Com.file_type_pdf, Com.type_pk, cid, 0);
+        //        $a.genFile(Com.file_type_pdf, Com.type_pk, cid, 0);
         //     }
         // }
         MenuSeparator {}
         MenuItem {
-            text: qsTr("Generate HTML")
+            text: $a.tr("Generate HTML")
             onTriggered: {
                let cid = XM.getCurrentCategoryId();
-               $app.genFile(Com.file_type_html, Com.type_pk, cid, 0);
+               $a.genFile(Com.file_type_html, Com.type_pk, cid, 0);
             }
         }
         // MenuSeparator {}
         // MenuItem {
-        //     text: qsTr("Export Single XM")
+        //     text: $a.tr("Export Single XM")
         //     onTriggered: {
         //         let cid = XM.getCurrentCategoryId();
-        //         $app.genFile(Com.file_type_xm, Com.type_pk, cid, 0, 0);
+        //         $a.genFile(Com.file_type_xm, Com.type_pk, cid, 0, 0);
         //     }
         // }
         // MenuSeparator {
         // }
         // MenuItem {
-        //     text: qsTr("Export Batch XM")
+        //     text: $a.tr("Export Batch XM")
         //     onTriggered: {
         //         let col = XM.getCurrentCategory();
         //         if(col){
-        //             $app.genFile(Com.file_type_xm, Com.type_pk, col.id, 0, 1);
+        //             $a.genFile(Com.file_type_xm, Com.type_pk, col.id, 0, 1);
         //         }
         //     }
         // }
@@ -157,7 +157,7 @@ Rectangle {
     Menu {
         id: menu_right_pk
         MenuItem {
-            text: qsTr("Detail")
+            text: $a.tr("Detail")
             shortcut: "Space"
             onTriggered: {
                 XM.detail();
@@ -167,7 +167,7 @@ Rectangle {
         }
         MenuItem {
             id: mi_pic_model
-            text: qsTr("Picture Model")
+            text: $a.tr("Picture Model")
             shortcut: "Enter"
             onTriggered: {
                 XM.openImgView();
@@ -177,7 +177,7 @@ Rectangle {
             visible: mi_pic_model.visible
         }
         MenuItem {
-            text: qsTr("Edit")
+            text: $a.tr("Edit")
             shortcut: ctrlName+"+Enter"
             onTriggered: {
                 XM.openEditPopup();
@@ -186,7 +186,7 @@ Rectangle {
         MenuSeparator {
         }
         MenuItem {
-            text: qsTr("Out Edit")
+            text: $a.tr("Out Edit")
             shortcut: ctrlName+"+Alt+Enter"
             onTriggered: {
                 XM.openOutEdit();
@@ -196,7 +196,7 @@ Rectangle {
         }
         MenuItem {
             id: mi_sticky
-            text: qsTr("Sticky")
+            text: $a.tr("Sticky")
             shortcut: ctrlName+"+Home"
             onTriggered: {
                 let xm = XM.getCurrentXM();
@@ -211,7 +211,7 @@ Rectangle {
         }
         MenuItem {
             id: mi_cp_main_img
-            text: qsTr("Copy main image")
+            text: $a.tr("Copy main image")
             shortcut: "Alt+Shift+C"
             onTriggered: {
                 XM.copyPK(0);
@@ -223,7 +223,7 @@ Rectangle {
         MenuItem {
             id: mi_cp_link
             visible: mi_cp_main_img.visible
-            text: qsTr("Copy main image link")
+            text: $a.tr("Copy main image link")
             shortcut: ctrlName+"+Alt+C"
             onTriggered: {
                 XM.copyPK(1);
@@ -234,7 +234,7 @@ Rectangle {
         }
         MenuItem {
             id: mi_cont
-            text: qsTr("Copy content")
+            text: $a.tr("Copy content")
             shortcut: ctrlName+"+Shift+C"
             onTriggered: {
                 XM.copyPK(2);
@@ -245,7 +245,7 @@ Rectangle {
         }
         MenuItem {
             id: mi_en_de
-            text: qsTr("Encrypt | Decrypt")
+            text: $a.tr("Encrypt | Decrypt")
             shortcut: ctrlName+"+E"
             onTriggered: {
                 XM.openEncryptPopup();
@@ -255,14 +255,14 @@ Rectangle {
             visible: mi_en_de.visible
         }
         Menu {
-            title: qsTr("Export")
+            title: $a.tr("Export")
             MenuItem {
                 id: mi_exp_pdf
-                text: qsTr("Export PDF")
+                text: $a.tr("Export PDF")
                 onTriggered: {
                     let pk = XM.getCurrentXM();
                     if(pk) {
-                        $app.genFile(Com.file_type_pdf, Com.type_pk, 0, pk.id);
+                        $a.genFile(Com.file_type_pdf, Com.type_pk, 0, pk.id);
                     }
                 }
             }
@@ -271,11 +271,11 @@ Rectangle {
             }
             MenuItem {
                 id: mi_exp_html
-                text: qsTr("Export HTML")
+                text: $a.tr("Export HTML")
                 onTriggered: {
                     let pk = XM.getCurrentXM();
                     if(pk){
-                        $app.genFile(Com.file_type_html, Com.type_pk, 0, pk.id);
+                        $a.genFile(Com.file_type_html, Com.type_pk, 0, pk.id);
                     }
                 }
             }
@@ -284,11 +284,11 @@ Rectangle {
             }
             MenuItem {
                 id: mi_exp_xm
-                text: qsTr("Export XM")
+                text: $a.tr("Export XM")
                 onTriggered: {
                     let pk = XM.getCurrentXM();
                     if(pk){
-                        $app.genFile(Com.file_type_xm, Com.type_pk, 0, pk.id);
+                        $a.genFile(Com.file_type_xm, Com.type_pk, 0, pk.id);
                     }
                 }
             }
@@ -297,11 +297,11 @@ Rectangle {
             }
             MenuItem {
                 id: mi_exp_site
-                text: qsTr("Export Site")
+                text: $a.tr("Export Site")
                 onTriggered: {
                     let pk = XM.getCurrentXM();
                     if(pk){
-                        $app.genFile(Com.file_type_site, Com.type_pk, 0, pk.id);
+                        $a.genFile(Com.file_type_site, Com.type_pk, 0, pk.id);
                     }
                 }
             }
@@ -311,11 +311,11 @@ Rectangle {
         }
         MenuItem {
             id: mi_del_site
-            text: qsTr("Delete from Site")
+            text: $a.tr("Delete from Site")
             onTriggered: {
                 let pk = XM.getCurrentXM();
                 if(pk){
-                    $app.deleteFromSite(pk.id);
+                    $a.deleteFromSite(pk.id);
                 }
             }
         }
@@ -324,13 +324,13 @@ Rectangle {
         }
         MenuItem {
             id: mi_clear_stime
-            text: qsTr("Clear Solved Time")
+            text: $a.tr("Clear Solved Time")
             onTriggered: {
                 let pk = XM.getCurrentXM();
                 if(pk){
                     $xm.clearSolvedTime(pk.id, Com.putFunc(function(r) {
                         pk.stime = 0;
-                        tipsInfo(qsTr("Success"));
+                        tipsInfo($a.tr("Success"));
                     }));
                 }
             }
@@ -340,12 +340,12 @@ Rectangle {
         // }
         // MenuItem {
         //     id: mi_send_phone
-        //     text: qsTr("Send To Phone")
+        //     text: $a.tr("Send To Phone")
         //     onTriggered: {
         //         let pk = XM.getCurrentXM();
         //         if(pk){
-        //             $app.sendToPhone(Com.type_pk, pk.id, Com.putFunc(function(r) {
-        //                 tipsInfo(qsTr("Success"));
+        //             $a.sendToPhone(Com.type_pk, pk.id, Com.putFunc(function(r) {
+        //                 tipsInfo($a.tr("Success"));
         //             }));
         //         }
         //     }
@@ -355,7 +355,7 @@ Rectangle {
         }
         MenuItem {
             id: mi_del
-            text: qsTr("Delete")
+            text: $a.tr("Delete")
             shortcut: "Backspace"
             onTriggered: {
                 ensure_popup.open();
@@ -364,9 +364,9 @@ Rectangle {
         onAboutToShow: {
             let xm = XM.getCurrentXM();
             if(xm.sticky) {
-                mi_sticky.text = qsTr("Cancel Sticky");
+                mi_sticky.text = $a.tr("Cancel Sticky");
             } else {
-                mi_sticky.text = qsTr("Sticky");
+                mi_sticky.text = $a.tr("Sticky");
             }
         }
     }
@@ -450,7 +450,7 @@ Rectangle {
             }
             onReleased: {
                 startX = 0
-                $app.setLocal($app.ENV_K_LAST_CATEGORY_LEFT_WIDTH, Math.floor(category_list.width));
+                $a.setLocal($a.ENV_K_LAST_CATEGORY_LEFT_WIDTH, Math.floor(category_list.width));
             }
             onPositionChanged:{
                 if(startX > 0){
@@ -462,7 +462,7 @@ Rectangle {
                         let delta = mouse.x - startX
                         category_list.width = Com.min(root.width/3*2,category_list.width + delta);
                     }
-                    $app.setUIVal(0, xm_list.width);
+                    $a.setUIVal(0, xm_list.width);
                 }
             }
             onEntered: {
@@ -624,7 +624,7 @@ Rectangle {
             list_model_xm.insert(0, pk);
             xm_list_view.currentIndex = 0;
             edit_pk_popup.bid = pk.id;
-//                root.st(1, qsTr("Saved"));
+//                root.st(1, $a.tr("Saved"));
             if(pending_close) {
                 XM.closeEditPK();
             }
@@ -632,7 +632,7 @@ Rectangle {
     }
     MyFieldPopup {
         id: col_edit_popup
-        placeholder: qsTr("Category Name")
+        placeholder: $a.tr("Category Name")
         property bool add: false
 
         function submit() {
@@ -677,7 +677,7 @@ Rectangle {
         function onDeleted(ref) {
             ensure_popup.close();
             if(ref>0){
-                tipsInfo(qsTr("Can not delete! found")+ " "+ ref + " " + qsTr("referenced."));
+                tipsInfo($a.tr("Can not delete! found")+ " "+ ref + " " + $a.tr("referenced."));
             } else {
                 XM.colTotalDecrement();
                 list_model_xm.remove(xm_list_view.currentIndex);
@@ -690,7 +690,7 @@ Rectangle {
     function init(data) {
         Com.info("XM init data");
         if(data) {
-            let lw = data[$app.ENV_K_LAST_CATEGORY_LEFT_WIDTH];
+            let lw = data[$a.ENV_K_LAST_CATEGORY_LEFT_WIDTH];
             if(lw) {
                 category_list.width = lw;
             }

@@ -13,7 +13,7 @@ TextField {
         color:"#222"
     }
     Keys.onPressed: function(event) {
-        let k = $app.getKeyName(event.key, event.modifiers);
+        let k = $a.getKeyName(event.key, event.modifiers);
         if(k.indexOf("+") < 0 && !/^F\d+$/.test(k)) {
             k = "Ctrl+Alt+" + k;
         }

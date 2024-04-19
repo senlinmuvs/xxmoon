@@ -33,7 +33,7 @@ Rectangle {
         anchors.left:parent.left
         anchors.right: parent.right
         height: 40
-        placeholderText: qsTr("Search...")
+        placeholderText: $a.tr("Search...")
         font.family: "Arial"
         font.pointSize: UI.btn_font_size
         color: "white"
@@ -55,7 +55,7 @@ Rectangle {
         }
         onFocusChanged: {
             if(focus) {
-                $app.regMenuReceiver(this);
+                $a.regMenuReceiver(this);
             }
         }
     }
@@ -187,7 +187,7 @@ Rectangle {
             }
             onReleased: {
                 startX = 0
-                $app.setLocal($app.ENV_K_LAST_BOOK_LEFT_WIDTH, Math.floor(work_list.width));
+                $a.setLocal($a.ENV_K_LAST_BOOK_LEFT_WIDTH, Math.floor(work_list.width));
             }
             onPositionChanged:function(mouse){
                 if(startX > 0){
@@ -199,7 +199,7 @@ Rectangle {
                         let delta = mouse.x - startX
                         work_list.width = Com.min(root.width/3*2,work_list.width + delta);
                     }
-                    $app.setUIVal(1, note_list.width);
+                    $a.setUIVal(1, note_list.width);
                 }
             }
             onEntered: {
@@ -213,7 +213,7 @@ Rectangle {
     Menu {
         id: menu_work_right
         MenuItem {
-            text: qsTr("Edit")
+            text: $a.tr("Edit")
             onTriggered: {
                 let i = work_list_view.currentIndex;
                 let w = work_list_model.get(i);
@@ -224,39 +224,39 @@ Rectangle {
         }
         MenuSeparator {}
         MenuItem {
-            text: qsTr("Delete")
+            text: $a.tr("Delete")
             onTriggered: {
                 Book.delWork();
             }
         }
         MenuSeparator {}
         MenuItem {
-            text: qsTr("Generate PDF")
+            text: $a.tr("Generate PDF")
             onTriggered: {
                let w = Book.getCurrentWork();
                if(w) {
-                   $app.genFile(Com.file_type_pdf, Com.type_book, w.id, 0);
+                   $a.genFile(Com.file_type_pdf, Com.type_book, w.id, 0);
                }
             }
         }
         MenuSeparator {}
         MenuItem {
-            text: qsTr("Generate HTML")
+            text: $a.tr("Generate HTML")
             onTriggered: {
                let w = Book.getCurrentWork();
                if(w) {
-                   $app.genFile(Com.file_type_html, Com.type_book, w.id, 0);
+                   $a.genFile(Com.file_type_html, Com.type_book, w.id, 0);
                }
             }
         }
         MenuSeparator {
         }
         MenuItem {
-            text: qsTr("Generate XM")
+            text: $a.tr("Generate XM")
             onTriggered: {
                 let w = Book.getCurrentWork();
                 if(w){
-                    $app.genFile(Com.file_type_xm, Com.type_book, w.id, 0);
+                    $a.genFile(Com.file_type_xm, Com.type_book, w.id, 0);
                 }
             }
         }
@@ -264,11 +264,11 @@ Rectangle {
         }
         MenuItem {
             id: mi_exp_site
-            text: qsTr("Export Site")
+            text: $a.tr("Export Site")
             onTriggered: {
                 let w = Book.getCurrentWork();
                 if(w){
-                    $app.genFile(Com.file_type_site, Com.type_book, w.id, 0);
+                    $a.genFile(Com.file_type_site, Com.type_book, w.id, 0);
                 }
             }
         }
@@ -276,11 +276,11 @@ Rectangle {
         }
         MenuItem {
             id: mi_del_site
-            text: qsTr("Delete from Site")
+            text: $a.tr("Delete from Site")
             onTriggered: {
                 let w = Book.getCurrentWork();
                 if(w) {
-                    $app.deleteFromSite(w.id, Com.type_book);
+                    $a.deleteFromSite(w.id, Com.type_book);
                 }
             }
         }
@@ -288,7 +288,7 @@ Rectangle {
     Menu {
         id: menu_right_note
         MenuItem {
-            text: qsTr("Detail")
+            text: $a.tr("Detail")
             shortcut: "Space"
             onTriggered: {
                 Book.detail();
@@ -298,7 +298,7 @@ Rectangle {
         }
         MenuItem {
             id: mi_pic_model
-            text: qsTr("Picture Model")
+            text: $a.tr("Picture Model")
             shortcut: "Enter"
             onTriggered: {
                 Book.openImgView();
@@ -309,7 +309,7 @@ Rectangle {
         }
         MenuItem {
             id: mi_cont
-            text: qsTr("Copy content")
+            text: $a.tr("Copy content")
             shortcut: ctrlName+"+Shift+C"
             onTriggered: {
                 Book.copyCont();
@@ -319,7 +319,7 @@ Rectangle {
             visible: mi_cont.visible
         }
         MenuItem {
-            text: qsTr("Edit")
+            text: $a.tr("Edit")
             shortcut: ctrlName+"+Enter"
             onTriggered: {
                 Book.openEditPopup();
@@ -328,7 +328,7 @@ Rectangle {
         MenuSeparator {
         }
         MenuItem {
-            text: qsTr("Out Edit")
+            text: $a.tr("Out Edit")
             shortcut: ctrlName+"+Alt+Enter"
             onTriggered: {
                 Book.outEdit();
@@ -337,7 +337,7 @@ Rectangle {
         MenuSeparator {
         }
         MenuItem {
-            text: qsTr("Delete")
+            text: $a.tr("Delete")
             shortcut: "Backspace"
             onTriggered: {
                 ensure_popup.open();
@@ -347,12 +347,12 @@ Rectangle {
         // }
         // MenuItem {
         //     id: mi_send_phone
-        //     text: qsTr("Send To Phone")
+        //     text: $a.tr("Send To Phone")
         //     onTriggered: {
         //         let n = Book.getCurrentNote();
         //         if(n){
-        //             $app.sendToPhone(Com.type_book, n.id, Com.putFunc(function(r) {
-        //                 tipsInfo(qsTr("Success"));
+        //             $a.sendToPhone(Com.type_book, n.id, Com.putFunc(function(r) {
+        //                 tipsInfo($a.tr("Success"));
         //             }));
         //         }
         //     }
@@ -452,12 +452,12 @@ Rectangle {
             if(list.length > 0) {
                 note_list_view.page++;
             }
-            if(list.length < $app.pageSize) {
+            if(list.length < $a.pageSize) {
                 note_list_view.footer = workNoMoreBtn;
             } else {
                 note_list_view.footer = note_list_more_btn;
             }
-            $app.setUIVal(1, note_list.width);
+            $a.setUIVal(1, note_list.width);
         }
         function onDeletedNote() {
             note_list_model.remove(note_list_view.currentIndex);
@@ -526,7 +526,7 @@ Rectangle {
 
                 note_list_view.page = 0;
                 Book.loadNote(true);
-                $app.set($app.ENV_K_LAST_SORT, text);
+                $a.set($a.ENV_K_LAST_SORT, text);
             }
         }
         Btn {
@@ -544,7 +544,7 @@ Rectangle {
                     text = "≡";
                     view_type = 0;
                 }
-                $app.set($app.ENV_K_LAST_VIEW_TYPE, view_type);
+                $a.set($a.ENV_K_LAST_VIEW_TYPE, view_type);
             }
         }
     }
@@ -602,9 +602,9 @@ Rectangle {
     }
     function init(data) {
         if(data) {
-            root.view_type = data[$app.ENV_K_LAST_VIEW_TYPE];
-            sort_btn.text = data[$app.ENV_K_LAST_SORT];
-            let lw = data[$app.ENV_K_LAST_BOOK_LEFT_WIDTH];
+            root.view_type = data[$a.ENV_K_LAST_VIEW_TYPE];
+            sort_btn.text = data[$a.ENV_K_LAST_SORT];
+            let lw = data[$a.ENV_K_LAST_BOOK_LEFT_WIDTH];
             if(lw){
                 work_list.width = lw;
             }
@@ -664,7 +664,7 @@ Rectangle {
         if(list.length > 0) {
             Book.loadNote();
         }
-        if(list.length < $app.pageSize) {
+        if(list.length < $a.pageSize) {
             work_list_view.footer = workNoMoreBtn;
         } else {
             work_list_view.footer = workMoreBtn;

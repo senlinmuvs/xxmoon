@@ -125,4 +125,4 @@ unix:!macx {
     include(/home/sen/github/qt/QHotkey/qhotkey.pri)
 }
 include(libxxmoon.pri)
-TRANSLATIONS = zh_CN.ts en_US.ts
+TRANSLATIONS = zh_CN.ts

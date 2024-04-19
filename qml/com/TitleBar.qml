@@ -28,7 +28,7 @@ Rectangle {
         Text {
             id: logo
             y: 4
-            text:qsTr("xxmoon")
+            text:$a.tr("xxmoon")
             color: "white"
             font.pointSize: 10
             width: 80
@@ -118,7 +118,7 @@ Rectangle {
             }
             window.x = lastX;
             window.y = lastY;
-            $app.setLocal("maxWindow", 0);
+            $a.setLocal("maxWindow", 0);
         } else {
             console.log("maxWin 1", lastW, lastH);
             lastW = window.width;
@@ -126,7 +126,7 @@ Rectangle {
             lastX = window.x;
             lastY = window.y;
             window.setMaxWindow();
-            $app.setLocal("maxWindow", 1);
+            $a.setLocal("maxWindow", 1);
         }
     }
 

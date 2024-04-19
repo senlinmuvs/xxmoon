@@ -26,14 +26,14 @@ TextArea {
                     reloadData(link);
                 }
             } else if(Com.isFile(link)) {
-                $app.openDir(link);
+                $a.openDir(link);
             } else {
                 Qt.openUrlExternally(link);
             }
         }
     }
     onSelectionEndChanged: {
-        $app.regMenuReceiver(root);
+        $a.regMenuReceiver(root);
     }
     function getTxt() {
         return root;

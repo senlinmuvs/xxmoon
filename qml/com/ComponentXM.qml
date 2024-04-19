@@ -78,12 +78,12 @@ Rectangle {
                     text: "yes"
                     color: Qt.rgba(0/255, 0/255, 0/255, 0.9)
                     function click() {
-                        $app.ensureEncryptOrDecrypt(id, cont, Com.putFunc(function(st) {
+                        $a.ensureEncryptOrDecrypt(id, cont, Com.putFunc(function(st) {
                             if(st === 0) {
                                 let pk = XM.getCurrentXM();
                                 if(pk){
                                     pk.jm_ensure = false;
-                                    pk.img_path = Com.file_pre + $app.getCfgVal("img_dir") + "/" + img;
+                                    pk.img_path = Com.file_pre + $a.getCfgVal("img_dir") + "/" + img;
                                 }
                             }
                         }));

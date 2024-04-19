@@ -38,7 +38,7 @@ Popup {
         Column {
             spacing: 5
             Title {
-                text: $app.getCfgVal("user") === "xxmoon" ? qsTr("xxmoon") : $app.getCfgVal("user")
+                text: $a.getCfgVal("user") === "xxmoon" ? $a.tr("xxmoon") : $a.getCfgVal("user")
                 color: "white"
             }
         }
@@ -61,7 +61,7 @@ Popup {
                 spacing: 4
                 width: parent.width
                 Title2 {
-                    text: qsTr("Data Path")
+                    text: $a.tr("Data Path")
                     width: parent.width/2 - leftOff
                     y:5
                 }
@@ -72,11 +72,11 @@ Popup {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            if($app.getPlatform() === Com.platform_mac) {
-                                let path = $app.selectDataDir();
+                            if($a.getPlatform() === Com.platform_mac) {
+                                let path = $a.selectDataDir();
                                 if(path && setup_data_path.text !== path) {
-                                    $app.alertMacTip(qsTr("Please restart the app!"),
-                                                     qsTr("And copy the old data to the new directory.") + "\n" +
+                                    $a.alertMacTip($a.tr("Please restart the app!"),
+                                                     $a.tr("And copy the old data to the new directory.") + "\n" +
                                                      setup_data_path.text + "/xxmoon -> " + path);
                                     setup_data_path.text = path;
                                     Qt.exit(0);
@@ -88,11 +88,11 @@ Popup {
                                     if(path.startsWith("data:text/plain;base64")){
                                         return;
                                     }
-                                    if($app.getPlatform() === Com.platform_mac){
+                                    if($a.getPlatform() === Com.platform_mac){
                                         path = "/" + path;
                                     }
                                     setup_data_path.text = path;
-                                    $app.setCfg("data_dir", setup_data_path.text);
+                                    $a.setCfg("data_dir", setup_data_path.text);
                                 }
                                 folderDialog.open();
                             }
@@ -104,7 +104,7 @@ Popup {
                 spacing: 4
                 width: parent.width
                 Title2 {
-                    text: qsTr("Editor")
+                    text: $a.tr("Editor")
                     width: parent.width/2 - leftOff
                     y:5
                 }
@@ -116,10 +116,10 @@ Popup {
                         anchors.fill: parent
                         onClicked: {
 //                            normalFileDialog.currentFile = setup_editor.text;
-                            if($app.getPlatform() === Com.platform_win) {
+                            if($a.getPlatform() === Com.platform_win) {
                                 normalFileDialog.nameFilters = ["Exe (*.exe)"];
                             }
-                            if($app.getPlatform() === Com.platform_mac) {
+                            if($a.getPlatform() === Com.platform_mac) {
                                 normalFileDialog.nameFilters = ["App (*.app)"];
                             }
                             normalFileDialog.onFinished = function() {
@@ -127,13 +127,13 @@ Popup {
                                 if(path.startsWith("data:text/plain;base64")){
                                     return;
                                 }
-                                if($app.getPlatform() === Com.platform_mac) {
+                                if($a.getPlatform() === Com.platform_mac) {
                                     if(/.+[/]Terminal.app|.+[/]iTerm.app/.test(path)) {
                                         path = "vi";
                                     }
                                 }
                                 setup_editor.text = path;
-                                $app.setCfg("editor", setup_editor.text);
+                                $a.setCfg("editor", setup_editor.text);
                             }
                             normalFileDialog.open();
                         }
@@ -144,7 +144,7 @@ Popup {
                 spacing: 4
                 width: parent.width
                 Title2 {
-                    text: qsTr("Pick Hotkey")
+                    text: $a.tr("Pick Hotkey")
                     width: parent.width/2 - leftOff
                     y:5
                 }
@@ -153,7 +153,7 @@ Popup {
                     width: parent.width/2 + leftOff - 4
                     function submit() {
                         if(oldHotKeyPK !== setup_hot_key_pk.text) {
-                            $app.setCfg("hot_key_pk", setup_hot_key_pk.text);
+                            $a.setCfg("hot_key_pk", setup_hot_key_pk.text);
                         }
                     }
                 }
@@ -172,7 +172,7 @@ Popup {
             Row {
                 spacing: 5
                 Text {
-                    text:"v"+ $app.getVersion()
+                    text:"v"+ $a.getVersion()
                     color: "white"
                     font.bold: true
                     font.pointSize: UI.font_size_title2
@@ -194,7 +194,7 @@ Popup {
     }
 
     Component.onCompleted: {
-        $app.getCfg(root);
+        $a.getCfg(root);
     }
     onClosed: {
         setup_hot_key_pk.submit();

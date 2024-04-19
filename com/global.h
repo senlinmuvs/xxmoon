@@ -39,7 +39,7 @@ extern volatile bool running;
 
 extern QQmlApplicationEngine *engine;
 extern Cfg *cfg;
-extern App* app;
+extern App* a;
 extern XMAction* xmAction;
 extern BookAction* bookAction;
 extern L* l;

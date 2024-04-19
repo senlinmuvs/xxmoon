@@ -109,14 +109,14 @@ function onKeyPressed(event) {
 function outEdit() {
     let n = getCurrentNote();
     if(n) {
-        $app.openInExternal(1, n.id, 1);
+        $a.openInExternal(1, n.id, 1);
     }
 }
 
 function copyCont() {
     let n = getCurrentNote();
     if(n){
-        $app.copy(n.cont);
+        $a.copy(n.cont);
     }
 }
 
@@ -294,7 +294,7 @@ function submitBook() {
         for(let x = 0; x < n; x++) {
             let m = work_list_model.get(x);
             if(m.name === name && m.author === author) {
-                tipsInfo(qsTr("Exists Already"));
+                tipsInfo($a.tr("Exists Already"));
                 return;
             }
         }
@@ -316,7 +316,7 @@ function delWork() {
     let i = work_list_view.currentIndex;
     let w = work_list_model.get(i);
     if(w.total > 0) {
-        tipsInfo(qsTr("Can not delete, it not empty."));
+        tipsInfo($a.tr("Can not delete, it not empty."));
     } else {
         $bk.delWork(w.id, Com.putFunc(function(){
             work_list_model.remove(i);

@@ -11,6 +11,7 @@ public:
 
     QString tr(QString k);
 
+private:
     QMap<QString, QString> trans_zh_map;
 };
 

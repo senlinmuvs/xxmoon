@@ -93,14 +93,14 @@ Rectangle {
                 }
                 Text {
                     id: e_stime
-                    text: pk&&pk.stime?Com.viewTime(pk.stime) + " " + qsTr('solved ') : ''
+                    text: pk&&pk.stime?Com.viewTime(pk.stime) + " " + $a.tr('solved ') : ''
                     font.pointSize: UI.detail_time_font_size
                     color:"#898989"
                     height: 25
                     lineHeight: height
                 }
                 Text {
-                    text: pk&&pk.lst?Com.viewTime(pk.lst) + " " + qsTr('up ') : ''
+                    text: pk&&pk.lst?Com.viewTime(pk.lst) + " " + $a.tr('up ') : ''
                     font.pointSize: UI.detail_time_font_size
                     color:"#898989"
                     height: 25
@@ -108,7 +108,7 @@ Rectangle {
                 }
                 Text {
                     id: time
-                    text: pk && pk.time ? Com.viewTime(pk.time) + " " + qsTr('created ') : ''
+                    text: pk && pk.time ? Com.viewTime(pk.time) + " " + $a.tr('created ') : ''
                     font.pointSize: UI.detail_time_font_size
                     color:"#898989"
                     height: 25
@@ -149,9 +149,9 @@ Rectangle {
         id: menu_right
         MenuItem {
             id: mi_copy
-            text: qsTr("Copy")
+            text: $a.tr("Copy")
             onTriggered: {
-                $app.triggerMenu(3);
+                $a.triggerMenu(3);
             }
         }
         MenuSeparator {
@@ -159,9 +159,9 @@ Rectangle {
         }
         MenuItem {
             id: mi_paste
-            text: qsTr("Paste")
+            text: $a.tr("Paste")
             onTriggered: {
-                $app.triggerMenu(4);
+                $a.triggerMenu(4);
             }
         }
         MenuSeparator {
@@ -170,7 +170,7 @@ Rectangle {
         MenuItem {
             id: mi_import
             visible: pk!=null&&pk.file!==''
-            text: qsTr("Import")
+            text: $a.tr("Import")
             onTriggered: {
                 importFile();
             }
@@ -181,7 +181,7 @@ Rectangle {
         MenuItem {
             id: mi_edit
             visible: pk&&!pk.file
-            text: qsTr("Edit") + " ("+ctrlName+"+Enter)"
+            text: $a.tr("Edit") + " ("+ctrlName+"+Enter)"
             onTriggered: {
                 edit();
             }
@@ -191,7 +191,7 @@ Rectangle {
         }
         MenuItem {
             visible: mi_edit.visible
-            text: qsTr("Out Edit") + " ("+ctrlName+"+Alt+Enter)"
+            text: $a.tr("Out Edit") + " ("+ctrlName+"+Alt+Enter)"
             onTriggered: {
                 outEdit();
             }
@@ -201,7 +201,7 @@ Rectangle {
         }
         MenuItem {
             id:mi_picture_model
-            text: qsTr("Picture Model") + " (Enter)"
+            text: $a.tr("Picture Model") + " (Enter)"
             onTriggered: {
                 openImgView();
             }
@@ -210,7 +210,7 @@ Rectangle {
             visible: mi_picture_model.visible
         }
         MenuItem {
-            text: qsTr("Close") + " (Esc)"
+            text: $a.tr("Close") + " (Esc)"
             onTriggered: {
                 close();
             }
@@ -280,16 +280,16 @@ Rectangle {
             if(delegate) {
                 delegate.openEditPopup(false, pk);
             }
-            $app.setUIVal(4, scrollBar.position);
+            $a.setUIVal(4, scrollBar.position);
         }
     }
     function outEdit() {
         if(pk){
             if(pk.bk){
-                $app.openInExternal(1, pk.id, 1);
+                $a.openInExternal(1, pk.id, 1);
             } else {
                 if(!pk.jm){
-                    $app.openInExternal(1, pk.id);
+                    $a.openInExternal(1, pk.id);
                 }
             }
         }
@@ -340,7 +340,7 @@ Rectangle {
         tag_line.update(tags);
     }
     function refreshStime() {
-        e_stime.text = pk&&pk.stime?Com.viewTime(pk.stime) + " " + qsTr('solved ') : ''
+        e_stime.text = pk&&pk.stime?Com.viewTime(pk.stime) + " " + $a.tr('solved ') : ''
     }
     function cl() {
         pk = null;
@@ -386,7 +386,7 @@ Rectangle {
             reloadData(lastId);
             pop();
 
-            let pos = Number($app.getUIVal(4));
+            let pos = Number($a.getUIVal(4));
             if(pos) {
                 scrollTo(pos);
             }
@@ -502,7 +502,7 @@ Rectangle {
             firstSelectEnd = j;
         }
 
-        let line = $app.calLine(text,i);
+        let line = $a.calLine(text,i);
         let bl = Com.max(0,Com.min(1,(it.y+(line/it.lineCount*it.height))/(cols.height+root.height/2) - 0.05));
         scrollTo(bl);
 //        console.log("select0", i, j, selectStart, line, it.lineCount, bl);

@@ -58,9 +58,6 @@
         <file>qml/xm/XM.qml</file>
         <file>assets/logo.icns</file>
         <file>assets/logo.ico</file>
-        <file>en_US.ts</file>
-        <file>zh_CN.qm</file>
-        <file>zh_CN.ts</file>
         <file>assets/com.css</file>
         <file>assets/tmpl_detail.html</file>
         <file>assets/tmpl_index.html</file>

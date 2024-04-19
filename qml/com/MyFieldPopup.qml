@@ -49,7 +49,7 @@ Popup {
         }
         onFocusChanged: {
             if(focus) {
-                $app.regMenuReceiver(popup_text);
+                $a.regMenuReceiver(popup_text);
             }
         }
     }
@@ -76,7 +76,7 @@ Popup {
         y: parent.height + 10
         z:10
         color: "black"
-        text: qsTr("OK")
+        text: $a.tr("OK")
 
         function click() {
             submit();
@@ -98,7 +98,7 @@ Popup {
                     if(text !== '') {
                         tmpPwd = text;
                         text = '';
-                        popup_text.placeholderText = qsTr('Input agian');
+                        popup_text.placeholderText = $a.tr('Input agian');
                         return;
                     }
                 } else {
@@ -108,7 +108,7 @@ Popup {
                     if(text !== tmpPwd) {
                         tmpClose = true;
                         close();
-                        tips_info.popup(qsTr("Two inputs are not equal!"), true, function() {
+                        tips_info.popup($a.tr("Two inputs are not equal!"), true, function() {
                             tmpClose = false;
                             open();
                         });

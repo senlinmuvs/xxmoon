@@ -174,7 +174,7 @@ void test10() {
 void test11() {
     qDebug() << "------------------------- TEST 11 Start -------------------------";
     QClipboard *board = QGuiApplication::clipboard();
-    QObject::connect(board, &QClipboard::dataChanged, app, [=](){
+    QObject::connect(board, &QClipboard::dataChanged, a, [=](){
         static bool finished = true;
 
         qDebug() << "datachanged:" <<  board->text();

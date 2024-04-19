@@ -30,7 +30,7 @@ Popup {
                 font.bold: true
                 color: "white"
                 font.pointSize: UI.font_size_title1
-                text: qsTr("Ensure delete?")
+                text: $a.tr("Ensure delete?")
             }
             Row {
                 spacing: 30
@@ -40,7 +40,7 @@ Popup {
                     text_color: "#191919"
                     text_size: UI.font_size_btn
                     radius: height/2
-                    text: qsTr("OK")
+                    text: $a.tr("OK")
 
                     function click() {
                         onSure(true);
@@ -56,7 +56,7 @@ Popup {
                     text_color: "#191919"
                     text_size: UI.font_size_btn
                     radius: height/2
-                    text: qsTr("Cancel")
+                    text: $a.tr("Cancel")
 
                     function click() {
                         onSure(false);

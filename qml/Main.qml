@@ -9,7 +9,7 @@ ApplicationWindow {
     id: window
     visible: true
     color: "transparent"
-//    flags: $app.getPlatform() === Com.platform_win ? Qt.FramelessWindowHint|Qt.WindowSystemMenuHint|Qt.WindowMinimizeButtonHint|Qt.Window : 0
+//    flags: $a.getPlatform() === Com.platform_win ? Qt.FramelessWindowHint|Qt.WindowSystemMenuHint|Qt.WindowMinimizeButtonHint|Qt.Window : 0
     width: Com.min(800, screen.width/3*2)
     height: Com.min(900, screen.height/5*4)
     minimumWidth: Com.min(width, 100)
@@ -31,7 +31,7 @@ ApplicationWindow {
     property bool heightChanged
 
     property int ctrlVal:Qt.ControlModifier;
-    property string ctrlName:$app.getPlatform() === Com.platform_mac ? "Cmd" : "Ctrl";
+    property string ctrlName:$a.getPlatform() === Com.platform_mac ? "Cmd" : "Ctrl";
 
     property var win_detail_refs//{detail_win_name:1}保持详情分离窗口引用避免加载数据多了窗口消失
     property int win_detail_index: 0//详情分离窗口的索引计数,即窗口名后缀
@@ -39,7 +39,7 @@ ApplicationWindow {
     Menu {
         id: trayMenu
         MenuItem {
-          text: qsTr("Quit")
+          text: $a.tr("Quit")
           onTriggered: {
               tray.hide();
               Qt.quit();
@@ -50,12 +50,12 @@ ApplicationWindow {
         id: tray
         visible: true
         icon.source: "qrc:/assets/tray32.png"
-        tooltip: qsTr("xxmoon")
-        menu: $app.getPlatform() === Com.platform_mac ? null : trayMenu
+        tooltip: $a.tr("xxmoon")
+        menu: $a.getPlatform() === Com.platform_mac ? null : trayMenu
         onActivated: {
-            if($app.getPlatform() === Com.platform_mac) {
+            if($a.getPlatform() === Com.platform_mac) {
                 if(reason === SystemTrayIcon.Trigger) {
-                    $app.pk();
+                    $a.pk();
                 } else if(reason === SystemTrayIcon.DoubleClick) {
                     open();
                 }
@@ -75,10 +75,10 @@ ApplicationWindow {
     }
     onWindowStateChanged: function(windowState) {
        if(windowState === 2) {
-           $app.setLocal("maxWindow",1);
+           $a.setLocal("maxWindow",1);
            winIsMax = true;
        } else {
-           $app.setLocal("maxWindow",0);
+           $a.setLocal("maxWindow",0);
            winIsMax = false;
        }
     }
@@ -111,7 +111,7 @@ ApplicationWindow {
         id: encrypt_cont_popup
         pwd: true
         z: 11
-        placeholder: qsTr("Password")
+        placeholder: $a.tr("Password")
     }
 //    Server {
 //        id: serv
@@ -124,7 +124,7 @@ ApplicationWindow {
             id: e_top_sep
             color: UI.ui_separate_color
             width: parent.width
-            height: $app.getPlatform() === Com.platform_win ? 1 : 0
+            height: $a.getPlatform() === Com.platform_win ? 1 : 0
         }
         Navigation {
             id: navigation
@@ -146,7 +146,7 @@ ApplicationWindow {
             focus: true
             onLoaded: {
                 if(pageLoader.item.init) {
-                    pageLoader.item.init($app.getUIData());
+                    pageLoader.item.init($a.getUIData());
                 }
             }
             Keys.onPressed: function(event) {
@@ -185,7 +185,7 @@ ApplicationWindow {
                 }
             }
             if(round_check_import-- <= 0) {
-                $app.checkImport();
+                $a.checkImport();
                 round_check_import = 6;
             }
         }
@@ -196,7 +196,7 @@ ApplicationWindow {
         interval: 1000
         triggeredOnStart: true
         onTriggered: {
-            $app.checkTmpFile();
+            $a.checkTmpFile();
         }
     }
     Tips {
@@ -216,7 +216,7 @@ ApplicationWindow {
         onDropped: {
             let files = [];
             if(Com.isDir(drop.text)) {
-                files = $app.getFilesInDir(drop.text);
+                files = $a.getFilesInDir(drop.text);
             } else {
                 files = [drop.text];
             }
@@ -226,7 +226,7 @@ ApplicationWindow {
     FileDialog {
         id: fileDialog
         fileMode: FileDialog.OpenFiles
-        acceptLabel: qsTr('Import')
+        acceptLabel: $a.tr('Import')
         title: ""
         nameFilters: ["Kindle TXT(*.txt)", "xxmoon(*.xm)", "Image(*.png *.jpg *.jpeg *.bmp *.gif *.webp)"]
 //        folder: shortcuts.home
@@ -278,7 +278,7 @@ ApplicationWindow {
         }
 
         if(import_n === import_total) {
-            Com.st(1, qsTr("Imported") + (import_n+"/"+import_total));
+            Com.st(1, $a.tr("Imported") + (import_n+"/"+import_total));
 //            Com.log('imported', (import_n+"/"+import_total));
             if(type === Com.type_book) {
                 if(pageLoader.item.loadWork){
@@ -293,7 +293,7 @@ ApplicationWindow {
             import_total = 0;
         } else {
 //            Com.log('Import', (import_n+"/"+import_total));
-            Com.st(0, qsTr("Import") + (import_n+"/"+import_total));
+            Com.st(0, $a.tr("Import") + (import_n+"/"+import_total));
         }
     }
     function doFile(t, files) {
@@ -319,18 +319,18 @@ ApplicationWindow {
                 }
                 if(type > 0) {
                     if(type === Com.file_type_img) {
-                        Com.st(0, qsTr("Import") + (import_n+"/"+import_total));
+                        Com.st(0, $a.tr("Import") + (import_n+"/"+import_total));
                         $xm.xm(file);
                     } else if(type === Com.file_type_txt) {
-                        Com.st(0, qsTr("Import"));
-                        $app.import(file, window);
+                        Com.st(0, $a.tr("Import"));
+                        $a.import(file, window);
                     } else if(type === Com.file_type_xm) {
                         if(type === Com.file_type_xm && t === 0) {
                             //only open
                         } else {
-                            Com.st(0, qsTr("Import") + (import_n+"/"+import_total));
+                            Com.st(0, $a.tr("Import") + (import_n+"/"+import_total));
                         }
-                        $app.openXMFile(file, "", Com.putFunc(function(pk) {
+                        $a.openXMFile(file, "", Com.putFunc(function(pk) {
                             if(t === 0) {
                                 openXM(pk);
                             } else if(t === 1) {
@@ -344,7 +344,7 @@ ApplicationWindow {
     }
 
     function init(data) {
-        let wh = data[$app.ENV_K_LAST_WH];
+        let wh = data[$a.ENV_K_LAST_WH];
         if(wh && wh.length > 1) {
             window.width = wh[0];
             window.height = wh[1];
@@ -365,41 +365,41 @@ ApplicationWindow {
     Component.onCompleted: {
         global_timer.start();
         global_timer2.start();
-        init($app.getUIData());
+        init($a.getUIData());
 //        while(true) {
-//            if($app.existsAllowedURL()) {
-//                $app.init();
+//            if($a.existsAllowedURL()) {
+//                $a.init();
 //                break;
 //            } else {
-//                $app.alertMacTip(qsTr("First, please select a data storage directory!"),
-//                           qsTr("A xxmoon directory will be created in the directory you selected to store the data of this app."));
-//                $app.selectDataDir();
+//                $a.alertMacTip($a.tr("First, please select a data storage directory!"),
+//                           $a.tr("A xxmoon directory will be created in the directory you selected to store the data of this app."));
+//                $a.selectDataDir();
 //            }
 //        }
 
         ////////////////////////////////
-        let ctrl = $app.getCtrl();
+        let ctrl = $a.getCtrl();
         if(ctrl.toLowerCase() === "ctrl" || ctrl.toLowerCase() === "cmd") {
             ctrlVal = Qt.ControlModifier;
         } else if(ctrl.toLowerCase() === "meta") {
             ctrlVal = Qt.MetaModifier;
             //qt中的meta对应mac的ctrl
-            ctrlName = $app.getPlatform() === Com.platform_mac ? "Ctrl" : "Meta";
+            ctrlName = $a.getPlatform() === Com.platform_mac ? "Ctrl" : "Meta";
         }
         ////////////////////////////////
     }
     function onGenFile(file) {
         if(file) {
-            Com.st(1, qsTr('generated success.'));
+            Com.st(1, $a.tr('generated success.'));
             if(file === "") {
-                file = $app.fileDir;
+                file = $a.fileDir;
             }
-            if($app.getPlatform() === Com.platform_win && /.+[.](pdf|html|xm)/.test(file)) {
+            if($a.getPlatform() === Com.platform_win && /.+[.](pdf|html|xm)/.test(file)) {
                 file = file.substring(0, file.lastIndexOf("/"));
             }
-            $app.openDir(file);
+            $a.openDir(file);
         } else {
-            Com.st(1, qsTr('generated failure.'));
+            Com.st(1, $a.tr('generated failure.'));
         }
     }
     function onUpdatedPK(pk) {
@@ -459,7 +459,7 @@ ApplicationWindow {
         if($l.isDebug()) {
             Com.debug("saveWindowSize", whxy, screen.width, screen.height);
         }
-        $app.setLocal($app.ENV_K_LAST_WH, whxy);
+        $a.setLocal($a.ENV_K_LAST_WH, whxy);
     }
     function openDetail(pk, delegate, win=detailView) {
         if($l.isDebug()) {
@@ -507,7 +507,7 @@ ApplicationWindow {
             let delegate = {
                 onSubmit:function() {
                     let pwd = encrypt_cont_popup.text;
-                    $app.openXMFile(xmfile, pwd, Com.putFunc(function(pk2) {
+                    $a.openXMFile(xmfile, pwd, Com.putFunc(function(pk2) {
                         encrypt_cont_popup.cancel();
                         openXM(pk2);
                     }));
@@ -534,7 +534,7 @@ ApplicationWindow {
             cont: p.cont,
             jm: p.jm ? 1 : 0
         }
-        $app.importXM(pkdata);
+        $a.importXM(pkdata);
     }
     function setStat(st, msg) {
         if(msg){

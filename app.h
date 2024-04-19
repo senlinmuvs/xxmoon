@@ -95,6 +95,8 @@ public:
     Q_INVOKABLE bool importDouban();
     Q_INVOKABLE bool importWechatRead();
 
+    Q_INVOKABLE QString tr(QString k);
+
     QString createSiteFile(QString filename, QString cont, qint64 ct);
     QString insertIndexItem(QString indexhtml, QMap<QString,QString> indexmap);
 
