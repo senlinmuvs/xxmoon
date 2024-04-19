@@ -6,6 +6,7 @@
 #ifdef Q_OS_MAC
 #include "mac.h"
 #include "menumanager.h"
+#include "trans.h"
 #endif
 #include <l.h>
 #include <QProcess>
@@ -58,6 +59,7 @@ extern DocParser *doc_parser;
 extern Log *lg;
 extern XMFormat *xm_format;
 extern SM *sm;
+extern Trans *trans;
 
 extern QRegularExpression Reg_Kindle_Note;
 extern QRegularExpression Reg_Text_Img;

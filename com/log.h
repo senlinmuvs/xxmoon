@@ -7,8 +7,7 @@
 
 
 
-class Log
-{
+class Log {
 public:
     Log();
 

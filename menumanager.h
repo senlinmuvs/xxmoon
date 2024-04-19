@@ -27,7 +27,7 @@ public slots:
     void onMinizime(bool checked = false);
     void onZoom(bool checked = false);
     void onHowToUse(bool checked = false);
-    void onContact(bool checked = false);
+    // void onContact(bool checked = false);
 };
 
 #endif // MENUMANAGER_H

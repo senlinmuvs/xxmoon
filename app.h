@@ -38,7 +38,6 @@ public:
 public:
     explicit App();
     ~App();
-    QString locale_name;
     uint getPageSize() const{return PAGE_SIZE;}
     uint getMaxTag() const{return MAX_TAG;}
     QString getTag1() const{return Tag1;}

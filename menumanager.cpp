@@ -15,17 +15,17 @@ void MenuManager::init() {
     QString act00name = "About &Xxmoon";
     QAction *act00 = menu00->addAction(act00name);
 
-    QMenu* menu0 = new QMenu(QObject::tr("File"));
-    QMenu* menu1 = new QMenu(QObject::tr("Edit"));
-    QMenu* menu2 = new QMenu(QObject::tr("Window"));
-    QMenu* menu3 = new QMenu(QObject::tr("Help"));
+    QMenu* menu0 = new QMenu(trans->tr("File"));
+    QMenu* menu1 = new QMenu(trans->tr("Edit"));
+    QMenu* menu2 = new QMenu(trans->tr("Window"));
+    QMenu* menu3 = new QMenu(trans->tr("Help"));
 
     menuBar->addMenu(menu0);
     menuBar->addMenu(menu1);
     menuBar->addMenu(menu2);
     menuBar->addMenu(menu3);
 
-    QAction* act0 = new QAction(QObject::tr("Open"), this);
+    QAction* act0 = new QAction(trans->tr("Open"), this);
     Qt::Modifier ctrlKey = Qt::CTRL;
     if(cfg->ctrl.toLower() == "meta") {
         ctrlKey = Qt::META;
@@ -34,47 +34,47 @@ void MenuManager::init() {
     menu0->addAction(act0);
 
     //
-    QAction* act1 = new QAction(QObject::tr("Undo"), this);
+    QAction* act1 = new QAction(trans->tr("Undo"), this);
     act1->setShortcut(ctrlKey | Qt::Key_Z);
     menu1->addAction(act1);
 
-    QAction*  act2 = new QAction(QObject::tr("Redo"), this);
+    QAction*  act2 = new QAction(trans->tr("Redo"), this);
     act2->setShortcut(ctrlKey | Qt::SHIFT | Qt::Key_Z);
     menu1->addAction(act2);
     menu1->addSeparator();
 
-    QAction* act3 = new QAction(QObject::tr("Copy"), this);
+    QAction* act3 = new QAction(trans->tr("Copy"), this);
     act3->setShortcut(ctrlKey | Qt::Key_C);
     menu1->addAction(act3);
 
-    QAction* act4 = new QAction(QObject::tr("Paste"), this);
+    QAction* act4 = new QAction(trans->tr("Paste"), this);
     act4->setShortcut(ctrlKey | Qt::Key_V);
     menu1->addAction(act4);
 
-    QAction* act5 = new QAction(QObject::tr("Cut"), this);
+    QAction* act5 = new QAction(trans->tr("Cut"), this);
     act5->setShortcut(ctrlKey | Qt::Key_X);
     menu1->addAction(act5);
 
-    QAction* act6 = new QAction(QObject::tr("Select All"), this);
+    QAction* act6 = new QAction(trans->tr("Select All"), this);
     act6->setShortcut(ctrlKey | Qt::Key_A);
     menu1->addAction(act6);
 
     //
-    QAction* act7 = new QAction(QObject::tr("Minizime"), this);
+    QAction* act7 = new QAction(trans->tr("Minizime"), this);
     act7->setShortcut(ctrlKey | Qt::Key_M);
     menu2->addAction(act7);
 
-    QAction* act8 = new QAction(QObject::tr("Zoom"), this);
+    QAction* act8 = new QAction(trans->tr("Zoom"), this);
 //    act[8]->setShortcut(ctrlKey | Qt::Key_Z);
     menu2->addAction(act8);
 
     //
-    QAction* act9 = new QAction(QObject::tr("How to use ..."), this);
+    QAction* act9 = new QAction(trans->tr("How to use ..."), this);
     act9->setShortcut(Qt::Key_F1);
     menu3->addAction(act9);
 
-    QAction* act10 = new QAction(QObject::tr("Contact ..."), this);
-    menu3->addAction(act10);
+    // QAction* act10 = new QAction(trans->tr("Contact ..."), this);
+    // menu3->addAction(act10);
 
     connect(act00,&QAction::triggered,this,&MenuManager::onAbout);
     connect(act0,&QAction::triggered,this,&MenuManager::onOpen);
@@ -87,7 +87,7 @@ void MenuManager::init() {
     connect(act7,&QAction::triggered,this,&MenuManager::onMinizime);
     connect(act8,&QAction::triggered,this,&MenuManager::onZoom);
     connect(act9,&QAction::triggered,this,&MenuManager::onHowToUse);
-    connect(act10,&QAction::triggered,this,&MenuManager::onContact);
+    // connect(act10,&QAction::triggered,this,&MenuManager::onContact);
 }
 
 void MenuManager::regReceiver(QObject* r) {
@@ -177,18 +177,8 @@ void MenuManager::onZoom(bool checked) {
 }
 
 void MenuManager::onHowToUse(bool checked) {
-    QLocale locale;
-    QString loc = cfg->lang;
-    if(cfg->lang == "") {
-        loc = locale.name();
-    }
-    if(loc == "zh_CN") {
-        QDesktopServices::openUrl(QUrl(QString("%1/zh/%2").arg(WEBSITE).arg(PAGE_Xxmoonpc)));
-    } else {
-        QDesktopServices::openUrl(QUrl(QString("%1/en/%2").arg(WEBSITE).arg(PAGE_Xxmoonpc)));
-    }
+    QDesktopServices::openUrl(QUrl(QString("https://github.com/senlinmuvs/xxmoon/wiki")));
 }
 
-void MenuManager::onContact(bool checked) {
-    QDesktopServices::openUrl(QUrl("mailto:admin@senli.tech?subject=xxmoon"));
-}
+// void MenuManager::onContact(bool checked) {
+// }

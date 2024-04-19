@@ -35,6 +35,7 @@ DocParser *doc_parser = new DocParser();
 Log *lg = new Log();
 XMFormat *xm_format = new XMFormat();
 SM *sm = new SM();
+Trans *trans = new Trans();
 
 QRegularExpression Reg_Kindle_Note(cfg->reg_kindle_flag);
 QRegularExpression Reg_Text_Img(".+[.](txt|png|jpg|jpeg|bmp)$");

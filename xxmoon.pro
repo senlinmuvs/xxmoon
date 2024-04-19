@@ -22,6 +22,7 @@ SOURCES += \
         com/sm.cpp \
         com/sqlite_manager.cpp \
         com/sslhelper.cpp \
+        com/trans.cpp \
         com/util.cpp \
         com/xm_format.cpp \
         db/basedao.cpp \
@@ -68,6 +69,7 @@ HEADERS += \
     com/sm.h \
     com/sqlite_manager.h \
     com/sslhelper.h \
+    com/trans.h \
     com/util.h \
     com/xm_format.h \
     db/basedao.h \

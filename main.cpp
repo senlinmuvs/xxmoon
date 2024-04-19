@@ -89,15 +89,9 @@ int initGui(MyApplication* a) {
 
     //语言国际化
     QTranslator translator;
-    QLocale locale;
-    QString loc = cfg->lang;
-    if(cfg->lang == "") {
-        loc = locale.name();
-    }
-    bool loadSuc = translator.load(":/" + loc);
+    bool loadSuc = translator.load(":/" + cfg->lang);
     a->installTranslator(&translator);
-    app->locale_name = loc;
-    lg->info(QString("load translator file %1 %2").arg(loc).arg(loadSuc));
+    lg->info(QString("load translator file %1 %2").arg(cfg->lang).arg(loadSuc));
 
     //
     QString mainQml = QStringLiteral("qrc:/qml/Main.qml");
@@ -192,6 +186,9 @@ void initCfg() {
     cfg->tmpDir = cfg->userBaseDir + "/tmp";
     if(cfg->sitedir == "") {
         cfg->sitedir = cfg->fileDir+"/"+"site";
+    }
+    if(cfg->lang == "") {
+        cfg->lang = QLocale().name();
     }
     qDebug() << "================================ cfg ================================";
     qDebug() << cfg->toString().toUtf8().data();

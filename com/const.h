@@ -11,7 +11,7 @@
 #define WIN 0
 #define UNIX 1
 #define MAC 2
-#define VERSION "1.37.1"
+#define VERSION "1.37.2"
 
 #define CB_VAR std::function<QVariantList()>
 
@@ -134,8 +134,4 @@ const int PUSH_SERVER = 0;
 const int PUSH_OPENFILE = 1;
 const int PUSH_OPEN_ABOUT = 2;
 const int PUSH_UP_TAGS = 3;
-
-//
-const static QString WEBSITE = "https://xxmoon.com";
-const static QString PAGE_Xxmoonpc = "xxmoon_pc.html";
 #endif //CONST_H
