@@ -8,7 +8,7 @@
 XMAction::XMAction() {
 }
 void XMAction::getCategories(QString k, QObject *obj) {
-    DB_Async->exe([=]{
+    DB_Async->exe("getCategories", [=]{
         QVariantList rlist;
         if(k.length() > 0){
             vector<Category> list = categoryDao->getCategories(k);
@@ -38,7 +38,7 @@ void XMAction::getXMList(QString k, uint id, uint fromId, uint pklistWidth, uint
         lg->debug(QString("getXMList k %1 id %2 fromId %3").arg(k).arg(id).arg(fromId));
     }
     k = k.trimmed();
-    DB_Async->exe([=] {
+    DB_Async->exe("getXMList", [=] {
         QList<XM*> list = xmDao->getXMList(k, id, fromId);
         QVariantList rlist;
         for (XM *xm:list) {
@@ -51,7 +51,7 @@ void XMAction::getXMList(QString k, uint id, uint fromId, uint pklistWidth, uint
 }
 
 void XMAction::getXM(uint id, uint listWidth, uint cbid) {
-    DB_Async->exe([=] {
+    DB_Async->exe("getXM", [=] {
         XM* xm = xmDao->getXM(id);
         if(xm) {
             xm->simpleCont = extractPKSimpleCont(xm->cont, "");
@@ -62,7 +62,7 @@ void XMAction::getXM(uint id, uint listWidth, uint cbid) {
 }
 
 void XMAction::addCategory(QString name, QObject *obj) {
-    DB_Async->exe([=] {
+    DB_Async->exe("addCategory", [=] {
         QVariantMap m;
         QString err;
         Category *col = new Category();
@@ -80,33 +80,33 @@ void XMAction::addCategory(QString name, QObject *obj) {
 }
 
 void XMAction::editCategory(uint id, QString name, QObject *obj) {
-    DB_Async->exe([=]{
+    DB_Async->exe("editCategory", [=]{
         categoryDao->updateName(id, name);
         QMetaObject::invokeMethod(obj, "onUpdated");
     });
 }
 
 void XMAction::delCategory(uint id, uint cbid) {
-    DB_Async->exe([=]{
+    DB_Async->exe("delCategory", [=]{
         categoryDao->del(id);
         sendMsg(cbid, NULL);
     });
 }
 
 void XMAction::sorting(uint cid, uint srcIndex, uint dstIndex, uint cbid) {
-    DB_Async->exe([=]{
+    DB_Async->exe("sorting", [=]{
         categoryDao->updateIndex(cid, srcIndex, dstIndex);
         sendMsg(cbid, NULL);
     });
 }
 void XMAction::countCategory(uint cid, uint cbid) {
-    DB_Async->exe([=]{
+    DB_Async->exe("countCategory", [=]{
         uint n = xmDao->countCol(cid);
         sendMsg(cbid, n);
     });
 }
 void XMAction::getNewXMList(uint cid, uint fromId, uint pklistWidth, QObject *obj) {
-    DB_Async->exe([=]{
+    DB_Async->exe("getNewXMList", [=]{
         QList<XM*> list = xmDao->getNewXMList(cid, fromId);
         QVariantList rlist;
         for (XM *p:list) {
@@ -120,7 +120,7 @@ void XMAction::getNewXMList(uint cid, uint fromId, uint pklistWidth, QObject *ob
     });
 }
 void XMAction::deleteXM(uint id, QObject *obj) {
-    DB_Async->exe([=]{
+    DB_Async->exe("deleteXM", [=]{
         XM *xm = xmDao->getXM(id);
         if(xm!=nullptr){
             QString imgLink = xm->getImgLink();
@@ -146,7 +146,7 @@ void XMAction::deleteXM(uint id, QObject *obj) {
     });
 }
 void XMAction::updateXM(uint id, QString cont, QString k, uint pklistWidth, uint cbid) {
-    DB_Async->exe([=]{
+    DB_Async->exe("updateXM", [=]{
         XM *xm = xmDao->getXM(id);
         int st = 0;
         if(xm != nullptr) {
@@ -182,7 +182,7 @@ void XMAction::updateXM(uint id, QString cont, QString k, uint pklistWidth, uint
 }
 
 void XMAction::updateXMCid(uint colIndex, uint xmid, uint cid, QObject *obj) {
-    DB_Async->exe([=] {
+    DB_Async->exe("updateXMCid", [=] {
         xmDao->updateCid(xmid, cid);
         QMetaObject::invokeMethod(obj, "onMoved",
                                   Q_ARG(QVariant, QVariant::fromValue(colIndex)));
@@ -190,7 +190,7 @@ void XMAction::updateXMCid(uint colIndex, uint xmid, uint cid, QObject *obj) {
 }
 
 void XMAction::addXM(uint cid, QString txt, uint pklistWidth, QObject *obj) {
-    DB_Async->exe([=]{
+    DB_Async->exe("addXM", [=]{
         XM *xm = new XM();
         xm->cont = txt;
         xm->cid = cid;
@@ -212,7 +212,7 @@ void XMAction::addXM(uint cid, QString txt, uint pklistWidth, QObject *obj) {
     });
 }
 void XMAction::copyXM(uint type, uint id) {
-    DB_Async->exe([=] {
+    DB_Async->exe("copyXM", [=] {
         XM *pk = xmDao->getXM(id);
         if(pk!=nullptr) {
             if(lg->isDebug()){
@@ -250,7 +250,7 @@ void XMAction::copyXM(uint type, uint id) {
 }
 void XMAction::xm(QString file, uint cbid) {
     file = ut::str::removePrefix(file, getFilePre());
-    DB_Async->exe([=] {
+    DB_Async->exe("xm", [=] {
         QImage *qimg = new QImage();
         QString path = file;
 #ifdef Q_OS_WIN
@@ -328,7 +328,7 @@ QString XMAction::xm(QImage *img, QString cont, QString file) {
 }
 
 void XMAction::updateXMTags(uint xmid, QString tags, uint cbid) {
-    DB_Async->exe([=] {
+    DB_Async->exe("updateXMTags", [=] {
         QString oldTags = xmDao->getTags(xmid);
         xmDao->updateXMTags(xmid, tags);
         Tag *tag = tagDao->getByName("?");
@@ -349,7 +349,7 @@ void XMAction::updateXMTags(uint xmid, QString tags, uint cbid) {
     });
 }
 void XMAction::clearSolvedTime(uint xmid, uint cbid) {
-    DB_Async->exe([=] {
+    DB_Async->exe("clearSolvedTime", [=] {
         xmDao->setSolveTime(xmid, 0);
         if(cbid>0) {
             sendMsg(cbid, 0);
@@ -358,19 +358,19 @@ void XMAction::clearSolvedTime(uint xmid, uint cbid) {
 }
 void XMAction::encrypt(uint cid, QString pwd, uint cbid) {
     QString encrypted = ut::cipher::encryptTextAES(pwd, QString::number(cid));
-    DB_Async->exe([=]{
+    DB_Async->exe("encrypt", [=]{
         categoryDao->updatePwd(cid, encrypted);
         sendMsg(cbid, 0);
     });
 }
 void XMAction::deleteEncryption(uint cid, uint cbid) {
-    DB_Async->exe([=]{
+    DB_Async->exe("deleteEncryption", [=]{
         categoryDao->updatePwd(cid, "");
         sendMsg(cbid, 0);
     });
 }
 void XMAction::validateCategoryPWD(uint cid, QString pwd, uint cbid) {
-    DB_Async->exe([=]{
+    DB_Async->exe("validateCategoryPWD", [=]{
         Category *c = categoryDao->getCategory(cid);
         QString encrypted = ut::cipher::encryptTextAES(pwd, QString::number(cid));
         if(c->m == encrypted) {
@@ -382,13 +382,13 @@ void XMAction::validateCategoryPWD(uint cid, QString pwd, uint cbid) {
     });
 }
 void XMAction::sticky(uint xmid, uint cbid) {
-    DB_Async->exe([=]{
+    DB_Async->exe("sticky", [=]{
         xmDao->setTop(xmid, 1);
         sendMsg(cbid, 0);
     });
 }
 void XMAction::cancelSticky(uint xmid, uint cbid) {
-    DB_Async->exe([=]{
+    DB_Async->exe("cancelSticky", [=]{
         xmDao->setTop(xmid, 0);
         sendMsg(cbid, 0);
     });

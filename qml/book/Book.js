@@ -254,7 +254,7 @@ function convNoteToPK(e) {
     }
 }
 
-function loadNote(clear) {
+function loadNote(clear, cb) {
     note_list_view.footer = note_list_more_btn;
     if(clear) {
         note_list_model.clear();
@@ -264,7 +264,36 @@ function loadNote(clear) {
         let k = search_bar.text.trim();
         let sort = sort_btn.text.trim();
         // console.log('load note', k, w.id, note_list_view.page, sort, JSON.stringify(w));
-        $bk.getNoteList(k, w.id, note_list_view.page, sort, note_list_view.width, note_list);
+        $bk.getNoteList(k, w.id, note_list_view.page, sort, note_list_view.width, Com.putFunc(function(list){
+            if($l.isDebug()) {
+                Com.debug("pushNote len", list.length);
+            }
+            let ar = Com.parseTime(getNoteLastTime(), 1);
+            let preDateStr = ar[0];
+            let preTimeStr = ar[1];
+            for(let i in list) {
+                if($l.isTrace()) {
+                    Com.trace("note", JSON.stringify(list[i]));
+                }
+                let e = list[i];
+                let n = note(e, preDateStr, preTimeStr);
+                note_list_model.append(n);
+                preDateStr = n.date_str;
+                preTimeStr = n.time_str;
+            }
+            if(list.length > 0) {
+                note_list_view.page++;
+            }
+            if(list.length < $a.pageSize) {
+                note_list_view.footer = workNoMoreBtn;
+            } else {
+                note_list_view.footer = note_list_more_btn;
+            }
+            $a.setUIVal(1, note_list.width);
+            if(cb) {
+                cb();
+            }
+        }));
     }
 }
 function detail() {

@@ -40,12 +40,18 @@ void SQLiteManager::init() {
 }
 
 void SQLiteManager::execute(QString tag, QString sql, std::function<void (QSqlQuery)> cb) {
+    if(lg->isTrace()) {
+        lg->trace(QString("execute start tag %1 sql %2").arg(tag).arg(sql));
+    }
     QSqlQuery q;
     q.prepare(sql);
     cb(q);
     bool r = q.exec();
     if(!r) {
         lg->error(QString("%1 error %2").arg(tag).arg(q.lastError().text()));
+    }
+    if(lg->isTrace()) {
+        lg->trace(QString("execute end tag %1").arg(tag));
     }
 }
 

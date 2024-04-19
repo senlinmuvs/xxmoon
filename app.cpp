@@ -108,7 +108,7 @@ QString App::getCtrl() {
 
 void App::import(QString path, QObject *obj) {
     path = ut::str::removePrefix(path, getFilePre());
-    DB_Async->exe([=] {
+    DB_Async->exe("import", [=] {
         QString cont = ut::file::readFile(path);
         cont = QString(ut::byte::removeBom(cont.toUtf8()));
         tuple<QList<Work*>, QList<Note*>> tup = parseNote(&cont);
@@ -362,7 +362,7 @@ void redoDuplicates(QList<Note*> list) {
 
 //检测是否上次未导入完成就关闭了,是就继续
 void App::checkImport() {
-    DB_Async->exe([=] {
+    DB_Async->exe("checkImport",[=]{
         l->info("checkImport");
         QString lastPath = envDao->get(ENV_K_LAST_IMP_PATH);
         lastPath = ut::str::removePrefix(lastPath, getFilePre());
@@ -381,7 +381,7 @@ void App::checkExport() {
     if(cfg->exchangeDataDir.isEmpty()) {
         return;
     }
-    DB_Async->exe([=] {
+    DB_Async->exe("checkExport", [=] {
         QFileInfo fi(cfg->exchangeDataDir + "/" + cfg->dbFileName);
         if(fi.exists()) {
             uint lastExchangeVersion = envDao->getUInt(ENV_K_LAST_EXCHANGE_VERSION);
@@ -390,7 +390,7 @@ void App::checkExport() {
 }
 
 void App::getLastPath(QObject *obj){
-    DB_Async->exe([=]{
+    DB_Async->exe("getLastPath", [=]{
         l->info("getLastPath");
         QString lastPath = envDao->get(ENV_K_LAST_IMP_PATH);
         QString lastTime = envDao->get(ENV_K_LAST_IMP_TIME);
@@ -430,7 +430,7 @@ void App::setGlobalHotkey(uint ty, QString k) {
 }
 
 void App::pk() {
-    DB_Async->exe([=] {
+    DB_Async->exe("pk", [=] {
         QString cont = ut::cpb::getText();
         QImage img = ut::cpb::getImage();
         if(lg->isDebug()) {
@@ -464,7 +464,7 @@ void App::pk() {
 
 ///tag
 void App::tagList(QString k, uint target, QObject* obj) {
-    DB_Async->exe([=] {
+    DB_Async->exe("tagList", [=] {
         vector<Tag> list = tagDao->list(k);
         QMap<uint,uint> countMap = tagDao->countTag(target);
         QVariantList resp;
@@ -483,7 +483,7 @@ void App::tagList(QString k, uint target, QObject* obj) {
 }
 
 void App::addTag(QString tag, QObject *obj) {
-    DB_Async->exe([=] {
+    DB_Async->exe("addTag", [=] {
         Tag *t = tagDao->getByName(tag);
         int st = 0;
         if(t == nullptr) {
@@ -502,7 +502,7 @@ void App::addTag(QString tag, QObject *obj) {
 }
 
 void App::delTag(uint tid, QObject *obj) {
-    DB_Async->exe([=] {
+    DB_Async->exe("delTag", [=] {
         uint ref_pk = tagDao->countTag(tid, 0);
         uint ref_note = tagDao->countTag(tid, 1);
         uint ref = ref_pk + ref_note;
@@ -516,7 +516,7 @@ void App::delTag(uint tid, QObject *obj) {
 }
 
 void App::getTagById(uint id, uint cbid) {
-    DB_Async->exe([=] {
+    DB_Async->exe("getTagById", [=] {
         Tag *tag = tagDao->get(id);
         if(tag != NULL) {
             sendMsg(cbid, tag->toVMap());
@@ -553,11 +553,13 @@ void App::setLocal(QString k, QString v) {
 }
 
 void App::set(QString k, QString v, bool init) {
-    DB_Async->exe([=] {
-       envDao->set(k,v);
-       if(init){
-         init0();
-       }
+    DB_Async->exe("set", [=]{
+        envDao->set(k,v);
+        if(init) {
+            RunMain::INS().exec([this]{
+                init0();
+            });
+        }
     });
 }
 
@@ -596,7 +598,7 @@ QVariantMap App::getUIData() {
 
     QVariantMap *data = new QVariantMap();
     Future *f = new Future();
-    DB_Async->exe([f]{
+    DB_Async->exe("get_view_type_sort", [f]{
         uint vt = envDao->getUInt(ENV_K_LAST_VIEW_TYPE);
         QString sort = envDao->get(ENV_K_LAST_SORT, "p");
         f->set(QVariantList() << vt << sort);
@@ -617,9 +619,9 @@ void App::encrypt(uint id, QString k, uint listWidth, uint cbid) {
     if(lg->isDebug()){
         lg->debug(QString("encrypt pk id %1").arg(id));
     }
-    DB_Async->exe([=]{
+    DB_Async->exe("encrypt", [=]{
         XM *pk = xmDao->getXM(id);
-        Com_Async->exe([=]{
+        Com_Async->exe("encrypt", [=]{
             if(pk && !pk->jm) {
                 if(pk->cont.length() > 0) {
                     uint len = pk->cont.length();
@@ -659,9 +661,9 @@ void App::decrypt(uint id, QString k, uint listWidth, uint cbid) {
     if(lg->isDebug()) {
         lg->debug(QString("decrypt %1").arg(id));
     }
-    DB_Async->exe([=]{
+    DB_Async->exe("decrypt", [=]{
         XM *pk = xmDao->getXM(id);
-        Com_Async->exe([=]{
+        Com_Async->exe("decrypt", [=]{
             if(pk && pk->jm) {
                 if(pk->cont.length() > 0) {
                     uint len = pk->cont.length();
@@ -694,7 +696,7 @@ void App::decrypt(uint id, QString k, uint listWidth, uint cbid) {
     });
 }
 void App::ensureEncryptOrDecrypt(uint id, QString cont, uint cbid) {
-    DB_Async->exe([=]{
+    DB_Async->exe("ensureEncryptOrDecrypt", [=]{
         int st = 0;
         XM *pk = xmDao->getXM(id);
         if(pk) {
@@ -765,7 +767,7 @@ QString extractName(QString cont, int len=16) {
                 .trimmed().mid(0, len);
 }
 void setXMBlogTag(uint id) {
-    DB_Async->exe([id] {
+    DB_Async->exe("setXMBlogTag", [id] {
         Tag *tag = tagDao->getByName(cfg->site_xmblog_tag);
         if(!tag) {
             tag = new Tag();
@@ -789,7 +791,7 @@ void setXMBlogTag(uint id) {
     });
 }
 void delXMBlogTag(uint id) {
-    DB_Async->exe([id] {
+    DB_Async->exe("delXMBlogTag", [id] {
         Tag *tag = tagDao->getByName(cfg->site_xmblog_tag);
         if(!tag) {
             return;
@@ -812,7 +814,7 @@ void App::genFile(uint fileType, uint type, uint gid, uint id, bool batch, QStri
     if(lg->isDebug()) {
         lg->debug(QString("genFile fileType %1 type %2 gid %3 id %4").arg(fileType).arg(type).arg(gid).arg(id));
     }
-    DB_Async->exe([=] {
+    DB_Async->exe("genFile", [=]{
         QString *cont = new QString();
         QString filename = "";
         QString file = cfg->fileDir;
@@ -986,7 +988,7 @@ void App::genFile(uint fileType, uint type, uint gid, uint id, bool batch, QStri
 }
 
 void App::deleteFromSite(uint id, uint type) {
-    DB_Async->exe([id, type]() {
+    DB_Async->exe("deleteFromSite", [id, type]() {
         QString filename = "";
         if(type == CONT_TYPE_PK) {
             XM *pk = xmDao->getXM(id);
@@ -1295,7 +1297,7 @@ void App::openInExternal(int type, QString param, uint obj) {
         #endif
     } else if(type == 1) {
         uint id = param.toUInt();
-        DB_Async->exe([=] {
+        DB_Async->exe("openInExternal", [=] {
             bool ok = false;
             QString cont = "";
             QString pre = "";
@@ -1400,7 +1402,7 @@ void App::checkTmpFile() {
     }
 }
 void App::updatePK0(uint id, QString cont) {
-    DB_Async->exe([=]{
+    DB_Async->exe("updatePK0", [=]{
         XM *pk = xmDao->getXM(id);
         if(pk != NULL) {
             if(pk->cont != cont) {
@@ -1421,7 +1423,7 @@ void App::updatePK0(uint id, QString cont) {
     });
 }
 void App::updateNote0(uint id, QString cont) {
-    DB_Async->exe([=]{
+    DB_Async->exe("updateNote0", [=]{
         Note *n = noteDao->get(id);
         if(n != NULL) {
             if(n->cont != cont) {
@@ -1472,7 +1474,7 @@ bool App::checkAuth(QString auth, bool save) {
 }
 
 void App::getCfg(QObject *obj) {
-    DB_Async->exe([=] {
+    DB_Async->exe("getCfg", [=] {
         QMetaObject::invokeMethod(obj, "onCfg", Q_ARG(QVariant, cfg->toVMap()));
     });
 }
@@ -1560,7 +1562,7 @@ void App::openXMFile(QString file, QString pwd, uint cbid) {
 }
 
 void App::importXM(QVariantMap pkdata) {
-    DB_Async->exe([=]{
+    DB_Async->exe("importXM", [=]{
         XM *pk = new XM();
         pk->fill(pkdata);
         if(lg->isDebug()) {
@@ -1735,7 +1737,7 @@ void App::close(int r) {
     if(lg->isDebug()){
         lg->debug("close app");
     }
-    DB_Async->exe([](){
+    DB_Async->exe("close", []{
         db->close();
     });
     DB_Async->close();
@@ -1786,7 +1788,7 @@ void App::delDev(QString dev, int cbid) {
     serverMsgQueue->push(std::make_tuple(Cmd_DelDevice, m));
 }
 void App::sendToPhone(int ty, int id, int cbid) {
-    DB_Async->exe([ty, id, cbid](){
+    DB_Async->exe("sendToPhone", [ty, id, cbid]{
         QString data = "";
         if(ty == CONT_TYPE_PK) {
             XM *pk = xmDao->getXM(id);
@@ -1916,7 +1918,7 @@ void initLog() {
 }
 
 void initDB() {
-    DB_Async->exe([=] {
+    DB_Async->exe("initDB", [=]{
         if (db->openDB()) {
             db->init();
             workDao->init();
@@ -2014,7 +2016,7 @@ bool App::importDouban() {
     if(!lines[2].contains("豆瓣阅读")) {
         return false;
     }
-    DB_Async->exe([=] {
+    DB_Async->exe("importDouban", [=]{
         QString item = "";
         Work *w = parseWork4Douban(lines[0]);
         uint wid = 0;
@@ -2115,7 +2117,7 @@ bool App::importWechatRead() {
     if(!lines[3].contains("个笔记")) {
         return false;
     }
-    DB_Async->exe([=] {
+    DB_Async->exe("importWechatRead", [=]{
         QString item = "";
         Work *w = parseWork4WechatRead(lines[0], lines[2]);
         uint wid = 0;

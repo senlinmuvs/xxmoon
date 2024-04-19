@@ -5,7 +5,7 @@ BookAction::BookAction() {
 }
 
 void BookAction::addWork(QString name,QString author,uint time, QString tag, QString extra, QObject *obj) {
-    DB_Async->exe([=] {
+    DB_Async->exe("addWork", [=] {
         Work *w = new Work();
         w->name = name;
         w->author = author;
@@ -21,7 +21,7 @@ void BookAction::addWork(QString name,QString author,uint time, QString tag, QSt
     });
 }
 void BookAction::updateWork(uint bid, QString name, QString author, uint time, QString tag, QString extra, QObject *obj) {
-    DB_Async->exe([=]{
+    DB_Async->exe("updateWork", [=]{
         Work *w = workDao->get(bid);
         if(w) {
             w->name = name;
@@ -39,21 +39,21 @@ void BookAction::updateWork(uint bid, QString name, QString author, uint time, Q
     });
 }
 void BookAction::delWork(uint id, uint cbid) {
-    DB_Async->exe([=]{
+    DB_Async->exe("delWork", [=]{
         workDao->del(id);
         noteDao->deleteByWid(id);
         sendMsg(cbid, NULL);
     });
 }
 void BookAction::getNote(uint id, uint cbid) {
-    DB_Async->exe([=]{
+    DB_Async->exe("getNote", [=]{
         Note *n = noteDao->get(id);
         sendMsg(cbid, n->toVMap());
     });
 }
 
 void BookAction::getWorkList(QString k, QString tag, ulong fromTime, QObject *obj) {
-    DB_Async->exe([=]{
+    DB_Async->exe("getWorkList", [=]{
         vector<Work> list = noteDao->getWorkList(k, tag, fromTime);
         QVariantList rlist;
         for (Work w:list) {
@@ -65,8 +65,8 @@ void BookAction::getWorkList(QString k, QString tag, ulong fromTime, QObject *ob
     });
 }
 
-void BookAction::getNoteList(QString k, uint wid, uint page, QString sort, uint listWidth, QObject *obj) {
-    DB_Async->exe([=] {
+void BookAction::getNoteList(QString k, uint wid, uint page, QString sort, uint listWidth, uint cbid) {
+    DB_Async->exe("getNoteList", [=] {
         QList<Note*> list = noteDao->getNoteList(k, wid, page, sort);
         QVariantList rlist;
         for (Note *n:list) {
@@ -74,13 +74,14 @@ void BookAction::getNoteList(QString k, uint wid, uint page, QString sort, uint 
             rlist << n->toVMap(1,listWidth);
             delete n;
         }
-        QMetaObject::invokeMethod(obj, "pushNote",
-                    Q_ARG(QVariant, QVariant::fromValue(rlist)));
+
+        envDao->set(ENV_K_LAST_SORT, sort);
+        sendMsg(cbid, rlist);
     });
 }
 
 void BookAction::addNote(uint wid, QString cont, uint pos0, uint pos1, uint listWidth, uint cbid) {
-    DB_Async->exe([=] {
+    DB_Async->exe("addNote", [=] {
         Note *n = new Note();
         n->wid = wid;
         n->cont = cont;
@@ -93,7 +94,7 @@ void BookAction::addNote(uint wid, QString cont, uint pos0, uint pos1, uint list
     });
 }
 void BookAction::updateNote(uint id, QString cont, uint pos0, uint pos1, uint bklistWidth, uint cbid) {
-    DB_Async->exe([=] {
+    DB_Async->exe("updateNote", [=] {
         noteDao->updateNote(id, pos0, pos1, cont);
         Note *n = noteDao->get(id);
         sendMsg(cbid, n->toVMap(1, bklistWidth));
@@ -101,7 +102,7 @@ void BookAction::updateNote(uint id, QString cont, uint pos0, uint pos1, uint bk
     });
 }
 void BookAction::updateNoteTags(uint id, QString tags, uint cbid) {
-    DB_Async->exe([=] {
+    DB_Async->exe("updateNoteTags", [=] {
         noteDao->updateTags(id, tags);
         Note *n = noteDao->get(id);
         sendMsg(cbid, ut::col::createMap("tags", n->tags));
@@ -109,7 +110,7 @@ void BookAction::updateNoteTags(uint id, QString tags, uint cbid) {
     });
 }
 void BookAction::deleteNote(uint id, QObject *obj) {
-    DB_Async->exe([=] {
+    DB_Async->exe("deleteNote", [=] {
         Note *n = noteDao->get(id);
         if(n->id > 0) {
             Work *w = workDao->get(n->wid);
@@ -124,13 +125,13 @@ void BookAction::deleteNote(uint id, QObject *obj) {
 }
 
 void BookAction::getWorkTagList(uint cbid) {
-    DB_Async->exe([=] {
+    DB_Async->exe("getWorkTagList", [=] {
         QList<QString> list = workDao->getWorkTagList();
         sendMsg(cbid, list);
     });
 }
 void BookAction::countWork(uint cbid) {
-    DB_Async->exe([=] {
+    DB_Async->exe("countWork", [=] {
         uint c = workDao->count();
         sendMsg(cbid, c);
     });

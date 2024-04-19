@@ -381,10 +381,12 @@ QList<Note*> NoteDao::getNoteList(QString k, uint wid, uint page, QString sort) 
     bool suc = q.exec();
     if(!suc) {
         lg->error(QString("getNoteList error %1").arg(q.lastError().text()));
+        return QList<Note*>();
     }
     QList<Note*> list = gets(q);
-    // qDebug() << sql;
-    // qDebug() << k << wid << page << start << sort << list.size();
+    if(lg->isDebug()) {
+        lg->debug(QString("getNoteList sql[%1] [k=%2 wid=%3 page=%4 sort=%5] len %6").arg(sql).arg(k).arg(wid).arg(page).arg(sort).arg(list.size()));
+    }
     return list;
 }
 

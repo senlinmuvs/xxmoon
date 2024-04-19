@@ -435,30 +435,6 @@ Rectangle {
 //            footer: note_list_more_btn
 //            focus: true
         }
-        function pushNote(list) {
-            if($l.isTrace()) {
-                console.log(JSON.stringify(list));
-            }
-            let ar = Com.parseTime(Book.getNoteLastTime(), 1);
-            let preDateStr = ar[0];
-            let preTimeStr = ar[1];
-            for(let i in list) {
-                let e = list[i];
-                let n = Book.note(e, preDateStr, preTimeStr);
-                note_list_model.append(n);
-                preDateStr = n.date_str;
-                preTimeStr = n.time_str;
-            }
-            if(list.length > 0) {
-                note_list_view.page++;
-            }
-            if(list.length < $a.pageSize) {
-                note_list_view.footer = workNoMoreBtn;
-            } else {
-                note_list_view.footer = note_list_more_btn;
-            }
-            $a.setUIVal(1, note_list.width);
-        }
         function onDeletedNote() {
             note_list_model.remove(note_list_view.currentIndex);
             let i = work_list_view.currentIndex;
@@ -526,7 +502,6 @@ Rectangle {
 
                 note_list_view.page = 0;
                 Book.loadNote(true);
-                $a.set($a.ENV_K_LAST_SORT, text);
             }
         }
         Btn {

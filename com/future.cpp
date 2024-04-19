@@ -51,7 +51,7 @@ void Future::set(QVariantList res) {
 namespace future {
     Future* doDB(CB_VAR cb) {
         Future* fu = new Future();
-        DB_Async->exe([fu, cb]() {
+        DB_Async->exe("doDB", [fu, cb]() {
             QVariantList var = cb();
             fu->set(var);
         });

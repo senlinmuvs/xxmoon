@@ -140,7 +140,7 @@ void HServer::putData(const Request &req, Response &resp) {
     }
     QString data = QString::fromStdString(req.get_file_value("data").content);
     QJsonObject jo = QJsonDocument::fromJson(data.toUtf8()).object();
-    DB_Async->exe([data,jo]() {
+    DB_Async->exe("putData", [data,jo] {
         QString wname = ut::json::getString(jo, "wname", "");
         QString aname = ut::json::getString(jo, "aname", "");
         int ty = 0;

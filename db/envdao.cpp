@@ -1,11 +1,13 @@
 ﻿#include "envdao.h"
 #include "com/global.h"
-#include "com/const.h"
 
 EnvDao::EnvDao() {
 }
 
 void EnvDao::set(QString k, QString v) {
+    if(lg->isDebug()) {
+        lg->debug(QString("set k=%1 v=%2").arg(k).arg(v));
+    }
     QString oldV = get(k);
     QString sql;
     if(oldV == nullptr) {
@@ -30,6 +32,9 @@ QString EnvDao::get(QString k, QString def) {
     }
 }
 QString EnvDao::get(QString k) {
+    if(lg->isDebug()) {
+        lg->debug(QString("get k=%1").arg(k));
+    }
     QString sql = "select v from env where k=:k";
     QSqlQuery q;
     q.prepare(sql);
