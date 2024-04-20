@@ -76,35 +76,40 @@ Window {
 //            visible: mi_set_wallpaper.visible
 //        }
         MenuItem {
-            text: $a.tr("Copy") + " (" + ctrlName + "+C)"
+            text: $a.tr("Copy")
+            shortcut: ctrlName + "+C"
             onTriggered: {
                 copyImg();
             }
         }
         MenuSeparator {}
         MenuItem {
-            text: $a.tr("Copy Link") + " (" + ctrlName + "+Alt+C)"
+            text: $a.tr("Copy Link")
+            shortcut: ctrlName + "+Alt+C"
             onTriggered: {
                 copyLink();
             }
         }
         MenuSeparator {}
         MenuItem {
-            text: $a.tr("Out Edit") + " (Enter)"
+            text: $a.tr("Out Edit")
+            shortcut: "Enter"
             onTriggered: {
                 openInExternal();
             }
         }
         MenuSeparator {}
         MenuItem {
-            text: $a.tr("Reveal in File Manager") + " (" + ctrlName + "+Enter)"
+            text: $a.tr("Reveal in File Manager")
+            shortcut: ctrlName + "+Enter"
             onTriggered: {
                 revealInFinder();
             }
         }
         MenuSeparator {}
         MenuItem {
-            text: $a.tr("Close") + " (Esc)"
+            text: $a.tr("Close")
+            shortcut: "Esc"
             onTriggered: {
                 close();
             }

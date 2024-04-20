@@ -11,7 +11,7 @@
 #define WIN 0
 #define UNIX 1
 #define MAC 2
-#define VERSION "1.38.1"
+#define VERSION "1.38.2"
 
 #define CB_VAR std::function<QVariantList()>
 

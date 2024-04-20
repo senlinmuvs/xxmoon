@@ -180,7 +180,8 @@ Rectangle {
         MenuItem {
             id: mi_edit
             visible: pk&&!pk.file
-            text: $a.tr("Edit") + " ("+ctrlName+"+Enter)"
+            text: $a.tr("Edit")
+            shortcut: ctrlName+"+Enter"
             onTriggered: {
                 edit();
             }
@@ -190,7 +191,8 @@ Rectangle {
         }
         MenuItem {
             visible: mi_edit.visible
-            text: $a.tr("Out Edit") + " ("+ctrlName+"+Alt+Enter)"
+            text: $a.tr("Out Edit")
+            shortcut: ctrlName+"+Alt+Enter"
             onTriggered: {
                 outEdit();
             }
@@ -200,7 +202,8 @@ Rectangle {
         }
         MenuItem {
             id:mi_picture_model
-            text: $a.tr("Picture Model") + " (Enter)"
+            text: $a.tr("Picture Model")
+            shortcut: "Enter"
             onTriggered: {
                 openImgView();
             }
@@ -209,7 +212,8 @@ Rectangle {
             visible: mi_picture_model.visible
         }
         MenuItem {
-            text: $a.tr("Close") + " (Esc)"
+            text: $a.tr("Close")
+            shortcut: "Esc"
             onTriggered: {
                 close();
             }
