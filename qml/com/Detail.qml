@@ -21,129 +21,128 @@ Rectangle {
     property var delegate:null
     property var items: []
 
-    ScrollView {
-        id: scroll
-        width: parent.width
-        height: parent.height
-        contentWidth:  width - 5
-        contentHeight: col.height + 30
-        clip: true
-        Column {
-            id: col
-            width: parent.width
-            spacing: UI.ui_pk_cont_space
-            anchors {
-                top:parent.top
-                topMargin: 10
-                left: parent.left
-                leftMargin: 10
-                right: parent.right
-                rightMargin: 10
-            }
-            MyImage {
-                id: img
-                z:1
-                source: pk ? (pk.jm ? Com.img_logo : pk.img_path) : ''
-                img_radius: 5
-                width: pk?Com.calImgSizeByWidth(pk.src_w,pk.src_h,root.width-100)[0]:0
-                height: pk?Com.calImgSizeByWidth(pk.src_w,pk.src_h,root.width-100)[1]:0
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
-            Column {
-                id: cols
-                width: parent.width - 20
-                spacing: 2
-                function onClickImg(src) {
-                    openImgView(src);
-                }
-                function onEnterImg() {
-                    ma_root.cursorShape = Qt.OpenHandCursor;
-                }
-                function onExitImg() {
-                    ma_root.cursorShape = Qt.ArrowCursor;
-                }
-            }
-            Row {
-                width: parent.width
-                layoutDirection: Qt.RightToLeft
-                TagLine {
-                    id: tag_line
-                    tag_ids: pk?pk.tags:""
-                    delegate: root.delegate?root.delegate.getTagManager():null
-                }
-            }
-            Text {
-                width: parent.width
-                visible: pk && pk.extra
-                text: pk && pk.extra ? pk.extra : ""
-                color: "#898989"
-                font.pointSize: UI.detail_time_font_size
-                horizontalAlignment: Text.AlignHCenter
-            }
-            Row {
-                width: parent.width
-                layoutDirection: Qt.RightToLeft
-                spacing: 10
-                Text {
-                    text: pk&&pk.id>0 ? "["+pk.id+"]" : ''
-                    font.pointSize: UI.detail_time_font_size
-                    color:"#898989"
-                    height: 25
-                    lineHeight: height
-                }
-                Text {
-                    id: e_stime
-                    text: pk&&pk.stime?Com.viewTime(pk.stime) + " " + $a.tr('solved ') : ''
-                    font.pointSize: UI.detail_time_font_size
-                    color:"#898989"
-                    height: 25
-                    lineHeight: height
-                }
-                Text {
-                    text: pk&&pk.lst?Com.viewTime(pk.lst) + " " + $a.tr('up ') : ''
-                    font.pointSize: UI.detail_time_font_size
-                    color:"#898989"
-                    height: 25
-                    lineHeight: height
-                }
-                Text {
-                    id: time
-                    text: pk && pk.time ? Com.viewTime(pk.time) + " " + $a.tr('created ') : ''
-                    font.pointSize: UI.detail_time_font_size
-                    color:"#898989"
-                    height: 25
-                    lineHeight: height
-                }
-            }
-        }
-        Keys.onUpPressed: scrollBar.decrease()
-        Keys.onDownPressed: scrollBar.increase()
-        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-        ScrollBar.vertical: ScrollBar {
-            id: scrollBar
-            parent: scroll.parent
-            anchors.top: scroll.top
-            anchors.right: scroll.right
-            anchors.bottom: scroll.bottom
-            stepSize: scrollStep
-        }
-        Keys.onPressed: function(event) {
-            onKeysPressed(event);
-        }
-    }
     MouseArea {
         id: ma_root
         anchors.fill: parent
-        acceptedButtons: Qt.RightButton
-        onClicked: function(mouse) {
-            if(root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
-                return;
+
+        ScrollView {
+            id: scroll
+            width: parent.width
+            height: parent.height
+            contentWidth:  width - 5
+            contentHeight: col.height + 30
+            clip: true
+            Column {
+                id: col
+                width: parent.width
+                spacing: UI.ui_pk_cont_space
+                anchors {
+                    top:parent.top
+                    topMargin: 10
+                    left: parent.left
+                    leftMargin: 10
+                    right: parent.right
+                    rightMargin: 10
+                }
+                MyImage {
+                    id: img
+                    z:1
+                    source: pk ? (pk.jm ? Com.img_logo : pk.img_path) : ''
+                    img_radius: 5
+                    width: pk?Com.calImgSizeByWidth(pk.src_w,pk.src_h,root.width-100)[0]:0
+                    height: pk?Com.calImgSizeByWidth(pk.src_w,pk.src_h,root.width-100)[1]:0
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+                Column {
+                    id: cols
+                    width: parent.width - 20
+                    spacing: 2
+                    function onClickImg(src, mouse) {
+                        if (mouse.button === Qt.LeftButton) {
+                            openImgView(src);
+                        } else {
+                            openRightClickMenu(mouse);
+                        }
+                    }
+                    function released(mouse) {
+                        if(root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
+                            return;
+                        }
+                        if (mouse.button === Qt.RightButton) {
+                            openRightClickMenu(mouse);
+                        }
+                    }
+                }
+                Row {
+                    width: parent.width
+                    layoutDirection: Qt.RightToLeft
+                    TagLine {
+                        id: tag_line
+                        tag_ids: pk?pk.tags:""
+                        delegate: root.delegate?root.delegate.getTagManager():null
+                    }
+                }
+                Text {
+                    width: parent.width
+                    visible: pk && pk.extra
+                    text: pk && pk.extra ? pk.extra : ""
+                    color: "#898989"
+                    font.pointSize: UI.detail_time_font_size
+                    horizontalAlignment: Text.AlignHCenter
+                }
+                Row {
+                    width: parent.width
+                    layoutDirection: Qt.RightToLeft
+                    spacing: 10
+                    Text {
+                        text: pk&&pk.id>0 ? "["+pk.id+"]" : ''
+                        font.pointSize: UI.detail_time_font_size
+                        color:"#898989"
+                        height: 25
+                        lineHeight: height
+                    }
+                    Text {
+                        id: e_stime
+                        text: pk&&pk.stime?Com.viewTime(pk.stime) + " " + $a.tr('solved ') : ''
+                        font.pointSize: UI.detail_time_font_size
+                        color:"#898989"
+                        height: 25
+                        lineHeight: height
+                    }
+                    Text {
+                        text: pk&&pk.lst?Com.viewTime(pk.lst) + " " + $a.tr('up ') : ''
+                        font.pointSize: UI.detail_time_font_size
+                        color:"#898989"
+                        height: 25
+                        lineHeight: height
+                    }
+                    Text {
+                        id: time
+                        text: pk && pk.time ? Com.viewTime(pk.time) + " " + $a.tr('created ') : ''
+                        font.pointSize: UI.detail_time_font_size
+                        color:"#898989"
+                        height: 25
+                        lineHeight: height
+                    }
+                }
             }
-            if (mouse.button === Qt.RightButton) {
-                mi_picture_model.visible = pk&&pk.imgs.length > 0;
-                menu_right.open();
+            Keys.onUpPressed: scrollBar.decrease()
+            Keys.onDownPressed: scrollBar.increase()
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            ScrollBar.vertical: ScrollBar {
+                id: scrollBar
+                parent: scroll.parent
+                anchors.top: scroll.top
+                anchors.right: scroll.right
+                anchors.bottom: scroll.bottom
+                stepSize: scrollStep
+            }
+            Keys.onPressed: function(event) {
+                onKeysPressed(event);
             }
         }
+
+        acceptedButtons: Qt.RightButton
     }
     Menu {
         id: menu_right
@@ -270,7 +269,7 @@ Rectangle {
                 return;
             }
             close();
-        } else if(event.key === Qt.Key_Return){
+        } else if(event.key === Qt.Key_Return) {
             openImgView();
         }
     }
@@ -518,7 +517,11 @@ Rectangle {
             }
         }
     }
-
+    function importFile() {
+        if(delegate) {
+            delegate.importFile();
+        }
+    }
     function openImgView(img) {
         let img_view_delegate = {
             setIndex:function(i) {
@@ -547,9 +550,8 @@ Rectangle {
             imgViewer.open();
         }
     }
-    function importFile() {
-        if(delegate) {
-            delegate.importFile();
-        }
+    function openRightClickMenu(mouse) {
+        mi_picture_model.visible = pk&&pk.imgs.length > 0;
+        menu_right.open();
     }
 }

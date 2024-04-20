@@ -155,7 +155,7 @@ Rectangle {
         }
     }
     Menu {
-        id: menu_right_pk
+        id: menu_right_xm
         MenuItem {
             text: $a.tr("Detail")
             shortcut: "Space"
@@ -409,7 +409,7 @@ Rectangle {
             onCurrentIndexChanged: {
                 let c = XM.getCurrentCategory();
                 list_model_xm.clear();
-                if(c.jm) {
+                if(c&&c.jm) {
                     encrypt_cont_popup.delegate = {
                         onSubmit:function(v) {
                             $xm.validateCategoryPWD(c.id, v, Com.putFunc(function(y){
@@ -524,6 +524,9 @@ Rectangle {
                         }
                     }
                 }
+            }
+            onCurrentIndexChanged: {
+                category_list_view.forceActiveFocus();
             }
             anchors.fill: xm_list
             model: list_model_xm

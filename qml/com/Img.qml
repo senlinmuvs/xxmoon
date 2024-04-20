@@ -1,5 +1,4 @@
 import QtQuick 2.0
-import "com.js" as Com
 
 Rectangle {
     id: root
@@ -13,19 +12,27 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
         onEntered: {
-            if(root.parent.onEnterImg) {
+            if(root.parent && root.parent.onEnterImg) {
                 root.parent.onEnterImg();
             }
+            cursorShape = Qt.OpenHandCursor;
         }
         onExited: {
-            if(root.parent.onExitImg) {
+            if(root.parent && root.parent.onExitImg) {
                 root.parent.onExitImg();
             }
+            cursorShape = Qt.ArrowCursor;
         }
-        onClicked: {
-            if(root.parent.onClickImg) {
-                root.parent.onClickImg(src);
+        onPressed: function(mouse) {
+            if(root.parent && root.parent.pressed) {
+                root.parent.pressed(mouse);
+            }
+        }
+        onClicked: function(mouse) {
+            if(root.parent && root.parent.onClickImg) {
+                root.parent.onClickImg(src, mouse);
             }
         }
     }

@@ -15,6 +15,21 @@ Rectangle {
         id: txt
         width: parent.width
         y: 4
+        onPressed: function(mouse) {
+            if(root.parent && root.parent.pressed) {
+                root.parent.pressed(mouse);
+            }
+        }
+        onReleased: function(mouse) {
+            if(root.parent && root.parent.released) {
+                root.parent.released(mouse);
+            }
+        }
+        Keys.onPressed:function(event) {
+            if(root.parent && root.parent.onKeyPressed) {
+                root.parent.onKeyPressed(event);
+            }
+        }
     }
     function getTxt() {
         return txt;

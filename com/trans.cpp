@@ -108,6 +108,8 @@ Trans::Trans() {
     trans_zh_map.insert("Failure", "失败");
     trans_zh_map.insert("Cant more than", "不能超过");
     trans_zh_map.insert("tags", "个标签");
+    trans_zh_map.insert("yes", "是");
+    trans_zh_map.insert("no", "否");
 }
 
 QString Trans::tr(QString k) {

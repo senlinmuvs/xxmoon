@@ -2175,3 +2175,6 @@ bool App::importWechatRead() {
 QString App::tr(QString k) {
     return trans->tr(k);
 }
+void App::cp(QString txt) {
+    ut::cpb::setText(txt);
+}

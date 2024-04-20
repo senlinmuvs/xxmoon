@@ -393,12 +393,15 @@ let img_view_delegate = {
     }
 }
 
-function openImgView() {
+function openImgView(img) {
     let pk = getCurrentXM();
     if(pk && !pk.jm) {
         imgViewer.delegate = img_view_delegate;
         let n = imgViewer.append(pk);
         if(n>0) {
+            if(img) {
+                imgViewer.setCurIndexByImg(img);
+            }
             imgViewer.open();
         }
     }

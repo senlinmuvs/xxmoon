@@ -5,6 +5,7 @@ import "../com/com.js" as Com
 
 TextArea {
     id: root
+
     readOnly: true
     textFormat: Text.RichText
     renderType: Text.NativeRendering
@@ -18,7 +19,7 @@ TextArea {
     }
     wrapMode: Text.WrapAnywhere
 
-    onLinkActivated: {
+    onLinkActivated: function(link) {
         if(link) {
             if(Com.isNumber(link)) {
                 if(pk.id !== link) {
@@ -37,5 +38,26 @@ TextArea {
     }
     function getTxt() {
         return root;
+    }
+    onPressed: function(mouse) {
+        if(parent && parent.pressed) {
+            parent.pressed(mouse);
+        }
+    }
+    onReleased: function(mouse) {
+        if(parent && parent.released) {
+            parent.released(mouse);
+        }
+    }
+    Keys.onPressed:function(event) {
+        if(parent && parent.onKeyPressed) {
+            parent.onKeyPressed(event);
+        }
+        //复制列表上不起作用自己实现，详情中又起作用
+        if (event.modifiers & Qt.ControlModifier && event.key === Qt.Key_C) {
+            if(selectedText) {
+                $a.cp(selectedText);
+            }
+        }
     }
 }
