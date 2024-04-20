@@ -3,7 +3,7 @@ import QtQuick.Controls 2.12
 
 Popup {
     id: root
-    width: rect_cont.width + 50
+    width: rect_cont.width
     height: rect_cont.height
     x: parent.width/2-width/2
     y: parent.height/2-height/2
@@ -16,28 +16,31 @@ Popup {
     bottomInset: 0
     rightInset: 0
     padding: 0
-    background: Rectangle{color: Qt.rgba(0.2, 0.2, 0.2, 0.9);radius: 10}
+    background: Rectangle{color: Qt.rgba(0.01, 0.01, 0.01, 0.95);radius: 10}
 
     property var cb: null
 
     Rectangle {
         id: rect_cont
         color:"transparent"
-        anchors.left: parent.left
-        anchors.right: parent.right
         height: text.height + 20
         radius: 5
-        width: text.width + 20
+        width: text.width + 40
         Text {
             id: text
             y: 10
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
             color:"white"
+            anchors.centerIn: parent
             font.pixelSize: 16
             wrapMode: Text.WordWrap
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
+            maximumLineCount: 10
+            onContentWidthChanged: {
+                if(contentWidth > 500) {
+                    width = 520;
+                }
+            }
         }
     }
     Timer {

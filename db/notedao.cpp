@@ -319,11 +319,11 @@ vector<Work> NoteDao::getWorkList(QString k, QString tag, ulong fromTime) {
 QList<Note*> NoteDao::getNoteList(QString k, uint wid, uint page, QString sort) {
     QString sql = "select n.id,wid,pos0,pos1,n.time,cont,tags,bj,refids,refimgids from note n join work w on w.id=n.wid where del=0 and n.wid=:wid #cont #tags order by #sort limit :start,:size";
     ///
-    bool sortByPos = sort == "p";
+    bool sortByPos = sort == "P";
     if(sortByPos) {
         sql = sql.replace("#sort", "pos0 asc,n.time asc");
     } else {
-        sql = sql.replace("#sort", "n.time desc");
+        sql = sql.replace("#sort", "n.time asc,pos0 asc");
     }
 
     QVariantList v = filterK(k);

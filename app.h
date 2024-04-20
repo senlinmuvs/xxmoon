@@ -68,7 +68,7 @@ public:
     Q_INVOKABLE void delTag(uint tid, QObject *obj);
     Q_INVOKABLE void getTagById(uint id, uint cbid);
     ///
-    Q_INVOKABLE void set(QString k, QString v, bool init = true);
+    Q_INVOKABLE void set(QString k, QString v, bool init = false);
     Q_INVOKABLE void setLocal(QString k, QString v);
     Q_INVOKABLE void encrypt(uint id, QString k, uint listWidth, uint cbid);
     Q_INVOKABLE void decrypt(uint id, QString k, uint listWidth, uint cbid);

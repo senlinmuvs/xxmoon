@@ -167,7 +167,6 @@ Rectangle {
                 note_list_view.currentIndex = 0;
                 Book.loadNote(true);
             }
-//            interactive: false
             focus: true
             highColor: "#000"
             Keys.onPressed: function(event) {
@@ -428,6 +427,11 @@ Rectangle {
                     }
                 }
             }
+            onCurrentIndexChanged: {
+                if(!search_bar.focus) {
+                    work_list_view.forceActiveFocus();
+                }
+            }
             anchors.fill: note_list
             anchors.topMargin: 10
             model: note_list_model
@@ -490,16 +494,15 @@ Rectangle {
             id: sort_btn
             width: 20
             height: 20
-            text: "p"
+            text: "P"
             text_size: UI.book_btn_view_font_size
             color: Qt.rgba(0/255, 0/255, 0/255, 0.9)
             function click() {
-                if(text === 'p') {
-                    text = 't';
+                if(text === 'P') {
+                    text = 'T';
                 } else {
-                    text = 'p';
+                    text = 'P';
                 }
-
                 note_list_view.page = 0;
                 Book.loadNote(true);
             }
@@ -508,15 +511,15 @@ Rectangle {
             id: view_btn
             width: 20
             height: 20
-            text: view_type === 0 ? "≡" : '■'
+            text: view_type === 0 ? "L" : 'S'
             text_size: UI.book_btn_view_font_size
             color: Qt.rgba(0/255, 0/255, 0/255, 0.9)
             function click() {
                 if(view_type === 0) {
-                    text = "■";
+                    text = "S";
                     view_type = 1;
                 } else {
-                    text = "≡";
+                    text = "L";
                     view_type = 0;
                 }
                 $a.set($a.ENV_K_LAST_VIEW_TYPE, view_type);

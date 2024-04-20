@@ -9,7 +9,7 @@ function refreshAll(key_changed) {
     let k = search_bar.text.trim();
     if(key_changed && k.length === 0 && list_model_category.count > 0) {
         pre_cid = getCurrentCategoryId();
-        pre_pkid = getCurrentXMId();
+        pre_xmid = getCurrentXMId();
     }
     category_list_view.currentIndex = 0;
     list_model_category.clear();
@@ -158,12 +158,12 @@ function loadXM0(list) {
             pre_cid = 0;
         }
     }
-    if(pre_pkid > 0) {
-        let arr = getPKByIdInCurrentList(pre_pkid);
+    if(pre_xmid > 0) {
+        let arr = getPKByIdInCurrentList(pre_xmid);
         if(arr) {
             let i = arr[0];
             xm_list_view.currentIndex = i;
-            pre_pkid = 0;
+            pre_xmid = 0;
         }
     }
     $a.setUIVal(0, xm_list.width);

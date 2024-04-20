@@ -2176,5 +2176,7 @@ QString App::tr(QString k) {
     return trans->tr(k);
 }
 void App::cp(QString txt) {
+    //注意以下是把<0xa0>替换成空格
+    txt.replace(" ", " ");
     ut::cpb::setText(txt);
 }

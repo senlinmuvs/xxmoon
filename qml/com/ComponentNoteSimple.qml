@@ -5,54 +5,70 @@ import "../book/Book.js" as Book
 import "ui.js" as UI
 
 Rectangle {
-    id: root
+    id: root_com_note_simple
     width: note_list.width
     height: cols.height
     color: "transparent"
-    Column {
-        id: cols
-        x: 10
-        width: parent.width - 60
-        spacing: 5
-        property string qmlStr: qmls
-        onQmlStrChanged: {
-            if(qmls) {
-//                console.log(qmlStr);
-                cols.data = [];
-                let arr = JSON.parse(qmlStr);
-                for(let i = 0; i < arr.length; i++) {
-                    let qml = arr[i];
-                    let o = Qt.createQmlObject(qml, cols, "dy_"+i);
-                }
-            }
-        }
-    }
-    Rectangle {
-        x:0
-        y:0
-        visible: index === note_list_view.currentIndex
-        width: 10
-        height: Com.min(root.height, 50)
-        color: UI.ui_highlight_color
-        Text {
-            text:Com.verText(index+1)
-            font.pointSize: 10
-            width: parent.width
-            x: parent.width/2-width/2+1
-            y: parent.height/2-height/2+7
-            color: "white"
-            verticalAlignment: Text.AlignVCenter
-        }
-    }
     MouseArea {
         anchors.fill: parent
-        acceptedButtons: Qt.LeftButton | Qt.RightButton
-        onClicked: function(mouse){
-            note_list_view.currentIndex = index;
-            work_list_view.forceActiveFocus();
-            if(mouse.button === Qt.RightButton){
-                menu_right_note.open();
+        Column {
+            id: cols
+            x: 10
+            width: parent.width - 60
+            spacing: 5
+            property string qmlStr: qmls
+            onQmlStrChanged: {
+                if(qmls) {
+    //                console.log(qmlStr);
+                    cols.data = [];
+                    let arr = JSON.parse(qmlStr);
+                    for(let i = 0; i < arr.length; i++) {
+                        let qml = arr[i];
+                        let o = Qt.createQmlObject(qml, cols, "dy_"+i);
+                    }
+                }
             }
+            function pressed(mouse) {
+                note_list_view.currentIndex = index;
+            }
+            function released(mouse) {
+                if (mouse.button === Qt.RightButton) {
+                    menu_right_note.open();
+                }
+            }
+            function onClickImg(src, mouse) {
+                if (mouse.button === Qt.RightButton) {
+                    menu_right_note.open();
+                } else {
+                    Book.openImgView(src);
+                }
+            }
+            function onKeyPressed(event) {
+                Book.onKeyPressed(event);
+            }
+        }
+        Rectangle {
+            x:0
+            y:0
+            visible: index === note_list_view.currentIndex
+            width: 10
+            height: Com.max(Com.min(root_com_note_simple.height, 50), e_num.height)
+            color: UI.ui_highlight_color
+            Text {
+                id: e_num
+                text:Com.verText(index+1)
+                font.pointSize: 10
+                width: parent.width
+                x: parent.width/2-width/2+1
+                y: parent.height/2-height/2+7
+                color: "white"
+                verticalAlignment: Text.AlignVCenter
+                anchors.verticalCenter: parent.verticalCenter
+            }
+        }
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+        onPressed:function(mouse) {
+            note_list_view.currentIndex = index;
         }
         onDoubleClicked: {
             Book.openEditPopup();

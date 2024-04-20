@@ -19,7 +19,7 @@ Rectangle {
     property var tagManager: new Tag.TagManager(tagCom, Com.type_pk, search_bar, tag_view, category_list_view, new XM.PKTagDelegate())
     property int sorting_col_index: 0
     property int pre_cid: 0
-    property int pre_pkid: 0
+    property int pre_xmid: 0
     property int wallpaper_cid: 0
 
     ListModel {
@@ -526,7 +526,9 @@ Rectangle {
                 }
             }
             onCurrentIndexChanged: {
-                category_list_view.forceActiveFocus();
+                if(!search_bar.focus) {
+                    category_list_view.forceActiveFocus();
+                }
             }
             anchors.fill: xm_list
             model: list_model_xm

@@ -168,12 +168,15 @@ let img_view_delegate = {
     }
 }
 
-function openImgView() {
+function openImgView(img) {
     let pk = getCurrentNote();
     if(pk) {
         imgViewer.delegate = img_view_delegate;
         let n = imgViewer.append(pk);
         if(n>0) {
+            if(img) {
+                imgViewer.setCurIndexByImg(img);
+            }
             imgViewer.open();
         }
     }
