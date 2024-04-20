@@ -24,7 +24,7 @@
 #include "com/runmain.h"
 #include "hserver.h"
 #include "timer.h"
-// #include "test.h"
+#include "test.h"
 
 using namespace std;
 
@@ -51,7 +51,7 @@ void initCfg();
 void exit_(int r);
 
 int main(int argc, char *argv[]) {
-    // test11();
+    // test12();
     // return 0;
     int r = start(argc, argv);
     exit_(r);
@@ -73,6 +73,7 @@ int start(int argc, char* argv[]) {
 //    HServer::INS().loop();
     a->init();
 
+    // test12();
 //    Timer::INS().init();
     return initGui(ma);
    // return 0;

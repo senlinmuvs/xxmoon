@@ -194,4 +194,26 @@ void test11() {
     }, Qt::DirectConnection);
     qDebug() << "------------------------- TEST 11 End ----------------------------";
 }
+
+void test12() {
+    qDebug() << "------------------------- TEST 12 Start ----------------------------";
+    DB_Async->exe("test1", []{
+        qDebug() << "test1 task doing";
+    });
+    DB_Async->exe("test2", []{
+        qDebug() << "test2 task doing";
+    });
+    DB_Async->exe("test3", []{
+        qDebug() << "test3 task doing";
+    });
+    DB_Async->exe("test4", []{
+        lg->debug("test4 task doing");
+        QThread::msleep(2000);
+        lg->debug("test4 task end");
+    });
+    DB_Async->exe("test5", []{
+        qDebug() << "test5 task doing";
+    });
+    qDebug() << "------------------------- TEST 12 End ------------------------------";
+}
 #endif // TEST_H
