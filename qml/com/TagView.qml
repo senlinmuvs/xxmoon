@@ -65,7 +65,9 @@ Popup {
             } else if(event.modifiers === Qt.AltModifier && event.key === Qt.Key_Return) {
                 tagManager.addTag(input.text);
             } else if(event.key === Qt.Key_Return) {
-                tagManager.selectTag(input.text);
+                if(tagManager.selectTag(input.text)) {
+                    close();
+                }
             }
         }
         onFocusChanged: {

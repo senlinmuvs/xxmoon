@@ -178,18 +178,21 @@ class TagManager {
     selectTag(tag) {
         tag = tag.trim();
         if(tag==="") {
-            return;
+            return 0;
         }
         let t = this.findTag(tag);
         if(t) {
             let tagItem = this.tag_view.flows.data[t[0]];
             tagItem.click();
+            return 1;
         } else {
             if(this.tag_view.flows.data.length > 0) {
                 let first = this.tag_view.flows.data[0];
                 first.click();
+                return 1;
             }
         }
+        return 0;
     }
     setTagForItem(tag) {
         if(this.tag_list.length > 0) {
