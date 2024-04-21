@@ -81,6 +81,21 @@ Rectangle {
                     width: jm ? 48 : Com.calImgSizeByWidth(src_w,src_h,xm_list.width-100)[0]
                     height: jm ? 48 : Com.calImgSizeByWidth(src_w,src_h,xm_list.width-100)[1]
                     anchors.horizontalCenter: parent.horizontalCenter
+                    function pressed(mouse) {
+                        xm_list_view.currentIndex = index;
+                    }
+                    function released(mouse) {
+                        if (mouse.button === Qt.RightButton) {
+                            openRightClickMenu(mouse);
+                        }
+                    }
+                    function onClickImg(src, mouse) {
+                        if (mouse.button === Qt.RightButton) {
+                            openRightClickMenu(mouse);
+                        } else {
+                            XM.openImgView(src);
+                        }
+                    }
                 }
                 Column {
                     id: cols

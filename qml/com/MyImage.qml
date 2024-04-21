@@ -47,4 +47,36 @@ Rectangle {
         visible: !Com.isAnimation(root.source)
         antialiasing: true
     }
+    MouseArea {
+        anchors.fill: parent
+        hoverEnabled: true
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+        onEntered: {
+            if(root && root.onEnterImg) {
+                root.onEnterImg();
+            }
+            cursorShape = Qt.OpenHandCursor;
+        }
+        onExited: {
+            if(root && root.onExitImg) {
+                root.onExitImg();
+            }
+            cursorShape = Qt.ArrowCursor;
+        }
+        onPressed: function(mouse) {
+            if(root && root.pressed) {
+                root.pressed(mouse);
+            }
+        }
+        onClicked: function(mouse) {
+            if(root && root.onClickImg) {
+                root.onClickImg(source, mouse);
+            }
+        }
+    }
+    Component.onCompleted: {
+        if(parent) {
+            anchors.horizontalCenter = parent.horizontalCenter;
+        }
+    }
 }

@@ -52,6 +52,21 @@ Rectangle {
                     width: pk?Com.calImgSizeByWidth(pk.src_w,pk.src_h,root.width-100)[0]:0
                     height: pk?Com.calImgSizeByWidth(pk.src_w,pk.src_h,root.width-100)[1]:0
                     anchors.horizontalCenter: parent.horizontalCenter
+                    function onClickImg(src, mouse) {
+                        if (mouse.button === Qt.LeftButton) {
+                            openImgView(src);
+                        } else {
+                            openRightClickMenu(mouse);
+                        }
+                    }
+                    function released(mouse) {
+                        if(root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
+                            return;
+                        }
+                        if (mouse.button === Qt.RightButton) {
+                            openRightClickMenu(mouse);
+                        }
+                    }
                 }
                 Column {
                     id: cols
