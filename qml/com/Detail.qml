@@ -60,7 +60,7 @@ Rectangle {
                         }
                     }
                     function released(mouse) {
-                        if(root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
+                        if(root.delegate && root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
                             return;
                         }
                         if (mouse.button === Qt.RightButton) {
@@ -80,7 +80,7 @@ Rectangle {
                         }
                     }
                     function released(mouse) {
-                        if(root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
+                        if(root.delegate && root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
                             return;
                         }
                         if (mouse.button === Qt.RightButton) {
@@ -237,7 +237,7 @@ Rectangle {
 
     function onKeysPressed(event) {
         if(event.modifiers === ctrlVal && event.key === Qt.Key_J) {
-            if(root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
+            if(root.delegate && root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
                 return;
             }
             if(delegate){
@@ -245,7 +245,7 @@ Rectangle {
                 openDetail(pk);
             }
         } else if(event.modifiers === ctrlVal && event.key === Qt.Key_K) {
-            if(root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
+            if(root.delegate && root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
                 return;
             }
             if(delegate){
@@ -261,12 +261,12 @@ Rectangle {
         } else if(event.key === Qt.Key_K) {
             setToUp();
         } else if(event.modifiers === ctrlVal && event.key === Qt.Key_Return) {
-            if(root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
+            if(root.delegate && root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
                 return;
             }
             edit();
         } else if(event.modifiers === (ctrlVal | Qt.AltModifier) && event.key === Qt.Key_Return) {
-            if(root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
+            if(root.delegate && root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
                 return;
             }
             outEdit();
@@ -281,7 +281,7 @@ Rectangle {
                 delegate.openFinder();
             }
         } else if((event.modifiers === ctrlVal && event.key === Qt.Key_W) || event.key === Qt.Key_Escape) {
-            if(root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
+            if(root.delegate && root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
                 if(event.modifiers === ctrlVal && event.key === Qt.Key_W) {
                     root.delegate.close();
                 }
@@ -317,7 +317,7 @@ Rectangle {
         scroll.forceActiveFocus();
     }
     function close() {
-        if(root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
+        if(root.delegate && root.delegate.isSeparateWindow && root.delegate.isSeparateWindow()) {
             return;
         }
         visible = false;

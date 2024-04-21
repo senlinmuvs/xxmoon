@@ -426,14 +426,14 @@ Rectangle {
                     };
                     encrypt_cont_popup.op();
                 } else {
-                    XM.loadXM(true, function(){
+                    XM.loadXM(true, function() {
                         xm_list_view.currentIndex = 0;
                     });
                 }
             }
             focus: true
             highColor: "#000"
-            Keys.onPressed:function(event){
+            Keys.onPressed:function(event) {
                 XM.onKeysPressed(event);
             }
         }
@@ -527,22 +527,15 @@ Rectangle {
             }
             onCurrentIndexChanged: {
                 if(!search_bar.focus) {
-                    category_list_view.forceActiveFocus();
+                    if(!encrypt_cont_popup.visible) {
+                        category_list_view.forceActiveFocus();
+                    }
                 }
             }
             anchors.fill: xm_list
             model: list_model_xm
             delegate: ComponentXM {}
-//            function click(){
-//                category_list_view.forceActiveFocus();
-//            }
         }
-        // GridView {
-        //     id: grid
-        //     cellWidth: 100
-        //     cellHeight: cellWidth
-        //     delegate: ComponentGridXM{}
-        // }
         function next() {
             if(xm_list_view.currentIndex+1>=xm_list_view.count) {
                 XM.loadXM();
@@ -670,7 +663,6 @@ Rectangle {
             add = false;
         }
     }
-
     EnsurePopup {
         id: ensure_popup
         function onSure(y) {

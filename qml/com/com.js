@@ -327,9 +327,9 @@ let lastKeyTime = 0;
 function jump(event, m, vc) {
     if(event.key === Qt.Key_Space) {
         return;
-    } else if(event.key === Qt.Key_Escape) {
+    } else if(event.modifiers === ctrlVal) {
         preKeys = "";
-        st(1, "");
+        st(0, "");
         return;
     }
 

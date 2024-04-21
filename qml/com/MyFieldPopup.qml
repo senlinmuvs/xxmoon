@@ -6,7 +6,7 @@ import "com.js" as Com
 Popup {
     id: root
     property alias text: popup_text.text
-    property var placeholder: ""
+    property string placeholder: ""
     property bool pwd: false
     property bool enablePwdTwiceCheck: false
 

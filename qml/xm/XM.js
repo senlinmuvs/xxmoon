@@ -488,10 +488,10 @@ function test() {
 //    for(let i = 0; i < 1000; i++) {
 //        $a.addCol(col+i, col_edit_popup);
 //    }
-    let pk = "fuck";
-    for(let i = 0; i < 10000; i++) {
-        $xm.addXM(8, pk+i, edit_pk_popup);
-    }
+    // let pk = "fuck";
+    // for(let i = 0; i < 10000; i++) {
+    //     $xm.addXM(8, pk+i, edit_pk_popup);
+    // }
 }
 //test();
 
