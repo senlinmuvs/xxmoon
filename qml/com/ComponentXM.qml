@@ -178,10 +178,11 @@ Rectangle {
                 text:Com.verText(index+1)
                 font.pointSize: 10
                 width: parent.width
-                x: parent.width/2-width/2+1
-                y: parent.height/2-height/2+7
+                x: parent.width/2-width/2
+                y: parent.height/2-height/2
                 color: "white"
-                anchors.verticalCenter: parent.verticalCenter
+                anchors.centerIn: parent
+                horizontalAlignment: Text.AlignHCenter
             }
         }
         acceptedButtons: Qt.LeftButton | Qt.RightButton

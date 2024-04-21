@@ -59,11 +59,11 @@ Rectangle {
                 text:Com.verText(index+1)
                 font.pointSize: 10
                 width: parent.width
-                x: parent.width/2-width/2+1
-                y: parent.height/2-height/2+7
+                x: parent.width/2-width/2
+                y: parent.height/2-height/2
                 color: "white"
-                verticalAlignment: Text.AlignVCenter
-                anchors.verticalCenter: parent.verticalCenter
+                horizontalAlignment: Text.AlignHCenter
+                anchors.centerIn: parent
             }
         }
         acceptedButtons: Qt.LeftButton | Qt.RightButton
