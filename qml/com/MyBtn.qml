@@ -23,6 +23,7 @@ Rectangle {
     property bool enable_drag: false
     property string old_color
     property int xx: 0
+    property alias tip: e_tip_txt.text
 
     Rectangle {
         id: mask
@@ -46,6 +47,24 @@ Rectangle {
         anchors.horizontalCenterOffset: xoff
         anchors.verticalCenter: root.verticalCenter
         anchors.verticalCenterOffset: yoff
+    }
+    Rectangle {
+        id: e_tip
+        visible: false
+        width: e_tip_txt.width + 20
+        height: e_tip_txt.height + 10
+        anchors.right: root.left
+        anchors.rightMargin: 2
+        anchors.verticalCenter: root.verticalCenter
+        color: "transparent"
+        border.color: "#191919"
+        border.width: 1
+        radius: 20
+        Text {
+            id: e_tip_txt
+            color: "#191919"
+            anchors.centerIn: parent
+        }
     }
     MouseArea {
         id: area
@@ -114,6 +133,7 @@ Rectangle {
         }
         onEntered: {
             // console.log(mouseX, mouseY);
+            e_tip.visible = e_tip_txt.text ? true : false;
             enter = true
             if(hover_color) {
                 mask.color = hover_color
@@ -122,6 +142,7 @@ Rectangle {
             fkEntered();
         }
         onExited: {
+            e_tip.visible = false;
             enter = false
             mask.visible = false;
             fkExited();

@@ -495,13 +495,16 @@ Rectangle {
             width: 20
             height: 20
             text: "P"
+            tip: "按位置排序"
             text_size: UI.book_btn_view_font_size
             color: Qt.rgba(0/255, 0/255, 0/255, 0.9)
             function click() {
                 if(text === 'P') {
                     text = 'T';
+                    tip = "按时间排序"
                 } else {
                     text = 'P';
+                    tip = "按位置排序"
                 }
                 note_list_view.page = 0;
                 Book.loadNote(true);
@@ -511,15 +514,18 @@ Rectangle {
             id: view_btn
             width: 20
             height: 20
+            tip: "列表模式"
             text: view_type === 0 ? "L" : 'S'
             text_size: UI.book_btn_view_font_size
             color: Qt.rgba(0/255, 0/255, 0/255, 0.9)
             function click() {
                 if(view_type === 0) {
                     text = "S";
+                    tip = "简单模式";
                     view_type = 1;
                 } else {
                     text = "L";
+                    tip = "列表模式";
                     view_type = 0;
                 }
                 $a.set($a.ENV_K_LAST_VIEW_TYPE, view_type);
