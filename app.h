@@ -117,7 +117,7 @@ public:
     Q_INVOKABLE void alertMacTip(QString tip1, QString tip2);
     Q_INVOKABLE QString selectDataDir();
     Q_INVOKABLE void init();
-    Q_INVOKABLE void pk();
+    Q_INVOKABLE void xm();
     Q_INVOKABLE void setUIVal(uint k, QString v);
     Q_INVOKABLE QString getUIVal(uint k);
     Q_INVOKABLE QString test();

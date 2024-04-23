@@ -55,7 +55,7 @@ ApplicationWindow {
         onActivated: {
             if($a.getPlatform() === Com.platform_mac) {
                 if(reason === SystemTrayIcon.Trigger) {
-                    $a.pk();
+                    $a.xm();
                 } else if(reason === SystemTrayIcon.DoubleClick) {
                     open();
                 }

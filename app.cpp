@@ -422,41 +422,41 @@ void App::setGlobalHotkey(uint ty, QString k) {
     hotkMap.insert(ty, hk);
     QObject::connect(hk, &QHotkey::activated, qApp, [=](){
         if(ty == 0) {
-            this->pk();
+            this->xm();
         } else if(ty == 1) {
             this->showOrHide();
     }
     });
 }
 
-void App::pk() {
-    DB_Async->exe("pk", [=] {
+void App::xm() {
+    DB_Async->exe("xm", [=] {
         QString cont = ut::cpb::getText();
         QImage img = ut::cpb::getImage();
         if(lg->isDebug()) {
-            lg->debug(QString("pk cont len %1 img [%2x%3]").arg(cont.length()).arg(img.size().width()).arg(img.size().height()));
+            lg->debug(QString("xm cont len %1 img [%2x%3]").arg(cont.length()).arg(img.size().width()).arg(img.size().height()));
         }
         if(cont == "" && img.isNull()) {
             return;
         }
         QObject *qmlRoot = engine->rootObjects()[0];
         QVariant suc;
-        QMetaObject::invokeMethod(qmlRoot, "startPK",
+        QMetaObject::invokeMethod(qmlRoot, "startXM",
                                   Qt::ConnectionType::DirectConnection,
                                   Q_RETURN_ARG(QVariant, suc));
         xmAction->xm(&img, cont, "");
         if(suc.toBool()) {
             if(img.isNull()) {
                 if(cont.length() > 0) {
-                    QString s = tr("Words")+QString(": %1").arg(cont.length());
+                    QString s = trans->tr("Words")+QString(": %1").arg(cont.length());
                     notify(s);
                 }
             } else {
-                QString s = tr("Picture");
+                QString s = trans->tr("Picture");
                 notify(s);
             }
         } else {
-            lg->error(QString("pk failure cont len %1 img [%2*%3]").arg(cont.length()).arg(img.size().width()).arg(img.size().height()));
+            lg->error(QString("xm failure cont len %1 img [%2*%3]").arg(cont.length()).arg(img.size().width()).arg(img.size().height()));
         }
     });
 }
