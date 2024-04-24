@@ -260,7 +260,7 @@ ApplicationWindow {
 
     property int import_total: 0
     property int import_n: 0
-    function startPK() {
+    function startXM() {
         if(import_total === 0) {
             import_total = 1;
             return true;
