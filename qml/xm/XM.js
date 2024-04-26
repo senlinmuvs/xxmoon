@@ -202,16 +202,20 @@ function openOutEdit() {
 function submitXM(cb) {
     let txt = edit_pk_popup.text;
     if(edit_pk_popup.bid <= 0) {
-        if(txt!=='') {
-            $xm.addXM(getCurrentCategoryId(), txt, xm_list.width, Com.putFunc(function(xm){
-                xm = Com.convXM(1, 1, xm);
-                colTotalIncrement();
-                edit_pk_popup.bid = xm.id;
-                if(cb) {
-                    cb(xm);
-                }
-            }));
+        if(txt==='') {
+            if(cb) {
+                cb();
+            }
+            return;
         }
+        $xm.addXM(getCurrentCategoryId(), txt, xm_list.width, Com.putFunc(function(xm){
+            xm = Com.convXM(1, 1, xm);
+            colTotalIncrement();
+            edit_pk_popup.bid = xm.id;
+            if(cb) {
+                cb(xm);
+            }
+        }));
     } else {
         let k = search_bar.text.trim();
         if($l.isDebug()) {
