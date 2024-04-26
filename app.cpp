@@ -363,7 +363,7 @@ void redoDuplicates(QList<Note*> list) {
 //检测是否上次未导入完成就关闭了,是就继续
 void App::checkImport() {
     DB_Async->exe("checkImport",[=]{
-        l->info("checkImport");
+        l->debug("checkImport");
         QString lastPath = envDao->get(ENV_K_LAST_IMP_PATH);
         lastPath = ut::str::removePrefix(lastPath, getFilePre());
         QFileInfo fi(lastPath);

@@ -22,7 +22,7 @@ public:
     Q_INVOKABLE void deleteXM(uint id, QObject *obj);
     Q_INVOKABLE void updateXM(uint id, QString cont, QString k, uint pklistWidth, uint cbid);
     Q_INVOKABLE void updateXMCid(uint colIndex, uint pkId, uint cid, QObject *obj);
-    Q_INVOKABLE void addXM(uint cid, QString txt, uint pklistWidth, QObject *obj);
+    Q_INVOKABLE void addXM(uint cid, QString txt, uint pklistWidth, uint cbid);
     Q_INVOKABLE void copyXM(uint type, uint id);
     Q_INVOKABLE void xm(QString file, uint cbid = 0);
     Q_INVOKABLE void updateXMTags(uint pkid, QString tags, uint cbid);

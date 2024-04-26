@@ -148,7 +148,6 @@ void XMAction::deleteXM(uint id, QObject *obj) {
 void XMAction::updateXM(uint id, QString cont, QString k, uint pklistWidth, uint cbid) {
     DB_Async->exe("updateXM", [=]{
         XM *xm = xmDao->getXM(id);
-        int st = 0;
         if(xm != nullptr) {
             if(xm->cont != cont) {
                 if(!xm->jm) {
@@ -157,26 +156,20 @@ void XMAction::updateXM(uint id, QString cont, QString k, uint pklistWidth, uint
                     if(ut::file::exists(tmpFile)){
                         ut::file::writeText(tmpFile, cont);
                     }
+                    xm->cont = cont;
                 } else {
-                    st = 3;
+                    delete xm;
+                    alert(trans->tr("Can not edit encrypted content."));
+                    return;
                 }
-            } else {
-                st = 2;
             }
         } else {
-            st = 1;
+            delete xm;
+            alert(trans->tr("Failure.Not found the doc!"));
+            return;
         }
-        QVariantMap param;
-        param.insert("st", st);
-        if(st == 0) {
-            QString simpleCont = extractPKSimpleCont(cont, k);
-            param.insert("simple_cont", simpleCont);
-            param.insert("cont", cont);
-            param.insert("qmls", doc_parser->parseQML(cont));
-            param.insert("simple_qmls", doc_parser->parseQML(simpleCont, pklistWidth));
-            param.insert("imgs", extractImgs(cont));
-        }
-        sendMsg(cbid, param);
+        xm->simpleCont = extractPKSimpleCont(xm->cont, k);
+        sendMsg(cbid, xm->toVMap(1,1,pklistWidth));
         delete xm;
     });
 }
@@ -189,7 +182,7 @@ void XMAction::updateXMCid(uint colIndex, uint xmid, uint cid, QObject *obj) {
     });
 }
 
-void XMAction::addXM(uint cid, QString txt, uint pklistWidth, QObject *obj) {
+void XMAction::addXM(uint cid, QString txt, uint pklistWidth, uint cbid) {
     DB_Async->exe("addXM", [=]{
         XM *xm = new XM();
         xm->cont = txt;
@@ -205,8 +198,7 @@ void XMAction::addXM(uint cid, QString txt, uint pklistWidth, QObject *obj) {
             alert(QObject::tr("Failure.Not found the doc!"));
             return;
         }
-        QMetaObject::invokeMethod(obj, "onAdded",
-                                  Q_ARG(QVariant, QVariant::fromValue(m)));
+        sendMsg(cbid, m);
         delete newXM;
         delete xm;
     });

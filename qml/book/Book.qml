@@ -467,10 +467,25 @@ Rectangle {
         id: edit_note_popup
         first_field_enable:true
         function submit() {
-            Book.submitNote();
+            Book.submitNote(function(n) {
+                if(n) {
+                    edit_note_popup.bid = n.id;
+                }
+                Com.info('submitNote cb', JSON.stringify(n));
+            });
         }
         function cancel() {
-            Book.cancelEditNote();
+            Book.submitNote(function(n) {
+                Com.info('submitNote cb', JSON.stringify(n));
+                if(add && n) {
+                    let n0 = note_list_model.get(0);
+                    if(!n0 || n0.id !== n.id) {
+                        note_list_model.insert(0, n);
+                        note_list_view.currentIndex = 0;
+                    }
+                }
+                Book.closeEditNote();
+            });
         }
     }
     EnsurePopup {

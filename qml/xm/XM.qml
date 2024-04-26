@@ -602,30 +602,26 @@ Rectangle {
     MyEditorPopup {
         id: edit_pk_popup
         function submit() {
-            XM.submitPK();
+            XM.submitXM(function(xm) {
+                if(xm) {
+                    edit_pk_popup.bid = xm.id;
+                }
+                Com.info('submitXM cb', JSON.stringify(xm));
+            });
         }
         function cancel() {
-            XM.cancelEditPK();
-        }
-        function onAdded(pk) {
-            pk = Com.convXM(1, 1, pk);
-            XM.colTotalIncrement();
-            if(list_model_xm.count > 0) {
-                let p = list_model_xm.get(0);
-                if(p.date_str === pk.date_str) {
-                    p.visible_date = false;
-                    if(p.time_str === pk.time_str) {
-                        p.visible_time = false;
+            Com.info('cancelEditXM');
+            XM.submitXM(function(xm) {
+                Com.info('submitXM cb', JSON.stringify(xm));
+                if(add && xm) {
+                    let xm0 = list_model_xm.get(0);
+                    if(!xm0 || xm0.id !== xm.id) {
+                        list_model_xm.insert(0, xm);
+                        xm_list_view.currentIndex = 0;
                     }
                 }
-            }
-            list_model_xm.insert(0, pk);
-            xm_list_view.currentIndex = 0;
-            edit_pk_popup.bid = pk.id;
-//                root.st(1, $a.tr("Saved"));
-            if(pending_close) {
                 XM.closeEditPK();
-            }
+            });
         }
     }
     MyFieldPopup {

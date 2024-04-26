@@ -199,49 +199,35 @@ function openOutEdit() {
     }
 }
 
-function submitPK() {
-//    console.log("submitPK .........");
+function submitXM(cb) {
     let txt = edit_pk_popup.text;
-    let send = false;
     if(edit_pk_popup.bid <= 0) {
         if(txt!=='') {
-            $xm.addXM(getCurrentCategoryId(), txt, xm_list.width, edit_pk_popup);
-            send = true;
+            $xm.addXM(getCurrentCategoryId(), txt, xm_list.width, Com.putFunc(function(xm){
+                xm = Com.convXM(1, 1, xm);
+                colTotalIncrement();
+                edit_pk_popup.bid = xm.id;
+                if(cb) {
+                    cb(xm);
+                }
+            }));
         }
     } else {
         let k = search_bar.text.trim();
         if($l.isDebug()) {
             $l.debug("updateXM "+ edit_pk_popup.bid + " " + txt + " " + k);
         }
-        $xm.updateXM(edit_pk_popup.bid, txt, k, xm_list.width, Com.putFunc(function(r) {
-            if(r.st === 0) {
-                let arr = getPKByIdInCurrentList(edit_pk_popup.bid);
-                if(arr) {
-                    let pk = list_model_xm.get(arr[0]);
-                    arr[1].simple_cont = r.simple_cont;
-                    arr[1].cont = r.cont;
-                    arr[1].simple_qmls = JSON.stringify(r.simple_qmls);
-                    arr[1].qmls = r.qmls;
-                    pk.imgs = r.imgs;
-                }
-            } else if(r.st === 1) {
-                tipsInfo($a.tr("Failure.Not found the doc!"));
-            } else if(r.st === 3) {
-                tipsInfo($a.tr("Can not edit encrypted content."));
+        $xm.updateXM(edit_pk_popup.bid, txt, k, xm_list.width, Com.putFunc(function(xm) {
+            xm = Com.convXM(1, 1, xm);
+            let xm0 = list_model_xm.get(0);
+            if(xm0 && xm0.id === xm.id) {
+                list_model_xm.set(0, xm);
             }
-            if(edit_pk_popup.pending_close) {
-                closeEditPK();
+            if(cb) {
+                cb(xm);
             }
         }));
-        send = true;
     }
-    if(!send && edit_pk_popup.pending_close) {
-        closeEditPK();
-    }
-}
-function cancelEditPK() {
-    edit_pk_popup.pending_close = true;
-    submitPK();
 }
 function closeEditPK() {
     edit_pk_popup.cl();

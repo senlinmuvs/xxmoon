@@ -393,76 +393,49 @@ function openEditPopup(add, n) {
         }
     }
 }
-function submitNote() {
-    let send = false;
+function submitNote(cb) {
     if(edit_note_popup.bid) {
-        let n = getNoteById(edit_note_popup.bid);
-        if(n && edit_note_popup.hasChanged(n[1])) {
-            let d = edit_note_popup.getData();
-            updateNote(n[1].id, d);
-            send = true;
-        }
+        updateNote(edit_note_popup.bid, cb);
     } else {
-        let d = edit_note_popup.getData();
-        if(d.cont.trim()) {
-            addNote(edit_note_popup.gid, d);
-            send = true;
-        }
-    }
-    if(!send && edit_note_popup.pending_close) {
-        edit_note_popup.cl();
+        addNote(edit_note_popup.gid, cb);
     }
 }
-function updateNote(id, d) {
+function updateNote(id, cb) {
+    let d = edit_note_popup.getData();
     if($l.isDebug()) {
         $l.debug("updateNote id "+id+" " + d);
     }
-    $bk.updateNote(id, d.cont, d.pos0, d.pos1, note_list.width, Com.putFunc(function(note) {
+    $bk.updateNote(id, d.cont, d.pos0, d.pos1, note_list.width, Com.putFunc(function(n) {
         if($l.isDebug()) {
-            $l.debug("updateNote finished note " + JSON.stringify(note));
+            $l.debug("updateNote finished note " + JSON.stringify(n));
         }
-        let n = getNoteById(id);
-        if(n) {
-            n[1].cont = note.cont;
-            n[1].qmls = JSON.stringify(note.qmls);
-            n[1].pos0 = note.pos0;
-            n[1].pos1 = note.pos1;
-            n[1].bj = note.bj;
-            n[1].imgs = note.imgs;
-        } else {
-            $l.error("updateNote finished but not found note "+id + " from current list");
+        n = note(n);
+        let n0 = note_list_model.get(0);
+        if(n0 && n0.id === n.id) {
+            note_list_model.set(0, n);
         }
-        if(edit_note_popup.pending_close) {
-            closeEditNote();
+        if(cb) {
+            cb(n);
         }
     }));
 }
 
-function addNote(id, d) {
+function addNote(id, cb) {
+    let d = edit_note_popup.getData();
+    if(d.cont.trim() === '') {
+        if(cb) {
+            cb();
+        }
+        return;
+    }
     $bk.addNote(id, d.cont, d.pos0, d.pos1, note_list.width, Com.putFunc(function(n){
-        n = note(n, '', '');
+        n = note(n);
         workTotalIncrement();
-        if(note_list_model.count > 0) {
-            let p = note_list_model.get(0);
-            if(p.date_str === n.date_str) {
-                p.visible_date = false;
-                if(p.time_str === n.time_str) {
-                    p.visible_time = false;
-                }
-            }
-        }
-        note_list_model.insert(0, n);
-        note_list_view.currentIndex = 0;
         edit_note_popup.bid = n.id;
-        if(edit_note_popup.pending_close) {
-            closeEditNote();
+        if(cb) {
+            cb(n);
         }
     }));
-}
-
-function cancelEditNote() {
-    edit_note_popup.pending_close = true;
-    submitNote();
 }
 function closeEditNote() {
     edit_note_popup.cl();

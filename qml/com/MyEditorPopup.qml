@@ -21,7 +21,7 @@ Popup {
 
     property int gid: 0 // group id
     property int bid: 0 // business id
-    property bool pending_close: false
+    property bool add: true //打开编辑器时是否是新增，如果是则关闭时就把记录添加到list model，否则不用
 
     property alias first_field_enable: first_field.visible
     property var delegate
@@ -353,7 +353,6 @@ Popup {
 //        let x = text.text.replace(/\n/g, 'n').replace(/\t/g, 't');
 //        Com.log(text.selectionStart, text.selectionEnd, text.lineCount, text.length, x);
     }
-
     function editorDelTab(event) {
         event.accepted = true;
         let start = text.selectionStart;
@@ -399,8 +398,7 @@ Popup {
 //        let x = text.text.replace(/\n/g, 'n').replace(/\t/g, 't');
 //        Com.log(text.cursorPosition, text.selectionStart, text.selectionEnd, text.lineCount, text.length, x);
     }
-
-    function setData(gid=0, bid=0, cont='', pos0=0, pos1=0, bj=0, pc = false) {
+    function setData(gid=0, bid=0, cont='', pos0=0, pos1=0, bj=0) {
         root.gid = gid;
         root.bid = bid;
         text.text = cont;
@@ -409,7 +407,6 @@ Popup {
         } else {
             first_field.text = '';
         }
-        pending_close = pc;
     }
     function getData() {
         if(first_field.visible) {
@@ -429,6 +426,7 @@ Popup {
         }
     }
     function op(gid, bid, cont, pos0, pos1) {
+        add = !bid || bid <= 0;
         setData(gid, bid, cont, pos0, pos1);
         open();
         setCounter();
@@ -436,7 +434,8 @@ Popup {
         $a.regMenuReceiver(text);
     }
     function cl() {
-//        console.log("---->>>>>> edit clo", gid, bid, delegate);
+        add = false;
+        Com.info("close editor", gid, bid, delegate);
         if(first_field.visible) {
             $a.setUIVal(3, root.bid+","+text.cursorPosition);
         } else {
