@@ -12,17 +12,12 @@ Popup {
     x: parent.width-width
     y: 0
 
-//    modal: true
     closePolicy: Popup.NoAutoClose
     topPadding: 0
     rightPadding: 0
     leftPadding: 0
     bottomPadding: 0
     focus: true
-
-//    ListModel {
-//        id:row_model
-//    }
 
     property int gid: 0 // group id
     property int bid: 0 // business id
@@ -179,44 +174,38 @@ Popup {
             anchors.fill: parent
             anchors.bottomMargin: rect_status.height
             anchors.topMargin: first_field.visible?first_field.height+tool_bar.height:tool_bar.height
-//            Row{
-//                ListView {
-//                    id:row
-//                    width: 30;
-//                    model: row_model
-//                    delegate: Text {
-//                        text:n
-//                        font.pointSize: 12;
-//                        lineHeight: 1.2
-//                    }
-//                }
-                TextArea {
-                    id: text
-                    font.pointSize: UI.ui_font_pk
-                    text: ""
-                    color: "#080808"
-                    wrapMode: Text.Wrap
-                    selectByMouse: true
-                    focus: true
-                    selectionColor: "#7887FF"
-                    selectedTextColor: "#FFF"
-                    tabStopDistance: 4*fontMetrics.advanceWidth(" ")
-                    FontMetrics {
-                        id: fontMetrics
-                        font.family: text.font
-                    }
-                    Keys.onPressed: function(event) {
-                        onKeys(event);
-                    }
-                    onTextChanged: {
-                        setCounter();
-                    }
-                    onFocusChanged: {
-                        if(focus) {
-                            $a.regMenuReceiver(text);
-                        }
+            TextArea {
+                id: text
+                font.pointSize: UI.ui_font_pk
+                text: ""
+                color: "#080808"
+                wrapMode: Text.Wrap
+                selectByMouse: true
+                focus: true
+                selectionColor: "#7887FF"
+                selectedTextColor: "#FFF"
+                tabStopDistance: 4*fontMetrics.advanceWidth(" ")
+                FontMetrics {
+                    id: fontMetrics
+                    font.family: text.font
+                }
+                Keys.onPressed: function(event) {
+                    onKeys(event);
+                }
+                onTextChanged: {
+                    setCounter();
+                }
+                onFocusChanged: {
+                    if(focus) {
+                        $a.regMenuReceiver(text);
                     }
                 }
+                onReleased:function(mouse) {
+                    if (mouse.button === Qt.RightButton) {
+                        menu_right.open();
+                    }
+                }
+            }
         }
         Rectangle {
             id: rect_status
@@ -233,15 +222,6 @@ Popup {
                 verticalAlignment: Text.AlignVCenter
                 color:"#969696"
                 font.pointSize: 10
-            }
-        }
-    }
-    MouseArea {
-        anchors.fill: parent
-        acceptedButtons: Qt.RightButton
-        onClicked:function(mouse) {
-            if (mouse.button === Qt.RightButton) {
-                menu_right.open();
             }
         }
     }
@@ -285,7 +265,6 @@ Popup {
             }
         }
     }
-
     Timer {
         id: timer
         repeat: true
