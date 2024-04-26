@@ -230,6 +230,7 @@ Popup {
         MenuItem {
             id: mi_copy
             text: $a.tr("Copy")
+            shortcut: ctrlName+"+C"
             onTriggered: {
                 $a.triggerMenu(3);
             }
@@ -240,6 +241,7 @@ Popup {
         MenuItem {
             id: mi_paste
             text: $a.tr("Paste")
+            shortcut: ctrlName+"+V"
             onTriggered: {
                 $a.triggerMenu(4);
             }
@@ -250,6 +252,7 @@ Popup {
         MenuItem {
             id: mi_cut
             text: $a.tr("Cut")
+            shortcut: ctrlName+"+X"
             onTriggered: {
                 $a.triggerMenu(5);
             }
@@ -258,7 +261,8 @@ Popup {
             visible: mi_cut.visible
         }
         MenuItem {
-            text: $a.tr("Close") + " ("+ctrlName+"+W)"
+            text: $a.tr("Close")
+            shortcut: ctrlName+"+W"
             onTriggered: {
                 timer.stop();
                 cancel();
