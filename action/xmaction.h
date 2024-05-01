@@ -33,7 +33,7 @@ public:
     Q_INVOKABLE void sticky(uint xmid, uint cbid);
     Q_INVOKABLE void cancelSticky(uint xmid, uint cbid);
 
-    QString xm(QImage *img, QString cont, QString file);
+    QString xm(QImage *img, const QString& cont, const QString& file);
 };
 
 #endif // XMACTION_H

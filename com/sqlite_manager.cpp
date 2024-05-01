@@ -1,6 +1,5 @@
 ﻿#include "sqlite_manager.h"
 #include "com/global.h"
-#include "com/util.h"
 
 #include <QCoreApplication>
 
@@ -34,12 +33,13 @@ void SQLiteManager::init() {
         c->id = 1;
         c->name = "Default";
         c->i = 0;
+        c->m = "";
         categoryDao->add(c);
         delete c;
     }
 }
 
-void SQLiteManager::execute(QString tag, QString sql, std::function<void (QSqlQuery)> cb) {
+bool SQLiteManager::execute(const QString& tag, const QString& sql, std::function<void (QSqlQuery&)> cb) {
     if(lg->isTrace()) {
         lg->trace(QString("execute start tag %1 sql %2").arg(tag).arg(sql));
     }
@@ -49,10 +49,12 @@ void SQLiteManager::execute(QString tag, QString sql, std::function<void (QSqlQu
     bool r = q.exec();
     if(!r) {
         lg->error(QString("%1 error %2").arg(tag).arg(q.lastError().text()));
+        return false;
     }
     if(lg->isTrace()) {
         lg->trace(QString("execute end tag %1").arg(tag));
     }
+    return true;
 }
 
 void SQLiteManager::close() {

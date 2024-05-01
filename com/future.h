@@ -3,29 +3,23 @@
 
 #include <QString>
 #include <QSemaphore>
-#include <iostream>
+#include <QMutex>
 #include <QVariantList>
-#include "global.h"
-#include "const.h"
 
 class Future {
 public:
-    Future();
-    ~Future();
+    explicit Future();
+
 private:
-    QSemaphore* waitingResult;
+    QSemaphore sem;
     QVariantList res;
-    QRecursiveMutex* mtx;
+    QMutex mtx;
 
 public:
-    QVariantList get();
-    QVariant getVar();
-    void setVar(QVariant v);
-    void set(QVariantList res = QVariantList());
+    QVariantList getList(uint timeout=30000);
+    QVariant get(uint timeout=30000, uint def=0);
+    void set(const QVariant& v);
+    void setList(const QVariantList& res);
 };
-
-namespace future {
-    extern Future* doDB(CB_VAR cb);
-}
 
 #endif // FUTURE_H

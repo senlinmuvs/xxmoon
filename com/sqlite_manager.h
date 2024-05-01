@@ -7,7 +7,6 @@
 #include <QSqlRecord>
 #include <QVariant>
 #include <QDebug>
-#include "com/const.h"
 
 using namespace std;
 
@@ -18,7 +17,7 @@ public:
     SQLiteManager();
     bool openDB();
     void init();
-    void execute(QString tag, QString sql, std::function<void (QSqlQuery)> cb);
+    bool execute(const QString& tag, const QString& sql, std::function<void (QSqlQuery&)> cb);
     void close();
     bool transaction();
     bool commit();

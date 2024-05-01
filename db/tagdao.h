@@ -17,7 +17,7 @@ public:
     Tag* get(uint id);
     Tag* getByName(QString name);
     vector<Tag> list(QString k);
-    virtual uint getMaxId() const;
+    uint getMaxId() override;
     void del(uint id);
     QMap<uint,uint> countTag(uint target);
     uint countTag(uint id, uint target);

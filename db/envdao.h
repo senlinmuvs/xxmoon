@@ -7,11 +7,12 @@ class EnvDao {
 public:
     EnvDao();
 
-    void set(QString k, QString v);
-    void set(QString k, uint v);
-    QString get(QString k);
-    QString get(QString k, QString def);
-    uint getUInt(QString k);
+    void set(const QString& k, const QString& v);
+    void set(const QString& k, qint64 v);
+    QString get(const QString& k);
+    QString get(const QString& k, const QString& def);
+    uint getUInt(const QString& k);
+    qint64 getQint64(const QString& k);
 };
 
 #endif // ENVDAO_H

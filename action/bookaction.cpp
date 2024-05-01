@@ -42,7 +42,7 @@ void BookAction::delWork(uint id, uint cbid) {
     DB_Async->exe("delWork", [=]{
         workDao->del(id);
         noteDao->deleteByWid(id);
-        sendMsg(cbid, NULL);
+        sendMsg(cbid, nullptr);
     });
 }
 void BookAction::getNote(uint id, uint cbid) {

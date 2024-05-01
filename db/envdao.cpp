@@ -4,7 +4,7 @@
 EnvDao::EnvDao() {
 }
 
-void EnvDao::set(QString k, QString v) {
+void EnvDao::set(const QString& k, const QString& v) {
     if(lg->isDebug()) {
         lg->debug(QString("set k=%1 v=%2").arg(k).arg(v));
     }
@@ -15,15 +15,18 @@ void EnvDao::set(QString k, QString v) {
     } else {
         sql = "update env set v=:v where k=:k";
     }
-    db->execute("set env", sql, [k,v](QSqlQuery q){
+    bool ok = db->execute("set env", sql, [k,v](QSqlQuery& q){
         q.bindValue(":k", k);
         q.bindValue(":v", v);
     });
+    if(ok) {
+        dologEnvNew(k);
+    }
 }
-void EnvDao::set(QString k, uint v) {
+void EnvDao::set(const QString& k, qint64 v) {
     set(k, to_string(v).c_str());
 }
-QString EnvDao::get(QString k, QString def) {
+QString EnvDao::get(const QString& k, const QString& def) {
     QString v = get(k);
     if(v == ""){
         return def;
@@ -31,7 +34,7 @@ QString EnvDao::get(QString k, QString def) {
         return v;
     }
 }
-QString EnvDao::get(QString k) {
+QString EnvDao::get(const QString& k) {
     if(lg->isDebug()) {
         lg->debug(QString("get k=%1").arg(k));
     }
@@ -52,10 +55,18 @@ QString EnvDao::get(QString k) {
         return "";
     }
 }
-uint EnvDao::getUInt(QString k) {
+uint EnvDao::getUInt(const QString& k) {
     QString v = get(k);
     if(v!=nullptr){
         return v.toUInt();
+    }
+    return 0;
+}
+
+qint64 EnvDao::getQint64(const QString& k) {
+    QString v = get(k);
+    if(v!=nullptr){
+        return v.toLongLong();
     }
     return 0;
 }

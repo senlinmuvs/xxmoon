@@ -13,7 +13,12 @@ public:
     QString exchangeDataDir = "";
     QString initImgNamePre = "2020";
     QString appName = "xxmoon";
+    QString xmCfgDir = QDir::homePath() + "/."+appName;
+    QString syncUrl = "";
+    QString server = "";
+    uint cid = 0;
     QString user = "xxmoon";
+    QString pwd = "";
     QString userBaseDir = dataDir + "/" + appName + "/" + user;
     QString dbFileName = "xxmoon.data";
     QString dbFile = userBaseDir + "/" + dbFileName;
@@ -22,8 +27,8 @@ public:
     QString tmpDir = userBaseDir + "/tmp";
     QString logLevel = "error";
     QString logFile = dataDir + "/" + appName + "/log.txt";
-    QString localCfgFileName = QDir::homePath() + "/xxmoon_local.cfg";
-    QString tmpPKPre = "pk_";
+    QString localCfgFileName = xmCfgDir + "/.xm";
+    QString tmpPKPre = "xm_";
     QString tmpNotePre = "note_";
 #ifdef Q_OS_MAC
     QString editor = "TextEdit";//vi, Sublime Text
@@ -34,34 +39,35 @@ public:
 #ifdef Q_OS_LINUX
     QString editor = "vi";//vi, Sublime Text
 #endif
-    QString cfgFileName = QDir::homePath() + "/xxmoon.cfg";
-    QString auth_file = QDir::homePath() + "/.xxmoon_auth";
 #ifdef Q_OS_MAC
     QString ctrl = "Cmd";
 #else
     QString ctrl = "Ctrl";
 #endif
-    QString hot_key_pk = ctrl+"+Alt+X";
-    QString hot_key_show = ctrl+"+Alt+Z";
+    QString cfgFile = xmCfgDir + "/" + appName +  ".cfg";
+    QString hotKeyXm = ctrl+"+Alt+X";
+    QString hotKeyShow = ctrl+"+Alt+Z";
     QString lang = "";
     QString tmpActFile = "act";
     //
-    QString ui_quote_bg_color = "#303030";
-    QString ui_quote_text_color = "#FFFFFF";
-    QString ui_highlight_color = "#000000";
+    QString uiQuoteBgColor = "#303030";
+    QString uiQuoteTextColor = "#FFFFFF";
+    QString uiHighlightColor = "#000000";
 
-    QString kindle_flag = "==========";
-    QString kindle_flag_bj = "笔记";
+    QString kindleFlag = "==========";
+    QString kindleFlagBj = "笔记";
 //    uint simple_cont_front_line = 1;
-    uint simple_cont_key_front = 30;
-    uint simple_cont_max_line = 10;
-    QString reg_kindle_flag = "-.+您在.+[0-9]+.*的.+|.+添加于.+";
+    uint simpleContKeyFront = 30;
+    uint simpleContMaxLine = 10;
+    QString regKindleFlag = "-.+您在.+[0-9]+.*的.+|.+添加于.+";
     QString sitedir = "";
     QString sitename = "摘月生成站点";
     QString sitetitle = "";
-    uint site_detail_extra_id = 0;
-    QString site_xmblog_tag = "xmblog";
+    uint siteDetailExtraId = 0;
+    QString siteXmblogTag = "xmblog";
     uint port = 10000;
+
+    QString dologFile = xmCfgDir + "/."+ user +"-dolog";
 
     QString toString();
     QVariantMap toVMap();

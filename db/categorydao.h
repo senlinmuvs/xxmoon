@@ -18,7 +18,7 @@ public:
     void del(uint id);
     void updateName(uint id, QString name);
     void updateIndex(uint id, uint srcIndex, uint dstIndex);
-    virtual uint getMaxId() const;
+    uint getMaxId() override;
     uint getMaxI();
     Category* getCategory(uint id);
     Category* getCategoryByIndex(uint index);
@@ -27,6 +27,7 @@ public:
     uint count();
     uint getIDByName(QString name);
     uint getFirstID();
+    void moveUp(uint fromIndex);
     void setX(uint id, uint x);
     void updatePwd(uint id, QString encrypted);
 };

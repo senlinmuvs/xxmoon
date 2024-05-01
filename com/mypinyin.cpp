@@ -1,4 +1,4 @@
-﻿#include "myPinyin.h"
+﻿#include "mypinyin.h"
 
 #define g_length_lastNameTable 554
 #define g_length_multiToneWordTable 708

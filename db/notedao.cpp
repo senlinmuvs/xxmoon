@@ -1,12 +1,11 @@
 ﻿#include "notedao.h"
 #include "com/global.h"
 #include "com/const.h"
-#include "com/util.h"
 
 NoteDao::NoteDao(): BaseDao() {
 }
 
-QList<Note*> gets(QSqlQuery q) {
+QList<Note*> gets(QSqlQuery& q) {
     QList<Note*> list;
     QSqlRecord rec = q.record();
     int colId = rec.indexOf("id");
@@ -38,7 +37,7 @@ QList<Note*> gets(QSqlQuery q) {
         n->tags = tags;
         n->refids = refids;
         n->refimgids = refimgids;
-        list.insert(list.end(), n);
+        list << n;
     }
     return list;
 }
@@ -83,7 +82,7 @@ void NoteDao::insert(Note *n) {
     if(n->refimgids.isEmpty()){
         n->refimgids = extractRefimgids(n->cont);
     }
-    db->execute("insert note", insert_sql, [&n](QSqlQuery q) {
+    bool ok = db->execute("insert note", insert_sql, [&n](QSqlQuery& q) {
         q.bindValue(":id", n->id);
         q.bindValue(":wid", n->wid);
         q.bindValue(":pos0", n->pos0);
@@ -94,6 +93,9 @@ void NoteDao::insert(Note *n) {
         q.bindValue(":refids", n->refids.isNull() ? "" : n->refids);
         q.bindValue(":refimgids", n->refimgids.isNull() ? "" : n->refimgids);
     });
+    if(ok) {
+        dologNoteDel(n->id);
+    }
 }
 
 QList<Note*> NoteDao::insert(QList<Note*> notes, std::function<void (int)> cb) {
@@ -141,13 +143,20 @@ QList<Note*> NoteDao::insert(QList<Note*> notes, std::function<void (int)> cb) {
             cb(i);
             i++;
         }
-        db->commit();
+        if(db->commit()) {
+            for(Note* n: notes) {
+                dologNoteNew(n->id);
+            }
+        } else {
+            db->rollback();
+            lg->error("insert batch note failed");
+        }
     } else {
          lg->error("insert note failed to start transaction mode");
     }
     return dups;
 }
-uint NoteDao::getMaxId() const {
+uint NoteDao::getMaxId() {
     QSqlQuery q("select max(id) as maxid from note");
     bool suc = q.exec();
     if(!suc){
@@ -393,7 +402,7 @@ QList<Note*> NoteDao::getNoteList(QString k, uint wid, uint page, QString sort) 
 void NoteDao::updateNote(uint id, uint pos0, uint pos1, QString cont) {
     QString refids = extractRefIDs(cont);
     QString refimgids = extractRefimgids(cont);
-    db->execute("upateNote", "update note set cont=:cont,pos0=:pos0,pos1=:pos1,refids=:refids,refimgids=:refimgids where id=:id", [=](QSqlQuery q) {
+    bool ok = db->execute("upateNote", "update note set cont=:cont,pos0=:pos0,pos1=:pos1,refids=:refids,refimgids=:refimgids where id=:id", [=](QSqlQuery& q) {
         q.bindValue(":id", id);
         q.bindValue(":pos0", pos0);
         q.bindValue(":pos1", pos1);
@@ -401,27 +410,42 @@ void NoteDao::updateNote(uint id, uint pos0, uint pos1, QString cont) {
         q.bindValue(":refids", refids.isNull() ? "" : refids);
         q.bindValue(":refimgids", refimgids.isNull() ? "" : refimgids);
     });
+    if(ok) {
+        dologNoteNew(id);
+    }
 }
 void NoteDao::updateTags(uint id, QString tags) {
-    db->execute("updateTags", "update note set tags=:tags where id=:id", [=](QSqlQuery q) {
+    bool ok = db->execute("updateTags", "update note set tags=:tags where id=:id", [=](QSqlQuery& q) {
         q.bindValue(":tags", tags.toStdString().c_str());
         q.bindValue(":id", id);
     });
+    if(ok) {
+        dologNoteNew(id);
+    }
 }
 void NoteDao::deleteNote(uint id) {
-    db->execute("deleteNote", "update note set del=1,pos0=0,pos1=0,cont='' where id=:id", [id](QSqlQuery q){
+    bool ok = db->execute("deleteNote", "update note set del=1,pos0=0,pos1=0,cont='' where id=:id", [id](QSqlQuery& q){
         q.bindValue(":id", id);
     });
+    if(ok) {
+        dologNoteNew(id);
+    }
 }
 void NoteDao::deleteNote_(uint id) {
-    db->execute("deleteNote_", "delete from note where id=:id", [id](QSqlQuery q){
+    bool ok = db->execute("deleteNote_", "delete from note where id=:id", [id](QSqlQuery& q){
         q.bindValue(":id", id);
     });
+    if(ok) {
+        dologNoteDel(id);
+    }
 }
 void NoteDao::deleteByWid(uint wid) {
-    db->execute("deleteByWid", "delete from note where wid=:wid", [wid](QSqlQuery q){
+    bool ok = db->execute("deleteByWid", "delete from note where wid=:wid", [wid](QSqlQuery& q){
         q.bindValue(":wid", wid);
     });
+    if(ok) {
+        dologNoteByWidDel(wid);
+    }
 }
 bool NoteDao::exists(uint wid, QString cont) {
     QString sql = "select count(*) c from note where wid=:wid and cont=:cont";

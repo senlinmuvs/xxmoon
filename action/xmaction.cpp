@@ -1,9 +1,6 @@
 #include "com/global.h"
 #include "xmaction.h"
 #include "com/runmain.h"
-#ifdef Q_OS_MAC
-#include "com/mac.h"
-#endif
 
 XMAction::XMAction() {
 }
@@ -12,20 +9,20 @@ void XMAction::getCategories(QString k, QObject *obj) {
         QVariantList rlist;
         if(k.length() > 0){
             vector<Category> list = categoryDao->getCategories(k);
-            for (Category c:list) {
-                rlist.insert(rlist.end(), c.toVMap());
+            for (Category& c:list) {
+                rlist << c.toVMap();
             }
         } else {
             vector<Category> all = categoryDao->getAll();
             vector<Category> list = categoryDao->getCategories(k);
-            for (Category c:all) {
-                for(Category c2:list) {
+            for (Category& c:all) {
+                for(Category& c2:list) {
                     if(c.id == c2.id) {
                         c = c2;
                         break;
                     }
                 }
-                rlist.insert(rlist.end(), c.toVMap());
+                rlist << c.toVMap();
             }
         }
         QMetaObject::invokeMethod(obj, "onGetCategories",
@@ -88,15 +85,20 @@ void XMAction::editCategory(uint id, QString name, QObject *obj) {
 
 void XMAction::delCategory(uint id, uint cbid) {
     DB_Async->exe("delCategory", [=]{
-        categoryDao->del(id);
-        sendMsg(cbid, NULL);
+        Category* c = categoryDao->getCategory(id);
+        if(c != nullptr) {
+            categoryDao->del(id);
+            categoryDao->moveUp(c->i);
+            delete c;
+        }
+        sendMsg(cbid, 0);
     });
 }
 
 void XMAction::sorting(uint cid, uint srcIndex, uint dstIndex, uint cbid) {
     DB_Async->exe("sorting", [=]{
         categoryDao->updateIndex(cid, srcIndex, dstIndex);
-        sendMsg(cbid, NULL);
+        sendMsg(cbid, nullptr);
     });
 }
 void XMAction::countCategory(uint cid, uint cbid) {
@@ -110,9 +112,8 @@ void XMAction::getNewXMList(uint cid, uint fromId, uint pklistWidth, QObject *ob
         QList<XM*> list = xmDao->getNewXMList(cid, fromId);
         QVariantList rlist;
         for (XM *p:list) {
-            QVariantList eList;
             p->simpleCont = extractPKSimpleCont(p->cont, "");
-            rlist.insert(rlist.end(), p->toVMap(0,0,pklistWidth));
+            rlist << p->toVMap(0,0,pklistWidth);
             delete p;
         }
         QMetaObject::invokeMethod(obj, "onGetNewPKList",
@@ -131,13 +132,16 @@ void XMAction::deleteXM(uint id, QObject *obj) {
                     return;
                 }
             }
-            xmDao->deleteXM(id);
-            if(xm->img != "") {
-                deleteFile(cfg->imgDir + "/" + xm->img);
-                QString imgName = xm->img.mid(0, xm->img.lastIndexOf("."));
-                QString postfix = xm->img.mid(xm->img.lastIndexOf("."));
-                deleteFile(cfg->imgDir + "/" + imgName + "_original" + postfix);
-//                qDebug() << "<<<<<<<<<<<delete file" << imgName << postfix;
+            bool ok = xmDao->deleteXM(id);
+            if(ok) {
+                dologXMDel(id, xm->img);
+                if(xm->img != "") {
+                    QFile::remove(cfg->imgDir + "/" + xm->img);
+                    QString imgName = xm->img.mid(0, xm->img.lastIndexOf("."));
+                    QString postfix = xm->img.mid(xm->img.lastIndexOf("."));
+                    QFile::remove(cfg->imgDir + "/" + imgName + "_original" + postfix);
+                    //                qDebug() << "<<<<<<<<<<<delete file" << imgName << postfix;
+                }
             }
             QMetaObject::invokeMethod(obj, "onDeleted",
                                       Q_ARG(QVariant, QVariant::fromValue(0)));
@@ -195,7 +199,7 @@ void XMAction::addXM(uint cid, QString txt, uint pklistWidth, uint cbid) {
             newXM->simpleCont = extractPKSimpleCont(newXM->cont, "");
             m = newXM->toVMap(0,0,pklistWidth);
         } else {
-            alert(QObject::tr("Failure.Not found the doc!"));
+            alert(trans->tr("Failure.Not found the doc!"));
             return;
         }
         sendMsg(cbid, m);
@@ -257,14 +261,14 @@ void XMAction::xm(QString file, uint cbid) {
         }
     });
 }
-QString XMAction::xm(QImage *img, QString cont, QString file) {
+QString XMAction::xm(QImage *img, const QString& cont, const QString& file) {
     XM *pk = new XM();
     pk->bj = false;
     pk->cont = cont;
     pk->cid = categoryDao->getFirstID();
     QString tip = "";
     if(pk->cont != "") {
-        tip += QString("%1 %2").arg(QObject::tr("Text")).arg(pk->cont.length());
+        tip += QString("%1 %2").arg(trans->tr("Text")).arg(pk->cont.length());
     }
 
     QString new_clipboard_text;
@@ -304,7 +308,7 @@ QString XMAction::xm(QImage *img, QString cont, QString file) {
     }
     QString pkimg = pk->img;
     RunMain::INS().exec([pk, new_clipboard_text]{
-        QMetaObject::invokeMethod(engine->rootObjects()[0], "onFinished",
+        QMetaObject::invokeMethod(engine->rootObjects().at(0), "onFinished",
                 Q_ARG(QVariant, QVariant::fromValue(CONT_TYPE_PK)),
                 Q_ARG(QVariant, QVariant::fromValue(-1)),
                 Q_ARG(QVariant, QVariant::fromValue(-1)),

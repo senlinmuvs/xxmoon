@@ -11,10 +11,13 @@ void TagDao::add(Tag *t) {
         t->id = increID();
     }
     QString insert_sql = "insert into tag(id, tag) values(:id,:tag)";
-    db->execute("add tag", insert_sql, [=](QSqlQuery q) {
+    bool ok = db->execute("add tag", insert_sql, [=](QSqlQuery& q) {
         q.bindValue(":id", t->id);
         q.bindValue(":tag", t->tag);
     });
+    if(ok) {
+        dologTagNew(t->id);
+    }
 }
 Tag* TagDao::get(uint id){
     QSqlQuery q("select * from tag where id=" + QString::number(id));
@@ -30,7 +33,7 @@ Tag* TagDao::get(uint id){
         t->tag = tag;
         return t;
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 Tag* TagDao::getByName(QString name) {
@@ -87,7 +90,7 @@ vector<Tag> TagDao::list(QString k) {
 //    qDebug() << sql << k;
     return list;
 }
-uint TagDao::getMaxId() const {
+uint TagDao::getMaxId() {
     QSqlQuery q("select max(id) as maxid from tag");
     q.exec();
     QSqlRecord rec = q.record();
@@ -97,9 +100,12 @@ uint TagDao::getMaxId() const {
     return maxid;
 }
 void TagDao::del(uint id) {
-    db->execute("del tag", "delete from tag where id=:id", [=](QSqlQuery q) {
+    bool ok = db->execute("del tag", "delete from tag where id=:id", [=](QSqlQuery& q) {
         q.bindValue(":id", id);
     });
+    if(ok) {
+        dologTagDel(id);
+    }
 }
 QMap<uint,uint> TagDao::countTag(uint target) {
     QString table = target == 0 ? "xm" : "note";
@@ -120,7 +126,7 @@ QMap<uint,uint> TagDao::countTag(uint target) {
         QString tags = q.value(colTags).toString();
         uint n = q.value(colN).toUInt();
         QStringList list = tags.split("#");
-        for(QString e:list) {
+        for(QString& e:list) {
             if(e.length()>0){
                 uint k = e.toUInt();
                 map[k] = map[k] + n;
@@ -141,10 +147,10 @@ uint TagDao::countTag(uint tid, uint target) {
     QSqlQuery q;
     q.prepare(sql);
     q.bindValue(":tid", "%#"+QString::number(tid)+"#%");
-    QSqlRecord rec = q.record();
     bool suc = q.exec();
     if(!suc){
         lg->error(QString("countTag error %1").arg(q.lastError().text()));
+        return 0;
     }
     if(q.next()) {
         uint ref = q.value(0).toUInt();
@@ -158,10 +164,10 @@ vector<uint> TagDao::findTagIdByTag(QString tag) {
     QSqlQuery q;
     q.prepare("select id from tag where tag like :tag");
     q.bindValue(":tag", "%"+tag+"%");
-    QSqlRecord rec = q.record();
     bool suc = q.exec();
     if(!suc){
         lg->error(QString("findTagIdByTag error %1").arg(q.lastError().text()));
+        return ids;
     }
     while(q.next()) {
         uint id = q.value(0).toUInt();
@@ -173,7 +179,7 @@ vector<uint> TagDao::findTagIdByTag(QString tag) {
 
 QString TagDao::getTagCondByTags(QStringList tags) {
     QString s;
-    for(QString tag: tags){
+    for(QString& tag: tags){
         vector<uint> tids = findTagIdByTag(tag);
         if(tids.size() == 0) {
             return "and 0=1";

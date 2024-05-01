@@ -5,6 +5,12 @@
 #include <QList>
 #include <QDebug>
 #include <QClipboard>
+#include <QTimer>
+#include <com/http.h>
+#include "com/fqueue/ConsumerThread.h"
+#include "com/fqueue/FileStorage.h"
+#include "com/fqueue/ProducerThread.h"
+#include "com/fqueue/ThreadSafeQueue.h"
 #include "com/util.h"
 #include "com/global.h"
 #include "com/docparser.h"
@@ -146,7 +152,7 @@ void test8() {
 
 //    QString s = "@#a@";
     QString s = "**a\nb**";
-    s = ut::str::replaceAllTag(s, "**","**", "<b>", "</b>", 1, param, "\n", NULL);
+    s = ut::str::replaceAllTag(s, "**","**", "<b>", "</b>", 1, param, "\n", nullptr);
     qDebug() << s;
     qDebug() << "------------------------- TEST 8 END -------------------------";
 }
@@ -215,5 +221,59 @@ void test12() {
         qDebug() << "test5 task doing";
     });
     qDebug() << "------------------------- TEST 12 End ------------------------------";
+}
+void test13() {
+    qDebug() << "------------------------- TEST 13 Start ----------------------------";
+    QMap<QString, QString> params;
+    params["path"] = "";
+    params["cid"] = "0";
+    params["user"] = "xxmoon";
+    params["pwd"] = "12345";
+    Http *http = new Http();
+    http->upload("https://localhost/upfile", params, "/Volumes/MD/CodeCharts12.pdf", [http]{
+            qDebug() << "done";
+            http->deleteLater();
+        }, [](qint64 s, qint64 t){
+            qDebug() << ">" << s << t;
+        });
+    qDebug() << "------------------------- TEST 13 End ------------------------------";
+}
+void test14() {
+    qDebug() << "------------------------- TEST 14 Start ----------------------------";
+    QMap<QString, QString> params;
+    params["path"] = "";
+    params["cid"] = "0";
+    params["user"] = "xxmoon";
+    params["pwd"] = "12345";
+    QString file = "/Volumes/MD/pobi.png";
+    QEventLoop loop;
+    Http http;
+    http.upload("https://localhost/upfile", params, file, [file, &loop]{
+        qDebug() << "done" << file;
+        loop.quit();
+        qDebug() << "done>>>>>>>>>";
+    }, [](qint64 s, qint64 t) {
+        qDebug() << ">" << s << t;
+    });
+    loop.exec();
+    qDebug() << "------------------------- TEST 14 End ------------------------------";
+}
+
+void test15() {
+    qDebug() << "------------------------- TEST 15 Start ----------------------------";
+    QEventLoop eventLoop;
+    QTimer::singleShot(3000, &eventLoop, [&eventLoop]{
+        eventLoop.quit();
+    });
+    // QTimer::singleShot(3000, &eventLoop, &QEventLoop::quit);
+    eventLoop.exec();
+    qDebug() << "Event loop finished. Continuing execution...";
+    qDebug() << "------------------------- TEST 15 End ------------------------------";
+}
+
+void test16() {
+    qDebug() << "------------------------- TEST 16 Start ----------------------------";
+
+    qDebug() << "------------------------- TEST 16 End ------------------------------";
 }
 #endif // TEST_H

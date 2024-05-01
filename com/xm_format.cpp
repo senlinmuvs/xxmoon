@@ -143,11 +143,11 @@ XM* XMFormat::openFile(QString file, QString pwd) {
         data = qUncompress(data);
     } catch(...) {
         lg->error(QString("openFile error %1").arg(file));
-        return NULL;
+        return nullptr;
     }
     if(data.size() <= 4) {
         lg->error(QString("openFile file error len %1").arg(data.size()));
-        return NULL;
+        return nullptr;
     }
     //
     bool ok;
@@ -156,7 +156,7 @@ XM* XMFormat::openFile(QString file, QString pwd) {
     uint imgCount = data.mid(36, 4).toHex().toUInt(&ok, 16);
     if(imgCount > MAX_XM_IMG_COUNT) {
         lg->error(QString("openFile file error imgCount %1").arg(imgCount));
-        return NULL;
+        return nullptr;
     }
     uint mainImgLen = data.mid(40, 4).toHex().toUInt(&ok, 16);
     if(lg->isDebug()){
@@ -165,7 +165,7 @@ XM* XMFormat::openFile(QString file, QString pwd) {
     }
     if(mainImgLen > SIZE_1G) {
         lg->error(QString("openFile file error mainImgLen %1").arg(mainImgLen));
-        return NULL;
+        return nullptr;
     }
     QList<uint> imgLens;
     uint x = 0;
@@ -178,7 +178,7 @@ XM* XMFormat::openFile(QString file, QString pwd) {
         uint imgLen = data.mid(headerLen, 4).toHex().toUInt(&ok, 16);
         if(imgLen > SIZE_1G) {
             lg->error(QString("openFile file error imgLen %1").arg(imgLen));
-            return NULL;
+            return nullptr;
         }
         imgLens << imgLen;
         if(lg->isDebug()) {

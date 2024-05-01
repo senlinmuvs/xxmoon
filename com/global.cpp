@@ -36,8 +36,10 @@ Log *lg = new Log();
 XMFormat *xm_format = new XMFormat();
 SM *sm = new SM();
 Trans *trans = new Trans();
+Sync *sy = new Sync();
+FileQueue *fq;
 
-QRegularExpression Reg_Kindle_Note(cfg->reg_kindle_flag);
+QRegularExpression Reg_Kindle_Note(cfg->regKindleFlag);
 QRegularExpression Reg_Text_Img(".+[.](txt|png|jpg|jpeg|bmp)$");
 QRegularExpression Reg_Find_Img("[^`]![(](.+)[)]");
 QRegularExpression Reg_Find_Refid("(?!`)![[](\\d+):?.*?[]]");
@@ -46,10 +48,14 @@ QRegularExpression Reg_Win_Path("^[a-zA-Z]:.+$");
 bool activated = false;
 
 ///
+void initGlobal() {
+    fq = new FileQueue(cfg->dologFile);
+}
+
 //#tag1#tag2 x
-QVariantList parseKeyTags(QString k) {
+QVariantList parseKeyTags(const QString& k_) {
     QStringList tagList;
-    k = k.trimmed();
+    QString k = k_.trimmed();
     QString newK = k;
     if(k.startsWith("#")) {
         QStringList tags = k.split("#");
@@ -79,7 +85,7 @@ QVariantList parseKeyTags(QString k) {
     return {tagList, newK};
 }
 
-QStringList parseTagIds(QString tags) {
+QStringList parseTagIds(const QString& tags) {
     QStringList ids;
     if(tags.length()>0) {
         QStringList arr = tags.split("#");
@@ -92,7 +98,7 @@ QStringList parseTagIds(QString tags) {
     return ids;
 }
 
-QString fullImg(QString img) {
+QString fullImg(const QString& img) {
     return cfg->imgDir + "/" + img;
 }
 QList<double> calImgSizeByWidth(double srcW, double srcH, double maxWidth) {
@@ -104,10 +110,10 @@ QList<double> calImgSizeByWidth(double srcW, double srcH, double maxWidth) {
     double h = w/ratio;
     return {w, h};
 }
-QVariantList calWinHeight(QString k, uint maxWidth) {
+QVariantList calWinHeight(const QString& k, uint maxWidth) {
     QStringList arr = k.split('.');
     if(maxWidth <= 0) {
-        QWindow *w = qobject_cast<QWindow *>(engine->rootObjects()[0]);
+        QWindow *w = qobject_cast<QWindow *>(engine->rootObjects().at(0));
         uint win_width = w->width();
         maxWidth = win_width - 310;
     }
@@ -127,15 +133,15 @@ QString getFilePre() {
     return FILE_PRE;
 }
 
-QString extractImgs(QString cont, bool rmdup) {
+QString extractImgs(const QString& cont, bool rmdup) {
     QString s;
     QStringList imgs = extractImgsAsList(cont, rmdup);
-    for(QString img:imgs) {
+    for(QString& img:imgs) {
         s += img + ",";
     }
     return s;
 }
-QStringList extractImgsAsList(QString cont, bool rmdup) {
+QStringList extractImgsAsList(const QString& cont, bool rmdup) {
     QStringList imgs;
     QRegularExpressionMatchIterator it = Reg_Find_Img.globalMatch(" "+cont);
     while (it.hasNext()) {
@@ -155,10 +161,10 @@ QStringList extractImgsAsList(QString cont, bool rmdup) {
     }
     return imgs;
 }
-QString extractRefimgids(QString cont) {
+QString extractRefimgids(const QString& cont) {
     QString s;
     QStringList imgs = extractImgsAsList(cont, true);
-    for(QString img:imgs) {
+    for(QString& img:imgs) {
         uint id = xmDao->getIDByImg(img);
         if(id > 0) {
             s += "#" + QString::number(id);
@@ -169,7 +175,7 @@ QString extractRefimgids(QString cont) {
     }
     return s;
 }
-QString extractRefIDs(QString cont) {
+QString extractRefIDs(const QString& cont) {
     QList<uint> refids = extractRefIDsAsList(cont);
     QString ids = "";
     for(uint id:refids) {
@@ -180,7 +186,7 @@ QString extractRefIDs(QString cont) {
     }
     return ids;
 }
-QList<uint> extractRefIDsAsList(QString cont) {
+QList<uint> extractRefIDsAsList(const QString& cont) {
     QList<uint> refs;
     QRegularExpressionMatchIterator it = Reg_Find_Refid.globalMatch(" "+cont);
     while (it.hasNext()) {
@@ -219,10 +225,10 @@ QString extractNoteSimpleCont(const QString& cont, const QString& k) {
         int i = cont.indexOf(keyInCont, 0, Qt::CaseInsensitive);
         if(i > 0) {
 //            i = ut::str::findFrontLine(cont, cfg->simple_cont_front_line, i);
-            i = i - cfg->simple_cont_key_front;
+            i = i - cfg->simpleContKeyFront;
         }
         s = cont.mid(max(0, i), SIMPLE_SIZE);
-        s = ut::str::frontLine(s, cfg->simple_cont_max_line);
+        s = ut::str::frontLine(s, cfg->simpleContMaxLine);
     } else {
         s = cont.mid(0, SIMPLE_SIZE);
     }
@@ -277,10 +283,10 @@ QString extractPKSimpleCont(const QString& cont, const QString& k) {
         int i = cont.indexOf(keyInCont, 0, Qt::CaseInsensitive);
         if(i > 0) {
 //            i = ut::str::findFrontLine(cont, cfg->simple_cont_front_line, i);
-            i = i - cfg->simple_cont_key_front;
+            i = i - cfg->simpleContKeyFront;
         }
         s = cont.mid(max(0, i), SIMPLE_SIZE);
-        s = ut::str::frontLine(s, cfg->simple_cont_max_line);
+        s = ut::str::frontLine(s, cfg->simpleContMaxLine);
     } else {
         s = cont.mid(0, SIMPLE_SIZE);
     }
@@ -311,24 +317,24 @@ QString extractPKSimpleCont(const QString& cont, const QString& k) {
 }
 
 void alert(const QString &msg, bool autoclose) {
-    QObject* root = engine->rootObjects()[0];
-    QMetaObject::invokeMethod(root, "alert",
+    QObject* root = engine->rootObjects().at(0);
+    QMetaObject::invokeMethod(root, "_alert",
                 Q_ARG(QVariant, QVariant::fromValue(msg)),
                 Q_ARG(QVariant, QVariant::fromValue(autoclose)));
 }
 void ensure(const QString &msg) {
-    QObject* root = engine->rootObjects()[0];
+    QObject* root = engine->rootObjects().at(0);
     QMetaObject::invokeMethod(root, "ensure",
                 Q_ARG(QVariant, QVariant::fromValue(msg)));
 }
-void st(uint st, QString msg) {
-    QObject* root = engine->rootObjects()[0];
+void st(uint st, const QString& msg) {
+    QObject* root = engine->rootObjects().at(0);
     QMetaObject::invokeMethod(root, "setStat",
                 Q_ARG(QVariant, QVariant::fromValue(st)),
                 Q_ARG(QVariant, QVariant::fromValue(msg)));
 }
 
-void pushServerData(QString dev, QString data) {
+void pushServerData(const QString& dev, const QString& data) {
     mtx.lock();
     std::queue q = serverDataQueue->value(dev);
     q.push(data);
@@ -336,7 +342,7 @@ void pushServerData(QString dev, QString data) {
     mtx.unlock();
 }
 
-QString takeServerData(QString dev) {
+QString takeServerData(const QString& dev) {
     mtx.lock();
     QString data;
     auto q = serverDataQueue->value(dev);
@@ -348,7 +354,7 @@ QString takeServerData(QString dev) {
     mtx.unlock();
     return data;
 }
-std::tuple<uint, uint> getWHFromFileName(QString fn) {
+std::tuple<uint, uint> getWHFromFileName(const QString& fn) {
     int n = 0;
     int startIndex = -1;
     int endIndex = -1;
@@ -374,7 +380,7 @@ std::tuple<uint, uint> getWHFromFileName(QString fn) {
 }
 namespace ui {
     QMap<uint, QString> uiVals;
-    void setUIVal(uint k, QString v) {
+    void setUIVal(uint k, const QString& v) {
         uiVals.insert(k, v);
     }
     QString getUIVal(uint k) {
@@ -382,7 +388,48 @@ namespace ui {
     }
 }
 
-void deleteFile(QString file) {
-    QFile f(file);
-    f.remove();
+void dolog(const QString& s) {
+    fq->enqueue(s);
+}
+void dologXMNew(uint id) {
+    dolog(QString(DOLOG_XM_NEW).arg(id));
+}
+void dologXMDel(uint id, QString img) {
+    dolog(QString(DOLOG_XM_DEL).arg(id).arg(img));
+}
+void dologNoteNew(uint id) {
+    dolog(QString(DOLOG_NOTE_NEW).arg(id));
+}
+void dologNoteDel(uint id) {
+    dolog(QString(DOLOG_NOTE_DEL).arg(id));
+}
+void dologNoteByWidDel(uint id) {
+    dolog(QString(DOLOG_NOTE_BY_WID_DEL).arg(id));
+}
+void dologCategoryNew(uint id) {
+    dolog(QString(DOLOG_CATEGORY_NEW).arg(id));
+}
+void dologCategoryDel(uint id) {
+    dolog(QString(DOLOG_CATEGORY_DEL).arg(id));
+}
+void dologWorkNew(uint id) {
+    dolog(QString(DOLOG_WORK_NEW).arg(id));
+}
+void dologWorkDel(uint id) {
+    dolog(QString(DOLOG_WORK_DEL).arg(id));
+}
+void dologTagNew(uint id) {
+    dolog(QString(DOLOG_TAG_NEW).arg(id));
+}
+void dologTagDel(uint id) {
+    dolog(QString(DOLOG_TAG_DEL).arg(id));
+}
+void dologEnvNew(const QString& k) {
+    dolog(QString(DOLOG_ENV_NEW).arg(k));
+}
+void dologEnvDel(const QString& k) {
+    dolog(QString(DOLOG_ENV_DEL).arg(k));
+}
+void dologSql(const QString& sql) {
+    dolog(QString(DOLOG_SQL).arg(sql));
 }

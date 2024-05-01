@@ -17,7 +17,7 @@ public:
     uint getIdByTime(qint64 time);
     void insert(Note *n);
     QList<Note*> insert(QList<Note*> list, std::function<void (int)> cb);
-    virtual uint getMaxId() const;
+    uint getMaxId() override;
     vector<Work> getWorkList(QString k, QString tag, ulong fromTime);
     QList<Note*> getNoteList(QString k, uint wid, uint page, QString sort);
     void updateNote(uint id, uint pos0, uint pos1, QString cont);

@@ -45,13 +45,13 @@ Work* WorkDao::get(QString name, QString author) {
     bool suc = q.exec();
     if(!suc) {
         lg->error(QString("get work error %1").arg(q.lastError().text()));
-        return NULL;
+        return nullptr;
     }
     QList<Work*> list = gets(&q);
     if(list.size() > 0) {
         return list.at(0);
     }
-    return NULL;
+    return nullptr;
 }
 Work* WorkDao::get(QString name) {
     QSqlQuery q;
@@ -60,13 +60,13 @@ Work* WorkDao::get(QString name) {
     bool suc = q.exec();
     if(!suc) {
         lg->error(QString("get work by name error %1").arg(q.lastError().text()));
-        return NULL;
+        return nullptr;
     }
     QList<Work*> list = gets(&q);
     if(list.size() > 0) {
         return list.at(0);
     }
-    return NULL;
+    return nullptr;
 }
 Work* WorkDao::get(uint id) {
     QSqlQuery q;
@@ -75,22 +75,25 @@ Work* WorkDao::get(uint id) {
     bool suc = q.exec();
     if(!suc){
         lg->error(QString("get work error %1").arg(q.lastError().text()));
-        return NULL;
+        return nullptr;
     }
     QList<Work*> list = gets(&q);
     if(list.size() > 0) {
         return list.at(0);
     }
-    return NULL;
+    return nullptr;
 }
 void WorkDao::del(uint id) {
-    db->execute("del work", "delete from work where id=:id", [=](QSqlQuery q) {
+    bool ok = db->execute("del work", "delete from work where id=:id", [=](QSqlQuery& q) {
         q.bindValue(":id", id);
     });
+    if(ok) {
+        dologWorkDel(id);
+    }
 }
 void WorkDao::update(Work *w) {
     QString sql = "update work set name=:name, author=:author, time=:time, t=:t, tag=:tag, extra=:extra where id=:id";
-    db->execute("update work", sql, [=](QSqlQuery q) {
+    bool ok = db->execute("update work", sql, [=](QSqlQuery& q) {
         q.bindValue(":id", w->id);
         q.bindValue(":name", w->name);
         q.bindValue(":author", w->author);
@@ -99,8 +102,11 @@ void WorkDao::update(Work *w) {
         q.bindValue(":tag", w->tag);
         q.bindValue(":extra", w->extra);
     });
+    if(ok) {
+        dologWorkNew(w->id);
+    }
 }
-uint WorkDao::getMaxId() const {
+uint WorkDao::getMaxId() {
     QSqlQuery q("select max(id) as maxid from work");
     q.exec();
     QSqlRecord rec = q.record();
@@ -121,7 +127,7 @@ void WorkDao::add(Work *w) {
         lg->trace(QString("add work %1").arg(w->toString()));
     }
     QString insert_sql = "insert into work(id,name,author,time,t,fro,tag,extra) values(:id,:name,:author,:time,:t,:fro,:tag,:extra)";
-    db->execute("add work", insert_sql, [&w](QSqlQuery q) {
+    bool ok = db->execute("add work", insert_sql, [&w](QSqlQuery& q) {
         q.bindValue(":id", w->id);
         q.bindValue(":name", w->name);
         q.bindValue(":author", w->author);
@@ -131,6 +137,9 @@ void WorkDao::add(Work *w) {
         q.bindValue(":tag", w->tag);
         q.bindValue(":extra", w->extra);
     });
+    if(ok) {
+        dologWorkNew(w->id);
+    }
 }
 
 void WorkDao::add(const QList<Work*> &list) {
@@ -138,7 +147,11 @@ void WorkDao::add(const QList<Work*> &list) {
         for(Work* w : list) {
             add(w);
         }
-        if(!db->commit()) {
+        if(db->commit()) {
+            for(Work* w : list) {
+                dologWorkNew(w->id);
+            }
+        } else {
             db->rollback();
             lg->error(QString("add works error %1").arg(list.size()));
         }

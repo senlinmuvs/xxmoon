@@ -6,7 +6,9 @@
 #ifdef Q_OS_MAC
 #include "mac.h"
 #include "menumanager.h"
+#include "sync.h"
 #include "trans.h"
+#include "filequeue.h"
 #endif
 #include <l.h>
 #include <QProcess>
@@ -60,6 +62,8 @@ extern Log *lg;
 extern XMFormat *xm_format;
 extern SM *sm;
 extern Trans *trans;
+extern Sync *sy;
+extern FileQueue *fq;
 
 extern QRegularExpression Reg_Kindle_Note;
 extern QRegularExpression Reg_Text_Img;
@@ -69,50 +73,65 @@ extern QRegularExpression Reg_Win_Path;
 
 extern bool activated;
 
-extern QVariantList parseKeyTags(QString k);
-extern QStringList parseTagIds(QString tags);
-extern QString fullImg(QString img);
-extern QList<double> calImgSizeByWidth(double srcW, double srcH, double maxWidth);
-extern QVariantList calWinHeight(QString k, uint maxWidth = 0);
-extern QString getFilePre();
-extern QString extractImgs(QString cont, bool rmdup = false);
-extern QStringList extractImgsAsList(QString cont, bool rmdup = false);
-extern QString extractRefimgids(QString cont);
-extern QString extractRefIDs(QString cont);
-extern QList<uint> extractRefIDsAsList(QString cont);
-extern QString extractNoteSimpleCont(const QString& cont, const QString& k);
-extern QString extractPKSimpleCont(const QString& cont, const QString& k);
-extern void pushServerData(QString dev, QString data);
-extern QString takeServerData(QString dev);
-extern std::tuple<uint, uint> getWHFromFileName(QString fn);
+void initGlobal();
+QVariantList parseKeyTags(const QString& k);
+QStringList parseTagIds(const QString& tags);
+QString fullImg(const QString& img);
+QList<double> calImgSizeByWidth(double srcW, double srcH, double maxWidth);
+QVariantList calWinHeight(const QString& k, uint maxWidth = 0);
+QString getFilePre();
+QString extractImgs(const QString& cont, bool rmdup = false);
+QStringList extractImgsAsList(const QString& cont, bool rmdup = false);
+QString extractRefimgids(const QString& cont);
+QString extractRefIDs(const QString& cont);
+QList<uint> extractRefIDsAsList(const QString& cont);
+QString extractNoteSimpleCont(const QString& cont, const QString& k);
+QString extractPKSimpleCont(const QString& cont, const QString& k);
+void pushServerData(const QString& dev, const QString& data);
+QString takeServerData(const QString& dev);
+std::tuple<uint, uint> getWHFromFileName(const QString& fn);
 
 namespace ui {
-    extern void setUIVal(uint k, QString v);
+    extern void setUIVal(uint k, const QString& v);
     extern QString getUIVal(uint k);
 }
 
 template<typename T>
 void sendMsg(uint cbid, const T &data) {
-    QObject* root = engine->rootObjects()[0];
+    QObject* root = engine->rootObjects().at(0);
     QMetaObject::invokeMethod(root, "onCallback",
                 Q_ARG(QVariant, QVariant::fromValue(cbid)),
                 Q_ARG(QVariant, QVariant::fromValue(data)));
 }
 template<typename T>
-void pushMsg(uint ty, const T &data) {
-    QObject* root = engine->rootObjects()[0];
+void pushMsg(uint ty, const T &data = 0) {
+    QObject* root = engine->rootObjects().at(0);
     QMetaObject::invokeMethod(root, "onPush",
                 Q_ARG(QVariant, QVariant::fromValue(ty)),
                 Q_ARG(QVariant, QVariant::fromValue(data)));
 }
 template<typename T>
 void notify(const T &data) {
-    QObject* root = engine->rootObjects()[0];
+    QObject* root = engine->rootObjects().at(0);
     QMetaObject::invokeMethod(root, "notify",
                 Q_ARG(QVariant, QVariant::fromValue(data)));
 }
 void alert(const QString &msg, bool autoclose = true);
 void ensure(const QString &msg);
-void st(uint st = 0, QString msg = "");
-void deleteFile(QString file);
+void st(uint st = 0, const QString& msg = "");
+
+void dologXMNew(uint id);
+void dologXMDel(uint id, QString img = "");
+void dologNoteNew(uint id);
+void dologNoteDel(uint id);
+void dologNoteByWidDel(uint id);
+void dologCategoryNew(uint id);
+void dologCategoryDel(uint id);
+void dologWorkNew(uint id);
+void dologWorkDel(uint id);
+void dologTagNew(uint id);
+void dologTagDel(uint id);
+void dologEnvNew(const QString& k);
+void dologEnvDel(const QString& k);
+void dologSql(const QString& sql);
 #endif // GLOBAL_H

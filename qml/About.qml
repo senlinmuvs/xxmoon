@@ -24,7 +24,7 @@ Popup {
         width: parent.width;
         height: parent.height;
         onClicked: {
-            setup_hot_key_pk.focus = false;
+            setup_hot_key_xm.focus = false;
             root.forceActiveFocus();
         }
     }
@@ -149,11 +149,11 @@ Popup {
                     y:5
                 }
                 HotkeyInput {
-                    id: setup_hot_key_pk
+                    id: setup_hot_key_xm
                     width: parent.width/2 + leftOff - 4
                     function submit() {
-                        if(oldHotKeyPK !== setup_hot_key_pk.text) {
-                            $a.setCfg("hot_key_pk", setup_hot_key_pk.text);
+                        if(oldHotKeyPK !== setup_hot_key_xm.text) {
+                            $a.setCfg("hot_key_xm", setup_hot_key_xm.text);
                         }
                     }
                 }
@@ -197,17 +197,17 @@ Popup {
         $a.getCfg(root);
     }
     onClosed: {
-        setup_hot_key_pk.submit();
+        setup_hot_key_xm.submit();
     }
 
     function op() {
         open();
     }
     function onCfg(cfg) {
-        setup_data_path.text = cfg['data_dir'];
+        setup_data_path.text = cfg['dataDir'];
 //        setup_current_user.text = cfg['current_user'];
         setup_editor.text = cfg['editor'];
-        setup_hot_key_pk.text = cfg['hot_key_pk'];
-        oldHotKeyPK = setup_hot_key_pk.text;
+        setup_hot_key_xm.text = cfg['hotKeyXm'];
+        oldHotKeyPK = setup_hot_key_xm.text;
     }
 }

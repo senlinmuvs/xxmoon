@@ -81,7 +81,6 @@ public:
     Q_INVOKABLE void close(int r = 0);
     Q_INVOKABLE void checkTmpFile();
     Q_INVOKABLE void plainText(QString html, uint cbid);
-    Q_INVOKABLE bool checkAuth(QString auth, bool save);
     Q_INVOKABLE void getCfg(QObject *obj);
     Q_INVOKABLE QString getKeyName(int key, int modifiers);
     Q_INVOKABLE void setCfg(QString k, QString v);

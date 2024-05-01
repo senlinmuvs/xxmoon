@@ -10,7 +10,7 @@ public:
 
     virtual void init();
     uint increID();
-    virtual uint getMaxId() const {
+    virtual uint getMaxId() {
         return 0;
     }
 

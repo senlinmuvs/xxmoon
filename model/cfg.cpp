@@ -1,5 +1,4 @@
 #include "cfg.h"
-#include "com/util.h"
 #include <QVariantMap>
 #include <QDebug>
 Cfg::Cfg() {
@@ -9,7 +8,7 @@ QString Cfg::toString() {
     QString s;
     QVariantMap m = toVMap();
     QList<QString> ks = m.keys();
-    for(QString k: ks) {
+    for(const QString& k: ks) {
         s += k + " = " + m.value(k).toString() + "\n";
     }
     s = s.remove(s.length()-1, 1);
@@ -17,23 +16,51 @@ QString Cfg::toString() {
 }
 
 QVariantMap Cfg::toVMap() {
-    QVariantMap m;
-    m.insert("data_dir", dataDir);
-    m.insert("cfgFileName", cfgFileName);
-    m.insert("ctrl", ctrl);
-    m.insert("exchange_data_dir", exchangeDataDir);
-    m.insert("tmpDir", tmpDir);
-    m.insert("imgDir", imgDir);
-    m.insert("appName", appName);
-    m.insert("user", user);
-    m.insert("log_level", logLevel);
-    m.insert("logFile", logFile);
-    m.insert("editor", editor);
-    m.insert("hot_key_pk", hot_key_pk);
-    m.insert("hot_key_show", hot_key_show);
-    m.insert("lang", lang);
-    m.insert("ui_highlight_color", ui_highlight_color);
-    return m;
+    QVariantMap map;
+    map["dataDir"] = dataDir;
+    map["exchangeDataDir"] = exchangeDataDir;
+    map["initImgNamePre"] = initImgNamePre;
+    map["appName"] = appName;
+    map["xmCfgDir"] = xmCfgDir;
+    map["syncUrl"] = syncUrl;
+    map["server"] = server;
+    map["cid"] = cid;
+    map["user"] = user;
+    map["pwd"] = pwd;
+    map["userBaseDir"] = userBaseDir;
+    map["dbFileName"] = dbFileName;
+    map["dbFile"] = dbFile;
+    map["imgDir"] = imgDir;
+    map["fileDir"] = fileDir;
+    map["tmpDir"] = tmpDir;
+    map["logLevel"] = logLevel;
+    map["logFile"] = logFile;
+    map["localCfgFileName"] = localCfgFileName;
+    map["tmpPKPre"] = tmpPKPre;
+    map["tmpNotePre"] = tmpNotePre;
+    map["editor"] = editor;
+    map["ctrl"] = ctrl;
+    map["cfgFile"] = cfgFile;
+    map["hotKeyXm"] = hotKeyXm;
+    map["hotKeyShow"] = hotKeyShow;
+    map["lang"] = lang;
+    map["tmpActFile"] = tmpActFile;
+    map["uiQuoteBgColor"] = uiQuoteBgColor;
+    map["uiQuoteTextColor"] = uiQuoteTextColor;
+    map["uiHighlightColor"] = uiHighlightColor;
+    map["kindleFlag"] = kindleFlag;
+    map["kindleFlagBj"] = kindleFlagBj;
+    map["simpleContKeyFront"] = simpleContKeyFront;
+    map["simpleContMaxLine"] = simpleContMaxLine;
+    map["regKindleFlag"] = regKindleFlag;
+    map["sitedir"] = sitedir;
+    map["sitename"] = sitename;
+    map["sitetitle"] = sitetitle;
+    map["siteDetailExtraId"] = siteDetailExtraId;
+    map["siteXmblogTag"] = siteXmblogTag;
+    map["port"] = port;
+    map["dologFile"] = dologFile;
+    return map;
 }
 
 void Cfg::updateDataDir(QString path) {

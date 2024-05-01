@@ -3,7 +3,9 @@
 BaseDao::BaseDao() {
     this->mutex = new QMutex();
 }
-BaseDao::~BaseDao(){};
+BaseDao::~BaseDao(){
+    delete mutex;
+};
 
 void BaseDao::init() {
     maxid = getMaxId();

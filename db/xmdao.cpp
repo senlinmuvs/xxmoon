@@ -5,7 +5,7 @@
 XMDao::XMDao() : BaseDao() {
 }
 
-QList<XM*> XMDao::gets(QSqlQuery q, QSqlRecord rec) {
+QList<XM*> XMDao::gets(QSqlQuery& q, QSqlRecord& rec) {
     QList<XM*> list;
     int colId = rec.indexOf("id");
     int colCid = rec.indexOf("cid");
@@ -48,44 +48,46 @@ QList<XM*> XMDao::gets(QSqlQuery q, QSqlRecord rec) {
         p->refids = refids;
         p->refimgids = refimgids;
         p->sticky = top;
-        list.insert(list.end(), p);
+        list << p;
     }
     return list;
 }
-void XMDao::add(XM *p) {
-    if(p->id <= 0){
-        p->id = increID();
+void XMDao::add(XM *xm) {
+    if(xm->id <= 0){
+        xm->id = increID();
     }
-    if(p->refids.isEmpty()) {
-        p->refids = extractRefIDs(p->cont);
+    if(xm->refids.isEmpty()) {
+        xm->refids = extractRefIDs(xm->cont);
     }
-    if(p->refimgids.isEmpty()) {
-        p->refimgids = extractRefimgids(p->refimgids);
+    if(xm->refimgids.isEmpty()) {
+        xm->refimgids = extractRefimgids(xm->refimgids);
     }
     //
     QString sql = "insert into xm(id, cid, cont, img, time, lst, stime, tags, bj, jm, refids, refimgids, top) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    if(p->time <= 0) {
-        p->time = ut::time::getCurSeconds();
+    if(xm->time <= 0) {
+        xm->time = ut::time::getCurSeconds();
     }
     QSqlQuery q;
     q.prepare(sql);
-    q.addBindValue(p->id);
-    q.addBindValue(p->cid);
-    q.addBindValue(p->cont.isNull() ? "" : p->cont);
-    q.addBindValue(p->img.isNull() ? "" : p->img);
-    q.addBindValue(p->time);
-    q.addBindValue(p->lst);
-    q.addBindValue(p->stime);
-    q.addBindValue(p->tags.isNull() ? "" : p->tags);
-    q.addBindValue(p->bj);
-    q.addBindValue(p->jm);
-    q.addBindValue(p->refids.isNull() ? "" : p->refids);
-    q.addBindValue(p->refimgids.isNull() ? "" : p->refimgids);
-    q.addBindValue(p->sticky);
+    q.addBindValue(xm->id);
+    q.addBindValue(xm->cid);
+    q.addBindValue(xm->cont.isNull() ? "" : xm->cont);
+    q.addBindValue(xm->img.isNull() ? "" : xm->img);
+    q.addBindValue(xm->time);
+    q.addBindValue(xm->lst);
+    q.addBindValue(xm->stime);
+    q.addBindValue(xm->tags.isNull() ? "" : xm->tags);
+    q.addBindValue(xm->bj);
+    q.addBindValue(xm->jm);
+    q.addBindValue(xm->refids.isNull() ? "" : xm->refids);
+    q.addBindValue(xm->refimgids.isNull() ? "" : xm->refimgids);
+    q.addBindValue(xm->sticky);
     bool r = q.exec();
     if(!r) {
-        lg->error(QString("add xm error %1 %2").arg(q.lastError().text()).arg(p->toString()));
+        lg->error(QString("add xm error %1 %2").arg(q.lastError().text(), xm->toString()));
+        return;
     }
+    dologXMNew(xm->id);
 }
 QString getSearchCondSql0(QString k) {
     QString sql = "(";
@@ -168,7 +170,7 @@ QList<XM*> XMDao::getNewXMList(uint cid, uint fromId) {
     return gets(q, rec);
 }
 
-uint XMDao::getMaxId() const {
+uint XMDao::getMaxId() {
     QSqlQuery q("select max(id) as maxid from xm");
     bool r = q.exec();
     if(!r) {
@@ -187,7 +189,7 @@ XM* XMDao::getXM(uint id) {
     bool r = q.exec();
     if(!r) {
         lg->error(QString("getXM error %1").arg(q.lastError().text()));
-        return NULL;
+        return nullptr;
     }
     QSqlRecord rec = q.record();
     QList<XM*> list = gets(q, rec);
@@ -195,7 +197,7 @@ XM* XMDao::getXM(uint id) {
         XM* xm = list.first();
         return xm;
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 QString XMDao::getTags(uint id) {
@@ -205,16 +207,16 @@ QString XMDao::getTags(uint id) {
         lg->error(QString("getTags error %1").arg(q.lastError().text()));
         return "";
     }
-    QSqlRecord rec = q.record();
     if(q.next()) {
         return q.value(0).toString();
     }
     return "";
 }
-void XMDao::deleteXM(uint id) {
-    db->execute("deleteXM", "delete from xm where id=:id", [=](QSqlQuery q) {
+bool XMDao::deleteXM(uint id) {
+    return db->execute("deleteXM", "delete from xm where id=:id", [=](QSqlQuery& q) {
         q.bindValue(":id", id);
     });
+
 }
 void XMDao::updateXM(uint id, QString cont, uint jm, uint lst) {
     QString refids = extractRefIDs(cont);
@@ -222,7 +224,7 @@ void XMDao::updateXM(uint id, QString cont, uint jm, uint lst) {
     if(lg->isDebug()){
         lg->trace(QString("updateXM id %1 cont %2 jm %3 lst %4").arg(id).arg(cont.length()).arg(jm).arg(lst));
     }
-    db->execute("updateXM", "update xm set cont=:cont,lst=:lst,jm=:jm,refids=:refids,refimgids=:refimgids where id=:id", [=](QSqlQuery q) {
+    bool ok = db->execute("updateXM", "update xm set cont=:cont,lst=:lst,jm=:jm,refids=:refids,refimgids=:refimgids where id=:id", [=](QSqlQuery& q) {
         q.bindValue(":id", id);
         q.bindValue(":lst", lst);
         q.bindValue(":cont", cont.isNull() ? "" : cont);
@@ -230,18 +232,27 @@ void XMDao::updateXM(uint id, QString cont, uint jm, uint lst) {
         q.bindValue(":refids", refids.isNull() ? "" : refids);
         q.bindValue(":refimgids", refimgids.isNull() ? "" : refimgids);
     });
+    if(ok) {
+        dologXMNew(id);
+    }
 }
 void XMDao::updateCid(uint xmid, uint cid) {
-    db->execute("updateCid", "update xm set cid=:cid where id=:id", [=](QSqlQuery q) {
+    bool ok = db->execute("updateCid", "update xm set cid=:cid where id=:id", [=](QSqlQuery& q) {
         q.bindValue(":cid", cid);
         q.bindValue(":id", xmid);
     });
+    if(ok) {
+        dologXMNew(xmid);
+    }
 }
 void XMDao::setTop(uint xmid, uint top) {
-    db->execute("setTop", "update xm set top=:top where id=:id", [=](QSqlQuery q) {
+    bool ok = db->execute("setTop", "update xm set top=:top where id=:id", [=](QSqlQuery& q) {
         q.bindValue(":top", top);
         q.bindValue(":id", xmid);
     });
+    if(ok) {
+        dologXMNew(xmid);
+    }
 }
 uint XMDao::countImgRefrence(QString imgLink) {
     QSqlQuery q;
@@ -260,10 +271,13 @@ uint XMDao::countImgRefrence(QString imgLink) {
 }
 
 void XMDao::updateXMTags(uint xmid, QString tags) {
-    db->execute("updateXMTags", "update xm set tags=:tags where id=:id", [=](QSqlQuery q) {
+    bool ok = db->execute("updateXMTags", "update xm set tags=:tags where id=:id", [=](QSqlQuery& q) {
         q.bindValue(":tags", tags.toStdString().c_str());
         q.bindValue(":id", xmid);
     });
+    if(ok) {
+        dologXMNew(xmid);
+    }
 }
 
 uint XMDao::countCol(uint cid) {
@@ -275,7 +289,6 @@ uint XMDao::countCol(uint cid) {
         lg->error(QString("countCol error %1").arg(q.lastError().text()));
         return 0;
     }
-    QSqlRecord rec = q.record();
     if(q.next()){
         uint n = q.value(0).toUInt();
         return n;
@@ -293,7 +306,6 @@ uint XMDao::getNextID(uint cid, uint id) {
         lg->error(QString("getNextID error %1").arg(q.lastError().text()));
         return 0;
     }
-    QSqlRecord rec = q.record();
     if(q.next()){
         uint id = q.value(0).toUInt();
         return id;
@@ -304,7 +316,6 @@ uint XMDao::getNextID(uint cid, uint id) {
         if(!suc){
             lg->error(QString("getNextID error %1").arg(q.lastError().text()));
         }
-        QSqlRecord rec = q.record();
         if(q.next()){
             uint id = q.value(0).toUInt();
             return id;
@@ -322,7 +333,6 @@ uint XMDao::getIDByImg(QString img) {
         lg->error(QString("getIDByImg error %1").arg(q.lastError().text()));
         return 0;
     }
-    QSqlRecord rec = q.record();
     if(q.next()){
         uint n = q.value(0).toUInt();
         return n;
@@ -338,7 +348,6 @@ uint XMDao::getSolveTime(uint id) {
         lg->error(QString("getSolveTime error %1").arg(q.lastError().text()));
         return 0;
     }
-    QSqlRecord rec = q.record();
     if(q.next()){
         uint n = q.value(0).toUInt();
         return n;
@@ -346,8 +355,11 @@ uint XMDao::getSolveTime(uint id) {
     return 0;
 }
 void XMDao::setSolveTime(uint id, uint stime) {
-    db->execute("setSolveTime", "update xm set stime=:stime where id=:id", [=](QSqlQuery q) {
+    bool ok = db->execute("setSolveTime", "update xm set stime=:stime where id=:id", [=](QSqlQuery& q) {
         q.bindValue(":stime", stime);
         q.bindValue(":id", id);
     });
+    if(ok) {
+        dologXMNew(id);
+    }
 }

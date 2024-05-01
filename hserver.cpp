@@ -162,7 +162,7 @@ void HServer::putData(const Request &req, Response &resp) {
             Note *n = Note::convNote(jo);
             Work *w = Work::convWork(jo);
             Work *w_ = workDao->get(w->name, w->author);
-            if(w_ == NULL) {
+            if(w_ == nullptr) {
                 w->id = workDao->increID();
                 w->time = n->time;
                 workDao->add(w);
@@ -175,7 +175,7 @@ void HServer::putData(const Request &req, Response &resp) {
             delete w_;
             delete n;
         }
-        QMetaObject::invokeMethod(engine->rootObjects()[0], "hasNew", Q_ARG(QVariant, QVariant::fromValue(ty)));
+        QMetaObject::invokeMethod(engine->rootObjects().at(0), "hasNew", Q_ARG(QVariant, QVariant::fromValue(ty)));
     });
     //
     QJsonObject respd = ut::json::create("st", 0);
@@ -196,7 +196,7 @@ void HServer::close() {
         lg->debug(QString("http server close"));
     }
     running = false;
-    if(s != NULL) {
+    if(s != nullptr) {
         s->stop();
         delete s;
     }
@@ -242,11 +242,11 @@ void HServer::exec(int cmd, QMap<QString,QString> param) {
         lg->debug(QString("send cmd %1 param %2").arg(cmd).arg(ut::str::mapToStr(param)));
     }
     if(cmd == Cmd_EnableServer) {
-        if(s == NULL || s->is_valid() || !s->is_running()) {
+        if(s == nullptr || s->is_valid() || !s->is_running()) {
             enableServer();
         }
     } else if(cmd == Cmd_DisableServer) {
-        if(s != NULL && s->is_running()) {
+        if(s != nullptr && s->is_running()) {
             disableServer();
         }
     } else if(cmd == Cmd_GenQRCode) {

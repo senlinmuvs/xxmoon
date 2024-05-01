@@ -16,8 +16,8 @@ public:
     QString getTags(uint id);
     QList<XM*> getXMList(QString k, uint cid, uint fromId);
     QList<XM*> getNewXMList(uint cid, uint fromId);
-    virtual uint getMaxId() const;
-    void deleteXM(uint id);
+    uint getMaxId() override;
+    bool deleteXM(uint id);
     void updateXM(uint id, QString cont, uint jm, uint lst = ut::time::getCurSeconds());
     void updateCid(uint pkId, uint cid);
     uint countImgRefrence(QString imgLink);
@@ -29,7 +29,7 @@ public:
     void setSolveTime(uint id, uint stime);
     void setTop(uint xmid, uint top);
 private:
-    QList<XM*> gets(QSqlQuery q, QSqlRecord rec);
+    QList<XM*> gets(QSqlQuery& q, QSqlRecord& rec);
 };
 
 #endif // XMDAO_H

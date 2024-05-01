@@ -103,7 +103,7 @@ void MenuManager::onOpen(bool checked) {
 }
 
 void MenuManager::onCopy(bool checked) {
-    if(receiver == NULL) {
+    if(receiver == nullptr) {
         lg->warn("onCopy receiver null");
     } else {
         QKeyEvent e(QEvent::KeyPress, Qt::Key_C, Qt::ControlModifier);
@@ -113,7 +113,7 @@ void MenuManager::onCopy(bool checked) {
 }
 
 void MenuManager::onPaste(bool checked) {
-    if(receiver == NULL) {
+    if(receiver == nullptr) {
         lg->warn("onPaste receiver null");
     } else {
         QKeyEvent e(QEvent::KeyPress, Qt::Key_V, Qt::ControlModifier);
@@ -123,7 +123,7 @@ void MenuManager::onPaste(bool checked) {
 }
 
 void MenuManager::onCut(bool checked) {
-    if(receiver == NULL) {
+    if(receiver == nullptr) {
         lg->warn("onCut receiver null");
     } else {
         QKeyEvent e(QEvent::KeyPress, Qt::Key_X, Qt::ControlModifier);
@@ -133,7 +133,7 @@ void MenuManager::onCut(bool checked) {
 }
 
 void MenuManager::onUndo(bool checked) {
-    if(receiver == NULL) {
+    if(receiver == nullptr) {
         lg->warn("onUndo receiver null");
     } else {
         QKeyEvent e(QEvent::KeyPress, Qt::Key_Z, Qt::ControlModifier);
@@ -143,7 +143,7 @@ void MenuManager::onUndo(bool checked) {
 }
 
 void MenuManager::onRedo(bool checked) {
-    if(receiver == NULL) {
+    if(receiver == nullptr) {
         lg->warn("onRedo receiver null");
     } else {
         QKeyEvent e(QEvent::KeyPress, Qt::Key_Z, Qt::ControlModifier | Qt::ShiftModifier);
@@ -153,7 +153,7 @@ void MenuManager::onRedo(bool checked) {
 }
 
 void MenuManager::onSelectAll(bool checked) {
-    if(receiver == NULL) {
+    if(receiver == nullptr) {
         lg->warn("onSelectAll receiver null");
     } else {
         QKeyEvent e(QEvent::KeyPress, Qt::Key_A, Qt::ControlModifier);
@@ -162,12 +162,12 @@ void MenuManager::onSelectAll(bool checked) {
     }
 }
 void MenuManager::onMinizime(bool checked) {
-    QObject *qmlRoot = engine->rootObjects()[0];
+    QObject *qmlRoot = engine->rootObjects().at(0);
     QWindow *w = qobject_cast<QWindow *>(qmlRoot);
     w->showMinimized();
 }
 void MenuManager::onZoom(bool checked) {
-    QObject *qmlRoot = engine->rootObjects()[0];
+    QObject *qmlRoot = engine->rootObjects().at(0);
     QWindow *w = qobject_cast<QWindow *>(qmlRoot);
     if (w->windowState() == Qt::WindowMaximized) {
         w->showNormal();

@@ -41,6 +41,7 @@ ApplicationWindow {
         MenuItem {
           text: $a.tr("Quit")
           onTriggered: {
+              Com.info("Tray Menu close");
               tray.hide();
               Qt.quit();
           }
@@ -52,7 +53,7 @@ ApplicationWindow {
         icon.source: "qrc:/assets/tray32.png"
         tooltip: $a.tr("xxmoon")
         menu: $a.getPlatform() === Com.platform_mac ? null : trayMenu
-        onActivated: {
+        onActivated: function(reason) {
             if($a.getPlatform() === Com.platform_mac) {
                 if(reason === SystemTrayIcon.Trigger) {
                     $a.xm();
@@ -543,10 +544,6 @@ ApplicationWindow {
             Com.st(1, Com.msgs[st]);
         }
     }
-    function onClose() {
-        tray.hide();
-        Qt.quit();
-    }
     function dp(n) {
         return n;
     }
@@ -563,6 +560,9 @@ ApplicationWindow {
                 pageLoader.item.hasNewPK();
             }
         }
+    }
+    function _alert(msg, autoclose=1) {
+        alert(msg, autoclose, 0);
     }
     function alert(msg, autoclose=1, cb) {
         if(msg) {

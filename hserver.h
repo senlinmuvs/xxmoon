@@ -18,7 +18,7 @@ protected:
     void run();
 private:
     volatile bool enable;
-    SSLServer *s = NULL;
+    SSLServer *s = nullptr;
     qint64 qrlst;
     QString curQRcode;
     QList<std::tuple<QString, qint64>> devs; //logined devices

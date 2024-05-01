@@ -9,27 +9,45 @@ void CategoryDao::add(Category *c) {
         c->id = increID();
     }
     QString insert_sql = "insert into category(id, name, i, x, m) values(:id,:name,:i,:x,:jm)";
-    db->execute("add category", insert_sql, [&c](QSqlQuery q) {
+    bool ok = db->execute("add category", insert_sql, [&c](QSqlQuery& q) {
         q.bindValue(":id", c->id);
         q.bindValue(":name", c->name);
         q.bindValue(":i", c->i);
         q.bindValue(":x", c->x);
-        q.bindValue(":m", c->m);
+        q.bindValue(":m", c->m.isNull()?"":c->m);
     });
+    if(ok) {
+        dologCategoryNew(c->id);
+    }
 }
 void CategoryDao::del(uint id) {
-    db->execute("del category", "delete from category where id=:id", [=](QSqlQuery q) {
+    bool ok = db->execute("del category", "delete from category where id=:id", [=](QSqlQuery& q) {
         q.bindValue(":id", id);
     });
+    if(ok) {
+        dologCategoryDel(id);
+    }
+}
+void CategoryDao::moveUp(uint fromIndex) {
+    QString sql = QString("update category set i=i-1 where i>%1").arg(fromIndex);
+    bool ok = db->execute("moveUp", sql, [=](QSqlQuery&) {
+    });
+    if(ok) {
+        dologSql(sql);
+    }
 }
 void CategoryDao::updateName(uint id, QString name) {
     QString sql = "update category set name=:name where id=:id";
-    db->execute("update name", sql, [=](QSqlQuery q) {
+    bool ok = db->execute("update name", sql, [=](QSqlQuery& q) {
         q.bindValue(":id", id);
         q.bindValue(":name", name);
     });
+    if(ok) {
+        dologCategoryNew(id);
+    }
 }
 void CategoryDao::updateIndex(uint id, uint srcIndex, uint dstIndex) {
+    // qDebug() << ">>>>updateIndex" << id << srcIndex << dstIndex;
     if(srcIndex == dstIndex) {
         return;
     }
@@ -47,8 +65,10 @@ void CategoryDao::updateIndex(uint id, uint srcIndex, uint dstIndex) {
     QSqlQuery q;
     q.exec(sql1);
     q.exec(sql2);
+    dologSql(sql1);
+    dologSql(sql2);
 }
-uint CategoryDao::getMaxId() const {
+uint CategoryDao::getMaxId() {
     QSqlQuery q("select max(id) as maxid from category");
     bool suc = q.exec();
     if(!suc){
@@ -93,7 +113,7 @@ Category* CategoryDao::getCategory(uint id) {
         c->m = m;
         return c;
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 Category* CategoryDao::getCategoryByIndex(uint index) {
@@ -118,7 +138,7 @@ Category* CategoryDao::getCategoryByIndex(uint index) {
         c->m = m;
         return c;
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 void fillData(QSqlQuery *q, vector<Category> *list) {
@@ -257,7 +277,9 @@ void CategoryDao::setX(uint id, uint x) {
     bool suc = q.exec();
     if(!suc) {
         lg->error(QString("categorydao setX error %1 %2 %3").arg(q.lastError().text()).arg(id).arg(x));
+        return;
     }
+    dologCategoryNew(id);
 }
 void CategoryDao::updatePwd(uint id, QString encrypted) {
     QSqlQuery q;
@@ -267,5 +289,7 @@ void CategoryDao::updatePwd(uint id, QString encrypted) {
     bool suc = q.exec();
     if(!suc) {
         lg->error(QString("categorydao updatePwd error %1 %2 %3").arg(q.lastError().text()).arg(id).arg(encrypted));
+        return;
     }
+    dologCategoryNew(id);
 }

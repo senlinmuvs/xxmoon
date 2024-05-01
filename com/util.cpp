@@ -61,7 +61,7 @@ namespace ut {
                 file.close();
                 return QString(cont);
             }
-            return nullptr;
+            return "";
         }
         QStringList allLines(QString file) {
             QString cont = readFile(file);
@@ -754,7 +754,7 @@ namespace ut {
                 return list;
             }
             QJsonArray ja = jv.toArray();
-            for(QJsonValue ajv : ja) {
+            for(const QJsonValue& ajv : ja) {
                 list.append(ajv.toInt());
             }
             return list;
@@ -770,6 +770,33 @@ namespace ut {
         }
         QJsonObject create(QString k1, QVariant v1, QString k2, QVariant v2, QString k3, QVariant v3, QString k4, QVariant v4) {
             return QJsonObject::fromVariantMap(col::createMap(k1, v1, k2, v2, k3, v3, k4, v4));
+        }
+        QJsonDocument parseJsonDoc(const QByteArray& d) {
+            QJsonParseError jsonError;
+            QJsonDocument document = QJsonDocument::fromJson(d, &jsonError);
+            if(document.isNull() || (jsonError.error != QJsonParseError::NoError)) {
+                qDebug() << QString("parseJsonDoc error document.isNull() %1 json error %2")
+                                    .arg(document.isNull()).arg(jsonError.error);
+            }
+            return document;
+        }
+        QJsonObject parseJson(const QByteArray& d) {
+            QJsonDocument doc = parseJsonDoc(d);
+            if(!doc.isNull() && doc.isObject()) {
+                return doc.object();
+            }
+            return QJsonObject();
+        }
+        QJsonArray parseJsonArr(const QByteArray& d) {
+            QJsonDocument doc = parseJsonDoc(d);
+            if(!doc.isNull() && doc.isArray()) {
+                return doc.array();
+            }
+            return QJsonArray();
+        }
+        QString toString(const QJsonObject& jo) {
+            QJsonDocument jsonDocument(jo);
+            return jsonDocument.toJson(QJsonDocument::Compact);
         }
     }
 }

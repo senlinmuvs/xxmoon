@@ -25,7 +25,7 @@ QStringList DocParser::parseQML(QString s, uint maxWidth) {
 void DocParser::addQmlList(QStringList& l, Doc& doc, uint maxWidth) {
 //    qDebug() << "addQmlList" << doc.cont << doc.ty;
     if(maxWidth <= 0) {
-        QWindow *w = qobject_cast<QWindow *>(engine->rootObjects()[0]);
+        QWindow *w = qobject_cast<QWindow *>(engine->rootObjects().at(0));
         maxWidth = w->width() - 20;
     } else {
         maxWidth -= 20;
@@ -54,7 +54,7 @@ void DocParser::addQmlList(QStringList& l, Doc& doc, uint maxWidth) {
         html = doESC(html);
         html = (css+filterQml(html)).trimmed();
         QString s = QString("Quote{text:\"%1\";width:parent?parent.width:0;color:'%2';textColor:'%3';}")
-                        .arg(html, cfg->ui_quote_bg_color, cfg->ui_quote_text_color);
+                        .arg(html, cfg->uiQuoteBgColor, cfg->uiQuoteTextColor);
         l << s;
     } else if(doc.ty == DocParser::TY_CODE) {
         QString cont = doc.cont.trimmed();
@@ -77,7 +77,7 @@ void DocParser::addQmlList(QStringList& l, Doc& doc, uint maxWidth) {
 }
 void DocParser::addHtmlList(QStringList& l, Doc& doc, uint maxWidth) {
     if(maxWidth <= 0) {
-        QWindow *w = qobject_cast<QWindow *>(engine->rootObjects()[0]);
+        QWindow *w = qobject_cast<QWindow *>(engine->rootObjects().at(0));
         maxWidth = w->width() - 20;
     } else {
         maxWidth -= 20;
@@ -474,8 +474,8 @@ QString DocParser::parseTxtHtml(QString s, uint maxWidth) {
 }
 QString DocParser::parseQuoteHtml(QString s, uint maxWidth) {
     QString param = QString::number(maxWidth);
-    s = ut::str::replaceAllTag(s, "```\n","```\n", "<pre class='quote' style='background:"+cfg->ui_quote_bg_color
-                               +";color:"+cfg->ui_quote_text_color+";'>", "</pre>", 0, param, "", eachTag);
+    s = ut::str::replaceAllTag(s, "```\n","```\n", "<pre class='quote' style='background:"+cfg->uiQuoteBgColor
+                               +";color:"+cfg->uiQuoteTextColor+";'>", "</pre>", 0, param, "", eachTag);
     return s;
 }
 QString DocParser::parseImgHtml(QString s, uint maxWidth) {

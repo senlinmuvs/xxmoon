@@ -3,6 +3,7 @@ QT += qml
 QT += quick
 QT += quickcontrols2
 QT += sql
+QT += network
 
 CONFIG += c++17
 
@@ -13,8 +14,10 @@ SOURCES += \
         action/xmaction.cpp \
         com/async.cpp \
         com/docparser.cpp \
+        com/filequeue.cpp \
         com/future.cpp \
         com/global.cpp \
+        com/http.cpp \
         com/log.cpp \
         com/mypinyin.cpp \
         com/qaesencryption.cpp \
@@ -22,6 +25,7 @@ SOURCES += \
         com/sm.cpp \
         com/sqlite_manager.cpp \
         com/sslhelper.cpp \
+        com/sync.cpp \
         com/trans.cpp \
         com/util.cpp \
         com/xm_format.cpp \
@@ -59,8 +63,10 @@ HEADERS += \
     com/async.h \
     com/const.h \
     com/docparser.h \
+    com/filequeue.h \
     com/future.h \
     com/global.h \
+    com/http.h \
     com/httplib.h \
     com/log.h \
     com/mypinyin.h \
@@ -69,6 +75,7 @@ HEADERS += \
     com/sm.h \
     com/sqlite_manager.h \
     com/sslhelper.h \
+    com/sync.h \
     com/trans.h \
     com/util.h \
     com/xm_format.h \

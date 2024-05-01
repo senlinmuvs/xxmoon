@@ -10,13 +10,11 @@
 #include <QProcess>
 #include <QSettings>
 #include <QTimer>
-#include "com/qaesencryption.h"
 #include <QCryptographicHash>
 #include <QHotkey>
 #include <QWindow>
-#include <iostream>
 #include <string>
-#include "com/myPinyin.h"
+#include "com/mypinyin.h"
 #include <QResource>
 #include <QSettings>
 #include <QSslCertificate>
@@ -26,11 +24,11 @@
 #include <com/sslhelper.h>
 
 tuple<QList<Work*>, QList<Note*>> parseNote(QString* cont);
-QString parseBookName(QString note);
-QString parseAuthorName(QString note);
-tuple<uint, uint> parsePos(QString note);
-qint64 parseTime(QString note);
-void redoDuplicates(QList<Note*> list);
+QString parseBookName(const QString& note);
+QString parseAuthorName(const QString& note);
+tuple<uint, uint> parsePos(const QString& note);
+qint64 parseTime(const QString& note);
+void redoDuplicates(const QList<Note*>& list);
 QMap<uint, QHotkey*> hotkMap;
 
 void initPath();
@@ -60,7 +58,7 @@ int App::getPlatform() {
 #endif
 }
 QString App::getCfgFile() {
-    return cfg->cfgFileName;
+    return cfg->cfgFile;
 }
 QString App::getComputerID() {
     QString uuid = ut::sys::iOPlatformUUID();
@@ -144,7 +142,7 @@ void App::import(QString path, QObject *obj) {
         }
         envDao->set(ENV_K_LAST_IMP_PATH, path);
         envDao->set(ENV_K_LAST_IMP_TIME, QDateTime::currentDateTime().toMSecsSinceEpoch());
-        if(obj != NULL) {
+        if(obj != nullptr) {
             QMetaObject::invokeMethod(obj, "onFinished",
                                   Q_ARG(QVariant, QVariant::fromValue(CONT_TYPE_BOOK)),
                                   Q_ARG(QVariant, QVariant::fromValue(size)),
@@ -159,12 +157,12 @@ void App::import(QString path, QObject *obj) {
 tuple<QList<Work*>, QList<Note*>> parseNote(QString* cont) {
     QList<Work*> works;
     QList<Note*> list;
-    QString flag = cfg->kindle_flag;
+    QString flag = cfg->kindleFlag;
     if(cont->indexOf(flag) < 0) {
         return make_tuple(works, list);
     }
     QStringList arr = cont->split(flag);
-    for(QString note:arr) {
+    for(QString& note:arr) {
         note = note.trimmed();
         if(lg->isDebug()) {
             lg->debug(QString("parsing note -> %1").arg(note));
@@ -193,7 +191,7 @@ tuple<QList<Work*>, QList<Note*>> parseNote(QString* cont) {
                             n->cont += s+ "\n";
                         }
                         n->cont = n->cont.trimmed();
-                        n->bj = str.contains(cfg->kindle_flag_bj);
+                        n->bj = str.contains(cfg->kindleFlagBj);
                         if(n->bj) {
                             n->cont = ":["+n->cont+"]";
                         }
@@ -208,11 +206,11 @@ tuple<QList<Work*>, QList<Note*>> parseNote(QString* cont) {
                                 break;
                             }
                         }
-                        Work *w = NULL;
+                        Work *w = nullptr;
                         if(wid == 0) {
                             w = workDao->get(n->book, n->author);
                         }
-                        if(w != NULL) {
+                        if(w != nullptr) {
                             if(n->time < w->time) {
                                 w->time = n->time;
                                 workDao->update(w);
@@ -239,7 +237,7 @@ tuple<QList<Work*>, QList<Note*>> parseNote(QString* cont) {
     return make_tuple(works, list);
 }
 
-QString parseBookName(QString line) {
+QString parseBookName(const QString& line) {
     if (line.length() > 0) {
         int i = line.lastIndexOf("(");
         if (i >= 0) {
@@ -250,7 +248,7 @@ QString parseBookName(QString line) {
     }
     return "";
 }
-QString parseAuthorName(QString line) {
+QString parseAuthorName(const QString& line) {
     if (line.length() > 0) {
         int i = line.lastIndexOf("(") + 1;
         int j = line.lastIndexOf(")");
@@ -279,7 +277,7 @@ vector<uint> findPos(string s) {
     }
     return {pos[0].toUInt(), pos[1].toUInt()};
 }
-tuple<uint, uint> parsePos(QString line) {
+tuple<uint, uint> parsePos(const QString& line) {
     string s = line.toStdString();
     QString pos[] = {"", ""};
     ushort i = 0;
@@ -299,7 +297,7 @@ tuple<uint, uint> parsePos(QString line) {
     }
     return make_tuple(pos[0].toUInt(), pos[1].toUInt());
 }
-qint64 parseTime(QString line) {
+qint64 parseTime(const QString& line) {
     if (line.length() > 0) {
         int i = line.indexOf("添加于");
         if (i >= 0) {
@@ -330,7 +328,7 @@ qint64 parseTime(QString line) {
 }
 
 //重新处理插入错误的项(time相同导致)，如果内容也相同则移除，内容不同则把time+1，加1还重复一直加
-void redoDuplicates(QList<Note*> list) {
+void redoDuplicates(const QList<Note*>& list) {
     int c = 0;
     for(Note* n:list) {
         if(lg->isDebug()){
@@ -384,7 +382,7 @@ void App::checkExport() {
     DB_Async->exe("checkExport", [=] {
         QFileInfo fi(cfg->exchangeDataDir + "/" + cfg->dbFileName);
         if(fi.exists()) {
-            uint lastExchangeVersion = envDao->getUInt(ENV_K_LAST_EXCHANGE_VERSION);
+            // uint lastExchangeVersion = envDao->getUInt(ENV_K_LAST_EXCHANGE_VERSION);
         }
     });
 }
@@ -402,8 +400,7 @@ void App::getLastPath(QObject *obj){
 }
 
 void App::showOrHide() {
-    qDebug() << "showOrHide";
-    QObject* root = engine->rootObjects()[0];
+    QObject* root = engine->rootObjects().at(0);
     QMetaObject::invokeMethod(root, "showOrHide");
 }
 void App::setGlobalHotkey(uint ty, QString k) {
@@ -425,7 +422,7 @@ void App::setGlobalHotkey(uint ty, QString k) {
             this->xm();
         } else if(ty == 1) {
             this->showOrHide();
-    }
+        }
     });
 }
 
@@ -439,7 +436,7 @@ void App::xm() {
         if(cont == "" && img.isNull()) {
             return;
         }
-        QObject *qmlRoot = engine->rootObjects()[0];
+        QObject *qmlRoot = engine->rootObjects().at(0);
         QVariant suc;
         QMetaObject::invokeMethod(qmlRoot, "startXM",
                                   Qt::ConnectionType::DirectConnection,
@@ -470,7 +467,7 @@ void App::tagList(QString k, uint target, QObject* obj) {
         QVariantList resp;
         for(Tag t:list) {
             t.n = countMap[t.id];
-            resp.insert(resp.end(), t.toVMap());
+            resp << t.toVMap();
         }
         if(lg->isDebug()) {
             lg->trace(QString("app.cpp tagList k %2 target %3").arg(k).arg(target));
@@ -493,7 +490,7 @@ void App::addTag(QString tag, QObject *obj) {
         } else {
             st = 1;
         }
-        alert(QObject::tr("Add Success!"));
+        alert(trans->tr("Add Success!"));
         QMetaObject::invokeMethod(obj, "onAddTag",
                     Q_ARG(QVariant, QVariant::fromValue(st)),
                     Q_ARG(QVariant, QVariant::fromValue(t->toVMap())));
@@ -518,7 +515,7 @@ void App::delTag(uint tid, QObject *obj) {
 void App::getTagById(uint id, uint cbid) {
     DB_Async->exe("getTagById", [=] {
         Tag *tag = tagDao->get(id);
-        if(tag != NULL) {
+        if(tag != nullptr) {
             sendMsg(cbid, tag->toVMap());
             delete tag;
         }
@@ -564,7 +561,7 @@ void App::set(QString k, QString v, bool init) {
 }
 
 void App::init0() {
-    QObject *obj = engine->rootObjects()[0];
+    QObject *obj = engine->rootObjects().at(0);
     QMetaObject::invokeMethod(obj, "init",
                 Q_ARG(QVariant, QVariant::fromValue(this->getUIData())));
 }
@@ -601,9 +598,9 @@ QVariantMap App::getUIData() {
     DB_Async->exe("get_view_type_sort", [f]{
         uint vt = envDao->getUInt(ENV_K_LAST_VIEW_TYPE);
         QString sort = envDao->get(ENV_K_LAST_SORT, "p");
-        f->set(QVariantList() << vt << sort);
+        f->setList(QVariantList() << vt << sort);
     });
-    QVariantList l = f->get();
+    QVariantList l = f->getList();
     data->insert(ENV_K_LAST_VIEW_TYPE, l.at(0));
     data->insert(ENV_K_LAST_SORT, l.at(1));
     data->insert(ENV_K_LAST_WH, wh.split(","));
@@ -617,43 +614,45 @@ QVariantMap App::getUIData() {
 }
 void App::encrypt(uint id, QString k, uint listWidth, uint cbid) {
     if(lg->isDebug()){
-        lg->debug(QString("encrypt pk id %1").arg(id));
+        lg->debug(QString("encrypt xm id %1").arg(id));
     }
     DB_Async->exe("encrypt", [=]{
-        XM *pk = xmDao->getXM(id);
+        XM *xm = xmDao->getXM(id);
         Com_Async->exe("encrypt", [=]{
-            if(pk && !pk->jm) {
-                if(pk->cont.length() > 0) {
-                    uint len = pk->cont.length();
-                    pk->cont = ut::cipher::encryptTextAES(k, pk->cont);
-                    if(lg->isDebug()){
-                        lg->debug(QString("encrypt pk cont len %1 -> %2").arg(len).arg(pk->cont.length()));
+            if(xm != nullptr) {
+                if(!xm->jm) {
+                    if(xm->cont.length() > 0) {
+                        uint len = xm->cont.length();
+                        xm->cont = ut::cipher::encryptTextAES(k, xm->cont);
+                        if(lg->isDebug()){
+                            lg->debug(QString("encrypt pk cont len %1 -> %2").arg(len).arg(xm->cont.length()));
+                        }
+                    }
+                    if(xm->img.length() > 0) {
+                        QString imgPath = cfg->imgDir + "/" + xm->img;
+                        QByteArray imgData = ut::img::toByteArray(imgPath);
+                        QByteArray encodeData = ut::cipher::encryptAES(k, imgData);
+                        QFileInfo tmpImgFile(cfg->tmpDir + "/" + xm->img);
+                        QDir d;
+                        if(!d.exists(tmpImgFile.path())) {
+                            d.mkpath(tmpImgFile.path());
+                        }
+                        ut::file::writeData(tmpImgFile.filePath(), encodeData);
+                        if(lg->isDebug()){
+                            lg->debug(QString("encrypt pk img %1 %2 tmp img %3 %4")
+                                          .arg(imgData.size()).arg(imgPath)
+                                          .arg(encodeData.size()).arg(tmpImgFile.filePath()));
+                        }
                     }
                 }
-                if(pk->img.length() > 0) {
-                    QString imgPath = cfg->imgDir + "/" + pk->img;
-                    QByteArray imgData = ut::img::toByteArray(imgPath);
-                    QByteArray encodeData = ut::cipher::encryptAES(k, imgData);
-                    QFileInfo tmpImgFile(cfg->tmpDir + "/" + pk->img);
-                    QDir d;
-                    if(!d.exists(tmpImgFile.path())) {
-                        d.mkpath(tmpImgFile.path());
-                    }
-                    ut::file::writeData(tmpImgFile.filePath(), encodeData);
-                    if(lg->isDebug()){
-                        lg->debug(QString("encrypt pk img %1 %2 tmp img %3 %4")
-                                   .arg(imgData.size()).arg(imgPath)
-                                   .arg(encodeData.size()).arg(tmpImgFile.filePath()));
-                    }
-                }
+                QVariantMap resp;
+                resp.insert("cid", xm->cid);
+                resp.insert("cont", xm->cont);
+                QString simpleCont = extractPKSimpleCont(xm->cont, "");
+                resp.insert("simple_qmls", doc_parser->parseQML(simpleCont, listWidth));
+                sendMsg(cbid, resp);
+                delete xm;
             }
-            QVariantMap resp;
-            resp.insert("cid", pk->cid);
-            resp.insert("cont", pk->cont);
-            QString simpleCont = extractPKSimpleCont(pk->cont, "");
-            resp.insert("simple_qmls", doc_parser->parseQML(simpleCont, listWidth));
-            sendMsg(cbid, resp);
-            delete pk;
         });
     });
 }
@@ -662,22 +661,22 @@ void App::decrypt(uint id, QString k, uint listWidth, uint cbid) {
         lg->debug(QString("decrypt %1").arg(id));
     }
     DB_Async->exe("decrypt", [=]{
-        XM *pk = xmDao->getXM(id);
+        XM *xm = xmDao->getXM(id);
         Com_Async->exe("decrypt", [=]{
-            if(pk && pk->jm) {
-                if(pk->cont.length() > 0) {
-                    uint len = pk->cont.length();
-                    pk->cont = ut::cipher::decryptTextAES(k, pk->cont);
+            if(xm && xm->jm) {
+                if(xm->cont.length() > 0) {
+                    uint len = xm->cont.length();
+                    xm->cont = ut::cipher::decryptTextAES(k, xm->cont);
                     if(lg->isDebug()){
                         lg->debug(QString("decrypt id %1 cont len %2 -> %3")
-                                   .arg(id).arg(len).arg(pk->cont.length()));
+                                   .arg(id).arg(len).arg(xm->cont.length()));
                     }
                 }
-                if(pk->img.length() > 0) {
-                    QString imgPath = cfg->imgDir + "/" + pk->img;
+                if(xm->img.length() > 0) {
+                    QString imgPath = cfg->imgDir + "/" + xm->img;
                     QByteArray data = ut::file::toByteArray(imgPath);
                     QByteArray decodeData = ut::cipher::decryptAES(k, data);
-                    QFileInfo tmpImgFile(cfg->tmpDir + "/" + pk->img);
+                    QFileInfo tmpImgFile(cfg->tmpDir + "/" + xm->img);
                     QDir d;
                     if(!d.exists(tmpImgFile.path())) {
                         d.mkpath(tmpImgFile.path());
@@ -689,9 +688,11 @@ void App::decrypt(uint id, QString k, uint listWidth, uint cbid) {
                     }
                 }
             }
-            pk->simpleCont = extractPKSimpleCont(pk->cont, "");
-            sendMsg(cbid, pk->toVMap(1,1,listWidth));
-            delete pk;
+            if(xm != nullptr) {
+                xm->simpleCont = extractPKSimpleCont(xm->cont, "");
+                sendMsg(cbid, xm->toVMap(1,1,listWidth));
+                delete xm;
+            }
         });
     });
 }
@@ -743,7 +744,7 @@ QString mainImgConvHtml(QString img) {
 QString extractName(QString cont, int len=16) {
     QString name = cont.mid(0, 200);
     //
-    QRegularExpression reg_title("# (.+)");
+    static QRegularExpression reg_title("# (.+)");
     QRegularExpressionMatch match = reg_title.match(cont);
     if(match.hasMatch()) {
         name = match.captured(1);
@@ -768,10 +769,10 @@ QString extractName(QString cont, int len=16) {
 }
 void setXMBlogTag(uint id) {
     DB_Async->exe("setXMBlogTag", [id] {
-        Tag *tag = tagDao->getByName(cfg->site_xmblog_tag);
+        Tag *tag = tagDao->getByName(cfg->siteXmblogTag);
         if(!tag) {
             tag = new Tag();
-            tag->tag = cfg->site_xmblog_tag;
+            tag->tag = cfg->siteXmblogTag;
             tagDao->add(tag);
         }
         XM *pk = xmDao->getXM(id);
@@ -792,7 +793,7 @@ void setXMBlogTag(uint id) {
 }
 void delXMBlogTag(uint id) {
     DB_Async->exe("delXMBlogTag", [id] {
-        Tag *tag = tagDao->getByName(cfg->site_xmblog_tag);
+        Tag *tag = tagDao->getByName(cfg->siteXmblogTag);
         if(!tag) {
             return;
         }
@@ -928,7 +929,9 @@ void App::genFile(uint fileType, uint type, uint gid, uint id, bool batch, QStri
                     file = xm_format->createXMFile(filename, "", xmCont, "");
                 } else {
                     if(fileType == FILE_TYPE_SITE) {
-                        file = createSiteFile(filename, *cont, w->time);
+                        if(w != nullptr) {
+                            file = createSiteFile(filename, *cont, w->time);
+                        }
 //                            setXMBlogTag(w->id);
                     }
                 }
@@ -941,7 +944,7 @@ void App::genFile(uint fileType, uint type, uint gid, uint id, bool batch, QStri
                             file = xm_format->createXMFile(filename, "", n->cont, "");
                         } else {
                             if(n->bj) {
-                                cont->append("<p"+NOTE_BJ_STYLE+">"+doc_parser->parseHtml(n->cont, maxWidth)+"</p>");
+                                cont->append("<p"+QString(NOTE_BJ_STYLE)+">"+doc_parser->parseHtml(n->cont, maxWidth)+"</p>");
                             } else {
                                 cont->append(doc_parser->parseHtml(n->cont, maxWidth));
                             }
@@ -980,7 +983,7 @@ void App::genFile(uint fileType, uint type, uint gid, uint id, bool batch, QStri
                 file = xm_format->createXMFile(filename, "", *cont, "");
             }
         }
-        QObject *root = engine->rootObjects()[0];
+        QObject *root = engine->rootObjects().at(0);
         QMetaObject::invokeMethod(root, "onGenFile",
                                   Q_ARG(QVariant, QVariant::fromValue(file)));
         delete cont;
@@ -1017,7 +1020,7 @@ void App::deleteFromSite(uint id, uint type) {
                                .replace(")", "[)]");
             QString regStr = "[<]li[>].+"+filename+".+([<]/li[>])?";
             qDebug() << "reg" << regStr;
-            QRegularExpression reg(regStr);
+            static QRegularExpression reg(regStr);
             QRegularExpressionMatchIterator it = reg.globalMatch(cont);
             if (it.hasNext()) {
                 QRegularExpressionMatch match = it.next();
@@ -1028,17 +1031,17 @@ void App::deleteFromSite(uint id, uint type) {
                     ut::file::writeText(indexFile, cont);
                 }
             }
-            alert(QObject::tr("Delete Success!"));
+            alert(trans->tr("Delete Success!"));
         }
         delXMBlogTag(id);
     });
 }
 
 QString getExtra(QString filename) {
-    if(cfg->site_detail_extra_id == 0) {
+    if(cfg->siteDetailExtraId == 0) {
         return "";
     }
-    XM *pk = xmDao->getXM(cfg->site_detail_extra_id);
+    XM *pk = xmDao->getXM(cfg->siteDetailExtraId);
     QString cont = pk->cont;
     if(cont.length() > 0) {
         QString tag1 = "---\n";
@@ -1358,7 +1361,7 @@ void App::checkTmpFile() {
         bool isNote = fileInfo.fileName().startsWith(cfg->tmpNotePre);
         if(isAct) {
             QString data = ut::file::readFile(cfg->tmpDir+"/"+cfg->tmpActFile);
-            QObject *qmlRoot = engine->rootObjects()[0];
+            QObject *qmlRoot = engine->rootObjects().at(0);
             if(data.length() > 0){
                 if(lg->isDebug()){
                     lg->debug(QString("act data %1").arg(data));
@@ -1404,7 +1407,7 @@ void App::checkTmpFile() {
 void App::updatePK0(uint id, QString cont) {
     DB_Async->exe("updatePK0", [=]{
         XM *pk = xmDao->getXM(id);
-        if(pk != NULL) {
+        if(pk != nullptr) {
             if(pk->cont != cont) {
                 if(!pk->jm) {
                     uint lst = ut::time::getCurSeconds();
@@ -1412,7 +1415,7 @@ void App::updatePK0(uint id, QString cont) {
 
                     pk->simpleCont = extractPKSimpleCont(cont, "");
                     pk->cont = cont;
-                    QObject *root = engine->rootObjects()[0];
+                    QObject *root = engine->rootObjects().at(0);
                     float w = ui::getUIVal(0).toFloat();
                     QMetaObject::invokeMethod(root, "onUpdatedPK",
                                               Q_ARG(QVariant, QVariant::fromValue(pk->toVMap(1, 1, w))));
@@ -1425,11 +1428,11 @@ void App::updatePK0(uint id, QString cont) {
 void App::updateNote0(uint id, QString cont) {
     DB_Async->exe("updateNote0", [=]{
         Note *n = noteDao->get(id);
-        if(n != NULL) {
+        if(n != nullptr) {
             if(n->cont != cont) {
                 noteDao->updateNote(id, n->pos0, n->pos1, cont);
                 n->cont = cont;
-                QObject *qmlRoot = engine->rootObjects()[0];
+                QObject *qmlRoot = engine->rootObjects().at(0);
                 float w = ui::getUIVal(1).toFloat();
                 QMetaObject::invokeMethod(qmlRoot, "onUpdatedNote",
                                           Q_ARG(QVariant, QVariant::fromValue(n->toVMap(1, w))));
@@ -1452,27 +1455,11 @@ QString convComputerIDToKey(QString cid) {
         bool ok;
         int n = QString(c).toInt(&ok, 36);
         if(ok) {
-            k += CODE_TABLE.at(n);
+            k += CODE_TABLE[n];
         }
     }
     return k;
 }
-
-bool App::checkAuth(QString auth, bool save) {
-    if(auth.length() > 50) {
-        QString k = convComputerIDToKey(getComputerID());
-        QByteArray hashKey = QCryptographicHash::hash(k.toUtf8(), QCryptographicHash::Sha512);
-        QString x = hashKey.toHex().toUpper();
-        if(x == auth) {
-            activated = true;
-            if(save) {
-                ut::file::writeText(cfg->auth_file, auth);
-            }
-        }
-    }
-    return activated;
-}
-
 void App::getCfg(QObject *obj) {
     DB_Async->exe("getCfg", [=] {
         QMetaObject::invokeMethod(obj, "onCfg", Q_ARG(QVariant, cfg->toVMap()));
@@ -1510,8 +1497,8 @@ void App::setCfg(QString k, QString v) {
     qDebug() << "setCfg" << k << v;
     QString newCfg;
     bool found = false;
-    if(ut::file::exists(cfg->cfgFileName)) {
-        QStringList lines = ut::file::allLines(cfg->cfgFileName);
+    if(ut::file::exists(cfg->cfgFile)) {
+        QStringList lines = ut::file::allLines(cfg->cfgFile);
         for(QString line: lines) {
             if(line.length() > 0 &&
                     !line.startsWith("#") &&
@@ -1529,24 +1516,24 @@ void App::setCfg(QString k, QString v) {
     if(!found) {
         newCfg += k+"="+v+"\n";
     }
-    ut::file::writeText(cfg->cfgFileName, newCfg.trimmed());
+    ut::file::writeText(cfg->cfgFile, newCfg.trimmed());
     //
-    if(k == "hot_key_pk"){
+    if(k == "hot_key_xm"){
         QHotkey *hk = hotkMap.take(0);
-        cfg->hot_key_pk = v;
+        cfg->hotKeyXm = v;
         if(hk) {
-            hk->destroyed();
+            emit hk->destroyed();
             delete hk;
         }
-        setGlobalHotkey(0, cfg->hot_key_pk);
+        setGlobalHotkey(0, cfg->hotKeyXm);
     } else if(k == "hot_key_show") {
         QHotkey *hk = hotkMap.take(1);
-        cfg->hot_key_show = v;
+        cfg->hotKeyShow = v;
         if(hk) {
-            hk->destroyed();
+            emit hk->destroyed();
             delete hk;
         }
-        setGlobalHotkey(0, cfg->hot_key_pk);
+        setGlobalHotkey(0, cfg->hotKeyXm);
     } else if(k == "editor") {
         cfg->editor = v;
     }
@@ -1563,13 +1550,13 @@ void App::openXMFile(QString file, QString pwd, uint cbid) {
 
 void App::importXM(QVariantMap pkdata) {
     DB_Async->exe("importXM", [=]{
-        XM *pk = new XM();
-        pk->fill(pkdata);
+        XM *xm = new XM();
+        xm->fill(pkdata);
         if(lg->isDebug()) {
-            lg->trace(QString("importXM pkdata %1 -> %2").arg(ut::str::mapToStr(pkdata)).arg(pk->toString()));
+            lg->trace(QString("importXM pkdata %1 -> %2").arg(ut::str::mapToStr(pkdata), xm->toString()));
         }
-        QObject* root = engine->rootObjects()[0];
-        if(!pk) {
+        QObject* root = engine->rootObjects().at(0);
+        if(!xm) {
             QMetaObject::invokeMethod(root, "onFinished",
                                   Q_ARG(QVariant, QVariant::fromValue(CONT_TYPE_PK)),
                                   Q_ARG(QVariant, QVariant::fromValue(-1)),
@@ -1579,10 +1566,10 @@ void App::importXM(QVariantMap pkdata) {
         }
         //copy资源
         QString year = ut::time::getYearStr();
-        QDir resDir(cfg->imgDir+"/tmp/"+pk->uuid);
+        QDir resDir(cfg->imgDir+"/tmp/"+xm->uuid);
         QFileInfoList files = resDir.entryInfoList();
         QMap<QString, QString> nameMap;
-        for(QFileInfo f:files) {
+        for(QFileInfo& f:files) {
 //            if(f.fileName().endsWith(".png")) {
                 QString path = cfg->imgDir + "/" + year;
                 QDir dir(path);
@@ -1609,18 +1596,18 @@ void App::importXM(QVariantMap pkdata) {
         }
 
         //创建数据
-        QStringList refs = extractImgsAsList(pk->cont);
+        QStringList refs = extractImgsAsList(xm->cont);
         if(lg->isDebug()){
             lg->debug(QString("exists main img %1 refs size %2")
-                       .arg(pk->img.length()>0).arg(refs.size()));
+                       .arg(xm->img.length()>0).arg(refs.size()));
         }
         //如果有图片则创建一个Resource Folder
-        Category* resCol = NULL;
+        Category* resCol = nullptr;
         uint resColID = categoryDao->getIDByName(FOLDER_RESOURCES);
         if(lg->isDebug()){
             lg->debug(QString("find res folder %1 %2").arg(resColID).arg(FOLDER_RESOURCES));
         }
-        if(pk->img.length() > 0 || refs.size() > 0) {
+        if(xm->img.length() > 0 || refs.size() > 0) {
             if(resColID <= 0) {
                 uint maxI = categoryDao->getMaxI();
                 resCol = new Category();
@@ -1634,14 +1621,14 @@ void App::importXM(QVariantMap pkdata) {
             }
         }
         //创建资源pk
-        if(pk->img.length() > 0) {
-            int i = pk->img.lastIndexOf("/");
+        if(xm->img.length() > 0) {
+            int i = xm->img.lastIndexOf("/");
             if(i > 0) {
-                QString newName = year + "/" + nameMap.value(pk->img.mid(i+1), "");
+                QString newName = year + "/" + nameMap.value(xm->img.mid(i+1), "");
                 if(lg->isDebug()){
-                    lg->debug(QString("rename main img %1 to %2").arg(pk->img).arg(newName));
+                    lg->debug(QString("rename main img %1 to %2").arg(xm->img).arg(newName));
                 }
-                pk->img = newName;
+                xm->img = newName;
             }
         }
         for(QString ref:refs) {
@@ -1649,7 +1636,7 @@ void App::importXM(QVariantMap pkdata) {
             if(i > 0) {
                 QString newName = year + "/" + nameMap.value(ref.mid(i+1), "");
                 if(newName.length() > 0){
-                    pk->cont.replace(ref, newName);
+                    xm->cont.replace(ref, newName);
                     if(lg->isDebug()) {
                         lg->debug(QString("replace ref %1 to %2").arg(ref, newName));
                     }
@@ -1668,14 +1655,14 @@ void App::importXM(QVariantMap pkdata) {
         //
         Category* defCol = categoryDao->getCategoryByIndex(0);
         if(defCol) {
-            pk->cid = defCol->id;
+            xm->cid = defCol->id;
         }
-        xmDao->add(pk);
+        xmDao->add(xm);
         if(lg->isDebug()) {
-            lg->debug(QString("add pk %1").arg(pk->toString()));
+            lg->debug(QString("add pk %1").arg(xm->toString()));
         }
         //
-        if(resCol == NULL && resColID > 0) {
+        if(resCol == nullptr && resColID > 0) {
             resCol = categoryDao->getCategory(resColID);
         }
         if(resCol) {
@@ -1695,7 +1682,7 @@ void App::importXM(QVariantMap pkdata) {
                                   Q_ARG(QVariant, QVariant::fromValue(-1)),
                                   Q_ARG(QVariant, QVariant::fromValue(0)));
         }
-        delete pk;
+        delete xm;
         delete resCol;
         delete defCol;
     });
@@ -1731,11 +1718,9 @@ void App::disableServer() {
 }
 
 void App::close(int r) {
+    lg->info("app close");
     if(r < 0){
         return;
-    }
-    if(lg->isDebug()){
-        lg->debug("close app");
     }
     DB_Async->exe("close", []{
         db->close();
@@ -1744,18 +1729,16 @@ void App::close(int r) {
     Com_Async->close();
     SM_Async->close();
     running = false;
-      
-    QObject* root = engine->rootObjects()[0];
-    QMetaObject::invokeMethod(root, "onClose");
-    //
-    for(uint ty: hotkMap.keys()) {
-        QHotkey *hk = hotkMap.take(ty);
-        if(hk) {
-            hk->destroyed();
+    QMutableMapIterator<uint, QHotkey*> iter(hotkMap);
+    while (iter.hasNext()) {
+        iter.next();
+        QHotkey* hk = iter.value();
+        if (hk) {
+            emit hk->destroyed();
+            iter.remove();
             delete hk;
         }
     }
-
     lg->close();
     db->close();
     sm->close();
@@ -1763,11 +1746,11 @@ void App::close(int r) {
     QDir(cfg->tmpDir).removeRecursively();
     QDir(cfg->imgDir+"/tmp").removeRecursively();
     
-    QThread::msleep(500);
+    DB_Async->wait();
+    Com_Async->wait();
+    SM_Async->wait();
     
-    if(lg->isDebug()){
-        lg->debug("close app done.");
-    }
+    lg->info("app close done");
 }
 
 void App::genQRCode(int cbid) {
@@ -1831,12 +1814,12 @@ void App::genCert(bool force, bool al) {
         QString c="ZH", o="Senli", cn="Senli", ou="Senli", l="Senli", st="SZ";
         if(SslHelper::generateCredentials(cert,key,c,o,cn,ou,l,st) != SslHelper::ErrorNone) {
             lg->error("ERROR: Could not generate certificate.");
-            if(al) alert(QObject::tr("cert gen fail"));
+            if(al) alert(trans->tr("cert gen fail"));
         } else {
             SslHelper::saveCertificate(cert, cfg->userBaseDir + "/public.crt");
             SslHelper::saveKey(key, cfg->userBaseDir + "/private.key");
             lg->info("cert gen suc");
-            if(al) alert(QObject::tr("cert gen suc"));
+            if(al) alert(trans->tr("cert gen suc"));
         }
     }
 }
@@ -2177,6 +2160,6 @@ QString App::tr(QString k) {
 }
 void App::cp(QString txt) {
     //注意以下是把<0xa0>替换成空格
-    txt.replace(" ", " ");
+    txt.replace(" ", " ");
     ut::cpb::setText(txt);
 }

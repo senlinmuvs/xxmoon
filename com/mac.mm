@@ -64,7 +64,7 @@ void Mac::loadBookmarks() {
                                                           options:NSURLBookmarkResolutionWithSecurityScope
                                                     relativeToURL:nil
                                               bookmarkDataIsStale:&isStale
-                                                            error:NULL];
+                                                            error:nullptr];
             BOOL y = (allowedUrl != nil && [allowedUrl startAccessingSecurityScopedResource]);
 //            [urls addObject: url];
 //            [userDefaults setObject:urls forKey:@"urls"];

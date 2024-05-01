@@ -18,7 +18,7 @@ public:
     void add(const QList<Work*> &list);
     void del(uint id);
     void update(Work *w);
-    virtual uint getMaxId() const;
+    uint getMaxId() override;
     QList<QString> getWorkTagList();
     uint count();
 };
