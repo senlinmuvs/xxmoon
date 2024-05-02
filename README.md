@@ -33,4 +33,5 @@
 ![](imgs/20211024135321.071.695.820.webp)
 ![](imgs/20211024135323.697.696.823.webp)
 
-[所有操作](https://github.com/senlinmuvs/xxmoon/wiki)
+所有操作: https://github.com/senlinmuvs/xxmoon/wiki
+服务端：https://github.com/senlinmuvs/xmserver
