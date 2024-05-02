@@ -4,15 +4,18 @@
 
 Timer::Timer(QObject *parent) : QObject(parent) {
 }
-Timer::~Timer() {
-    delete timer;
-}
 
 void Timer::init() {
-   timer = new QTimer();
-   connect(timer, &QTimer::timeout, this, &Timer::onTriggered);
-   timer->setSingleShot(true);
-   timer->start(2*1000);
+    QThread* thread = new QThread(this);
+    timer = new QTimer(this);
+    this->moveToThread(thread);
+    timer->moveToThread(thread);
+    connect(timer, &QTimer::timeout, this, &Timer::onTriggered);
+    timer->setSingleShot(true);
+    connect(thread, &QThread::started, timer, [&]() {
+        timer->start(2*1000);
+    });
+    thread->start();
 }
 
 void Timer::onTriggered() {

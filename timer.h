@@ -8,7 +8,6 @@ class Timer : public QObject {
     Q_OBJECT
 private:
     explicit Timer(QObject *parent = nullptr);
-    ~Timer();
 
 public:
     static Timer& INS() {

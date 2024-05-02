@@ -502,7 +502,7 @@ void setInitDoneTime() {
     loop.exec();
 }
 void Sync::start() {
-    // lg->info("sync start");
+    lg->info("sync start");
     bool initDone = ut::file::readFile(cfg->xmCfgDir+"/.init_done_time").toLongLong() > 0;
     if(initDone) {
         fq->dequeue([](const QString& msg)->bool{
