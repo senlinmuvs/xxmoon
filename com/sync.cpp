@@ -88,10 +88,14 @@ bool upfile(const QString file) {
     Future *f = new Future();
     QEventLoop loop;
     Http http;
+    http.timeout = 15000;
     // qDebug() << "upfile" << file << "params" << params;
     http.upload(url, params, file, [&,f](){
         lg->info(QString("upfile done %1").arg(file));
         f->set(QVariant(1));
+        loop.quit();
+    }, nullptr, [&](QNetworkReply::NetworkError err){
+        lg->error(QString("upload url %1 err %2").arg(url).arg(err));
         loop.quit();
     });
     loop.exec();
@@ -117,6 +121,7 @@ bool uprecord(const QString& table, const QString& k, const QString& v, const QS
     Future *f = new Future();
     QEventLoop loop;
     Http http;
+    http.timeout = 5000;
     http.post(url, params, [&,f](QJsonObject jo){
         int st = ut::json::getInt(jo, "st", -1);
         if(st != 0) {
@@ -124,6 +129,9 @@ bool uprecord(const QString& table, const QString& k, const QString& v, const QS
             lg->error(QString("uprecord error [%1 %2 %3] [st %4 msg %5]").arg(table, k, v).arg(st).arg(err));
         }
         f->set(QVariant(st));
+        loop.quit();
+    }, [&](QNetworkReply::NetworkError err){
+        lg->error(QString("post url %1 err %2").arg(url).arg(err));
         loop.quit();
     });
     loop.exec();
@@ -145,6 +153,7 @@ bool delRecord(const QString& table, const QString& k, const QString& v) {
     QString url = QString("https://%1/drecord").arg(cfg->server);
     QEventLoop loop;
     Http http;
+    http.timeout = 5000;
     Future *f = new Future();
     http.post(url, params, [&,f](QJsonObject jo){
         int st = ut::json::getInt(jo, "st", -1);
@@ -153,6 +162,9 @@ bool delRecord(const QString& table, const QString& k, const QString& v) {
             lg->error(QString("delRecord error [%1 %2 %3] [st %4 msg %5]").arg(table, k, v).arg(st).arg(err));
         }
         f->set(QVariant(st));
+        loop.quit();
+    }, [&](QNetworkReply::NetworkError err){
+        lg->error(QString("post url %1 err %2").arg(url).arg(err));
         loop.quit();
     });
     loop.exec();
@@ -169,6 +181,7 @@ bool delFile(const QString& file) {
     QString url = QString("https://%1/dfile").arg(cfg->server);
     QEventLoop loop;
     Http http;
+    http.timeout = 5000;
     Future *f = new Future();
     http.post(url, params, [&,f](QJsonObject jo){
         int st = ut::json::getInt(jo, "st", -1);
@@ -177,6 +190,9 @@ bool delFile(const QString& file) {
             lg->error(QString("delFile error [%1] [st %2 msg %3]").arg(file).arg(st).arg(err));
         }
         f->set(QVariant(st));
+        loop.quit();
+    }, [&](QNetworkReply::NetworkError err){
+        lg->error(QString("post url %1 err %2").arg(url).arg(err));
         loop.quit();
     });
     loop.exec();
@@ -197,6 +213,7 @@ bool uprecordBySql(QString sql) {
     QString url = QString("https://%1/uprecord_").arg(cfg->server);
     QEventLoop loop;
     Http http;
+    http.timeout = 5000;
     Future *f = new Future();
     http.post(url, params, [&,f](QJsonObject jo){
         int st = ut::json::getInt(jo, "st", -1);
@@ -205,6 +222,9 @@ bool uprecordBySql(QString sql) {
             lg->error(QString("uprecordBySql error [%1] [st %2 msg %3]").arg(sql).arg(st).arg(err));
         }
         f->set(QVariant(st));
+        loop.quit();
+    }, [&](QNetworkReply::NetworkError err){
+        lg->error(QString("post url %1 err %2").arg(url).arg(err));
         loop.quit();
     });
     loop.exec();
@@ -444,11 +464,15 @@ void setInitStartTime() {
     QString url = QString("https://%1/setInitStartTime").arg(cfg->server);
     QEventLoop loop;
     Http http;
+    http.timeout = 5000;
     http.post(url, params, [&loop](QJsonObject jo){
         int st = ut::json::getInt(jo, "st", -1);
         if(st != 0) {
             lg->error("setInitStartTime error");
         }
+        loop.quit();
+    }, [&](QNetworkReply::NetworkError err){
+        lg->error(QString("post url %1 err %2").arg(url).arg(err));
         loop.quit();
     });
     loop.exec();
@@ -461,6 +485,7 @@ void setInitDoneTime() {
     QString url = QString("https://%1/setInitDoneTime").arg(cfg->server);
     QEventLoop loop;
     Http http;
+    http.timeout = 5000;
     http.post(url, params, [&loop](QJsonObject jo){
         int st = ut::json::getInt(jo, "st", -1);
         if(st == 0) {
@@ -469,6 +494,9 @@ void setInitDoneTime() {
         } else {
             lg->error("setInitDoneTime error");
         }
+        loop.quit();
+    }, [&](QNetworkReply::NetworkError err){
+        lg->error(QString("post url %1 err %2").arg(url).arg(err));
         loop.quit();
     });
     loop.exec();
@@ -491,14 +519,21 @@ void Sync::start() {
         QString url = QString("https://%1/getInitDoneTime").arg(cfg->server);
         QEventLoop loop;
         Http http;
+        http.timeout = 5000;
         http.post(url, params, [&](QJsonObject jo){
-            qint64 t = ut::json::getQint64(jo, "t", 0);
-            if(t == 0) {
-                lg->info("sync first init data to server");
-                sync0();
-            } else {
-                ut::file::writeText(cfg->xmCfgDir+"/.init_done_time", QString::number(t));
+            int st = ut::json::getInt(jo, "st", -1);
+            if(st == 0) {
+                qint64 t = ut::json::getQint64(jo, "t", 0);
+                if(t == 0) {
+                    lg->info("sync first init data to server");
+                    sync0();
+                } else {
+                    ut::file::writeText(cfg->xmCfgDir+"/.init_done_time", QString::number(t));
+                }
             }
+            loop.quit();
+        }, [&](QNetworkReply::NetworkError err){
+            lg->error(QString("post url %1 err %2").arg(url).arg(err));
             loop.quit();
         });
         loop.exec();

@@ -8,6 +8,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QJsonObject>
+#include <QTimer>
 
 class Http : public QObject {
     Q_OBJECT
@@ -20,8 +21,11 @@ public:
     void get(const QString &url, CB_JSON onSuccess, CB_ERR onError = nullptr);
     void post(const QString &url, const QMap<QString, QString>& params, CB_JSON onSuccess, CB_ERR onError = nullptr);
 
+    int timeout = 30000;
+
 private:
     QNetworkAccessManager *networkAccessManager;
+    QTimer *timer;
     CB_INT64_2 onProgress;
     CB_JSON onSuccess;
     CB onUploaded;

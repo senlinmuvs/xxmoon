@@ -6,9 +6,8 @@
 #include <QHttpPart>
 #include <QUrlQuery>
 
-Http::Http(QObject *parent) :QObject(parent), networkAccessManager(new QNetworkAccessManager(this)) {
+Http::Http(QObject *parent) :QObject(parent), networkAccessManager(new QNetworkAccessManager(this)), timer(new QTimer(this)) {
 }
-
 void Http::upload(const QString &url, const QMap<QString, QString>& params, const QString &filePath, CB onUploaded, CB_INT64_2 onProgress, CB_ERR onError) {
     this->upload(url, params, QStringList() << filePath, onUploaded, onProgress, onError);
 }
@@ -43,6 +42,16 @@ void Http::upload(const QString &url, const QMap<QString, QString>& params, cons
 
     QNetworkReply *reply = networkAccessManager->post(QNetworkRequest(url), multiPart);
     multiPart->setParent(reply);
+    timer->setSingleShot(true);
+    timer->start(timeout); // timeout in milliseconds
+    connect(timer, &QTimer::timeout, this, [this, reply]() {
+        if (reply->isRunning()) {
+            reply->abort(); // abort the request if still running
+            if (this->onError) {
+                this->onError(QNetworkReply::TimeoutError); // Call onError with a timeout error
+            }
+        }
+    });
 
     connect(reply, &QNetworkReply::sslErrors, this, [reply](const QList<QSslError> &errors) {
         for (const QSslError &error : errors) {
@@ -75,17 +84,36 @@ void Http::get(const QString &url, CB_JSON onSuccess, CB_ERR onError) {
     this->onSuccess = onSuccess;
     this->onError = onError;
     QNetworkReply *reply = networkAccessManager->get(QNetworkRequest(url));
-
+    timer->setSingleShot(true);
+    timer->start(timeout); // timeout in milliseconds
+    connect(timer, &QTimer::timeout, this, [this, reply]() {
+        if (reply->isRunning()) {
+            reply->abort(); // abort the request if still running
+            if (this->onError) {
+                this->onError(QNetworkReply::TimeoutError); // Call onError with a timeout error
+            }
+        }
+    });
+    connect(reply, &QNetworkReply::sslErrors, this, [reply](const QList<QSslError> &errors) {
+        for (const QSslError &error : errors) {
+            // qDebug() << "ssl err" << error.error();
+            if (error.error() == QSslError::SelfSignedCertificate || error.error() == QSslError::HostNameMismatch) {
+                reply->ignoreSslErrors();
+            }
+        }
+    });
+    connect(reply, &QNetworkReply::errorOccurred, this, [this, reply](QNetworkReply::NetworkError err){
+        if(this->onError) {
+            this->onError(err);
+        }
+        reply->deleteLater();
+    });
     connect(reply, &QNetworkReply::finished, this, [this, reply]() {
         if (reply->error() == QNetworkReply::NoError) {
             QByteArray resp = reply->readAll();
             QJsonObject jo = ut::json::parseJson(resp);
             if(this->onSuccess) {
                 this->onSuccess(jo);
-            }
-        } else {
-            if(this->onError) {
-                this->onError(reply->error());
             }
         }
         reply->deleteLater();
@@ -108,6 +136,16 @@ void Http::post(const QString &url, const QMap<QString, QString>& params, CB_JSO
     }
     QByteArray postData = urlQuery.query(QUrl::FullyEncoded).toUtf8();
     QNetworkReply *reply = networkAccessManager->post(request, postData);
+    timer->setSingleShot(true);
+    timer->start(timeout); // timeout in milliseconds
+    connect(timer, &QTimer::timeout, this, [this, reply]() {
+        if (reply->isRunning()) {
+            reply->abort(); // abort the request if still running
+            if (this->onError) {
+                this->onError(QNetworkReply::TimeoutError); // Call onError with a timeout error
+            }
+        }
+    });
     connect(reply, &QNetworkReply::sslErrors, this, [reply](const QList<QSslError> &errors) {
         for (const QSslError &error : errors) {
             // qDebug() << "ssl err" << error.error();
@@ -128,10 +166,6 @@ void Http::post(const QString &url, const QMap<QString, QString>& params, CB_JSO
             QJsonObject jo = ut::json::parseJson(resp);
             if(this->onSuccess) {
                 this->onSuccess(jo);
-            }
-        } else {
-            if(this->onError) {
-                this->onError(reply->error());
             }
         }
         reply->deleteLater();

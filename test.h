@@ -7,10 +7,6 @@
 #include <QClipboard>
 #include <QTimer>
 #include <com/http.h>
-#include "com/fqueue/ConsumerThread.h"
-#include "com/fqueue/FileStorage.h"
-#include "com/fqueue/ProducerThread.h"
-#include "com/fqueue/ThreadSafeQueue.h"
 #include "com/util.h"
 #include "com/global.h"
 #include "com/docparser.h"
@@ -273,7 +269,19 @@ void test15() {
 
 void test16() {
     qDebug() << "------------------------- TEST 16 Start ----------------------------";
-
+    QMap<QString, QString> params;
+    QEventLoop loop;
+    Http http;
+    http.timeout = 2000;
+    qDebug() << "post timeout" << http.timeout;
+    http.post("https://localhost/test", params, [&](QJsonObject& jo){
+        qDebug() << "resp" << jo;
+        loop.quit();
+    }, [&](QNetworkReply::NetworkError err){
+        qDebug() << "err" << err;
+        loop.quit();
+    });
+    loop.exec();
     qDebug() << "------------------------- TEST 16 End ------------------------------";
 }
 #endif // TEST_H
