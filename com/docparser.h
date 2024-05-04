@@ -35,7 +35,7 @@ public:
             this->tag0 = "";
             this->tag1 = "";
         }
-        explicit DocTag(int ty, QString tag0, QString tag1) {
+        explicit DocTag(int ty, const QString& tag0, const QString& tag1) {
             this->ty = ty;
             this->tag0 = tag0;
             this->tag1 = tag1;
@@ -60,7 +60,7 @@ public:
         QString cont = "";
 
         explicit Doc();
-        explicit Doc(int ty, QString cont) {
+        explicit Doc(int ty, const QString& cont) {
             this->ty = ty;
             this->cont = cont;
         }

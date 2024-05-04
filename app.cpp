@@ -1,4 +1,5 @@
 #include "app.h"
+#include "timer.h"
 #include "com/global.h"
 #include <QDesktopServices>
 #include <QDir>
@@ -1749,7 +1750,7 @@ void App::close(int r) {
     DB_Async->wait();
     Com_Async->wait();
     SM_Async->wait();
-    
+    Timer::INS().close();
     lg->info("app close done");
 }
 

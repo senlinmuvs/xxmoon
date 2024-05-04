@@ -192,7 +192,7 @@ namespace ut {
         }
         QVariantList replaceTag(QString txt,int fromIndex,QString srcTag1,QString srcTag2,
                                 QString dstTag1,QString dstTag2,int mode, QString param, QString notContains,
-                                QVariantList (*cb)(QString srcTag1, QString srcTag2, QString dstTag1, QString dstTag2, QString k,QString param)) {
+                                QVariantList (*cb)(const QString& srcTag1, const QString& srcTag2, const QString& dstTag1, const QString& dstTag2, QString k, const QString& param)) {
             QString s = "";
             bool pendingSrcTag1 = false;
             int srcTag1Index = -1;
@@ -291,7 +291,7 @@ namespace ut {
             return {txt, endIndex};
         }
         QString replaceAllTag(QString txt,QString srcTag1,QString srcTag2,QString dstTag1,QString dstTag2,int mode, QString param, QString notContains,
-                              QVariantList (*cb)(QString srcTag1, QString srcTag2, QString dstTag1, QString dstTag2, QString k, QString param)) {
+                              QVariantList (*cb)(const QString& srcTag1, const QString& srcTag2, const QString& dstTag1, const QString& dstTag2, QString k, const QString& param)) {
             int from = 0;
             while(true) {
                 if(from < 0 || from >= txt.length()-1) {

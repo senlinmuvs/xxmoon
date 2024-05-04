@@ -6,7 +6,7 @@ Timer::Timer(QObject *parent) : QObject(parent) {
 }
 
 void Timer::init() {
-    QThread* thread = new QThread(this);
+    thread = new QThread(this);
     timer = new QTimer(this);
     this->moveToThread(thread);
     timer->moveToThread(thread);
@@ -23,4 +23,12 @@ void Timer::onTriggered() {
         sy->start();
     }
     timer->start(2*1000);
+}
+
+void Timer::close() {
+    QMetaObject::invokeMethod(timer, "stop", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(thread, "quit", Qt::QueuedConnection);
+    if (QThread::currentThread() != thread) {
+        thread->wait();
+    }
 }

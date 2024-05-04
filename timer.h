@@ -9,16 +9,18 @@ class Timer : public QObject {
 private:
     explicit Timer(QObject *parent = nullptr);
 
+    QThread* thread;
+    QTimer *timer;
+
 public:
     static Timer& INS() {
         static Timer ins;
         return ins;
     }
 
-     QTimer *timer;
-     void init();
-     void onTriggered();
-signals:
+    void init();
+    void onTriggered();
+    void close();
 };
 
 #endif // TIMER_H

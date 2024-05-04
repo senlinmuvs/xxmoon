@@ -40,10 +40,10 @@ namespace ut {
         QVariantList replaceTag(QString txt,int fromIndex,QString srcTag1,QString srcTag2,
                                 QString dstTag1,QString dstTag2,int mode = 0,
                                 QString param = "", QString notContains = "",
-                                QVariantList (*cb)(QString srcTag1, QString srcTag2, QString dstTag1, QString dstTag2, QString k, QString param) = nullptr);
+                                QVariantList (*cb)(const QString& srcTag1, const QString& srcTag2, const QString& dstTag1, const QString& dstTag2, QString& k, const QString& param) = nullptr);
         QString replaceAllTag(QString txt,QString srcTag1,QString srcTag2,QString dstTag1,QString dstTag2,int mode = 0,
                               QString param = "", QString notContains = "",
-                              QVariantList (*cb)(QString srcTag1, QString srcTag2, QString dstTag1, QString dstTag2, QString k, QString param) = nullptr);
+                              QVariantList (*cb)(const QString& srcTag1, const QString& srcTag2, const QString& dstTag1, const QString& dstTag2, QString k, const QString& param) = nullptr);
         QString mapToStr(QMap<QString, QString> map);
         QString mapToStr(QVariantMap map);
         QString listToStr(QStringList list);

@@ -12,7 +12,7 @@ DocParser::DocParser() {
 QString DocParser::parseHtml(QString s, uint maxWidth) {
     QStringList l = parse0(false, s, maxWidth);
     QString html = "";
-    for(QString s:l) {
+    for(QString& s:l) {
         html += s;
     }
     return html;
@@ -201,10 +201,10 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
     }
     return l;
 }
-QString fixUrl4Escaped(QString url) {
+QString fixUrl4Escaped(QString& url) {
     return url.replace("&amp;", "&");
 }
-QVariantList eachTag(QString srcTag1, QString srcTag2, QString dstTag1, QString dstTag2, QString k, QString param) {
+QVariantList eachTag(const QString& srcTag1, const QString& srcTag2, const QString& dstTag1, const QString& dstTag2, QString k, const QString& param) {
     if(srcTag1 == "![") {
         int i = k.lastIndexOf(":");
         int n = 0;
@@ -247,11 +247,11 @@ QVariantList eachTag(QString srcTag1, QString srcTag2, QString dstTag1, QString 
     } else if(srcTag1 == "---\n" && srcTag2 == "---\n") {
         QStringList lines = k.split("\n");
         QString html = "";
-        for(QString line: lines) {
+        for(QString& line: lines) {
             if(!line.isEmpty() && line != "<br/>") {
                 QString tr = "";
                 QStringList tds = line.split("|");
-                for(QString td:tds) {
+                for(QString& td:tds) {
                     tr += "<td>"+td+"</td>";
                 }
                 html += "<tr>"+tr+"</tr>";
@@ -365,13 +365,13 @@ QString DocParser::filterQml(QString s) {
 //    s = s.replace("</p>\n<p","</p><br><p");
     //用循环替换上面一堆，用来先解决上面注释中第三种情况
     QStringList arr = {"h1", "h2", "h3", "div", "p"};
-    for(QString tag : arr) {
-        for(QString tagx : arr) {
+    for(QString& tag : arr) {
+        for(QString& tagx : arr) {
             s = s.replace("</"+tagx+">\n<"+tag,"</"+tagx+"><p style='line-height:20px'>&nbsp;</p><"+tag);
         }
     }
     //解决上面注释中第一种情况
-    for(QString tag : arr) {
+    for(QString& tag : arr) {
         s = s.replace("\n<"+tag,"<"+tag);
     }
     s = s.replace("\n","<br>");
