@@ -268,7 +268,7 @@ bool processMessage(const QString& msg) {
                 key = "wid";
             }
             bool ok0 = delRecord(table, key, valueOfKey);
-            bool ok1 = false;
+            bool ok1 = true;
             if(parts.length() > 2) {
                 QString img = parts[2];
                 if(!img.isEmpty()) {

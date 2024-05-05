@@ -2017,6 +2017,10 @@ bool App::importDouban() {
                     w->time = n->time;
                     Work *w_ = workDao->get(w->name);
                     if(w_ && w_->id > 0) {
+                        if(w_->fro != w->fro) {
+                            w_->fro = w->fro;
+                            workDao->update(w_);
+                        }
                         wid = w_->id;
                     } else {
                         workDao->add(w);
@@ -2118,6 +2122,10 @@ bool App::importWechatRead() {
                     w->time = n->time;
                     Work *w_ = workDao->get(w->name, w->author);
                     if(w_ && w_->id > 0) {
+                        if(w_->fro != w->fro) {
+                            w_->fro = w->fro;
+                            workDao->update(w_);
+                        }
                         wid = w_->id;
                     } else {
                         workDao->add(w);
