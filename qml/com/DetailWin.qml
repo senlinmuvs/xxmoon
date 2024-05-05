@@ -8,7 +8,7 @@ Window {
     id: root
     x: screen.width/2 - width/2
     y: screen.height/2 - height/2
-    property string name
+    property string name:"dw_0"
     flags: Qt.Window
     width: Com.min(800, screen.width/3*2)
     height: Com.min(900, screen.height/5*4)
@@ -23,11 +23,20 @@ Window {
         if(!window.win_detail_refs) {
             window.win_detail_refs = {};
         }
-        window.win_detail_refs[name] = 1;
+        window.win_detail_refs[name] = root;
         center();
         show();
         raise();
         requestActivate();
+
+        // console.log("------------------------------------------------------");
+        // console.log("window.win_detail_index=", window.win_detail_index, name);
+        // if(window.win_detail_refs) {
+        //     for(let k in window.win_detail_refs) {
+        //         console.log("window.win_detail_refs=", k, window.win_detail_refs[k]);
+        //     }
+        // }
+        // console.log("------------------------------------------------------");
 
         let detail_delegate = {
             getTagManager: function() {
