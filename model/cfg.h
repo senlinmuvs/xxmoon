@@ -11,7 +11,7 @@ public:
 
     QString dataDir = QDir::homePath();
     QString exchangeDataDir = "";
-    QString initImgNamePre = "2020";
+    QString initImgNamePre = "";
     QString appName = "xxmoon";
     QString xmCfgDir = QDir::homePath() + "/."+appName;
     QString syncUrl = "";
@@ -26,7 +26,7 @@ public:
     QString fileDir = userBaseDir + "/files";
     QString tmpDir = userBaseDir + "/tmp";
     QString logLevel = "error";
-    QString logFile = dataDir + "/" + appName + "/log.txt";
+    QString logFile = xmCfgDir + "/"+ user + ".log";
     QString localCfgFileName = xmCfgDir + "/.xm";
     QString tmpPKPre = "xm_";
     QString tmpNotePre = "note_";

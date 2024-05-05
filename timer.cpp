@@ -27,6 +27,7 @@ void Timer::onTriggered() {
 
 void Timer::close() {
     QMetaObject::invokeMethod(timer, "stop", Qt::QueuedConnection);
+    //thread是timer的线程不能在别的线程里执行quit，和stop一样
     QMetaObject::invokeMethod(thread, "quit", Qt::QueuedConnection);
     if (QThread::currentThread() != thread) {
         thread->wait();

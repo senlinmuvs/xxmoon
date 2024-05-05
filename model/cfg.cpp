@@ -66,8 +66,6 @@ QVariantMap Cfg::toVMap() {
 void Cfg::updateDataDir(QString path) {
     dataDir = path;
     userBaseDir = dataDir + "/" + appName + "/" + user;
-    logFile = dataDir + "/" + appName + "/log.txt";
-
     dbFile = userBaseDir + "/" + dbFileName;
     imgDir = userBaseDir + "/imgs";
     fileDir = userBaseDir + "/files";

@@ -191,7 +191,6 @@ void initCfg() {
     cfg->dbFile = cfg->userBaseDir + "/xxmoon.data";
     cfg->imgDir = cfg->userBaseDir + "/imgs";
     cfg->fileDir = cfg->dataDir + "/xxmoon/" + cfg->user + "/files";
-    cfg->logFile = cfg->dataDir + "/" + cfg->appName +"/log.txt";
     cfg->tmpDir = cfg->userBaseDir + "/tmp";
     if(cfg->sitedir == "") {
         cfg->sitedir = cfg->fileDir+"/"+"site";

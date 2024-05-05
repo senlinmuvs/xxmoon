@@ -101,17 +101,16 @@ Rectangle {
                     id: cols
                     width: parent.width - 30
                     spacing: 2
-                    property string qmls: simple_qmls
+                    property var qmls: simple_qmls
                     onQmlsChanged: {
-        //                console.log("simple_qmls changed", qmls);
+                        // console.log("simple_qmls changed", qmls, JSON.stringify(qmls));
+                        cols.data = [];
                         if(qmls) {
-                            cols.data = [];
-                            let arr = JSON.parse(qmls);
-        //                    console.log("updateSimpleQmls", qmls);
-                            for(let i = 0; i < arr.length; i++) {
-                                let qml = arr[i];
-        //                        console.log(">>>>", qml);
+                            let i = 0;
+                            for(let k in qmls) {
+                                let qml = qmls[k];
                                 Qt.createQmlObject(qml, cols, "dy_"+i);
+                                i++;
                             }
                         }
                     }

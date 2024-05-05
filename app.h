@@ -28,7 +28,7 @@ private:
     QMap<QString, uint> tmpFileLSTMap;
 
     void init0();
-    void updatePK0(uint id, QString cont);
+    void updateXM0(uint id, QString cont);
     void updateNote0(uint id, QString cont);
 
 public:

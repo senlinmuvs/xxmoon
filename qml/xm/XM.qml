@@ -601,13 +601,13 @@ Rectangle {
     }
     MyEditorPopup {
         id: edit_pk_popup
-        function submit() {
+        function submit(upeditor=0) {
             XM.submitXM(function(xm) {
                 if(xm) {
                     edit_pk_popup.bid = xm.id;
                 }
                 Com.info('submitXM cb', JSON.stringify(xm));
-            });
+            }, upeditor);
         }
         function cancel() {
             Com.info('cancelEditXM');
@@ -746,24 +746,26 @@ Rectangle {
         c.total = c.total + 1;
         list_model_xm.remove(xm_list_view.currentIndex);
     }
-    function onUpdatePK(pk) {
-        let arr = XM.getPKByIdInCurrentList(pk.id);
+    function onUpdateXM(xm, upeditor=1) {
+        let arr = XM.getPKByIdInCurrentList(xm.id);
         if(arr) {
-//            console.log("onUpdatePK", JSON.stringify(pk));
-            arr[1].simple_cont = pk.simple_cont;
-            arr[1].cont = pk.cont;
-            arr[1].simple_qmls = JSON.stringify(pk.simple_qmls);
-            arr[1].qmls = pk.qmls;
-            arr[1].lst = pk.lst;
-            if(detailView.visible) {
-                if(detailView.pk.id === pk.id) {
-                    detailView.update(pk);
+            // console.log("onUpdateXM", JSON.stringify(xm));
+            arr[1].simple_cont = xm.simple_cont;
+            arr[1].cont = xm.cont;
+            arr[1].simple_qmls = xm.simple_qmls;
+            arr[1].qmls = xm.qmls;
+            arr[1].lst = xm.lst;
+
+            if(edit_pk_popup.visible) {
+                if(upeditor) {
+                   if(edit_pk_popup.bid === xm.id){
+                       edit_pk_popup.updateText(xm.cont);
+                   }
                 }
-            }
-            if(edit_pk_popup.visible){
-               if(edit_pk_popup.bid === pk.id){
-                   edit_pk_popup.updateText(pk.cont);
-               }
+            } else if(detailView.visible) {
+                if(detailView.pk.id === xm.id) {
+                    detailView.update(xm);
+                }
             }
         }
     }

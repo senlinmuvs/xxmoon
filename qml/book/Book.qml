@@ -466,13 +466,13 @@ Rectangle {
     MyEditorPopup {
         id: edit_note_popup
         first_field_enable:true
-        function submit() {
+        function submit(upeditor=1) {
             Book.submitNote(function(n) {
                 if(n) {
                     edit_note_popup.bid = n.id;
                 }
                 Com.info('submitNote cb', JSON.stringify(n));
-            });
+            }, upeditor);
         }
         function cancel() {
             Book.submitNote(function(n) {
@@ -720,20 +720,21 @@ Rectangle {
     function fuckFocus(){
         work_list_view.forceActiveFocus();
     }
-    function onUpdateNote(n) {
+    function onUpdateNote(n, upeditor=0) {
         let arr = Book.getNoteByIdInCurrentList(n.id);
         if(arr) {
             arr[1].cont = n.cont;
-            arr[1].qmls = JSON.stringify(n.qmls);
-            if(detailView.visible) {
+            arr[1].qmls = n.qmls;
+            if(edit_note_popup.visible) {
+                if(upeditor) {
+                    if(edit_note_popup.bid === n.id){
+                        edit_note_popup.updateText(n.cont);
+                    }
+                }
+            } else if(detailView.visible) {
                 if(detailView.pk.id === n.id) {
                     detailView.update(Book.convNoteToPK(n));
                 }
-            }
-            if(edit_note_popup.visible) {
-               if(edit_note_popup.bid === n.id){
-                   edit_note_popup.updateText(n.cont);
-               }
             }
         }
     }

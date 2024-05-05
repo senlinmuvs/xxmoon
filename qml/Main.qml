@@ -403,12 +403,12 @@ ApplicationWindow {
             Com.st(1, $a.tr('generated failure.'));
         }
     }
-    function onUpdatedPK(pk) {
+    function onUpdatedXM(xm) {
         if($l.isDebug()) {
-            Com.trace("onUpdatedPK", JSON.stringify(pk));
+            Com.trace("onUpdatedXM", JSON.stringify(xm));
         }
-        if(pageLoader.item.onUpdatePK) {
-            pageLoader.item.onUpdatePK(pk);
+        if(pageLoader.item.onUpdateXM) {
+            pageLoader.item.onUpdateXM(xm);
         }
     }
     function onUpdatedNote(n) {

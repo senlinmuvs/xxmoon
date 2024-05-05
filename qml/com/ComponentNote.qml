@@ -28,15 +28,16 @@ Rectangle {
                     id: cols
                     width: parent.width - 40
                     spacing: 5
-                    property string qmlStr: qmls
-                    onQmlStrChanged: {
-    //                    console.log("qmlStr changed", qmlStr);
-                        if(qmls) {
-                            cols.data = [];
-                            let arr = JSON.parse(qmlStr);
-                            for(let i = 0; i < arr.length; i++) {
-                                let qml = arr[i];
+                    property var qmlArr: qmls
+                    onQmlArrChanged: {
+                       // console.log("qmlArr changed", JSON.stringify(qmlArr));
+                        cols.data = [];
+                        if(qmlArr) {
+                            let i = 0;
+                            for(let k in qmlArr) {
+                                let qml = qmlArr[k];
                                 let o = Qt.createQmlObject(qml, cols, "dy_"+i);
+                                i++;
                             }
                         }
                     }

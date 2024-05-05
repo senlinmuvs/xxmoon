@@ -199,7 +199,7 @@ function openOutEdit() {
     }
 }
 
-function submitXM(cb) {
+function submitXM(cb, upeditor=1) {
     let txt = edit_pk_popup.text;
     if(edit_pk_popup.bid <= 0) {
         if(txt==='') {
@@ -223,10 +223,7 @@ function submitXM(cb) {
         }
         $xm.updateXM(edit_pk_popup.bid, txt, k, xm_list.width, Com.putFunc(function(xm) {
             xm = Com.convXM(1, 1, xm);
-            let xm0 = list_model_xm.get(0);
-            if(xm0 && xm0.id === xm.id) {
-                list_model_xm.set(0, xm);
-            }
+            onUpdateXM(xm, upeditor);
             if(cb) {
                 cb(xm);
             }

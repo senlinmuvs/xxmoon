@@ -393,14 +393,14 @@ function openEditPopup(add, n) {
         }
     }
 }
-function submitNote(cb) {
+function submitNote(cb, upeditor=0) {
     if(edit_note_popup.bid) {
-        updateNote(edit_note_popup.bid, cb);
+        updateNote(edit_note_popup.bid, cb, upeditor);
     } else {
         addNote(edit_note_popup.gid, cb);
     }
 }
-function updateNote(id, cb) {
+function updateNote(id, cb, upeditor=0) {
     let d = edit_note_popup.getData();
     if($l.isDebug()) {
         $l.debug("updateNote id "+id+" " + d);
@@ -410,10 +410,7 @@ function updateNote(id, cb) {
             $l.debug("updateNote finished note " + JSON.stringify(n));
         }
         n = note(n);
-        let n0 = note_list_model.get(0);
-        if(n0 && n0.id === n.id) {
-            note_list_model.set(0, n);
-        }
+        onUpdateNote(n, upeditor);
         if(cb) {
             cb(n);
         }
@@ -478,7 +475,7 @@ function note(e, preDateStr = '', preTimeStr='') {
         time: e.time,
         cont: e.cont,
 //        html: e.html,
-        qmls: JSON.stringify(e.qmls),
+        qmls: e.qmls,
         tags: e.tags,
         bj: e.bj,
         date_str:'',

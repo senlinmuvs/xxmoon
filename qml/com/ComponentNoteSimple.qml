@@ -16,15 +16,15 @@ Rectangle {
             x: 10
             width: parent.width - 60
             spacing: 5
-            property string qmlStr: qmls
-            onQmlStrChanged: {
-                if(qmls) {
-    //                console.log(qmlStr);
-                    cols.data = [];
-                    let arr = JSON.parse(qmlStr);
-                    for(let i = 0; i < arr.length; i++) {
-                        let qml = arr[i];
+            property var qmlArr: qmls
+            onQmlArrChanged: {
+                cols.data = [];
+                if(qmlArr) {
+                    let i = 0;
+                    for(let k in qmlArr) {
+                        let qml = qmlArr[k];
                         let o = Qt.createQmlObject(qml, cols, "dy_"+i);
+                        i++;
                     }
                 }
             }

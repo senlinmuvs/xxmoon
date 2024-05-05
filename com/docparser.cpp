@@ -466,6 +466,7 @@ QString DocParser::parseTxtHtml(QString s, uint maxWidth) {
     s = ut::str::replaceAllTag(s, "@#","@", "<font color='{1}'>", "</font>", 1, param, "\n", eachTag);//匹配的串中间不能有\n
     s = ut::str::replaceAllTag(s, "---\n","---\n", "<table border='0' cellpadding='5' cellspacing='5' style='border-collapse:collapse;'>", "</table>", 0, param, "", eachTag);
     s = ut::str::replaceAllTag(s, ":[","]", "<p style='color:gray;text-align: right;font-style: italic;'>", "</p>", 0, param, "", eachTag);
+    s = ut::str::replaceAllTag(s, "~~","~~", "<s>", "</s>", 1, param, "\n", eachTag);//匹配的串中间不能有\n
 //    //如果解析完这个\n还在则删除掉
 //    if(s[s.length()-1] == "\n") {
 //        s = s.remove(s.length()-1, 1);

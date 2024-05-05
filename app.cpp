@@ -1396,7 +1396,7 @@ void App::checkTmpFile() {
                 uint id = fileInfo.fileName().mid(len, fileInfo.fileName().length()-len-4).toUInt();
                 QString cont = ut::file::readFile(fileInfo.filePath());
                 if(fileInfo.fileName().startsWith(cfg->tmpPKPre)) {
-                    updatePK0(id, cont);
+                    updateXM0(id, cont);
                 } else {
                     updateNote0(id, cont);
                 }
@@ -1405,7 +1405,7 @@ void App::checkTmpFile() {
         }
     }
 }
-void App::updatePK0(uint id, QString cont) {
+void App::updateXM0(uint id, QString cont) {
     DB_Async->exe("updatePK0", [=]{
         XM *pk = xmDao->getXM(id);
         if(pk != nullptr) {
@@ -1418,7 +1418,7 @@ void App::updatePK0(uint id, QString cont) {
                     pk->cont = cont;
                     QObject *root = engine->rootObjects().at(0);
                     float w = ui::getUIVal(0).toFloat();
-                    QMetaObject::invokeMethod(root, "onUpdatedPK",
+                    QMetaObject::invokeMethod(root, "onUpdatedXM",
                                               Q_ARG(QVariant, QVariant::fromValue(pk->toVMap(1, 1, w))));
                 }
             }
