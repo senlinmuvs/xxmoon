@@ -464,7 +464,7 @@ ApplicationWindow {
     }
     function openDetail(pk, delegate, win=detailView) {
         if($l.isDebug()) {
-            Com.debug("openDetail pk", JSON.stringify(pk), "delegate", (delegate!==null));
+            Com.debug("openDetail xm", JSON.stringify(pk), "delegate", (delegate!==null));
         }
         if(pk) {
             if(delegate) {
@@ -473,7 +473,7 @@ ApplicationWindow {
             }
             win.cl();
             win.updateTags(pk.tags);
-//            console.log("jm_ensure", pk.jm_ensure, "pk.id", pk.id);
+//          console.log("jm_ensure", pk.jm_ensure, "pk.id", pk.id);
             if(pk.jm_ensure || pk.id === 0) {
                 win.op(pk);
             } else {

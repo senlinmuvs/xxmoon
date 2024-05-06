@@ -512,8 +512,8 @@ function enOrDecrypt() {
         if(pk.jm) {
             Com.st(0, $a.tr("decrypting..."));
             $a.decrypt(pk.id, pwd, xm_list.width, Com.putFunc(function(pk2) {
-                if($l.isDebug()) {
-                    $l.debug("decrypt pk " + JSON.stringify(pk2));
+                if($l.isTrace()) {
+                    Com.trace("decrypt xm", JSON.stringify(pk2));
                 }
                 if(getCurrentCategoryId() === pk2.cid) {
                     let pk = getCurrentXM();
@@ -522,15 +522,12 @@ function enOrDecrypt() {
                         pk.jm_ensure = true;
                         pk.simple_cont = pk2.simple_cont;
                         pk.cont = pk2.cont;
-//                        pk.simple_html = pk2.simple_html;
-//                        pk.html = pk2.html;
-                        pk.simple_qmls = JSON.stringify(pk2.simple_qmls);
+                        pk.simple_qmls = pk2.simple_qmls;
                         pk.img_path = Com.file_pre + $a.getCfgVal("tmp_dir") + "/" + pk2.img;
-                        pk.qmls_ = JSON.stringify(pk2.qmls);
+                        pk.qmls_ = JSON.stringify(pk2.qmls);//这里直接赋值为数组不行，就暂时转成字符串
                         pk.forceMaxWidth = true;
-                        if($l.isDebug()) {
-                            console.log("set pk" + JSON.stringify(pk));
-                        }
+                        xm_list_view.currentItem.refresh(pk);
+                        list_model_xm.set(xm_list_view.currentIndex, pk);
                     }
                 }
                 encrypt_cont_popup.cancel();
@@ -539,8 +536,8 @@ function enOrDecrypt() {
         } else {
             Com.st(0, $a.tr("encrypting..."));
             $a.encrypt(pk.id, pwd, xm_list.width, Com.putFunc(function(pk2) {
-                if($l.isDebug()) {
-                    $l.trace("encrypt pk " + JSON.stringify(pk2));
+                if($l.isTrace()) {
+                    Com.trace("encrypt xm", JSON.stringify(pk2));
                 }
                 if(getCurrentCategoryId() === pk2.cid) {
                     let pk = getCurrentXM();
@@ -548,10 +545,8 @@ function enOrDecrypt() {
                         pk.jm = 1;
                         pk.jm_ensure = true;
                         pk.cont = pk2.cont;
-                        pk.simple_qmls = JSON.stringify(pk2.simple_qmls);
-                        if($l.isDebug()){
-                            $l.trace("set pk " + JSON.stringify(pk));
-                        }
+                        pk.qmls_ = JSON.stringify(pk2.qmls);
+                        pk.simple_qmls = pk2.simple_qmls;
                     }
                 }
                 encrypt_cont_popup.cancel();

@@ -646,12 +646,8 @@ void App::encrypt(uint id, QString k, uint listWidth, uint cbid) {
                         }
                     }
                 }
-                QVariantMap resp;
-                resp.insert("cid", xm->cid);
-                resp.insert("cont", xm->cont);
-                QString simpleCont = extractPKSimpleCont(xm->cont, "");
-                resp.insert("simple_qmls", doc_parser->parseQML(simpleCont, listWidth));
-                sendMsg(cbid, resp);
+                xm->simpleCont = extractPKSimpleCont(xm->cont, "");
+                sendMsg(cbid, xm->toVMap(1, 1, listWidth));
                 delete xm;
             }
         });

@@ -47,9 +47,8 @@ Rectangle {
                                 $xm.getXM(XM.getCurrentXMId(), xm_list.width, Com.putFunc(function(pk) {
                                     simple_cont = pk.simple_cont;
                                     cont = pk.cont;
-    //                                simple_html = pk.simple_html;
-    //                                html = pk.html;
-                                    simple_qmls = JSON.stringify(pk.simple_qmls);
+                                    simple_qmls = pk.simple_qmls;
+                                    cols.qmls = pk.simple_qmls;
                                     qmls = pk.qmls;
                                     jm_ensure = false;
                                     jm = jm ? 0 : 1;
@@ -103,7 +102,7 @@ Rectangle {
                     spacing: 2
                     property var qmls: simple_qmls
                     onQmlsChanged: {
-                        // console.log("simple_qmls changed", qmls, JSON.stringify(qmls));
+                        console.log("simple_qmls changed", qmls, JSON.stringify(qmls));
                         cols.data = [];
                         if(qmls) {
                             let i = 0;
@@ -222,5 +221,9 @@ Rectangle {
         mi_exp_html.visible = !jm;
         mi_exp_xm.visible = !jm;
         menu_right_xm.open();
+    }
+    function refresh(xm) {
+        console.log("refresh xm");
+        cols.qmls = xm.simple_qmls;
     }
 }

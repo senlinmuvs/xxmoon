@@ -366,7 +366,7 @@ Rectangle {
     }
     function op(pk) {
         root.pk = pk;
-//        console.log(JSON.stringify(pk));
+        // console.log("openDetail>>>>>>>>>", JSON.stringify(pk));
         let qmls;
         if(pk.qmls_) {
             qmls = JSON.parse(pk.qmls_);
@@ -375,7 +375,7 @@ Rectangle {
         }
         if(qmls) {
             cols.data = [];
-//            console.log("---------------------------------------------");
+        //            console.log("---------------------------------------------");
             for(let i = 0; i < qmls.length; i++) {
                 let qml = qmls[i];
                 if(pk.forceMaxWidth) {
@@ -386,13 +386,13 @@ Rectangle {
                         }
                     }
                 }
-//                console.log(i, qml);
+        //                console.log(i, qml);
                 let t1 = new Date().getTime();
                 let o = Qt.createQmlObject(qml, cols, "dy_"+i);
                 let t2 = new Date().getTime();
-//                console.log(">>>>>>>>>>>>>", t2-t1, qml);
+        //                console.log(">>>>>>>>>>>>>", t2-t1, qml);
             }
-//            console.log("---------------------------------------------");
+        //            console.log("---------------------------------------------");
         }
         scroll.forceActiveFocus();
         refreshStime();
