@@ -301,7 +301,7 @@ function onKeysPressed(event) {
         xm_list_view.currentIndex = 0;
     } else if(event.key === Qt.Key_End) {
         xm_list_view.currentIndex = xm_list_view.count - 1;
-    } else if(event.key === Qt.Key_Escape) {
+    } else if(event.key === Qt.Key_Escape || event.modifiers === ctrlVal) {
         if(list_model_xm.count > 0 && xm_list_view.currentItem.btn_no) {
             xm_list_view.currentItem.btn_no.click();
         }

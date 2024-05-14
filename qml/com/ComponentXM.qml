@@ -52,6 +52,7 @@ Rectangle {
                                     qmls = pk.qmls;
                                     jm_ensure = false;
                                     jm = jm ? 0 : 1;
+                                    category_list_view.forceActiveFocus();
                                 }));
                             }
                         }
