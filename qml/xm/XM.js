@@ -547,6 +547,8 @@ function enOrDecrypt() {
                         pk.cont = pk2.cont;
                         pk.qmls_ = JSON.stringify(pk2.qmls);
                         pk.simple_qmls = pk2.simple_qmls;
+                        xm_list_view.currentItem.refresh(pk);
+                        list_model_xm.set(xm_list_view.currentIndex, pk);
                     }
                 }
                 encrypt_cont_popup.cancel();

@@ -102,7 +102,7 @@ Rectangle {
                     spacing: 2
                     property var qmls: simple_qmls
                     onQmlsChanged: {
-                        console.log("simple_qmls changed", qmls, JSON.stringify(qmls));
+                        // console.log("simple_qmls changed", qmls, JSON.stringify(qmls));
                         cols.data = [];
                         if(qmls) {
                             let i = 0;
