@@ -471,7 +471,7 @@ Popup {
         return false;
     }
     function updateText(cont) {
-        console.log("updateText >>>>>>>>>>>>>>");
+        // console.log("updateText >>>>>>>>>>>>>>");
         text.text = cont;
     }
     function select(i,k) {

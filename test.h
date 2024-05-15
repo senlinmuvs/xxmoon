@@ -284,4 +284,21 @@ void test16() {
     loop.exec();
     qDebug() << "------------------------- TEST 16 End ------------------------------";
 }
+
+void test17() {
+    qDebug() << "------------------------- TEST 17 Start -------------------------";
+    // QString s = ut::file::readFile("/Users/sen/Desktop/x.txt");
+    // QString s = "```\na\n```\n# c\n\n\n# b";
+    QString s = "```\na\n```\n# c\n\n# b";
+    // QString h = doc_parser->parseHtml(s, 600);
+    // qDebug() << h.toUtf8().data();
+    // ut::file::writeText("/Users/sen/Desktop/x.html", h);
+    // qDebug() << QString("-----------------------------------------------------------------").toUtf8().data();
+    //
+    QStringList qmls = doc_parser->parseQML(s, 600);
+    for(int i = 0; i < qmls.length(); i++) {
+        qDebug() << qmls.at(i).toUtf8().data();
+    }
+    qDebug() << "------------------------- TEST 17 END -------------------------";
+}
 #endif // TEST_H

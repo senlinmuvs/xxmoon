@@ -59,11 +59,8 @@ public:
         int ty;
         QString cont = "";
 
-        explicit Doc();
-        explicit Doc(int ty, const QString& cont) {
-            this->ty = ty;
-            this->cont = cont;
-        }
+        explicit Doc():ty(0), cont(""){};
+        explicit Doc(int ty, const QString& cont):ty(ty), cont(cont) {}
         QString toString() {
             return "ty:"+QString::number(ty) + ", cont:" + cont;
         }

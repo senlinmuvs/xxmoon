@@ -9,8 +9,10 @@ class Timer : public QObject {
 private:
     explicit Timer(QObject *parent = nullptr);
 
-    QThread* thread;
-    QTimer *timer;
+    QThread* threadSych;
+    QTimer *timerSych;
+    QThread* threadScript;
+    QTimer *timerScript;
 
 public:
     static Timer& INS() {
@@ -19,7 +21,8 @@ public:
     }
 
     void init();
-    void onTriggered();
+    void onTriggeredSych();
+    void onTriggeredScript();
     void close();
 };
 

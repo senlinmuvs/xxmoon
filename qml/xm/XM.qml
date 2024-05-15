@@ -9,7 +9,7 @@ import "XM.js" as XM
 import "../com/ui.js" as UI
 
 Rectangle {
-    id: root
+    id: root_xm
     anchors.fill: parent
     signal st(int type, string tip)
     signal key(var e)
@@ -460,7 +460,7 @@ Rectangle {
                         category_list.width = Com.max(100,category_list.width - delta);
                     } else {
                         let delta = mouse.x - startX
-                        category_list.width = Com.min(root.width/3*2,category_list.width + delta);
+                        category_list.width = Com.min(root_xm.width/3*2,category_list.width + delta);
                     }
                     $a.setUIVal(0, xm_list.width);
                 }
@@ -582,10 +582,10 @@ Rectangle {
     }
     TagView {
         id:tag_view
-        tagManager: root.tagManager
+        tagManager: root_xm.tagManager
 
         function onTagList(all, list) {
-            root.tagManager.loadTagList(all, list);
+            root_xm.tagManager.loadTagList(all, list);
             //等标签加载完再加载主页数据
             if(list_model_category.count === 0) {
                 Com.info("loadCategory on init tags");
@@ -596,7 +596,7 @@ Rectangle {
             tag_view.clearInput();
         }
         function onDelete(tid, ref) {
-            root.tagManager.delTagInView(tid, ref);
+            root_xm.tagManager.delTagInView(tid, ref);
         }
     }
     MyEditorPopup {
@@ -711,7 +711,7 @@ Rectangle {
         if(category_list_view.currentIndex === 0) {
             let row0 = list_model_xm.get(0);
             if(row0) {
-                $xm.getNewXMList(c.id, row0.id, xm_list.width, root);
+                $xm.getNewXMList(c.id, row0.id, xm_list.width, root_xm);
             } else {
                 XM.loadXM(false);
             }

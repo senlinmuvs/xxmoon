@@ -2,6 +2,7 @@
 #include "com/global.h"
 #include "libxxmoon.h"
 #include <QWindow>
+#include <QRegularExpression>
 
 DocParser::DocParser() {
     tags << DocParser::DocTag::create(DocParser::TY_QUOTE);
@@ -114,8 +115,10 @@ void DocParser::addHtmlList(QStringList& l, Doc& doc, uint maxWidth) {
         l << doc.cont.trimmed();
     }
 }
+
+//```\na\n```\n\n# b
 QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
-    s += "\n";
+    // s += "\n";
     QList<Doc> list;
     int start = 0;
     while(true) {
@@ -133,6 +136,9 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
                         i0 = i0_;
                         i1 = i1_;
                         tagsIndex = i;
+                        // qDebug() << QString("i0=%1, i1=%2, i=%3").arg(i0, i1, i);
+                        // qDebug() << QString("i0=%1, i1=%2, i=%3").arg(i0).arg(i1).arg(i);
+                        break;
                     }
                 }
             }
@@ -159,9 +165,11 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
                 }
                 if(ty != TY_TEXT && text != "") {
                     Doc doc(TY_TEXT, text);
+                    // qDebug() << doc.toString();
                     list << doc;
                 }
                 Doc doc(ty, cont);
+                // qDebug() << doc.toString();
                 list << doc;
             }
             //
@@ -171,27 +179,31 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
         } else {
             if(s.size()-1 > start) {
                 Doc doc(TY_TEXT,s.right(s.size() - start));
+                // qDebug() << doc.toString();
                 list << doc;
             }
             break;
         }
     }
-    QStringList l;
+
     QList<Doc> newList;
+    //合并Txt类型的
     for(int i = 0; i < list.size(); i++) {
         Doc doc = list.at(i);
-        Doc preDoc(0,"");
-        int preNewListIndex = newList.size()-1;
+        Doc lastDoc;
+        int lastNewListIndex = newList.size()-1;
         if(newList.size() > 0) {
-            preDoc = newList.at(preNewListIndex);
+            lastDoc = newList.at(lastNewListIndex);
         }
-        if(preDoc.ty > 0 && doc.ty == preDoc.ty && doc.ty == TY_TEXT) {
-            preDoc.cont += doc.cont;
-            newList[preNewListIndex] = preDoc;
+        if(lastDoc.ty > 0 && doc.ty == lastDoc.ty && doc.ty == TY_TEXT) {
+            lastDoc.cont += doc.cont;
+            newList[lastNewListIndex] = lastDoc;
         } else {
             newList << doc;
         }
     }
+
+    QStringList l;
     for(Doc doc:newList) {
         if(qml) {
             addQmlList(l, doc, maxWidth);
@@ -290,7 +302,9 @@ b
 <h1>a</h1><br>b<br><br><h1>c</h1>
 -------------------------------------------------------
 
-结论：块元素本来就有换行功能，有块元素出现就应该少一个br
+结论：块元素本来就有换行功能，块元素前面的\n本来是用来换行用的，此时就变成换了两次行，
+非块元素与块元素之间的\n，如果块元素前面有\n应该处理为减少一个\n
+而当标签最后一个字符本来就是\n时，此元素与块元素之间的\n不用减少，因为那个\n本来就会换成html标签后消失
 
 2. 最后一个空行比前两个空行短，都是一个br
 -------------------------------------------------------
@@ -330,10 +344,10 @@ http://b
 */
 QString DocParser::filterQml(QString s) {
 //    qDebug() << QString("-------------------------------------------------------").toUtf8().data();
-//    qDebug() << s.toUtf8().data();
-    if(s.endsWith("\n")) {
-        s = s.mid(0, s.length()-1);
-    }
+    // qDebug() << "filterQml" << s;
+    // if(s.endsWith("\n")) {
+    //     s = s.mid(0, s.length()-1);
+    // }
 //    s = s.replace("</h1>\n<h1","</h1><br><h1");
 //    s = s.replace("</h2>\n<h1","</h2><br><h1");
 //    s = s.replace("</h3>\n<h1","</h3><br><h1");
@@ -363,18 +377,31 @@ QString DocParser::filterQml(QString s) {
 //    s = s.replace("</h3>\n<p","</h3><br><p");
 //    s = s.replace("</div>\n<p","</div><br><p");
 //    s = s.replace("</p>\n<p","</p><br><p");
-    //用循环替换上面一堆，用来先解决上面注释中第三种情况
+    //用循环替换上面一堆，用来先解决上面注释中第三种情况，先把这种情况的这样替换成空行，以免后面被全干掉了
+    QString emptyLine = "<p style='line-height:20px'>&nbsp;</p>";
     QStringList arr = {"h1", "h2", "h3", "div", "p"};
     for(QString& tag : arr) {
         for(QString& tagx : arr) {
-            s = s.replace("</"+tagx+">\n<"+tag,"</"+tagx+"><p style='line-height:20px'>&nbsp;</p><"+tag);
+            s = s.replace("</"+tagx+">\n<"+tag,"</"+tagx+">"+emptyLine+"<"+tag);
         }
     }
+
     //解决上面注释中第一种情况
-    for(QString& tag : arr) {
-        s = s.replace("\n<"+tag,"<"+tag);
+    //1. 先处理\n开头的情况，fix bug: 3088
+    if(s.startsWith("\n")) {
+        s = "<br>" + s.mid(1);
     }
-    s = s.replace("\n","<br>");
+    //2. 再处理不以\n开头的：xxxx\n<h1>b</h1>，不然光像下面这样替换会把上面\n开头的给替掉
+    // 构建正则表达式模式，匹配结束标签后跟零个或多个换行符
+    QString pattern = "(</h1>|</h2>|</h3>|</div>)(\n*)<(%1)";
+    for(const QString& tag : arr) {
+        //替换匹配的字符串，但不包括满足条件的部分
+        QRegularExpression re(pattern.arg(tag));
+        s.replace(re, "\\1\\2<" + tag);
+    }
+
+    s = s.replace("\n","<br>");//不用br还不行，只有br才会在块元素后是空一行，在行内元素后是换行，而这个p元素都是空一行。
+    // qDebug() << "filterQml" << s;
 //    qDebug() << QString("-------------------------------------------------------").toUtf8().data();
     return s;
 }
@@ -405,18 +432,19 @@ quote
 */
 QString DocParser::filterHtml(QString s) {
 ///   qDebug() << "------------------------------";
-//    qDebug() << s.toUtf8().data();
+    // qDebug() << "filterHtml" << s;
 //    qDebug() << "------------------------------";
 //    s = s.replace("</h1>\n","</h1>");
 //    s = s.replace("</h2>\n","</h2>");
 //    s = s.replace("</h3>\n","</h3>");
-    if(s.endsWith("\n")) {
-        s = s.mid(0, s.length()-1);
-    }
+    // if(s.endsWith("\n")) {
+    //     s = s.mid(0, s.length()-1);
+    // }
     s = s.replace("</pre>\n","</pre>");
     s = s.replace("</p>\n","</p>");
 //    s = s.replace("\n","<p class='br'></p>");
     s = s.replace("\n","<br>");//不用br还不行，只有br才会在块元素后是空一行，在行内元素后是换行，而这个p元素都是空一行。
+    // qDebug() << "filterHtml" << s;
     return s;
 }
 
@@ -441,11 +469,11 @@ QString DocParser::doESC(QString s) {
     return x;
 }
 QString DocParser::parseTxtHtml(QString s, uint maxWidth) {
+    // qDebug() << ":" << s;
     QString blank = "&nbsp;";
     QString param = QString::number(maxWidth);
-    //结尾加个\n是为了处理结尾有#等标记却没有换行符而不能被解析到的情况
-    //s = s+"\n";
 //    qDebug() << "parseTxtHtml-------------->>>" << s;
+    s += "\n";//在末尾加个换行，以匹配# x这种，最后再去掉这个换行，如果还在的话，还在说明没有匹配到，不在说明被替换了。
     s = ut::str::replaceAllTag(s, "#"+blank,"\n", "<h1>", "</h1>");
     s = ut::str::replaceAllTag(s, "#-"+blank,"\n", "<h1 style='text-align: center;'>", "</h1>");
     s = ut::str::replaceAllTag(s, "#)"+blank,"\n", "<h1 style='text-align: right;'>", "</h1>");
@@ -467,10 +495,10 @@ QString DocParser::parseTxtHtml(QString s, uint maxWidth) {
     s = ut::str::replaceAllTag(s, "---\n","---\n", "<table border='0' cellpadding='5' cellspacing='5' style='border-collapse:collapse;'>", "</table>", 0, param, "", eachTag);
     s = ut::str::replaceAllTag(s, ":[","]", "<p style='color:gray;text-align: right;font-style: italic;'>", "</p>", 0, param, "", eachTag);
     s = ut::str::replaceAllTag(s, "~~","~~", "<s>", "</s>", 1, param, "\n", eachTag);//匹配的串中间不能有\n
-//    //如果解析完这个\n还在则删除掉
-//    if(s[s.length()-1] == "\n") {
-//        s = s.remove(s.length()-1, 1);
-//    }
+    if(s.endsWith("\n")) {//最后再去掉这个换行，如果还在的话，还在说明没有匹配到，不在说明被替换了。
+        s = s.mid(0, s.length()-1);
+    }
+    // qDebug() << ":" << s;
     return s;
 }
 QString DocParser::parseQuoteHtml(QString s, uint maxWidth) {

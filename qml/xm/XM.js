@@ -17,7 +17,7 @@ function refreshAll(key_changed) {
     loadCategory();
 }
 function loadCategory() {
-    $xm.getCategories(search_bar.text.trim(), root);
+    $xm.getCategories(search_bar.text.trim(), root_xm);
 }
 function submitCol(add) {
     if(add) {
@@ -77,7 +77,7 @@ function moveToCategory(i) {
     if(pk) {
         let c = list_model_category.get(i);
         if(c.id !== pk.cid) {
-            $xm.updateXMCid(i, pk.id, c.id, root);
+            $xm.updateXMCid(i, pk.id, c.id, root_xm);
         }
     }
 }
@@ -313,7 +313,7 @@ function onKeysPressed(event) {
     if(jump) {
         Com.jump(event, list_model_category, category_list_view);
     }
-    root.key(event);
+    root_xm.key(event);
 }
 
 function detail() {
