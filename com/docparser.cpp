@@ -173,12 +173,13 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
                 list << doc;
             }
             //
-            if(i1 + tag1Len > start) {
-                start = i1 + tag1Len;
+            int start_ = i1 + tag1Len - 1;
+            if(start_ > start) {
+                start = start_;
             }
         } else {
             if(s.size()-1 > start) {
-                Doc doc(TY_TEXT,s.right(s.size() - start));
+                Doc doc(TY_TEXT,s.right(s.size() - start -1));
                 // qDebug() << doc.toString();
                 list << doc;
             }
@@ -200,6 +201,37 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
             newList[lastNewListIndex] = lastDoc;
         } else {
             newList << doc;
+        }
+    }
+
+    // 处理Quote/Code块前面的Txt紧接着的非块级元素后面的\n去掉一个
+    for(int i = 0; i < newList.size(); i++) {
+        Doc doc = newList.at(i);
+        if(doc.ty == TY_TEXT) {
+            //如果下一个元素是引用块或代码块
+            if(i+1 < newList.size()) {
+                Doc nextDoc = newList.at(i+1);
+                if(nextDoc.ty == TY_QUOTE || nextDoc.ty == TY_CODE) {
+                    //如果前面是tag+\n作为标签1的话就不要去掉了，因为本来就会去掉
+                    static QRegularExpression re("(#{1,3}[-)]*\\s[^\n]+\n\n|(http|https|ftp|file)://[^\n]+\n\n)$");
+                    QRegularExpressionMatch match = re.match(doc.cont);
+                    if(!match.hasMatch()) {
+                        doc.cont = doc.cont.mid(0, doc.cont.length()-1);
+                        newList[i] = doc;
+                    }
+                }
+            }
+            //如果前一个元素是引用块或代码块
+            if(i-1 >= 0) {
+                Doc preDoc = newList[i-1];
+                if(preDoc.ty == TY_QUOTE || preDoc.ty == TY_CODE) {
+                    //如果开头是\n就直接去掉
+                    if(doc.cont.startsWith("\n")) {
+                        doc.cont = doc.cont.mid(1);
+                        newList[i] = doc;
+                    }
+                }
+            }
         }
     }
 
@@ -305,6 +337,7 @@ b
 结论：块元素本来就有换行功能，块元素前面的\n本来是用来换行用的，此时就变成换了两次行，
 非块元素与块元素之间的\n，如果块元素前面有\n应该处理为减少一个\n
 而当标签最后一个字符本来就是\n时，此元素与块元素之间的\n不用减少，因为那个\n本来就会换成html标签后消失
+注：引用块与代码块也属于这个情况，相当于块元素带自动换行，但不在同一个qml元素中，得在其它地方再处理
 
 2. 最后一个空行比前两个空行短，都是一个br
 -------------------------------------------------------
@@ -400,7 +433,8 @@ QString DocParser::filterQml(QString s) {
             QString captured1 = match.captured(1); // 第一个捕获组的内容（闭合标签）
             QString captured2 = match.captured(2); // 第二个捕获组的内容（换行符）
 
-            if(captured1.endsWith("</h1>") || captured1.endsWith("</h2>") || captured1.endsWith("</h3>")) {
+            //当第一个捕获组是以这些结尾时就不替换
+            if(captured1.endsWith("</h1>") || captured1.endsWith("</h2>") || captured1.endsWith("</h3>") || captured1.endsWith("</div>")) {
                 // 获取下一个匹配项的起始位置
                 int matchStartNext = match.capturedEnd(0);
                 // 继续寻找下一个匹配

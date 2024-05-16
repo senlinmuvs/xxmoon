@@ -45,9 +45,9 @@ public:
             if(ty == TY_TEXT) {
                 dt = DocTag(ty, "", "");
             } else if(ty == TY_QUOTE) {
-                dt = DocTag(ty, "```\n", "```\n");
+                dt = DocTag(ty, "```\n", "\n```");
             } else if(ty == TY_CODE) {
-                dt = DocTag(ty, "```", "```\n");
+                dt = DocTag(ty, "```", "\n```");
             } else if(ty == TY_IMG) {
                 dt = DocTag(ty, "!(", ")\n");
             }
