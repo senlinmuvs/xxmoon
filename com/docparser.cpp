@@ -118,7 +118,6 @@ void DocParser::addHtmlList(QStringList& l, Doc& doc, uint maxWidth) {
 
 //```\na\n```\n\n# b
 QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
-    // s += "\n";
     QList<Doc> list;
     int start = 0;
     while(true) {
@@ -128,7 +127,6 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
         for(int i = 0; i < tags.size(); i++) {
             DocTag dt = tags.at(i);
             int i0_ = s.indexOf(dt.tag0, start);
-//            qDebug() << dt.tag0 << s << i << "i0_" << i0_ << "start" << start << tagsIndex;
             if(i0_ >= 0) {
                 int i1_ = s.indexOf(dt.tag1, i0_+dt.tag0.size());
                 if(i1_ >= 0) {
@@ -136,8 +134,6 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
                         i0 = i0_;
                         i1 = i1_;
                         tagsIndex = i;
-                        // qDebug() << QString("i0=%1, i1=%2, i=%3").arg(i0, i1, i);
-                        // qDebug() << QString("i0=%1, i1=%2, i=%3").arg(i0).arg(i1).arg(i);
                         break;
                     }
                 }
@@ -145,7 +141,6 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
         }
 
         if(i0 >= 0 && i1 >= 0) {
-//            qDebug() << ">>>>>" << start << i0 << i1;
             QString text = "";
             if(i0 > start) {
                 text = s.mid(start+1, i0-start-1);
@@ -165,22 +160,19 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
                 }
                 if(ty != TY_TEXT && text != "") {
                     Doc doc(TY_TEXT, text);
-                    // qDebug() << doc.toString();
                     list << doc;
                 }
                 Doc doc(ty, cont);
-                // qDebug() << doc.toString();
                 list << doc;
             }
             //
-            int start_ = i1 + tag1Len - 1;
+            int start_ = i1 + tag1Len;
             if(start_ > start) {
                 start = start_;
             }
         } else {
-            if(s.size()-1 > start) {
-                Doc doc(TY_TEXT,s.right(s.size() - start -1));
-                // qDebug() << doc.toString();
+            if(s.size() > start) {
+                Doc doc(TY_TEXT,s.right(s.size() - start));
                 list << doc;
             }
             break;
