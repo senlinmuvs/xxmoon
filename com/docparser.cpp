@@ -392,12 +392,40 @@ QString DocParser::filterQml(QString s) {
         s = "<br>" + s.mid(1);
     }
     //2. 再处理不以\n开头的：xxxx\n<h1>b</h1>，不然光像下面这样替换会把上面\n开头的给替掉
-    // 构建正则表达式模式，匹配结束标签后跟零个或多个换行符
-    QString pattern = "(</h1>|</h2>|</h3>|</div>)(\n*)<(%1)";
+    QString pattern = "(.*)(\n*)<%1";
     for(const QString& tag : arr) {
-        //替换匹配的字符串，但不包括满足条件的部分
         QRegularExpression re(pattern.arg(tag));
-        s.replace(re, "\\1\\2<" + tag);
+        QRegularExpressionMatch match = re.match(s);
+        while (match.hasMatch()) {
+            QString captured1 = match.captured(1); // 第一个捕获组的内容（闭合标签）
+            QString captured2 = match.captured(2); // 第二个捕获组的内容（换行符）
+
+            if(captured1.endsWith("</h1>") || captured1.endsWith("</h2>") || captured1.endsWith("</h3>")) {
+                // 获取下一个匹配项的起始位置
+                int matchStartNext = match.capturedEnd(0);
+                // 继续寻找下一个匹配
+                match = re.match(s, matchStartNext);
+                continue;
+            }
+
+            // 如果有多个换行符，去掉一个，其余的保留
+            if (captured2.length() > 1) {
+                captured2.remove(0, 1); // 去掉第一个换行符
+            } else {
+                captured2.clear(); // 如果只有一个换行符，或者没有，则清空
+            }
+
+            // 构建替换字符串
+            QString replacement = captured1 + captured2 + "<" + tag;
+
+            // 执行替换
+            int matchStart = match.capturedStart(0);
+            int matchLength = match.capturedLength(0);
+            s.replace(matchStart, matchLength, replacement);
+
+            // 继续寻找下一个匹配
+            match = re.match(s, matchStart + replacement.length());
+        }
     }
 
     s = s.replace("\n","<br>");//不用br还不行，只有br才会在块元素后是空一行，在行内元素后是换行，而这个p元素都是空一行。

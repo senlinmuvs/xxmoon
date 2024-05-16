@@ -289,7 +289,8 @@ void test17() {
     qDebug() << "------------------------- TEST 17 Start -------------------------";
     // QString s = ut::file::readFile("/Users/sen/Desktop/x.txt");
     // QString s = "```\na\n```\n# c\n\n\n# b";
-    QString s = "```\na\n```\n# c\n\n# b";
+    // QString s = "```\na\n```\n# c\n\n# b";
+    QString s = "a\nhttp://b";
     // QString h = doc_parser->parseHtml(s, 600);
     // qDebug() << h.toUtf8().data();
     // ut::file::writeText("/Users/sen/Desktop/x.html", h);
