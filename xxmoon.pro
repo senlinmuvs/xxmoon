@@ -22,6 +22,7 @@ SOURCES += \
         com/mypinyin.cpp \
         com/qaesencryption.cpp \
         com/runmain.cpp \
+        com/script.cpp \
         com/sm.cpp \
         com/sqlite_manager.cpp \
         com/sslhelper.cpp \
@@ -72,6 +73,7 @@ HEADERS += \
     com/mypinyin.h \
     com/qaesencryption.h \
     com/runmain.h \
+    com/script.h \
     com/sm.h \
     com/sqlite_manager.h \
     com/sslhelper.h \

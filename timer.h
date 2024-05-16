@@ -4,15 +4,25 @@
 #include <QObject>
 #include <QTimer>
 
+class Worker: public QObject {
+    Q_OBJECT
+public:
+    explicit Worker(QObject *parent=nullptr):QObject(parent){};
+};
+
 class Timer : public QObject {
     Q_OBJECT
 private:
-    explicit Timer(QObject *parent = nullptr);
+    explicit Timer();
+    ~Timer();
 
-    QThread* threadSych;
-    QTimer *timerSych;
+    QThread* threadSync;
+    QTimer *timerSync;
+    Worker *workerSync;
+
     QThread* threadScript;
     QTimer *timerScript;
+    Worker *workerScript;
 
 public:
     static Timer& INS() {
@@ -21,9 +31,6 @@ public:
     }
 
     void init();
-    void onTriggeredSych();
-    void onTriggeredScript();
     void close();
 };
-
 #endif // TIMER_H

@@ -403,48 +403,51 @@ namespace ut {
 
         QString randomStr(int n) {
             srand(QDateTime::currentMSecsSinceEpoch());
-            const char ch[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            static const char ch[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
             int size = sizeof(ch);
             char* str = new char[n + 1];
             int num = 0;
             for (int i = 0; i < n; ++i) {
-                num = rand() % (size - 1);
+                num = arc4random() % (size - 1);
                 str[i] = ch[num];
             }
             str[n] = '\0';
             return QString(str);
         }
-        QString unescapedHtml(QString s) {
+        QString& unescapedHtml(QString& s) {
             return s.replace("&nbsp;"," ")
                     .replace("&quot;", "\"")
                     .replace("&lt;", "<")
                     .replace("&amp;", "&")
                     .replace("&gt;", ">");
         }
-        QString removeFirstLine(QString s) {
+        QString removeFirstLine(const QString& s) {
             int i = s.indexOf("\n");
             if(i >= 0) {
                 return s.mid(i+1);
             }
             return s;
         }
-        QString removeEndLine(QString s) {
-            int endIndex = -1;
-            uint c = 0;
-            uint n = s.endsWith("\n") ? 2 : 1;
-            for(uint i = s.length()-1; i >= 0; i--) {
+        QString removeEndLine(const QString& s) {
+            int i = s.lastIndexOf("\n");
+            if(i == -1) {
+                return s;
+            }
+            return s.mid(0, i);
+        }
+        QString getEndLine(const QString& s) {
+            int index = -1;
+            for(int i = s.length()-1; i >= 0; i--) {
                 if(s.at(i) == '\n') {
-                    c++;
-                }
-                if(c == n) {
-                    endIndex = i;
+                    index = i;
                     break;
                 }
             }
-            if(endIndex >= 0) {
-                return s.mid(0, endIndex);
+            if(index != -1) {
+                return s.mid(index+1);
+            } else {
+                return s;
             }
-            return s;
         }
     }
 

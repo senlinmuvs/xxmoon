@@ -52,9 +52,10 @@ namespace ut {
         QString fillTmpl(QString tmpl, QMap<QString, QString> m);
         std::tuple<QString, int, int> findByTag(QString src, QString tag1, QString tag2, int from = 0);
         QString randomStr(int n);
-        QString unescapedHtml(QString s);
-        QString removeFirstLine(QString s);
-        QString removeEndLine(QString s);
+        QString& unescapedHtml(QString& s);
+        QString removeFirstLine(const QString& s);
+        QString removeEndLine(const QString& s);
+        QString getEndLine(const QString& s);
     }
 
     namespace time {

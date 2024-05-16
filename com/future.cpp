@@ -15,14 +15,14 @@ void Future::set(const QVariant& v) {
     res << v;
     sem.release(1);
 }
-QVariant Future::get(uint timeout, uint def) {
+QVariant Future::get(uint timeout, QVariant def) {
     if (!sem.tryAcquire(1, timeout)) {
-        return QVariant(def); // 超时返回空 QVariant
+        return def; // 超时返回空 QVariant
     }
 
     QMutexLocker locker(&mtx); // RAII lock
     if (res.isEmpty()) {
-        return QVariant(def); // 防止并发情况下的异常返回
+        return def; // 防止并发情况下的异常返回
     }
 
     QVariant result = res.first();

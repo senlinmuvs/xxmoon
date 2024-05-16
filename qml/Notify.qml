@@ -10,13 +10,13 @@ ApplicationWindow {
     visible: true
     color: "transparent"
     flags: Qt.FramelessWindowHint|Qt.WindowSystemMenuHint|Qt.WindowMinimizeButtonHint|Qt.Window
-    width: 140
-    height: 70
+    width: text.width + 40
+    height: text.height + 40
     background: Rectangle {
         color: Qt.rgba(0.2, 0.2, 0.2, 0.8)
         radius: 10
     }
-    x: screen.width - 160
+    x: screen.width - width - 5
     y: 20
     Text {
         id: text
@@ -24,20 +24,44 @@ ApplicationWindow {
         font.bold: true
         font.pixelSize: 20
         color: "white"
+        wrapMode: Text.WrapAnywhere
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        onContentWidthChanged: {
+            if(contentWidth > 500) {
+                width = 520;
+            }
+        }
     }
     Timer {
         id: timer
         interval: 3000
         repeat: false
         onTriggered: {
-            root.hide();
+            close();
         }
     }
-    function open(msg) {
-        text.text = msg;
+    function open(msg, ty=0) {
+        if(text.text) {
+            text.text += "\n" + msg;
+        } else {
+            text.text = msg;
+        }
         root.show();
         root.raise();
         root.requestActivate();
-        timer.start();
+        if(ty === 0) {
+            timer.start();
+        }
+    }
+    function close() {
+        text.text = "";
+        root.hide();
+    }
+    MouseArea {
+        anchors.fill: parent;
+        onClicked: {
+            close();
+        }
     }
 }

@@ -32,10 +32,9 @@ Popup {
             color:"white"
             anchors.centerIn: parent
             font.pixelSize: 16
-            wrapMode: Text.WordWrap
+            wrapMode: Text.WrapAnywhere
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            maximumLineCount: 10
             onContentWidthChanged: {
                 if(contentWidth > 500) {
                     width = 520;

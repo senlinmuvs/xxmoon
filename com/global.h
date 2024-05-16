@@ -111,10 +111,11 @@ void pushMsg(uint ty, const T &data = 0) {
                 Q_ARG(QVariant, QVariant::fromValue(data)));
 }
 template<typename T>
-void notify(const T &data) {
+void notify(const T &data, const uint ty = 0) {
     QObject* root = engine->rootObjects().at(0);
     QMetaObject::invokeMethod(root, "notify",
-                Q_ARG(QVariant, QVariant::fromValue(data)));
+                Q_ARG(QVariant, QVariant::fromValue(data)),
+                Q_ARG(QVariant, QVariant::fromValue(ty)));
 }
 void alert(const QString &msg, bool autoclose = true);
 void ensure(const QString &msg);

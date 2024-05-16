@@ -24,6 +24,7 @@ public:
     QString dbFile = userBaseDir + "/" + dbFileName;
     QString imgDir = userBaseDir + "/imgs";
     QString fileDir = userBaseDir + "/files";
+    QString scriptDir = userBaseDir + "/scripts";
     QString tmpDir = userBaseDir + "/tmp";
     QString logLevel = "error";
     QString logFile = xmCfgDir + "/"+ user + ".log";

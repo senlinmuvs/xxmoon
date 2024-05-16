@@ -8,13 +8,7 @@ void EnvDao::set(const QString& k, const QString& v) {
     if(lg->isDebug()) {
         lg->debug(QString("set k=%1 v=%2").arg(k).arg(v));
     }
-    QString oldV = get(k);
-    QString sql;
-    if(oldV == nullptr) {
-        sql = "insert into env(k,v) values(:k,:v)";
-    } else {
-        sql = "update env set v=:v where k=:k";
-    }
+    QString sql = "insert or replace into env(k,v) values(:k,:v)";
     bool ok = db->execute("set env", sql, [k,v](QSqlQuery& q){
         q.bindValue(":k", k);
         q.bindValue(":v", v);
@@ -43,7 +37,7 @@ QString EnvDao::get(const QString& k) {
     q.prepare(sql);
     q.bindValue(":k", k);
     bool suc = q.exec();
-    if(!suc){
+    if(!suc) {
         lg->error(QString("get env error %1 [%2]").arg(q.lastError().text()).arg(k));
         return "";
     }
@@ -57,7 +51,7 @@ QString EnvDao::get(const QString& k) {
 }
 uint EnvDao::getUInt(const QString& k) {
     QString v = get(k);
-    if(v!=nullptr){
+    if(v != "") {
         return v.toUInt();
     }
     return 0;
@@ -65,8 +59,54 @@ uint EnvDao::getUInt(const QString& k) {
 
 qint64 EnvDao::getQint64(const QString& k) {
     QString v = get(k);
-    if(v!=nullptr){
+    if(v != "") {
         return v.toLongLong();
     }
     return 0;
+}
+void EnvDao::addItem(const QString& k, const QVariant& item) {
+    QString v = get(k);
+    QStringList items = v.split(",");
+    bool found = false;
+    for(int i = 0; i < items.size(); i++) {
+        QString it = items.at(i);
+        if(it == item) {
+            found = true;
+            break;
+        }
+    }
+    if(!found) {
+        if(v.isEmpty()) {
+            v = item.toString();
+        } else {
+            v += "," + item.toString();
+        }
+        set(k, v);
+    }
+}
+void EnvDao::removeItem(const QString& k, const QVariant& item) {
+    QString v = get(k);
+    if(v.isEmpty()) {
+        return;
+    }
+    QStringList items = v.split(",");
+    int index = -1;
+    for(int i = 0; i < items.size(); i++) {
+        QString it = items.at(i);
+        if(it == item) {
+            index = i;
+            break;
+        }
+    }
+    if(index >= 0) {
+        items.removeAt(index);
+        v = "";
+        for(int i = 0; i < items.size(); i++) {
+            v += items.at(i) + ",";
+        }
+        if(!v.isEmpty()) {
+            v = v.mid(0, v.length()-1);
+        }
+        set(k, v);
+    }
 }

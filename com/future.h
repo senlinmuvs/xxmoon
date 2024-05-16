@@ -17,7 +17,7 @@ private:
 
 public:
     QVariantList getList(uint timeout=30000);
-    QVariant get(uint timeout=30000, uint def=0);
+    QVariant get(uint timeout=30000, QVariant def=0);
     void set(const QVariant& v);
     void setList(const QVariantList& res);
 };

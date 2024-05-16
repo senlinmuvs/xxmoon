@@ -32,6 +32,7 @@ QVariantMap Cfg::toVMap() {
     map["dbFile"] = dbFile;
     map["imgDir"] = imgDir;
     map["fileDir"] = fileDir;
+    map["scriptDir"] = scriptDir;
     map["tmpDir"] = tmpDir;
     map["logLevel"] = logLevel;
     map["logFile"] = logFile;
@@ -69,5 +70,6 @@ void Cfg::updateDataDir(QString path) {
     dbFile = userBaseDir + "/" + dbFileName;
     imgDir = userBaseDir + "/imgs";
     fileDir = userBaseDir + "/files";
+    scriptDir = userBaseDir + "/scripts";
     tmpDir = userBaseDir + "/tmp";
 }

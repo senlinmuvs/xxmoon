@@ -586,11 +586,11 @@ ApplicationWindow {
             window.requestActivate();
         }
     }
-    function notify(msg) {
+    function notify(msg, ty=0) {
         if(!w_notify) {
             w_notify = com_notify.createObject(null, {});
         }
-        w_notify.open(msg);
+        w_notify.open(msg, ty);
     }
     function navBtnClick(ty) {
         if(pageLoader.item.navBtnClick){

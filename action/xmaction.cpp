@@ -1,8 +1,19 @@
 #include "com/global.h"
 #include "xmaction.h"
 #include "com/runmain.h"
+#include "com/script.h"
 
 XMAction::XMAction() {
+}
+
+void updateScriptEnv(uint id, const QString& cont) {
+    QString endLine = ut::str::getEndLine(cont);
+    bool ok = Script::INS().checkFormat(cont);
+    if(ok) {
+        envDao->addItem(ENV_K_SCRIPTS, id);
+    } else {
+        envDao->removeItem(ENV_K_SCRIPTS, id);
+    }
 }
 void XMAction::getCategories(QString k, QObject *obj) {
     DB_Async->exe("getCategories", [=]{
@@ -142,6 +153,7 @@ void XMAction::deleteXM(uint id, QObject *obj) {
                     QFile::remove(cfg->imgDir + "/" + imgName + "_original" + postfix);
                     //                qDebug() << "<<<<<<<<<<<delete file" << imgName << postfix;
                 }
+                updateScriptEnv(id, xm->cont);
             }
             QMetaObject::invokeMethod(obj, "onDeleted",
                                       Q_ARG(QVariant, QVariant::fromValue(0)));
@@ -161,6 +173,7 @@ void XMAction::updateXM(uint id, QString cont, QString k, uint pklistWidth, uint
                         ut::file::writeText(tmpFile, cont);
                     }
                     xm->cont = cont;
+                    updateScriptEnv(id, xm->cont);
                 } else {
                     delete xm;
                     alert(trans->tr("Can not edit encrypted content."));
@@ -192,6 +205,7 @@ void XMAction::addXM(uint cid, QString txt, uint pklistWidth, uint cbid) {
         xm->cont = txt;
         xm->cid = cid;
         xmDao->add(xm);
+        updateScriptEnv(xm->id, xm->cont);
 
         XM *newXM = xmDao->getXM(xm->id);
         QVariantMap m;
@@ -262,13 +276,13 @@ void XMAction::xm(QString file, uint cbid) {
     });
 }
 QString XMAction::xm(QImage *img, const QString& cont, const QString& file) {
-    XM *pk = new XM();
-    pk->bj = false;
-    pk->cont = cont;
-    pk->cid = categoryDao->getFirstID();
+    XM *xm = new XM();
+    xm->bj = false;
+    xm->cont = cont;
+    xm->cid = categoryDao->getFirstID();
     QString tip = "";
-    if(pk->cont != "") {
-        tip += QString("%1 %2").arg(trans->tr("Text")).arg(pk->cont.length());
+    if(xm->cont != "") {
+        tip += QString("%1 %2").arg(trans->tr("Text")).arg(xm->cont.length());
     }
 
     QString new_clipboard_text;
@@ -299,15 +313,16 @@ QString XMAction::xm(QImage *img, const QString& cont, const QString& file) {
             f.copy(original_file);
             ut::img::reduceImage(full_path, full_path, 50, 0, 0, 0);
         }
-        pk->img = (year + "/" + file_name);
-        new_clipboard_text = "!("+pk->img+")";
+        xm->img = (year + "/" + file_name);
+        new_clipboard_text = "!("+xm->img+")";
     }
-    xmDao->add(pk);
+    xmDao->add(xm);
+    updateScriptEnv(xm->id, xm->cont);
     if(lg->isDebug()){
-        lg->debug(QString("add pk %1").arg(pk->toString()));
+        lg->debug(QString("add pk %1").arg(xm->toString()));
     }
-    QString pkimg = pk->img;
-    RunMain::INS().exec([pk, new_clipboard_text]{
+    QString pkimg = xm->img;
+    RunMain::INS().exec([xm, new_clipboard_text]{
         QMetaObject::invokeMethod(engine->rootObjects().at(0), "onFinished",
                 Q_ARG(QVariant, QVariant::fromValue(CONT_TYPE_PK)),
                 Q_ARG(QVariant, QVariant::fromValue(-1)),
@@ -315,7 +330,7 @@ QString XMAction::xm(QImage *img, const QString& cont, const QString& file) {
                 Q_ARG(QVariant, QVariant::fromValue(0)));
         ut::cpb::clear();
 
-        delete pk;
+        delete xm;
         if(new_clipboard_text.length()>0) {
             ut::cpb::setText(new_clipboard_text);
         }

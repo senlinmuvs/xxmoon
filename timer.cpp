@@ -1,56 +1,65 @@
 #include "timer.h"
 #include <QDebug>
 #include "com/global.h"
+#include "com/script.h"
 
-Timer::Timer(QObject *parent) : QObject(parent) {
+Timer::Timer() : QObject() {
 }
-
+Timer::~Timer() {
+    delete workerSync;
+    delete timerSync;
+    delete threadSync;
+    delete workerScript;
+    delete timerScript;
+    delete threadScript;
+}
 void Timer::init() {
-    threadSych = new QThread(this);
-    timerSych = new QTimer(this);
-    this->moveToThread(threadSych);
-    timerSych->moveToThread(threadSych);
-    connect(timerSych, &QTimer::timeout, this, &Timer::onTriggeredSych);
-    timerSych->setSingleShot(true);
-    connect(threadSych, &QThread::started, timerSych, [&]() {
-        timerSych->start(2*1000);
+    threadSync = new QThread(this);
+    timerSync = new QTimer();
+    workerSync = new Worker();
+    workerSync->moveToThread(threadSync);
+    timerSync->moveToThread(threadSync);
+    timerSync->setSingleShot(true);
+    connect(timerSync, &QTimer::timeout, workerSync, [&]{
+        if(!cfg->syncUrl.isEmpty()) {
+            sy->start();
+        }
+        timerSync->start(2*1000);
     });
-    threadSych->start();
+    connect(threadSync, &QThread::started, timerSync, [&]{
+        timerSync->start(2*1000);
+    });
+    threadSync->start();
 
     //
-    // threadScript = new QThread(this);
-    // timerScript = new QTimer(this);
-    // timerScript->moveToThread(threadScript);
-    // connect(timerScript, &QTimer::timeout, this, &Timer::onTriggeredScript);
-    // connect(threadScript, &QThread::started, timerScript, [&]() {
-    //     timerScript->start(10*1000);
-    // });
-    // threadScript->start();
-}
-
-void Timer::onTriggeredSych() {
-    if(!cfg->syncUrl.isEmpty()) {
-        sy->start();
-    }
-    timerSych->start(2*1000);
-}
-
-void Timer::onTriggeredScript() {
-    qDebug() << "onTriggeredScript";
+    threadScript = new QThread(this);
+    workerScript = new Worker();
+    timerScript = new QTimer();
+    workerScript->moveToThread(threadScript);
+    timerScript->moveToThread(threadScript);
+    timerScript->setSingleShot(true);
+    connect(timerScript, &QTimer::timeout, workerScript, [&]{
+        Script::INS().checkAndRun();
+        timerScript->start(10*1000);
+    });
+    connect(threadScript, &QThread::started, timerScript, [&]{
+        timerScript->start(10*1000);
+    });
+    threadScript->start();
 }
 
 void Timer::close() {
-    QMetaObject::invokeMethod(timerSych, "stop", Qt::QueuedConnection);
+    lg->info("close timer");
+    QMetaObject::invokeMethod(timerSync, "stop", Qt::QueuedConnection);
+    lg->info("timerSync stop");
     //thread是timer的线程不能在别的线程里执行quit，和stop一样
-    QMetaObject::invokeMethod(threadSych, "quit", Qt::QueuedConnection);
-    if (QThread::currentThread() != threadSych) {
-        threadSych->wait();
-    }
-
-    // QMetaObject::invokeMethod(timerScript, "stop", Qt::QueuedConnection);
-    // //thread是timer的线程不能在别的线程里执行quit，和stop一样
-    // QMetaObject::invokeMethod(threadScript, "quit", Qt::QueuedConnection);
-    // if (QThread::currentThread() != threadScript) {
-    //     threadScript->wait();
-    // }
+    QMetaObject::invokeMethod(threadSync, "quit", Qt::QueuedConnection);
+    lg->info("threadSync quit");
+    threadSync->terminate();
+    QMetaObject::invokeMethod(timerScript, "stop", Qt::QueuedConnection);
+    lg->info("timerScript stop");
+    //thread是timer的线程不能在别的线程里执行quit，和stop一样
+    QMetaObject::invokeMethod(threadScript, "quit", Qt::QueuedConnection);
+    lg->info("timerScript quit");
+    threadScript->terminate();
 }

@@ -1888,6 +1888,9 @@ void initPath() {
     if(!dir.exists(cfg->fileDir)) {
         dir.mkpath(cfg->fileDir);
     }
+    if(!dir.exists(cfg->scriptDir)) {
+        dir.mkpath(cfg->scriptDir);
+    }
     if(!dir.exists(cfg->tmpDir)) {
         dir.mkpath(cfg->tmpDir);
     }

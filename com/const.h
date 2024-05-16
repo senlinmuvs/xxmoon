@@ -10,7 +10,7 @@
 #define WIN 0
 #define UNIX 1
 #define MAC 2
-#define VERSION "1.41.6"
+#define VERSION "1.42.0"
 
 #define CB_VAR std::function<QVariantList()>
 #define CB_JSON std::function<void(QJsonObject&)>
@@ -92,6 +92,8 @@ const static char* ENV_K_LAST_VIEW_TYPE = "LAST_VIEW_TYPE";
 const static char* ENV_K_LAST_WH = "LAST_WH";
 const static char* ENV_K_LAST_CATEGORY_LEFT_WIDTH = "LAST_CATEGORY_LEFT_WIDTH";
 const static char* ENV_K_LAST_BOOK_LEFT_WIDTH = "LAST_BOOK_LEFT_WIDTH";
+const static char* ENV_K_SCRIPTS = "SCRIPTS";
+
 const static char* Tag1 = "<font color='red'>";
 const static char* Tag2 = "</font>";
 const static unsigned int CONT_TYPE_PK = 0;

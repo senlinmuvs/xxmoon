@@ -190,7 +190,8 @@ void initCfg() {
     cfg->userBaseDir = cfg->dataDir + "/xxmoon/" + cfg->user;
     cfg->dbFile = cfg->userBaseDir + "/xxmoon.data";
     cfg->imgDir = cfg->userBaseDir + "/imgs";
-    cfg->fileDir = cfg->dataDir + "/xxmoon/" + cfg->user + "/files";
+    cfg->fileDir = cfg->userBaseDir + "/files";
+    cfg->scriptDir = cfg->userBaseDir + "/scripts";
     cfg->tmpDir = cfg->userBaseDir + "/tmp";
     if(cfg->sitedir == "") {
         cfg->sitedir = cfg->fileDir+"/"+"site";
