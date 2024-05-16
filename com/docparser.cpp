@@ -122,8 +122,8 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
     QList<Doc> list;
     int start = 0;
     while(true) {
-        int i0 = -1;
-        int i1 = -1;
+        int i0 = -1;//头标签开始
+        int i1 = -1;//尾标签开始
         int tagsIndex = 0;
         for(int i = 0; i < tags.size(); i++) {
             DocTag dt = tags.at(i);
@@ -148,7 +148,7 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
 //            qDebug() << ">>>>>" << start << i0 << i1;
             QString text = "";
             if(i0 > start) {
-                text = s.mid(start, i0-start);
+                text = s.mid(start+1, i0-start-1);
             }
             //
             DocTag dt = tags.at(tagsIndex);

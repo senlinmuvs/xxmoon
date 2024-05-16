@@ -292,7 +292,8 @@ void test17() {
     // QString s = "```\na\n```\n# c\n\n# b";
     // QString s = "a\nhttp://b";
     // QString s = "# a\n\n```\nb\n```";
-    QString s = "```\na\n```\nb";
+    // QString s = "```\na\n```\nb";
+    QString s = "```\na\n```\nb\n```\nc\n```";
     // QString s = "```\na\n```b";
     // QString h = doc_parser->parseHtml(s, 600);
     // qDebug() << h.toUtf8().data();
