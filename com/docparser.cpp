@@ -135,7 +135,7 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
                         i0 = i0_;
                         i1 = i1_;
                         tagsIndex = i;
-                        break;
+                        // break; //这个break不能加上，不是找到一个就结束了，而是所有标签都检查一遍再用最前面的
                     }
                 }
             }
