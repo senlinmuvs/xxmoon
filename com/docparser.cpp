@@ -214,7 +214,7 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
                     }
                 }
             }
-            //如果前一个元素是引用块或代码块
+            //如果前一个元素是引用块或代码块或图片
             if(i-1 >= 0) {
                 Doc preDoc = newList[i-1];
                 if(preDoc.ty == TY_QUOTE || preDoc.ty == TY_CODE || preDoc.ty == TY_IMG) {
@@ -526,7 +526,7 @@ QString DocParser::parseTxtHtml(QString s, uint maxWidth) {
     s = ut::str::replaceAllTag(s, "**","**", "<b>", "</b>", 1, param, "\n", eachTag);//匹配的串中间不能有\n
     s = ut::str::replaceAllTag(s, "@#","@", "<font color='{1}'>", "</font>", 1, param, "\n", eachTag);//匹配的串中间不能有\n
     s = ut::str::replaceAllTag(s, "---\n","---\n", "<table border='0' cellpadding='5' cellspacing='5' style='border-collapse:collapse;'>", "</table>", 0, param, "", eachTag);
-    s = ut::str::replaceAllTag(s, ":[","]", "<p style='color:gray;text-align: right;font-style: italic;'>", "</p>", 0, param, "", eachTag);
+    s = ut::str::replaceAllTag(s, ":[","]\n", "<p style='color:gray;text-align: right;font-style: italic;'>", "</p>", 0, param, "", eachTag);
     s = ut::str::replaceAllTag(s, "~~","~~", "<s>", "</s>", 1, param, "\n", eachTag);//匹配的串中间不能有\n
     if(s.endsWith("\n")) {//最后再去掉这个换行，如果还在的话，还在说明没有匹配到，不在说明被替换了。
         s = s.mid(0, s.length()-1);
