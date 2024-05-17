@@ -22,7 +22,6 @@
 #include "com/runmain.h"
 // #include "hserver.h"
 #include "timer.h"
-// #include "test.h"
 
 using namespace std;
 
@@ -49,9 +48,6 @@ void initCfg();
 void exit_(int r);
 
 int main(int argc, char *argv[]) {
-    // QCoreApplication app(argc, argv);
-    // test17();
-    // return app.exec();
     return start(argc, argv);
 }
 int start(int argc, char* argv[]) {

@@ -118,6 +118,7 @@ void DocParser::addHtmlList(QStringList& l, Doc& doc, uint maxWidth) {
 
 //```\na\n```\n\n# b
 QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
+    s += "\n";//先在尾部加个\n，以好匹配那些以\n结尾的标签但又出现在了尾部，解析完如果还在的话再在最后一个元素中去掉
     QList<Doc> list;
     int start = 0;
     while(true) {
@@ -143,7 +144,7 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
         if(i0 >= 0 && i1 >= 0) {
             QString text = "";
             if(i0 > start) {
-                text = s.mid(start+1, i0-start-1);
+                text = s.mid(start, i0-start);
             }
             //
             DocTag dt = tags.at(tagsIndex);
@@ -203,7 +204,7 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
             //如果下一个元素是引用块或代码块
             if(i+1 < newList.size()) {
                 Doc nextDoc = newList.at(i+1);
-                if(nextDoc.ty == TY_QUOTE || nextDoc.ty == TY_CODE) {
+                if(nextDoc.ty == TY_QUOTE || nextDoc.ty == TY_CODE || nextDoc.ty == TY_IMG) {
                     //如果前面是tag+\n作为标签1的话就不要去掉了，因为本来就会去掉
                     static QRegularExpression re("(#{1,3}[-)]*\\s[^\n]+\n\n|(http|https|ftp|file)://[^\n]+\n\n)$");
                     QRegularExpressionMatch match = re.match(doc.cont);
@@ -216,13 +217,25 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
             //如果前一个元素是引用块或代码块
             if(i-1 >= 0) {
                 Doc preDoc = newList[i-1];
-                if(preDoc.ty == TY_QUOTE || preDoc.ty == TY_CODE) {
+                if(preDoc.ty == TY_QUOTE || preDoc.ty == TY_CODE || preDoc.ty == TY_IMG) {
                     //如果开头是\n就直接去掉
                     if(doc.cont.startsWith("\n")) {
                         doc.cont = doc.cont.mid(1);
                         newList[i] = doc;
                     }
                 }
+            }
+        }
+    }
+
+    //解析完后去掉开始加的\n如果还在的话
+    if(newList.size() > 0) {
+        if(newList[newList.size()-1].cont.isEmpty()) {
+            newList.remove(newList.size()-1);
+        } else if(newList[newList.size()-1].cont.endsWith("\n")) {
+            newList[newList.size()-1].cont = newList[newList.size()-1].cont.mid(0, newList[newList.size()-1].cont.length()-1);
+            if(newList[newList.size()-1].cont.isEmpty()) {
+                newList.remove(newList.size()-1);
             }
         }
     }
@@ -368,41 +381,7 @@ http://b
 结论：两个相临块元素之间的\n不能全去掉，至少留一个
 */
 QString DocParser::filterQml(QString s) {
-//    qDebug() << QString("-------------------------------------------------------").toUtf8().data();
-    // qDebug() << "filterQml" << s;
-    // if(s.endsWith("\n")) {
-    //     s = s.mid(0, s.length()-1);
-    // }
-//    s = s.replace("</h1>\n<h1","</h1><br><h1");
-//    s = s.replace("</h2>\n<h1","</h2><br><h1");
-//    s = s.replace("</h3>\n<h1","</h3><br><h1");
-//    s = s.replace("</div>\n<h1","</div><br><h1");
-//    s = s.replace("</p>\n<h1","</p><br><h1");
-
-//    s = s.replace("</h1>\n<h2","</h1><br><h2");
-//    s = s.replace("</h2>\n<h2","</h2><br><h2");
-//    s = s.replace("</h3>\n<h2","</h3><br><h2");
-//    s = s.replace("</div>\n<h2","</div><br><h2");
-//    s = s.replace("</p>\n<h2","</p><br><h2");
-
-//    s = s.replace("</h1>\n<h3","</h1><br><h3");
-//    s = s.replace("</h2>\n<h3","</h2><br><h3");
-//    s = s.replace("</h3>\n<h3","</h3><br><h3");
-//    s = s.replace("</div>\n<h3","</div><br><h3");
-//    s = s.replace("</p>\n<h3","</p><br><h3");
-
-//    s = s.replace("</h1>\n<div","</h1><br><div");
-//    s = s.replace("</h2>\n<div","</h2><br><div");
-//    s = s.replace("</h3>\n<div","</h3><br><div");
-//    s = s.replace("</div>\n<div","</div><br><div");
-//    s = s.replace("</p>\n<div","</p><br><div");
-
-//    s = s.replace("</h1>\n<p","</h1><br><p");
-//    s = s.replace("</h2>\n<p","</h2><br><p");
-//    s = s.replace("</h3>\n<p","</h3><br><p");
-//    s = s.replace("</div>\n<p","</div><br><p");
-//    s = s.replace("</p>\n<p","</p><br><p");
-    //用循环替换上面一堆，用来先解决上面注释中第三种情况，先把这种情况的这样替换成空行，以免后面被全干掉了
+    //用来先解决上面注释中第三种情况，先把这种情况的这样替换成空行，以免后面被全干掉了
     QString emptyLine = "<p style='line-height:20px'>&nbsp;</p>";
     QStringList arr = {"h1", "h2", "h3", "div", "p"};
     for(QString& tag : arr) {

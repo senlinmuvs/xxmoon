@@ -236,7 +236,7 @@ namespace ut {
                                 int x = i - srcTag1.length();
                                 // log(i, x, txt[x]);
                                 if(x < 0 || txt[x] == '\n' || txt[x] == '>') {
-                                    if(txt[x] != '`') {
+                                    if(x < 0 || txt[x] != '`') {
                                         pendingSrcTag1 = true;
                                     }
 //                                    qDebug() << ">>>>>>>>>>>" << x << txt[x];

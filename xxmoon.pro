@@ -98,7 +98,6 @@ HEADERS += \
     app.h \
     l.h \
     model/xm.h \
-    test.h \
     timer.h
 
 TARGET = xxmoon
@@ -134,4 +133,6 @@ unix:!macx {
     include(/home/sen/github/qt/QHotkey/qhotkey.pri)
 }
 include(libxxmoon.pri)
-TRANSLATIONS = zh_CN.ts
+
+DISTFILES += \
+    xxmoon.pri
