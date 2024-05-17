@@ -53,6 +53,7 @@ void BookAction::getNote(uint id, uint cbid) {
 }
 
 void BookAction::getWorkList(QString k, QString tag, ulong fromTime, QObject *obj) {
+    filterSearchKey(k);
     DB_Async->exe("getWorkList", [=]{
         vector<Work> list = noteDao->getWorkList(k, tag, fromTime);
         QVariantList rlist;
@@ -66,6 +67,7 @@ void BookAction::getWorkList(QString k, QString tag, ulong fromTime, QObject *ob
 }
 
 void BookAction::getNoteList(QString k, uint wid, uint page, QString sort, uint listWidth, uint cbid) {
+    filterSearchKey(k);
     DB_Async->exe("getNoteList", [=] {
         QList<Note*> list = noteDao->getNoteList(k, wid, page, sort);
         QVariantList rlist;

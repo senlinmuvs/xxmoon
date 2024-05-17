@@ -86,10 +86,12 @@ QString extractRefimgids(const QString& cont);
 QString extractRefIDs(const QString& cont);
 QList<uint> extractRefIDsAsList(const QString& cont);
 QString extractNoteSimpleCont(const QString& cont, const QString& k);
-QString extractPKSimpleCont(const QString& cont, const QString& k);
+QString extractXMSimpleCont(const QString& cont, const QString& k);
 void pushServerData(const QString& dev, const QString& data);
 QString takeServerData(const QString& dev);
 std::tuple<uint, uint> getWHFromFileName(const QString& fn);
+void filterSearchKey(QString& k);
+int replaceHighlightKey(QString& s, const QString& oldKey, int ind);
 
 namespace ui {
     extern void setUIVal(uint k, const QString& v);

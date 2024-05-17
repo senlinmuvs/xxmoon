@@ -646,7 +646,7 @@ void App::encrypt(uint id, QString k, uint listWidth, uint cbid) {
                         }
                     }
                 }
-                xm->simpleCont = extractPKSimpleCont(xm->cont, "");
+                xm->simpleCont = extractXMSimpleCont(xm->cont, "");
                 sendMsg(cbid, xm->toVMap(1, 1, listWidth));
                 delete xm;
             }
@@ -686,7 +686,7 @@ void App::decrypt(uint id, QString k, uint listWidth, uint cbid) {
                 }
             }
             if(xm != nullptr) {
-                xm->simpleCont = extractPKSimpleCont(xm->cont, "");
+                xm->simpleCont = extractXMSimpleCont(xm->cont, "");
                 sendMsg(cbid, xm->toVMap(1,1,listWidth));
                 delete xm;
             }
@@ -1410,7 +1410,7 @@ void App::updateXM0(uint id, QString cont) {
                     uint lst = ut::time::getCurSeconds();
                     xmDao->updateXM(id, cont, 0, lst);
 
-                    pk->simpleCont = extractPKSimpleCont(cont, "");
+                    pk->simpleCont = extractXMSimpleCont(cont, "");
                     pk->cont = cont;
                     QObject *root = engine->rootObjects().at(0);
                     float w = ui::getUIVal(0).toFloat();

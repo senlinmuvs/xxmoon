@@ -232,33 +232,35 @@ QString extractNoteSimpleCont(const QString& cont, const QString& k) {
     } else {
         s = cont.mid(0, SIMPLE_SIZE);
     }
-    //
-    QList<tuple<int,int>> his;//之前的key的索引范围
-    for(int i = 0; i < keys.length(); i++) {
-        int ind = s.indexOf(keys[i], 0, Qt::CaseSensitivity::CaseInsensitive);
-        if(ind >= 0) {
-            bool ok = true;
-            QString oldKey = s.mid(ind, keys[i].length());
-            if(his.length() > 0) {
-                for(int j = 0; j < his.length(); j++) {
-                    if(ind >= std::get<0>(his[j]) && ind < std::get<1>(his[j])) {
-                        ok = false;
-                        break;
-                    }
-                }
+
+    QStringList lines = cont.split("\n");
+    for(int i = 0; i < lines.length(); i++) {
+        static QRegularExpression re("^```\\w+$");
+        if(re.match(lines[i]).hasMatch() || lines[i]=="```") {
+            continue;
+        }
+        if(i - 1 >= 0 && i+1 < lines.length()) {
+            if(re.match(lines[i-1]).hasMatch() && lines[i+1]=="```") {
+                continue;
             }
-            if(ok) {//不在之前的key的索引范围内时才替换
-                s = s.replace(ind, oldKey.length(), "@#red "+oldKey+"@");
-                his.append(std::make_tuple(ind, ind+oldKey.length() + 7));
-            } else {
-                his.append(std::make_tuple(ind, ind+oldKey.length()));
-            }
+        }
+        int from = 0;
+        for(int j = 0; j < keys.length(); j++) {
+            from = replaceHighlightKey(lines[i], keys[j], from);
+        }
+    }
+    s = "";
+    for(int i = 0; i < lines.length(); i++) {
+        if(i == lines.length()-1) {
+            s += lines[i];
+        } else {
+            s += lines[i] + "\n";
         }
     }
     return s;
 }
 
-QString extractPKSimpleCont(const QString& cont, const QString& k) {
+QString extractXMSimpleCont(const QString& cont, const QString& k) {
     if(k.trimmed().length() == 0) {
         return cont.mid(0, SIMPLE_SIZE);
     }
@@ -282,7 +284,6 @@ QString extractPKSimpleCont(const QString& cont, const QString& k) {
     if(keyInCont != "") {
         int i = cont.indexOf(keyInCont, 0, Qt::CaseInsensitive);
         if(i > 0) {
-//            i = ut::str::findFrontLine(cont, cfg->simple_cont_front_line, i);
             i = i - cfg->simpleContKeyFront;
         }
         s = cont.mid(max(0, i), SIMPLE_SIZE);
@@ -290,27 +291,29 @@ QString extractPKSimpleCont(const QString& cont, const QString& k) {
     } else {
         s = cont.mid(0, SIMPLE_SIZE);
     }
-    //
-    QList<tuple<int,int>> his;//之前的key的索引范围
-    for(int i = 0; i < keys.length(); i++) {
-        int ind = s.indexOf(keys[i], 0, Qt::CaseSensitivity::CaseInsensitive);
-        if(ind >= 0) {
-            bool ok = true;
-            QString oldKey = s.mid(ind, keys[i].length());
-            if(his.length() > 0) {
-                for(int j = 0; j < his.length(); j++) {
-                    if(ind >= std::get<0>(his[j]) && ind < std::get<1>(his[j])) {
-                        ok = false;
-                        break;
-                    }
-                }
+
+    QStringList lines = cont.split("\n");
+    for(int i = 0; i < lines.length(); i++) {
+        static QRegularExpression re("^```\\w+$");
+        if(re.match(lines[i]).hasMatch() || lines[i]=="```") {
+            continue;
+        }
+        if(i - 1 >= 0 && i+1 < lines.length()) {
+            if(re.match(lines[i-1]).hasMatch() && lines[i+1]=="```") {
+                continue;
             }
-            if(ok) {//不在之前的key的索引范围内时才替换
-                s = s.replace(ind, oldKey.length(), "@#red "+oldKey+"@");
-                his.append(std::make_tuple(ind, ind+oldKey.length() + 7));
-            } else {
-                his.append(std::make_tuple(ind, ind+oldKey.length()));
-            }
+        }
+        int from = 0;
+        for(int j = 0; j < keys.length(); j++) {
+            from = replaceHighlightKey(lines[i], keys[j], from);
+        }
+    }
+    s = "";
+    for(int i = 0; i < lines.length(); i++) {
+        if(i == lines.length()-1) {
+            s += lines[i];
+        } else {
+            s += lines[i] + "\n";
         }
     }
     return s;
@@ -377,6 +380,20 @@ std::tuple<uint, uint> getWHFromFileName(const QString& fn) {
         }
     }
     return {0,0};
+}
+void filterSearchKey(QString& k) {
+    static QRegularExpression regex("[^\\p{L}\\p{N}\\s#]+");
+    k.replace(regex, "");
+}
+int replaceHighlightKey(QString& line, const QString& k, int from) {
+    int i = line.mid(from).indexOf(k);
+    if(i != -1) {
+        QString tag1 = "@#red ";
+        QString tag2 = "@";
+        line.replace(i, k.length(), tag1+k+tag2);
+        from = i+k.length()+tag1.length()+tag2.length();
+    }
+    return from;
 }
 namespace ui {
     QMap<uint, QString> uiVals;

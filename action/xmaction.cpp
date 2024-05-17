@@ -19,6 +19,7 @@ void updateScriptEnv(uint id, const QString& cont) {
     }
 }
 void XMAction::getCategories(QString k, QObject *obj) {
+    filterSearchKey(k);
     DB_Async->exe("getCategories", [=]{
         QVariantList rlist;
         if(k.length() > 0){
@@ -45,6 +46,7 @@ void XMAction::getCategories(QString k, QObject *obj) {
 }
 
 void XMAction::getXMList(QString k, uint id, uint fromId, uint pklistWidth, uint cbid) {
+    filterSearchKey(k);
     if(lg->isDebug()) {
         lg->debug(QString("getXMList k %1 id %2 fromId %3").arg(k).arg(id).arg(fromId));
     }
@@ -53,7 +55,7 @@ void XMAction::getXMList(QString k, uint id, uint fromId, uint pklistWidth, uint
         QList<XM*> list = xmDao->getXMList(k, id, fromId);
         QVariantList rlist;
         for (XM *xm:list) {
-            xm->simpleCont = extractPKSimpleCont(xm->cont, k);
+            xm->simpleCont = extractXMSimpleCont(xm->cont, k);
             rlist << xm->toVMap(0,0,pklistWidth);
             delete xm;
         }
@@ -65,7 +67,7 @@ void XMAction::getXM(uint id, uint listWidth, uint cbid) {
     DB_Async->exe("getXM", [=] {
         XM* xm = xmDao->getXM(id);
         if(xm) {
-            xm->simpleCont = extractPKSimpleCont(xm->cont, "");
+            xm->simpleCont = extractXMSimpleCont(xm->cont, "");
             sendMsg(cbid, xm->toVMap(1,1,listWidth));
         }
         delete xm;
@@ -126,7 +128,7 @@ void XMAction::getNewXMList(uint cid, uint fromId, uint pklistWidth, QObject *ob
         QList<XM*> list = xmDao->getNewXMList(cid, fromId);
         QVariantList rlist;
         for (XM *p:list) {
-            p->simpleCont = extractPKSimpleCont(p->cont, "");
+            p->simpleCont = extractXMSimpleCont(p->cont, "");
             rlist << p->toVMap(0,0,pklistWidth);
             delete p;
         }
@@ -165,6 +167,7 @@ void XMAction::deleteXM(uint id, QObject *obj) {
     });
 }
 void XMAction::updateXM(uint id, QString cont, QString k, uint pklistWidth, uint cbid) {
+    filterSearchKey(k);
     DB_Async->exe("updateXM", [=]{
         XM *xm = xmDao->getXM(id);
         if(xm != nullptr) {
@@ -188,7 +191,7 @@ void XMAction::updateXM(uint id, QString cont, QString k, uint pklistWidth, uint
             alert(trans->tr("Failure.Not found the doc!"));
             return;
         }
-        xm->simpleCont = extractPKSimpleCont(xm->cont, k);
+        xm->simpleCont = extractXMSimpleCont(xm->cont, k);
         sendMsg(cbid, xm->toVMap(1,1,pklistWidth));
         delete xm;
     });
@@ -213,7 +216,7 @@ void XMAction::addXM(uint cid, QString txt, uint pklistWidth, uint cbid) {
         XM *newXM = xmDao->getXM(xm->id);
         QVariantMap m;
         if(newXM!=nullptr) {
-            newXM->simpleCont = extractPKSimpleCont(newXM->cont, "");
+            newXM->simpleCont = extractXMSimpleCont(newXM->cont, "");
             m = newXM->toVMap(0,0,pklistWidth);
         } else {
             alert(trans->tr("Failure.Not found the doc!"));
