@@ -232,32 +232,7 @@ QString extractNoteSimpleCont(const QString& cont, const QString& k) {
     } else {
         s = cont.mid(0, SIMPLE_SIZE);
     }
-
-    QStringList lines = cont.split("\n");
-    for(int i = 0; i < lines.length(); i++) {
-        static QRegularExpression re("^```\\w+$");
-        if(re.match(lines[i]).hasMatch() || lines[i]=="```") {
-            continue;
-        }
-        if(i - 1 >= 0 && i+1 < lines.length()) {
-            if(re.match(lines[i-1]).hasMatch() && lines[i+1]=="```") {
-                continue;
-            }
-        }
-        int from = 0;
-        for(int j = 0; j < keys.length(); j++) {
-            from = replaceHighlightKey(lines[i], keys[j], from);
-        }
-    }
-    s = "";
-    for(int i = 0; i < lines.length(); i++) {
-        if(i == lines.length()-1) {
-            s += lines[i];
-        } else {
-            s += lines[i] + "\n";
-        }
-    }
-    return s;
+    return replaceHighlightKey(cont, keys);
 }
 
 QString extractXMSimpleCont(const QString& cont, const QString& k) {
@@ -291,24 +266,33 @@ QString extractXMSimpleCont(const QString& cont, const QString& k) {
     } else {
         s = cont.mid(0, SIMPLE_SIZE);
     }
-
+    return replaceHighlightKey(cont, keys);
+}
+QString replaceHighlightKey(const QString& cont, QStringList keys) {
     QStringList lines = cont.split("\n");
+    int code = 0;
     for(int i = 0; i < lines.length(); i++) {
         static QRegularExpression re("^```\\w+$");
-        if(re.match(lines[i]).hasMatch() || lines[i]=="```") {
+        bool b1 = re.match(lines[i]).hasMatch();
+        bool b2 = lines[i]=="```";
+        if(b1) {
+            code = 1;
+        }
+        if(b2) {
+            code = 2;
+        }
+        if(b1 || b2) {
             continue;
         }
-        if(i - 1 >= 0 && i+1 < lines.length()) {
-            if(re.match(lines[i-1]).hasMatch() && lines[i+1]=="```") {
-                continue;
-            }
+        if(code == 1) {
+            continue;
         }
         int from = 0;
         for(int j = 0; j < keys.length(); j++) {
             from = replaceHighlightKey(lines[i], keys[j], from);
         }
     }
-    s = "";
+    QString s = "";
     for(int i = 0; i < lines.length(); i++) {
         if(i == lines.length()-1) {
             s += lines[i];
@@ -318,7 +302,6 @@ QString extractXMSimpleCont(const QString& cont, const QString& k) {
     }
     return s;
 }
-
 void alert(const QString &msg, bool autoclose) {
     QObject* root = engine->rootObjects().at(0);
     QMetaObject::invokeMethod(root, "_alert",

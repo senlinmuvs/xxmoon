@@ -91,6 +91,7 @@ void pushServerData(const QString& dev, const QString& data);
 QString takeServerData(const QString& dev);
 std::tuple<uint, uint> getWHFromFileName(const QString& fn);
 void filterSearchKey(QString& k);
+QString replaceHighlightKey(const QString& cont, QStringList keys);
 int replaceHighlightKey(QString& s, const QString& oldKey, int ind);
 
 namespace ui {
