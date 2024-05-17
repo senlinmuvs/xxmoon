@@ -197,7 +197,7 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
         }
     }
 
-    // 处理Quote/Code块前面的Txt紧接着的非块级元素后面的\n去掉一个
+    // 处理Quote/Code/Img块前面的Txt紧接着的非块级元素后面的\n去掉一个
     for(int i = 0; i < newList.size(); i++) {
         Doc doc = newList.at(i);
         if(doc.ty == TY_TEXT) {
@@ -205,8 +205,8 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
             if(i+1 < newList.size()) {
                 Doc nextDoc = newList.at(i+1);
                 if(nextDoc.ty == TY_QUOTE || nextDoc.ty == TY_CODE || nextDoc.ty == TY_IMG) {
-                    //如果前面是tag+\n作为标签1的话就不要去掉了，因为本来就会去掉
-                    static QRegularExpression re("(#{1,3}[-)]*\\s[^\n]+\n\n|(http|https|ftp|file)://[^\n]+\n\n)$");
+                    //如果前面不是tag+\n作为标签1的话就去掉，否则不去掉因为本来匹配标签后就会去掉
+                    static QRegularExpression re("(#{1,3}[-)]*\\s[^\n]+\n\n|(http|https|ftp|file)://[^\n]+\n\n|:\\[[^\n]+\\]\n\n|---\n\n)$");
                     QRegularExpressionMatch match = re.match(doc.cont);
                     if(!match.hasMatch()) {
                         doc.cont = doc.cont.mid(0, doc.cont.length()-1);
@@ -405,7 +405,8 @@ QString DocParser::filterQml(QString s) {
             QString captured2 = match.captured(2); // 第二个捕获组的内容（换行符）
 
             //当第一个捕获组是以这些结尾时就不替换
-            if(captured1.endsWith("</h1>") || captured1.endsWith("</h2>") || captured1.endsWith("</h3>") || captured1.endsWith("</div>")) {
+            if(captured1.endsWith("</h1>") || captured1.endsWith("</h2>") || captured1.endsWith("</h3>")
+                || captured1.endsWith("</div>") || captured1.endsWith("</p>") || captured1.endsWith("</table>")) {
                 // 获取下一个匹配项的起始位置
                 int matchStartNext = match.capturedEnd(0);
                 // 继续寻找下一个匹配
