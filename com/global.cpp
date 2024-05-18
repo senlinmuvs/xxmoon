@@ -287,6 +287,11 @@ QString replaceHighlightKey(const QString& cont, QStringList keys) {
         if(code == 1) {
             continue;
         }
+        static QRegularExpression re1("^!\\(.+\\)$");
+        if(re1.match(lines[i]).hasMatch()) {
+            continue;
+        }
+
         int from = 0;
         for(int j = 0; j < keys.length(); j++) {
             from = replaceHighlightKey(lines[i], keys[j], from);
