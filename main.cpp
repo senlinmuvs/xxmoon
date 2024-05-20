@@ -78,6 +78,7 @@ int initGui(MyApplication* ma) {
 
     //
     QString mainQml = QStringLiteral("qrc:/qml/Main.qml");
+    // QString mainQml = QStringLiteral("qrc:/qml/com/VideoPlayer.qml");
     const QUrl url(mainQml);
     QObject::connect(engine, &QQmlApplicationEngine::objectCreated, a, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl) {

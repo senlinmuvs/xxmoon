@@ -24,7 +24,7 @@ let file_type_xm = 5;
 let file_type_site = 6;
 let reg_img = /^.+[.](png|jpg|jpeg|bmp|gif|webp)$/i;
 let reg_number = /^\d+$/;
-let reg_file = /^[/].+$|^[a-zA-Z]:.+$/;
+let reg_file = /^file:\/{2}.+$|^[a-zA-Z]:.+$/;
 
 let platform_win = 0;
 let platform_linux = 1;
@@ -243,6 +243,19 @@ function isNumber(x) {
 }
 function isFile(x) {
     return reg_file.test(x);
+}
+function isVideo(filename) {
+    // 列出常见的视频文件扩展名
+    const videoExtensions = [
+        '.mp4', '.mov', '.avi', '.wmv', '.avchd', '.webm',
+        '.flv', '.mkv', '.swf', '.f4v', '.vob', '.m4v',
+        '.mpg', '.mpeg', '.m2v', '.svi', '.3gp', '.mxf',
+        '.roq', '.nsv', '.flv', '.f4v', '.f4p', '.f4a', '.f4b'
+    ];
+    // 获取文件名的扩展名（转换为小写）
+    const extension = filename.slice(((filename.lastIndexOf(".") - 1) >>> 0) + 2).toLowerCase();
+    // 检查文件扩展名是否在视频扩展名列表中
+    return videoExtensions.includes('.' + extension);
 }
 function putFunc(cb) {
     let i = window.cbid;

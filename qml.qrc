@@ -79,5 +79,6 @@
         <file>qml/com/HR.qml</file>
         <file>qml/com/DetailWin.qml</file>
         <file>qml/Recycle.qml</file>
+        <file>qml/com/VideoPlayer.qml</file>
     </qresource>
 </RCC>

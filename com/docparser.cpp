@@ -271,9 +271,7 @@ QVariantList eachTag(const QString& srcTag1, const QString& srcTag2, const QStri
         } else {
             return {k, fixUrl4Escaped(k)};
         }
-    } else if(srcTag1 == HTTP_PRE) {
-        return {fixUrl4Escaped(k)};
-    } else if(srcTag1 == HTTPS_PRE) {
+    } else if(srcTag1 == HTTP_PRE || srcTag1 == HTTPS_PRE || srcTag1 == "file://" || srcTag1 == "ftp://") {
         return {fixUrl4Escaped(k)};
     } else if(srcTag1 == "!(") {
         uint maxWidth = param.toUInt();
@@ -521,8 +519,8 @@ QString DocParser::parseTxtHtml(QString s, uint maxWidth) {
     //用<div>是为了html导出时方便控制，<br/>不受控制
     s = ut::str::replaceAllTag(s, "http://","\n", "<div><a href='http://{0}'>http://", "</a></div>", 0, param, "", eachTag);
     s = ut::str::replaceAllTag(s, "https://","\n", "<div><a href='https://{0}'>https://", "</a></div>", 0, param, "", eachTag);
-    s = ut::str::replaceAllTag(s, "ftp://","\n", "<div><a href='{0}'>ftp://", "</a></div>");
-    s = ut::str::replaceAllTag(s, "file://","\n", "<div><a href='{0}'>file://", "</a></div>");
+    s = ut::str::replaceAllTag(s, "ftp://","\n", "<div><a href='ftp://{0}'>ftp://", "</a></div>", 0, param, "", eachTag);
+    s = ut::str::replaceAllTag(s, "file://","\n", "<div><a href='file://{0}'>file://", "</a></div>", 0, param, "", eachTag);
     s = ut::str::replaceAllTag(s, "![","]", "<a href='{1}'>", "</a>", 1, param, "", eachTag);
     s = ut::str::replaceAllTag(s, "**","**", "<b>", "</b>", 1, param, "\n", eachTag);//匹配的串中间不能有\n
     s = ut::str::replaceAllTag(s, "@#","@", "<font color='{1}'>", "</font>", 1, param, "\n", eachTag);//匹配的串中间不能有\n

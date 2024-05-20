@@ -21,8 +21,8 @@
 #include <QSslCertificate>
 #include <QSslKey>
 #include "com/runmain.h"
-#include <com/future.h>
-#include <com/sslhelper.h>
+#include "com/future.h"
+#include "com/sslhelper.h"
 
 tuple<QList<Work*>, QList<Note*>> parseNote(QString* cont);
 QString parseBookName(const QString& note);
@@ -1345,6 +1345,13 @@ void App::openDir(QString path) {
         param << QLatin1String("/select,");
     param << QDir::toNativeSeparators(path);
     QProcess::startDetached(explorer, param);
+#endif
+}
+
+void App::openVideo(QString path) {
+#if defined(Q_OS_MAC)
+    process->start("open", QStringList() << "-i IINA" << path);
+    process->waitForFinished();
 #endif
 }
 

@@ -78,6 +78,7 @@ public:
     Q_INVOKABLE QStringList getFilesInDir(QString dir);
     Q_INVOKABLE void openInExternal(int type = 0, QString img = "", uint obj = 0);
     Q_INVOKABLE void openDir(QString path);
+    Q_INVOKABLE void openVideo(QString path);
     Q_INVOKABLE void close(int r = 0);
     Q_INVOKABLE void checkTmpFile();
     Q_INVOKABLE void plainText(QString html, uint cbid);

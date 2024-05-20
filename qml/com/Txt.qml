@@ -26,8 +26,10 @@ TextArea {
                     push(pk.id);
                     reloadData(link);
                 }
+            } else if(Com.isVideo(link)) {
+                $a.openVideo(link.substring(7));
             } else if(Com.isFile(link)) {
-                $a.openDir(link);
+                $a.openDir(link.substring(7));
             } else {
                 Qt.openUrlExternally(link);
             }
