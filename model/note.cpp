@@ -26,6 +26,7 @@ QVariantMap Note::toVMap(bool parse, uint maxWidth) {
     m.insert("imgs", extractImgs(cont));
     m.insert("tags", tags);
     m.insert("bj", bj);
+    m.insert("lst", lst);
     m.insert("refids", refids);
     m.insert("refimgids", refimgids);
     return m;

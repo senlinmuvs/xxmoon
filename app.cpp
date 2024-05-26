@@ -1350,8 +1350,12 @@ void App::openDir(QString path) {
 
 void App::openVideo(QString path) {
 #if defined(Q_OS_MAC)
-    process->start("open", QStringList() << "-i IINA" << path);
-    process->waitForFinished();
+    process->start("open", QStringList() << "-i" << "IINA" << path);
+    process->setWorkingDirectory(QCoreApplication::applicationDirPath());
+    bool ok = process->waitForFinished();
+    if(lg->isDebug()) {
+        lg->debug(QString("openVideo %1 %2").arg(path).arg(ok));
+    }
 #endif
 }
 

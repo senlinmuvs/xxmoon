@@ -253,7 +253,8 @@ function convNoteToPK(e) {
         wid: e.wid,
         img_path:'',
         extra: extra,
-        bk:1
+        bk:1,
+        lst:e.lst
     }
 }
 
@@ -482,11 +483,14 @@ function note(e, preDateStr = '', preTimeStr='') {
         time_str:'',
         visible_date: false,
         visible_time: false,
-        imgs: e.imgs
+        imgs: e.imgs,
+        lst_str: ''
     };
     let arr = Com.parseTime(n.time, 1);
     n.date_str = arr[0];
     n.time_str = arr[1];
+    arr = Com.parseTime(e.lst, 1);
+    n.lst_str = arr[0] + " " + arr[1];
     n.visible_date = preDateStr !== n.date_str;
     n.visible_time = preTimeStr !== n.time_str;
     return n;

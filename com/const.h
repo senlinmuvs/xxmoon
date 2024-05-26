@@ -10,7 +10,7 @@
 #define WIN 0
 #define UNIX 1
 #define MAC 2
-#define VERSION "1.43.0"
+#define VERSION "1.44.1"
 
 #define CB_VAR std::function<QVariantList()>
 #define CB_JSON std::function<void(QJsonObject&)>
@@ -44,7 +44,8 @@ const static char* sql_note_table =
     "bj INTEGER default 0 not null," //只是标记导入时是否是笔记，导入后是否是笔记不能根据此字段识别，而是看:[xxxx]
     "del INTEGER default 0 not null,"
     "refids TEXT default '' not null,"
-    "refimgids TEXT default '' not null"
+    "refimgids TEXT default '' not null,"
+    "lst INTEGER default 0 not null"
 ")";
 const static char* sql_note_script = "create unique index note_time_uindex on note (time);";
 

@@ -17,6 +17,7 @@ QList<Note*> gets(QSqlQuery& q) {
     int colTags = rec.indexOf("tags");
     int colRefids = rec.indexOf("refids");
     int colRefimgids = rec.indexOf("refimgids");
+    int colLst = rec.indexOf("lst");
     while (q.next()) {
         uint id = q.value(colId).toUInt();
         uint wid = q.value(colWid).toUInt();
@@ -27,6 +28,7 @@ QList<Note*> gets(QSqlQuery& q) {
         QString tags = q.value(colTags).toString();
         QString refids = q.value(colRefids).toString();
         QString refimgids = q.value(colRefimgids).toString();
+        qint64 lst = q.value(colLst).toLongLong();
         Note *n = new Note();
         n->id = id;
         n->wid = wid;
@@ -37,6 +39,7 @@ QList<Note*> gets(QSqlQuery& q) {
         n->tags = tags;
         n->refids = refids;
         n->refimgids = refimgids;
+        n->lst = lst;
         list << n;
     }
     return list;
@@ -75,7 +78,7 @@ void NoteDao::insert(Note *n) {
         n->id = increID();
     }
     QString insert_sql = "insert into note(id, wid, pos0, pos1, time, cont, tags, refids,refimgids) "
-                        "values(:id,:wid,:pos0,:pos1,:time,:cont, :tags,:refids,:refimgids);";
+                        "values(:id,:wid,:pos0,:pos1,:time,:cont, :tags,:refids,:refimgids,:lst);";
     if(n->refids.isEmpty()){
         n->refids = extractRefIDs(n->cont);
     }
@@ -92,6 +95,7 @@ void NoteDao::insert(Note *n) {
         q.bindValue(":tags", n->tags.isNull() ? "" : n->tags);
         q.bindValue(":refids", n->refids.isNull() ? "" : n->refids);
         q.bindValue(":refimgids", n->refimgids.isNull() ? "" : n->refimgids);
+        q.bindValue(":lst", n->lst);
     });
     if(ok) {
         dologNoteDel(n->id);
@@ -101,7 +105,7 @@ void NoteDao::insert(Note *n) {
 QList<Note*> NoteDao::insert(QList<Note*> notes, std::function<void (int)> cb) {
     QList<Note*> dups;
     if(db->transaction()) {
-        QString sql = "insert into note(id, wid, pos0, pos1, time, cont, tags, refids, refimgids)values(?,?,?,?,?,?,?,?,?)";
+        QString sql = "insert into note(id, wid, pos0, pos1, time, cont, tags, refids, refimgids,lst)values(?,?,?,?,?,?,?,?,?,?)";
         QSqlQuery q;
         q.prepare(sql);
         int i = 0;
@@ -128,6 +132,7 @@ QList<Note*> NoteDao::insert(QList<Note*> notes, std::function<void (int)> cb) {
             q.addBindValue(n->tags.isNull() ? "" : n->tags);
             q.addBindValue(n->refids.isNull() ? "" : n->refids);
             q.addBindValue(n->refimgids.isNull() ? "" : n->refimgids);
+            q.addBindValue(n->lst);
             bool st = q.exec();
             if(!st) {
                 QString err = q.lastError().text();
@@ -326,7 +331,7 @@ vector<Work> NoteDao::getWorkList(QString k, QString tag, ulong fromTime) {
 }
 
 QList<Note*> NoteDao::getNoteList(QString k, uint wid, uint page, QString sort) {
-    QString sql = "select n.id,wid,pos0,pos1,n.time,cont,tags,bj,refids,refimgids from note n join work w on w.id=n.wid where del=0 and n.wid=:wid #cont #tags order by #sort limit :start,:size";
+    QString sql = "select n.id,wid,pos0,pos1,n.time,cont,tags,bj,refids,refimgids,n.lst from note n join work w on w.id=n.wid where del=0 and n.wid=:wid #cont #tags order by #sort limit :start,:size";
     ///
     bool sortByPos = sort == "P";
     if(sortByPos) {
@@ -402,13 +407,14 @@ QList<Note*> NoteDao::getNoteList(QString k, uint wid, uint page, QString sort) 
 void NoteDao::updateNote(uint id, uint pos0, uint pos1, QString cont) {
     QString refids = extractRefIDs(cont);
     QString refimgids = extractRefimgids(cont);
-    bool ok = db->execute("upateNote", "update note set cont=:cont,pos0=:pos0,pos1=:pos1,refids=:refids,refimgids=:refimgids where id=:id", [=](QSqlQuery& q) {
+    bool ok = db->execute("upateNote", "update note set cont=:cont,pos0=:pos0,pos1=:pos1,refids=:refids,refimgids=:refimgids,lst=:lst where id=:id", [=](QSqlQuery& q) {
         q.bindValue(":id", id);
         q.bindValue(":pos0", pos0);
         q.bindValue(":pos1", pos1);
         q.bindValue(":cont", cont.isNull() ? "" : cont);
         q.bindValue(":refids", refids.isNull() ? "" : refids);
         q.bindValue(":refimgids", refimgids.isNull() ? "" : refimgids);
+        q.bindValue(":lst", ut::time::getCurSeconds());
     });
     if(ok) {
         dologNoteNew(id);

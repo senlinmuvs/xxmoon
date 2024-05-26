@@ -24,6 +24,7 @@ public:
     QString tags = "";
     QString refids = "";
     QString refimgids = "";
+    qint64 lst = 0;
     bool bj = false;
 
     QString toString();
