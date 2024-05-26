@@ -501,6 +501,46 @@ void setInitDoneTime() {
     });
     loop.exec();
 }
+QList<QStringList> Sync::getUploadFiles() {
+    QList<QStringList> list;
+    QStringList files;
+    QMap<QString, qint64> fileMap;
+    QDirIterator it(cfg->userBaseDir, QDir::Files|QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+    while (it.hasNext()) {
+        it.next();
+        QFileInfo fileInfo = it.fileInfo();
+        if (fileInfo.isFile()) {
+            QString filePath = fileInfo.filePath();
+            fileMap.insert(filePath, fileInfo.lastModified().toMSecsSinceEpoch());
+        }
+    }
+    bool init = fileModTimeMap.isEmpty();
+    foreach(const QString &filePath, fileMap.keys()) {
+        qint64 v = fileModTimeMap[filePath];
+        if(v > 0) {
+            qint64 modTime = fileMap[filePath];
+            if(modTime - v > 0) {
+                files << filePath;
+            }
+        } else {
+            fileModTimeMap.insert(filePath, fileMap.value(filePath));
+            if(!init) {
+                files << filePath;
+            }
+        }
+    }
+    //去掉已经不存在的，如改名或删除后
+    QStringList dels;
+    for(auto it = fileModTimeMap.begin(); it != fileModTimeMap.end();) {
+        if(!fileMap.contains(it.key())) {
+            dels << it.key();
+            it = fileModTimeMap.erase(it);
+        } else {
+            ++it;
+        }
+    }
+    return list << files << dels;
+}
 void Sync::start() {
     if(lg->isDebug()) {
         lg->debug("sync start");
@@ -540,6 +580,25 @@ void Sync::start() {
         });
         loop.exec();
     }
+    //
+    qint64 cur = ut::time::getCurMills();
+    if(cur - lastCheckFileTime > 30000) {
+        QList<QStringList> files = getUploadFiles();
+        for(QString& f:files[0]) {
+            bool ok = upfile(f);
+            if(!ok) {
+                lg->error(QString("upfile error stop %1").arg(f));
+            }
+        }
+        for(QString& f:files[1]) {
+            f = f.mid(f.indexOf(cfg->userBaseDir) + cfg->userBaseDir.length());
+            bool ok = delFile(f);
+            if(!ok) {
+                lg->error(QString("delFile error stop %1").arg(f));
+            }
+        }
+        lastCheckFileTime = ut::time::getCurMills();
+    }
 }
 void Sync::sync0() {
     QString dataPath = cfg->dataDir + "/" + cfg->appName + "/" + cfg->user;
@@ -561,4 +620,8 @@ void Sync::sync0() {
     setInitDoneTime();
     QFile::remove(sync0File);
     QFile::remove(sync1File);
+}
+
+qint64 Sync::valueOfFileMod(QString file) {
+    return fileModTimeMap.value(file);
 }
