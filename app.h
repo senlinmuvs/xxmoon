@@ -116,6 +116,7 @@ public:
     Q_INVOKABLE bool existsAllowedURL();
     Q_INVOKABLE void alertMacTip(QString tip1, QString tip2);
     Q_INVOKABLE QString selectDataDir();
+    void initCfg();
     Q_INVOKABLE void init();
     Q_INVOKABLE void xm();
     Q_INVOKABLE void setUIVal(uint k, QString v);

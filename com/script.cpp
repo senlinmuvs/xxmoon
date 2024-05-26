@@ -103,7 +103,7 @@ bool checkEveryWeek(const QDateTime& timestamp, const QString& time) {
     }
     return ok;
 }
-void exeCmd(int ty, const QString& cmd, const QString& cont) {
+void Script::exeCmd(int ty, const QString& cmd, const QString& cont) {
     // qDebug() << "exeCmd" << ty << file << cont;
     QString res;
     if(cmd.isEmpty()) {
@@ -118,11 +118,15 @@ void exeCmd(int ty, const QString& cmd, const QString& cont) {
                 scriptFile = cfg->scriptDir + "/" + cmd;
             }
             if(ut::file::exists(scriptFile)) {
-                process.start("python3", QStringList() << scriptFile);
-                if(process.waitForFinished()) {
-                    res = process.readAllStandardOutput();
-                    if(lg->isDebug()) {
-                        lg->debug(QString("exeCmd ty=%1 cmd=%2 cont len=%3 res=%4").arg(ty).arg(cmd).arg(cont.length()).arg(res));
+                process.start("/usr/local/bin/python3", QStringList() << scriptFile);
+                if(process.waitForStarted()) {
+                    if(process.waitForFinished()) {
+                        res = process.readAll();
+                        if(lg->isDebug()) {
+                            lg->debug(QString("exeCmd ty=%1 cmd=%2 cont len=%3 res=%4").arg(ty).arg(cmd).arg(cont.length()).arg(res));
+                        }
+                    } else {
+                        lg->error(QString("exeCmd err %1 ty=%2 cmd=%3 cont len=%4").arg(process.errorString()).arg(ty).arg(cmd).arg(cont.length()));
                     }
                 } else {
                     lg->error(QString("exeCmd err %1 ty=%2 cmd=%3 cont len=%4").arg(process.errorString()).arg(ty).arg(cmd).arg(cont.length()));
@@ -133,10 +137,14 @@ void exeCmd(int ty, const QString& cmd, const QString& cont) {
         } else {
             QProcess process;
             process.start(cmd);
-            if(process.waitForFinished()) {
-                res = process.readAllStandardOutput();
-                if(lg->isDebug()) {
-                    lg->debug(QString("exeCmd ty=%1 cmd=%2 cont len=%3 res=%4").arg(ty).arg(cmd).arg(cont.length()).arg(res));
+            if(process.waitForStarted()) {
+                if(process.waitForFinished()) {
+                    res = process.readAll();
+                    if(lg->isDebug()) {
+                        lg->debug(QString("exeCmd ty=%1 cmd=%2 cont len=%3 res=%4").arg(ty).arg(cmd).arg(cont.length()).arg(res));
+                    }
+                } else {
+                    lg->error(QString("exeCmd err %1 ty=%2 cmd=%3 cont len=%4").arg(process.errorString()).arg(ty).arg(cmd).arg(cont.length()));
                 }
             } else {
                 lg->error(QString("exeCmd err %1 ty=%2 cmd=%3 cont len=%4").arg(process.errorString()).arg(ty).arg(cmd).arg(cont.length()));

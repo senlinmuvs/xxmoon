@@ -1875,6 +1875,89 @@ QString App::selectDataDir() {
     return "";
 }
 
+void App::initCfg() {
+    if(ut::file::exists(cfg->cfgFile)) {
+        QStringList lines = ut::file::allLines(cfg->cfgFile);
+        for(QString& line: lines) {
+            if(line.length() > 0 &&
+                !line.startsWith("#") &&
+                line.indexOf("=") > 0) {
+                QStringList kv = line.split("=");
+                QString k = kv[0].trimmed();
+                QString v = kv[1].trimmed();
+                if(v.length() > 0){
+                    if(k == "data_dir") {
+                        cfg->dataDir = v;
+                    } else if(k == "user") {
+                        cfg->user = v;
+                    } else if(k == "log_level") {
+                        cfg->logLevel = v;
+                    } else if(k == "editor") {
+                        cfg->editor = v;
+                    } else if(k == "hot_key_xm") {
+                        cfg->hotKeyXm = v;
+                    } else if(k == "hot_key_show") {
+                        cfg->hotKeyShow = v;
+                    } else if(k == "lang") {
+                        cfg->lang = v;
+                    } else if(k == "ui_quote_bg_color") {
+                        cfg->uiQuoteBgColor = v;
+                    } else if(k == "ui_quote_text_color") {
+                        cfg->uiQuoteTextColor = v;
+                    } else if(k == "ui_highlight_color") {
+                        cfg->uiHighlightColor = v;
+                    } else if(k == "sitedir") {
+                        cfg->sitedir = v;
+                    } else if(k == "sitename") {
+                        cfg->sitename = v;
+                    } else if(k == "sitetitle") {
+                        cfg->sitetitle = v;
+                    } else if(k == "site_detail_extra_id") {
+                        cfg->siteDetailExtraId = v.toUInt();
+                    } else if(k == "site_xmblog_tag") {
+                        cfg->siteXmblogTag = v;
+                    } else if(k == "ctrl") {
+                        cfg->ctrl = v;
+                    } else if(k == "sync_url") {
+                        cfg->syncUrl = v;
+                    }
+                }
+            }
+        }
+    } else {
+        QDir dir;
+        if(!dir.exists(cfg->xmCfgDir)) {
+            dir.mkpath(cfg->xmCfgDir);
+        }
+        ut::file::writeText(cfg->cfgFile, "");
+    }
+    QStringList syncUrlArr = cfg->syncUrl.split("|");
+    if(syncUrlArr.length() >= 3) {
+        cfg->server = syncUrlArr.at(0);
+        cfg->cid = syncUrlArr.at(1).toUInt();
+        cfg->pwd = syncUrlArr.at(2);
+    } else {
+        qDebug() << "warning sync_url len < 3 sync_url=" << cfg->syncUrl;
+    }
+    cfg->userBaseDir = cfg->dataDir + "/xxmoon/" + cfg->user;
+    cfg->dbFile = cfg->userBaseDir + "/xxmoon.data";
+    cfg->imgDir = cfg->userBaseDir + "/imgs";
+    cfg->fileDir = cfg->userBaseDir + "/files";
+    cfg->scriptDir = cfg->userBaseDir + "/scripts";
+    cfg->tmpDir = cfg->userBaseDir + "/tmp";
+    if(cfg->sitedir == "") {
+        cfg->sitedir = cfg->fileDir+"/"+"site";
+    }
+    if(cfg->lang == "") {
+        cfg->lang = QLocale().name();
+    }
+    qDebug() << "================================ cfg ================================";
+    qDebug() << cfg->toString().toUtf8().data();
+    qDebug() << "================================ cfg ================================";
+    //
+    a->genCert();
+}
+
 void App::init() {
     initPath();
     initLog();

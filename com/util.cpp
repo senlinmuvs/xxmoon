@@ -426,12 +426,12 @@ namespace ut {
             if(i >= 0) {
                 return s.mid(i+1);
             }
-            return s;
+            return "";
         }
         QString removeEndLine(const QString& s) {
             int i = s.lastIndexOf("\n");
             if(i == -1) {
-                return s;
+                return "";
             }
             return s.mid(0, i);
         }

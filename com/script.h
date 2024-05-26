@@ -17,6 +17,7 @@ public:
         return ins;
     }
     void checkAndRun();
+    void exeCmd(int ty, const QString& cmd, const QString& cont);
     bool checkFormat(const QString& input);
 };
 
