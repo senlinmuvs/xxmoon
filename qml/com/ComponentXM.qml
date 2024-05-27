@@ -99,7 +99,7 @@ Rectangle {
                 }
                 Column {
                     id: cols
-                    width: parent.width - 30
+                    width: parent.width - 10
                     spacing: 2
                     property var qmls: simple_qmls
                     onQmlsChanged: {

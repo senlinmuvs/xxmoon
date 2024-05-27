@@ -70,7 +70,7 @@ Rectangle {
                 }
                 Column {
                     id: cols
-                    width: parent.width - 20
+                    width: parent.width - 10
                     spacing: 2
                     function onClickImg(src, mouse) {
                         if (mouse.button === Qt.LeftButton) {
