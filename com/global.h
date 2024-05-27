@@ -120,6 +120,7 @@ void notify(const T &data, const uint ty = 0) {
                 Q_ARG(QVariant, QVariant::fromValue(data)),
                 Q_ARG(QVariant, QVariant::fromValue(ty)));
 }
+void pushXM(XM* xm);
 void alert(const QString &msg, bool autoclose = true);
 void ensure(const QString &msg);
 void st(uint st = 0, const QString& msg = "");

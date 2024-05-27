@@ -307,6 +307,11 @@ QString replaceHighlightKey(const QString& cont, QStringList keys) {
     }
     return s;
 }
+void pushXM(XM* xm) {
+    QObject* root = engine->rootObjects().at(0);
+    QMetaObject::invokeMethod(root, "onUpdatedXM",
+                Q_ARG(QVariant, QVariant::fromValue(xm->toVMap(1, 1, 600))));
+}
 void alert(const QString &msg, bool autoclose) {
     QObject* root = engine->rootObjects().at(0);
     QMetaObject::invokeMethod(root, "_alert",

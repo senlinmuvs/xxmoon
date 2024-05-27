@@ -103,7 +103,7 @@ bool checkEveryWeek(const QDateTime& timestamp, const QString& time) {
     }
     return ok;
 }
-int Script::exeCmd(int ty, const QString& cmd, const QString& cont) {
+QString Script::exeCmd(int ty, const QString& cmd, const QString& cont) {
     // qDebug() << "exeCmd" << ty << file << cont;
     QString res;
     if(cmd.isEmpty()) {
@@ -127,15 +127,15 @@ int Script::exeCmd(int ty, const QString& cmd, const QString& cont) {
                         }
                     } else {
                         lg->error(QString("exeCmd err %1 ty=%2 cmd=%3 cont len=%4").arg(process.errorString()).arg(ty).arg(cmd).arg(cont.length()));
-                        return -1;
+                        return "失败";
                     }
                 } else {
                     lg->error(QString("exeCmd err %1 ty=%2 cmd=%3 cont len=%4").arg(process.errorString()).arg(ty).arg(cmd).arg(cont.length()));
-                    return -1;
+                    return "失败";
                 }
             } else {
                 lg->error(QString("exeCmd err %1 not exists").arg(scriptFile));
-                return -1;
+                return "失败";
             }
         } else {
             QProcess process;
@@ -148,11 +148,11 @@ int Script::exeCmd(int ty, const QString& cmd, const QString& cont) {
                     }
                 } else {
                     lg->error(QString("exeCmd err %1 ty=%2 cmd=%3 cont len=%4").arg(process.errorString()).arg(ty).arg(cmd).arg(cont.length()));
-                    return -1;
+                    return "失败";
                 }
             } else {
                 lg->error(QString("exeCmd err %1 ty=%2 cmd=%3 cont len=%4").arg(process.errorString()).arg(ty).arg(cmd).arg(cont.length()));
-                return -1;
+                return "失败";
             }
         }
     }
@@ -162,21 +162,25 @@ int Script::exeCmd(int ty, const QString& cmd, const QString& cont) {
         } else if(ty == 2) {
             notify(res.trimmed());
         }
+        return res;
     }
-    return 0;
+    return "成功";
 }
-void Script::insertStatusText(QString& cont, int st) {
-    QString statusText = st >= 0 ? "正常" : "失败";
+void Script::updateStatusText(QString& cont, QString& r) {
     QString cur = ut::time::getCurrentTimeStr("yyyy/MM/dd hh:mm:ss");
     int i = cont.lastIndexOf("----\n");
+    r.replace("\n", ",");
+    if(r[r.length()-1] == ',') {
+        r = r.mid(0, r.length()-1);
+    }
     if(i < 0) {
-        cont += "\n----\n" + cur + " " + statusText;
+        cont += "\n----\n" + cur + " " + r;
     } else {
         int j = cont.lastIndexOf(" |");
         if(j >= 0) {
             cont = cont.mid(0, j);
         }
-        cont += " | " + cur + " " + statusText;
+        cont += " | " + cur + " " + r;
     }
     // ----
     // 2024/05/27 17:59:00 正常 | 2024/05/27 17:59:50 正常
@@ -257,13 +261,15 @@ void Script::checkAndRun() {
                     if(params.size() > 2) {
                         file = params.at(2).trimmed();
                     }
-                    int st = exeCmd(ty, file, ut::str::removeEndLine(cont));
+                    QString r = exeCmd(ty, file, ut::str::removeEndLine(cont));
                     Future* f = new Future();
                     DB_Async->exe("更新定时器状态", [&]{
                         XM* xm = xmDao->getXM(xmid);
                         if(xm != nullptr) {
-                            insertStatusText(xm->cont, st);
+                            updateStatusText(xm->cont, r);
                             xmDao->updateXM(xmid, xm->cont, xm->jm, xm->lst);
+                            xm->simpleCont = extractXMSimpleCont(xm->cont, "");
+                            pushXM(xm);
                         }
                         f->set(1);
                         delete xm;

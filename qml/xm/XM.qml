@@ -755,7 +755,6 @@ Rectangle {
             arr[1].simple_qmls = xm.simple_qmls;
             arr[1].qmls = xm.qmls;
             arr[1].lst = xm.lst;
-
             if(edit_pk_popup.visible) {
                 if(upeditor) {
                    if(edit_pk_popup.bid === xm.id){

@@ -6,9 +6,13 @@
 XMAction::XMAction() {
 }
 
-void updateScriptEnv(uint id, const QString& cont) {
+void updateScriptEnv(uint id, QString& cont) {
     bool ok = false;
     if(!cont.isEmpty()) {
+        int i = cont.lastIndexOf("\n----\n");
+        if(i >= 0) {
+            cont = cont.mid(0, i);
+        }
         QString endLine = ut::str::getEndLine(cont);
         ok = Script::INS().checkFormat(endLine);
     }
@@ -158,7 +162,8 @@ void XMAction::deleteXM(uint id, QObject *obj) {
                     QFile::remove(cfg->imgDir + "/" + imgName + "_original" + postfix);
                     //                qDebug() << "<<<<<<<<<<<delete file" << imgName << postfix;
                 }
-                updateScriptEnv(id, "");
+                QString c;
+                updateScriptEnv(id, c);
             }
             QMetaObject::invokeMethod(obj, "onDeleted",
                                       Q_ARG(QVariant, QVariant::fromValue(0)));
