@@ -10,7 +10,7 @@
 #define WIN 0
 #define UNIX 1
 #define MAC 2
-#define VERSION "1.45.0"
+#define VERSION "1.46.0"
 
 #define CB_VAR std::function<QVariantList()>
 #define CB_JSON std::function<void(QJsonObject&)>

@@ -431,7 +431,8 @@ QString DocParser::filterQml(QString s) {
             match = re.match(s, matchStart + replacement.length());
         }
     }
-
+    s = s.replace("\n<hr>", "<hr>");
+    s = s.replace("<hr>\n", "<hr>");
     s = s.replace("\n","<br>");//不用br还不行，只有br才会在块元素后是空一行，在行内元素后是换行，而这个p元素都是空一行。
     // qDebug() << "filterQml" << s;
 //    qDebug() << QString("-------------------------------------------------------").toUtf8().data();
@@ -475,6 +476,7 @@ QString DocParser::filterHtml(QString s) {
     s = s.replace("</pre>\n","</pre>");
     s = s.replace("</p>\n","</p>");
 //    s = s.replace("\n","<p class='br'></p>");
+    s = s.replace("\n<hr>\n", "<hr>");
     s = s.replace("\n","<br>");//不用br还不行，只有br才会在块元素后是空一行，在行内元素后是换行，而这个p元素都是空一行。
     // qDebug() << "filterHtml" << s;
     return s;
@@ -525,6 +527,7 @@ QString DocParser::parseTxtHtml(QString s, uint maxWidth) {
     s = ut::str::replaceAllTag(s, "**","**", "<b>", "</b>", 1, param, "\n", eachTag);//匹配的串中间不能有\n
     s = ut::str::replaceAllTag(s, "@#","@", "<font color='{1}'>", "</font>", 1, param, "\n", eachTag);//匹配的串中间不能有\n
     s = ut::str::replaceAllTag(s, "---\n","---\n", "<table border='0' cellpadding='5' cellspacing='5' style='border-collapse:collapse;'>", "</table>", 0, param, "", eachTag);
+    s = ut::str::replaceAllTag(s, "----","\n", "<hr>", "");
     s = ut::str::replaceAllTag(s, ":[","]\n", "<p style='color:gray;text-align: right;font-style: italic;'>", "</p>", 0, param, "", eachTag);
     s = ut::str::replaceAllTag(s, "~~","~~", "<s>", "</s>", 1, param, "\n", eachTag);//匹配的串中间不能有\n
     if(s.endsWith("\n")) {//最后再去掉这个换行，如果还在的话，还在说明没有匹配到，不在说明被替换了。

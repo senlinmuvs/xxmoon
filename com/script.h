@@ -17,8 +17,9 @@ public:
         return ins;
     }
     void checkAndRun();
-    void exeCmd(int ty, const QString& cmd, const QString& cont);
+    int exeCmd(int ty, const QString& cmd, const QString& cont);
     bool checkFormat(const QString& input);
+    void insertStatusText(QString& cont, int st);
 };
 
 #endif // SCRIPT_H

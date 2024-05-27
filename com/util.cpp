@@ -479,9 +479,9 @@ namespace ut {
         QString getYearStr() {
             return QString::number(getYear());
         }
-        QString getCurrentTimeStr() {
+        QString getCurrentTimeStr(QString format) {
             QDateTime dt = QDateTime::currentDateTime();
-            return dt.toString("yyyyMMddhhmmss.zzz");
+            return dt.toString(format);
         }
         uint getCurSeconds() {
             return QDateTime::currentDateTime().toSecsSinceEpoch();

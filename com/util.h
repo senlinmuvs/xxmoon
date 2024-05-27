@@ -61,7 +61,7 @@ namespace ut {
     namespace time {
         int getYear();
         QString getYearStr();
-        QString getCurrentTimeStr();
+        QString getCurrentTimeStr(QString format = "yyyyMMddhhmmss.zzz");
         uint getCurSeconds();
         qint64 getCurMills();
     }

@@ -103,7 +103,7 @@ bool checkEveryWeek(const QDateTime& timestamp, const QString& time) {
     }
     return ok;
 }
-void Script::exeCmd(int ty, const QString& cmd, const QString& cont) {
+int Script::exeCmd(int ty, const QString& cmd, const QString& cont) {
     // qDebug() << "exeCmd" << ty << file << cont;
     QString res;
     if(cmd.isEmpty()) {
@@ -127,12 +127,15 @@ void Script::exeCmd(int ty, const QString& cmd, const QString& cont) {
                         }
                     } else {
                         lg->error(QString("exeCmd err %1 ty=%2 cmd=%3 cont len=%4").arg(process.errorString()).arg(ty).arg(cmd).arg(cont.length()));
+                        return -1;
                     }
                 } else {
                     lg->error(QString("exeCmd err %1 ty=%2 cmd=%3 cont len=%4").arg(process.errorString()).arg(ty).arg(cmd).arg(cont.length()));
+                    return -1;
                 }
             } else {
                 lg->error(QString("exeCmd err %1 not exists").arg(scriptFile));
+                return -1;
             }
         } else {
             QProcess process;
@@ -145,9 +148,11 @@ void Script::exeCmd(int ty, const QString& cmd, const QString& cont) {
                     }
                 } else {
                     lg->error(QString("exeCmd err %1 ty=%2 cmd=%3 cont len=%4").arg(process.errorString()).arg(ty).arg(cmd).arg(cont.length()));
+                    return -1;
                 }
             } else {
                 lg->error(QString("exeCmd err %1 ty=%2 cmd=%3 cont len=%4").arg(process.errorString()).arg(ty).arg(cmd).arg(cont.length()));
+                return -1;
             }
         }
     }
@@ -158,6 +163,23 @@ void Script::exeCmd(int ty, const QString& cmd, const QString& cont) {
             notify(res.trimmed());
         }
     }
+    return 0;
+}
+void Script::insertStatusText(QString& cont, int st) {
+    QString statusText = st >= 0 ? "正常" : "失败";
+    QString cur = ut::time::getCurrentTimeStr("yyyy/MM/dd hh:mm:ss");
+    int i = cont.lastIndexOf("----\n");
+    if(i < 0) {
+        cont += "\n----\n" + cur + " " + statusText;
+    } else {
+        int j = cont.lastIndexOf(" |");
+        if(j >= 0) {
+            cont = cont.mid(0, j);
+        }
+        cont += " | " + cur + " " + statusText;
+    }
+    // ----
+    // 2024/05/27 17:59:00 正常 | 2024/05/27 17:59:50 正常
 }
 void Script::checkAndRun() {
     Future* f = new Future();
@@ -191,12 +213,17 @@ void Script::checkAndRun() {
         }
         lg->info(QString("check script %1").arg(xmid));
         cont = cont.trimmed();
-        QString endLine = ut::str::getEndLine(cont);
-        if (!endLine.isEmpty()) {
-            bool ok = checkFormat(endLine);
+
+        int i = cont.lastIndexOf("\n----\n");
+        if(i >= 0) {
+            cont = cont.mid(0, i);
+        }
+        QString timerLine = ut::str::getEndLine(cont);
+        if (!timerLine.isEmpty()) {
+            bool ok = checkFormat(timerLine);
             // qDebug() << "checkFormat" << endLine << ok;
             if(ok) {
-                QStringList params = endLine.mid(1, endLine.size()-2).split(",");
+                QStringList params = timerLine.mid(1, timerLine.size()-2).split(",");
                 if(params.isEmpty()) {
                     continue;
                 }
@@ -230,8 +257,21 @@ void Script::checkAndRun() {
                     if(params.size() > 2) {
                         file = params.at(2).trimmed();
                     }
-                    exeCmd(ty, file, ut::str::removeEndLine(cont));
-                    lastMillsMap.insert(xmid, cur.toMSecsSinceEpoch());
+                    int st = exeCmd(ty, file, ut::str::removeEndLine(cont));
+                    Future* f = new Future();
+                    DB_Async->exe("更新定时器状态", [&]{
+                        XM* xm = xmDao->getXM(xmid);
+                        if(xm != nullptr) {
+                            insertStatusText(xm->cont, st);
+                            xmDao->updateXM(xmid, xm->cont, xm->jm, xm->lst);
+                        }
+                        f->set(1);
+                        delete xm;
+                    });
+                    if(f->get(5000, 0) == 1) {
+                        lastMillsMap.insert(xmid, cur.toMSecsSinceEpoch());
+                    }
+                    delete f;
                 }
             }
         }
