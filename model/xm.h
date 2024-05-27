@@ -26,6 +26,7 @@ public:
     QString refids = "";
     QString refimgids = "";
     uint sticky = 0;
+    qint64 dtime = 0;
 
     QString uuid;
     QString file;

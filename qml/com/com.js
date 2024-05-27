@@ -311,7 +311,8 @@ function convXM(preDateStr, preTimeStr, e) {
         file: e.file,
         extra: "",
         forceMaxWidth: false,
-        sticky: e.sticky
+        sticky: e.sticky,
+        dtime: e.dtime
     };
 
     let arr = parseTime(n.time, 1);

@@ -8,13 +8,14 @@ void CategoryDao::add(Category *c) {
     if(c->id<=0){
         c->id = increID();
     }
-    QString insert_sql = "insert into category(id, name, i, x, m) values(:id,:name,:i,:x,:jm)";
+    QString insert_sql = "insert into category(id, name, i, x, m, ty) values(:id,:name,:i,:x,:jm,:ty)";
     bool ok = db->execute("add category", insert_sql, [&c](QSqlQuery& q) {
         q.bindValue(":id", c->id);
         q.bindValue(":name", c->name);
         q.bindValue(":i", c->i);
         q.bindValue(":x", c->x);
         q.bindValue(":m", c->m.isNull()?"":c->m);
+        q.bindValue(":ty", c->ty);
     });
     if(ok) {
         dologCategoryNew(c->id);
@@ -94,7 +95,7 @@ uint CategoryDao::getMaxI() {
 }
 Category* CategoryDao::getCategory(uint id) {
     QSqlQuery q;
-    q.prepare("select name,i,x,m from category where id=:id");
+    q.prepare("select name,i,x,m,ty from category where id=:id");
     q.bindValue(":id", id);
     bool suc = q.exec();
     if(!suc){
@@ -105,12 +106,14 @@ Category* CategoryDao::getCategory(uint id) {
         uint i = q.value(1).toUInt();
         uint x = q.value(2).toUInt();
         QString m = q.value(3).toString();
+        uint ty = q.value(4).toUInt();
         Category *c = new Category();
         c->id = id;
         c->name = name;
         c->i = i;
         c->x = x;
         c->m = m;
+        c->ty = ty;
         return c;
     } else {
         return nullptr;
@@ -118,7 +121,7 @@ Category* CategoryDao::getCategory(uint id) {
 }
 Category* CategoryDao::getCategoryByIndex(uint index) {
     QSqlQuery q;
-    q.prepare("select id,name,i,x,m from category where i=:i");
+    q.prepare("select id,name,i,x,m,ty from category where i=:i");
     q.bindValue(":i", index);
     bool suc = q.exec();
     if(!suc){
@@ -130,12 +133,14 @@ Category* CategoryDao::getCategoryByIndex(uint index) {
         uint i = q.value(2).toUInt();
         uint x = q.value(3).toUInt();
         QString m = q.value(4).toString();
+        uint ty = q.value(5).toUInt();
         Category *c = new Category();
         c->id = id;
         c->name = name;
         c->i = i;
         c->x = x;
         c->m = m;
+        c->ty = ty;
         return c;
     } else {
         return nullptr;
@@ -149,12 +154,14 @@ void fillData(QSqlQuery *q, vector<Category> *list) {
     int colN = rec.indexOf("n");
     int colX = rec.indexOf("x");
     int colM = rec.indexOf("m");
+    int colty = rec.indexOf("ty");
     while (q->next()) {
         uint id = q->value(colId).toUInt();
         QString name = q->value(colName).toString();
         uint n = q->value(colN).toUInt();
         uint i = q->value(colI).toUInt();
         uint x = q->value(colX).toUInt();
+        uint ty = q->value(colty).toUInt();
         QString m = q->value(colM).toString();
         Category c;
         c.id = id;
@@ -163,13 +170,14 @@ void fillData(QSqlQuery *q, vector<Category> *list) {
         c.total = n;
         c.x = x;
         c.m = m;
+        c.ty = ty;
         list->insert(list->end(), c);
     }
 }
 vector<Category> CategoryDao::getAll() {
     vector<Category> list;
     QSqlQuery q;
-    q.exec("select id,name,i,0 as n,x,m from category order by i");
+    q.exec("select id,name,i,0 as n,x,m,ty from category order by i");
     fillData(&q, &list);
     return list;
 }
@@ -187,7 +195,7 @@ QString getSearchCondSql(QString k) {
 vector<Category> CategoryDao::getCategories(QString k) {
     k = k.trimmed();
     vector<Category> list;
-    QString sql = "select * from (select c.id, c.name, c.i, c.x, c.m, count(*) as n "
+    QString sql = "select * from (select c.id, c.name, c.i, c.x, c.m, c.ty, count(*) as n "
                   "from xm "
                   "join category c on xm.cid == c.id "
                   "where 1=1 #cont #tags "
@@ -289,6 +297,18 @@ void CategoryDao::updatePwd(uint id, QString encrypted) {
     bool suc = q.exec();
     if(!suc) {
         lg->error(QString("categorydao updatePwd error %1 %2 %3").arg(q.lastError().text()).arg(id).arg(encrypted));
+        return;
+    }
+    dologCategoryNew(id);
+}
+void CategoryDao::setType(uint id, uint ty) {
+    QSqlQuery q;
+    q.prepare("update category set ty=:ty where id=:id");
+    q.bindValue(":ty", ty);
+    q.bindValue(":id", id);
+    bool suc = q.exec();
+    if(!suc) {
+        lg->error(QString("categorydao setType error %1 %2 %3").arg(q.lastError().text()).arg(id).arg(ty));
         return;
     }
     dologCategoryNew(id);

@@ -145,12 +145,35 @@ Rectangle {
                 }
             }
         }
+        MenuSeparator {}
+        MenuItem {
+            id: mi_set_done
+            onTriggered: {
+                let c = XM.getCurrentCategory();
+                if(c.ty === 1) {
+                    $xm.setCategoryType(c.id, 0, Com.putFunc(function(){
+                        c.ty = 0;
+                        alert("取消成功");
+                    }));
+                } else {
+                    $xm.setCategoryType(c.id, 1, Com.putFunc(function(){
+                        c.ty = 1;
+                        alert("设置成功");
+                    }));
+                }
+            }
+        }
         onAboutToShow: {
             let c = XM.getCurrentCategory();
             if(c.jm) {
                 mi_set_pwd.text = "取消密码";
             } else {
                 mi_set_pwd.text = "设置密码";
+            }
+            if(c.ty === 1) {
+                mi_set_done.text = "取消此分类为[已完成]";
+            } else {
+                mi_set_done.text = "设置此分类为[已完成]";
             }
         }
     }

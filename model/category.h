@@ -16,6 +16,7 @@ public:
     uint x = 0;
     QString m = "";
     bool jm = false;
+    uint ty = 0;
 
     QString toString();
     QVariantMap toVMap();

@@ -13,6 +13,7 @@ public:
     Q_INVOKABLE void addCategory(QString name, QObject *obj);
     Q_INVOKABLE void editCategory(uint id, QString name, QObject *obj);
     Q_INVOKABLE void delCategory(uint id, uint cbid);
+    Q_INVOKABLE void setCategoryType(uint id, uint ty, uint cbid);
     Q_INVOKABLE void sorting(uint id, uint srcIndex, uint dstIndex, uint cbid);
     Q_INVOKABLE void countCategory(uint cid, uint cbid);
     Q_INVOKABLE void getNewXMList(uint cid, uint fromId, uint pklistWidth, QObject *obj);

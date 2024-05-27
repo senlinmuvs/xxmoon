@@ -16,5 +16,6 @@ QVariantMap Category::toVMap() {
     m.insert("x", x);
     // m.insert("m", this->m);
     m.insert("jm", this->m.length() > 0);
+    m.insert("ty", ty);
     return m;
 }

@@ -28,6 +28,7 @@ public:
     uint getSolveTime(uint id);
     void setSolveTime(uint id, uint stime);
     void setTop(uint xmid, uint top);
+    void setDtime(uint id, qint64 dtime);
 private:
     QList<XM*> gets(QSqlQuery& q, QSqlRecord& rec);
 };

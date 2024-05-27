@@ -584,13 +584,20 @@ void Sync::start() {
     qint64 cur = ut::time::getCurMills();
     if(cur - lastCheckFileTime > 30000) {
         QList<QStringList> files = getUploadFiles();
+        QString dbfile = cfg->appName+"/"+cfg->user+"/"+cfg->dbFileName;
         for(QString& f:files[0]) {
+            if(f.endsWith(dbfile)) {
+                continue;
+            }
             bool ok = upfile(f);
             if(!ok) {
                 lg->error(QString("upfile error stop %1").arg(f));
             }
         }
         for(QString& f:files[1]) {
+            if(f.endsWith(dbfile)) {
+                continue;
+            }
             f = f.mid(f.indexOf(cfg->userBaseDir) + cfg->userBaseDir.length());
             bool ok = delFile(f);
             if(!ok) {

@@ -20,6 +20,7 @@ QList<XM*> XMDao::gets(QSqlQuery& q, QSqlRecord& rec) {
     int colRefids = rec.indexOf("refids");
     int colRefimgids = rec.indexOf("refimgids");
     int colTop = rec.indexOf("top");
+    int colDtime = rec.indexOf("dtime");
     while (q.next()) {
         uint id = q.value(colId).toUInt();
         uint cid = q.value(colCid).toUInt();
@@ -34,6 +35,7 @@ QList<XM*> XMDao::gets(QSqlQuery& q, QSqlRecord& rec) {
         QString refids = q.value(colRefids).toString();
         QString refimgids = q.value(colRefimgids).toString();
         uint top = q.value(colTop).toUInt();
+        qint64 dtime = q.value(colDtime).toLongLong();
         XM *p = new XM();
         p->id = id;
         p->cid = cid;
@@ -48,6 +50,7 @@ QList<XM*> XMDao::gets(QSqlQuery& q, QSqlRecord& rec) {
         p->refids = refids;
         p->refimgids = refimgids;
         p->sticky = top;
+        p->dtime = dtime;
         list << p;
     }
     return list;
@@ -63,7 +66,7 @@ void XMDao::add(XM *xm) {
         xm->refimgids = extractRefimgids(xm->refimgids);
     }
     //
-    QString sql = "insert into xm(id, cid, cont, img, time, lst, stime, tags, bj, jm, refids, refimgids, top) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    QString sql = "insert into xm(id, cid, cont, img, time, lst, stime, tags, bj, jm, refids, refimgids, top, dtime) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     if(xm->time <= 0) {
         xm->time = ut::time::getCurSeconds();
     }
@@ -82,6 +85,7 @@ void XMDao::add(XM *xm) {
     q.addBindValue(xm->refids.isNull() ? "" : xm->refids);
     q.addBindValue(xm->refimgids.isNull() ? "" : xm->refimgids);
     q.addBindValue(xm->sticky);
+    q.addBindValue(xm->dtime);
     bool r = q.exec();
     if(!r) {
         lg->error(QString("add xm error %1 %2").arg(q.lastError().text(), xm->toString()));
@@ -99,7 +103,7 @@ QString getSearchCondSql0(QString k) {
     return sql + ")";
 }
 QList<XM*> XMDao::getXMList(QString k, uint cid, uint fromId) {
-    QString sql = "select id,cid,cont,img,time,lst,stime,tags,bj,jm,refids,refimgids,top from xm where cid=:cid #id #cont #tags order by top desc,id desc limit :size";
+    QString sql = "select id,cid,cont,img,time,lst,stime,tags,bj,jm,refids,refimgids,top,dtime from xm where cid=:cid #id #cont #tags order by top desc,id desc limit :size";
     bool hasK = k.length() > 0;
     if(hasK) {
         k = k.replace("'","");
@@ -155,7 +159,7 @@ QList<XM*> XMDao::getXMList(QString k, uint cid, uint fromId) {
 }
 
 QList<XM*> XMDao::getNewXMList(uint cid, uint fromId) {
-    QString sql = "select id,cid,cont,img,time,lst,stime,tags,bj,jm,refids,refimgids,top from xm where cid=:cid and id>:id order by id asc limit :size";
+    QString sql = "select id,cid,cont,img,time,lst,stime,tags,bj,jm,refids,refimgids,top,dtime from xm where cid=:cid and id>:id order by id asc limit :size";
     QSqlQuery q;
     q.prepare(sql);
     q.bindValue(":cid", cid);
@@ -185,7 +189,7 @@ uint XMDao::getMaxId() {
 }
 
 XM* XMDao::getXM(uint id) {
-    QSqlQuery q("select id,cid,cont,img,time,lst,stime,bj,tags,jm,refids,refimgids,top from xm where id=" + QString::number(id));
+    QSqlQuery q("select id,cid,cont,img,time,lst,stime,bj,tags,jm,refids,refimgids,top,dtime from xm where id=" + QString::number(id));
     bool r = q.exec();
     if(!r) {
         lg->error(QString("getXM error %1").arg(q.lastError().text()));
@@ -357,6 +361,15 @@ uint XMDao::getSolveTime(uint id) {
 void XMDao::setSolveTime(uint id, uint stime) {
     bool ok = db->execute("setSolveTime", "update xm set stime=:stime where id=:id", [=](QSqlQuery& q) {
         q.bindValue(":stime", stime);
+        q.bindValue(":id", id);
+    });
+    if(ok) {
+        dologXMNew(id);
+    }
+}
+void XMDao::setDtime(uint id, qint64 dtime) {
+    bool ok = db->execute("setDtime", "update xm set dtime=:dtime where id=:id", [=](QSqlQuery& q) {
+        q.bindValue(":dtime", dtime);
         q.bindValue(":id", id);
     });
     if(ok) {

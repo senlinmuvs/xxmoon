@@ -10,7 +10,7 @@
 #define WIN 0
 #define UNIX 1
 #define MAC 2
-#define VERSION "1.46.0"
+#define VERSION "1.47.0"
 
 #define CB_VAR std::function<QVariantList()>
 #define CB_JSON std::function<void(QJsonObject&)>
@@ -55,7 +55,8 @@ const static char* sql_category_table =
     "name TEXT default '' not null,"
     "i INTEGER default 0 not null,"
     "x INTEGER default 0 not null,"
-    "m TEXT default ''"
+    "m TEXT default '',"
+    "ty INTEGER default 0 not null"
 ")";
 const static char* sql_xm_table =
 "CREATE TABLE IF NOT EXISTS `xm` ("
@@ -71,7 +72,8 @@ const static char* sql_xm_table =
     "bj INTEGER default 0 not null,"
     "refids TEXT default '' not null,"
     "refimgids TEXT default '' not null,"
-    "top INTEGER default 0 not null"
+    "top INTEGER default 0 not null,"
+    "dtime INTEGER default 0 not null"
 ")";
 
 const static char* sql_tag_table =

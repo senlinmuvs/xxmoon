@@ -110,6 +110,7 @@ Trans::Trans() {
     trans_zh_map.insert("tags", "个标签");
     trans_zh_map.insert("yes", "是");
     trans_zh_map.insert("no", "否");
+    trans_zh_map.insert("done", "完成");
 }
 
 QString Trans::tr(QString k) {

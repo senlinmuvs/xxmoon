@@ -114,7 +114,16 @@ void XMAction::delCategory(uint id, uint cbid) {
         sendMsg(cbid, 0);
     });
 }
-
+void XMAction::setCategoryType(uint id, uint ty, uint cbid) {
+    DB_Async->exe("setCategoryType", [=]{
+        Category* c = categoryDao->getCategory(id);
+        if(c != nullptr) {
+            categoryDao->setType(id, ty);
+            delete c;
+        }
+        sendMsg(cbid, 0);
+    });
+}
 void XMAction::sorting(uint cid, uint srcIndex, uint dstIndex, uint cbid) {
     DB_Async->exe("sorting", [=]{
         categoryDao->updateIndex(cid, srcIndex, dstIndex);
@@ -205,6 +214,11 @@ void XMAction::updateXM(uint id, QString cont, QString k, uint pklistWidth, uint
 void XMAction::updateXMCid(uint colIndex, uint xmid, uint cid, QObject *obj) {
     DB_Async->exe("updateXMCid", [=] {
         xmDao->updateCid(xmid, cid);
+        Category* c = categoryDao->getCategory(cid);
+        if(c->ty == 1) {
+            xmDao->setDtime(xmid, ut::time::getCurSeconds());
+        }
+        delete c;
         QMetaObject::invokeMethod(obj, "onMoved",
                                   Q_ARG(QVariant, QVariant::fromValue(colIndex)));
     });

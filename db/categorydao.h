@@ -30,6 +30,7 @@ public:
     void moveUp(uint fromIndex);
     void setX(uint id, uint x);
     void updatePwd(uint id, QString encrypted);
+    void setType(uint id, uint ty);
 };
 
 #endif // CATEGORYDAO_H

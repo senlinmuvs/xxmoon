@@ -117,6 +117,14 @@ Rectangle {
                         lineHeight: height
                     }
                     Text {
+                        id: e_dtime
+                        text: pk&&pk.dtime?Com.viewTime(pk.dtime) + " " + $a.tr('done') : ''
+                        font.pointSize: UI.detail_time_font_size
+                        color:"#898989"
+                        height: 25
+                        lineHeight: height
+                    }
+                    Text {
                         id: e_stime
                         text: pk&&pk.stime?Com.viewTime(pk.stime) + " " + $a.tr('solved ') : ''
                         font.pointSize: UI.detail_time_font_size
