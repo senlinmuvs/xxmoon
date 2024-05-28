@@ -18,6 +18,7 @@ Rectangle {
         text: name
         font.pointSize: UI.col_font_size
         font.bold: true
+        font.italic: ty||jm
         color: "white"
         verticalAlignment: Text.AlignVCenter
         wrapMode: Text.WrapAnywhere

@@ -168,22 +168,38 @@ QString Script::exeCmd(int ty, const QString& cmd, const QString& cont) {
 }
 void Script::updateStatusText(QString& cont, QString& r) {
     QString cur = ut::time::getCurrentTimeStr("yyyy/MM/dd hh:mm:ss");
-    int i = cont.lastIndexOf("----\n");
     r.replace("\n", ",");
     if(r[r.length()-1] == ',') {
         r = r.mid(0, r.length()-1);
     }
+    int i = cont.lastIndexOf("----\n");
     if(i < 0) {
         cont += "\n----\n" + cur + " " + r;
     } else {
-        int j = cont.lastIndexOf(" |");
-        if(j >= 0) {
-            cont = cont.mid(0, j);
+        QStringList arr = cont.mid(i+5).split(" | ");
+        if(arr.length() < 3) {
+            if(arr.length() < 2) {
+                arr << cur + " " + r;
+            } else {
+                bool ok = false;
+                QString st = arr[1].trimmed().right(2);
+                if(st == "成功" || st == "失败") {
+                    if(r != "成功" && r != "失败") {
+                        arr[1] = cur + " " + r;
+                        ok = true;
+                    }
+                }
+                if(!ok) {
+                    arr << cur + " " + r;
+                }
+            }
+        } else {
+            arr[2] = cur + " " + r;
         }
-        cont += " | " + cur + " " + r;
+        cont = cont.mid(0, cont.lastIndexOf("\n")+1) + arr.join(" | ");
     }
     // ----
-    // 2024/05/27 17:59:00 正常 | 2024/05/27 17:59:50 正常
+    // 2024/05/27 17:59:00 成功 | 2024/05/27 10:10:00 xxx | 2024/05/27 17:59:50 xxxx
 }
 void Script::checkAndRun() {
     Future* f = new Future();
