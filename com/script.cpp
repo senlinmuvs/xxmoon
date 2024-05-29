@@ -177,21 +177,14 @@ void Script::updateStatusText(QString& cont, QString& r) {
         cont += "\n----\n" + cur + " " + r;
     } else {
         QStringList arr = cont.mid(i+5).split(" | ");
-        if(arr.length() < 3) {
-            if(arr.length() < 2) {
-                arr << cur + " " + r;
+        if(arr.length() <= 1) {
+            arr << cur + " " + r;
+        } else if(arr.length() == 2) {
+            QString st = arr[1].trimmed().right(2);
+            if(st == "成功" || st == "失败") {
+                arr[1] = cur + " " + r;
             } else {
-                bool ok = false;
-                QString st = arr[1].trimmed().right(2);
-                if(st == "成功" || st == "失败") {
-                    if(r != "成功" && r != "失败") {
-                        arr[1] = cur + " " + r;
-                        ok = true;
-                    }
-                }
-                if(!ok) {
-                    arr << cur + " " + r;
-                }
+                arr << cur + " " + r;
             }
         } else {
             arr[2] = cur + " " + r;
