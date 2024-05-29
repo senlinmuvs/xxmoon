@@ -38,11 +38,10 @@ Rectangle {
                 spacing: UI.ui_pk_cont_space
                 anchors {
                     top:parent.top
-                    topMargin: 10
+                    topMargin: 5
                     left: parent.left
-                    leftMargin: 10
                     right: parent.right
-                    rightMargin: 10
+                    rightMargin: 5
                 }
                 MyImage {
                     id: img
@@ -71,7 +70,6 @@ Rectangle {
                 Column {
                     id: cols
                     width: parent.width - 10
-                    spacing: 2
                     function onClickImg(src, mouse) {
                         if (mouse.button === Qt.LeftButton) {
                             openImgView(src);

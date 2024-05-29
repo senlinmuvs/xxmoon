@@ -197,11 +197,11 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
         }
     }
 
-    // 处理Quote/Code/Img块前面的Txt紧接着的非块级元素后面的\n去掉一个
+    //处理Quote/Code/Img块前面的Txt紧接着的非块级元素后面的\n去掉一个
     for(int i = 0; i < newList.size(); i++) {
         Doc doc = newList.at(i);
         if(doc.ty == TY_TEXT) {
-            //如果下一个元素是引用块或代码块
+            //如果下一个元素是引用块或代码块或图片
             if(i+1 < newList.size()) {
                 Doc nextDoc = newList.at(i+1);
                 if(nextDoc.ty == TY_QUOTE || nextDoc.ty == TY_CODE || nextDoc.ty == TY_IMG) {
@@ -225,6 +225,12 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
                     }
                 }
             }
+        }
+    }
+
+    for(int i = newList.size()-1; i >= 0; i--) {
+        if(newList[i].ty == TY_TEXT && newList[i].cont.isEmpty()) {
+            newList.remove(i);
         }
     }
 

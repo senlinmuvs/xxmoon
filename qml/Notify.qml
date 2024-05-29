@@ -43,7 +43,9 @@ ApplicationWindow {
     }
     function open(msg, ty=0) {
         if(text.text) {
-            text.text += "\n" + msg;
+            if(text.text.substring(text.text.lastIndexOf("\n")+1) !== msg) {
+                text.text += "\n" + msg;
+            }
         } else {
             text.text = msg;
         }

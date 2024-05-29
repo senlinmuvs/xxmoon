@@ -3,7 +3,7 @@ import QtQuick 2.0
 Rectangle {
     id: root
     property string src
-    anchors.horizontalCenterOffset: 15
+    anchors.horizontalCenterOffset: 5
     MyImage {
         id: img
         source: src
