@@ -542,14 +542,18 @@ QList<QStringList> Sync::getUploadFiles() {
     return list << files << dels;
 }
 void Sync::start() {
+    QString error = "";
     if(lg->isDebug()) {
         lg->debug("sync start");
     }
     bool initDone = ut::file::readFile(cfg->xmCfgDir+"/.init_done_time").toLongLong() > 0;
     if(initDone) {
-        fq->dequeue([](const QString& msg)->bool{
+        fq->dequeue([&](const QString& msg)->bool{
             lg->info(QString("dolog [%1] start").arg(msg));
             bool ok = processMessage(msg);
+            if(!ok) {
+                error = "同步数据错误";
+            }
             lg->info(QString("dolog [%1] done ok=%2").arg(msg).arg(ok));
             return ok;
         });
@@ -577,6 +581,7 @@ void Sync::start() {
         }, [&](QNetworkReply::NetworkError err){
             lg->error(QString("post url %1 err %2").arg(url).arg(err));
             loop.quit();
+            error = "请求服务器错误";
         });
         loop.exec();
     }
@@ -592,6 +597,7 @@ void Sync::start() {
             bool ok = upfile(f);
             if(!ok) {
                 lg->error(QString("upfile error stop %1").arg(f));
+                error = "上传文件错误";
             }
         }
         for(QString& f:files[1]) {
@@ -602,10 +608,13 @@ void Sync::start() {
             bool ok = delFile(f);
             if(!ok) {
                 lg->error(QString("delFile error stop %1").arg(f));
+                error = "删除文件错误";
             }
         }
         lastCheckFileTime = ut::time::getCurMills();
     }
+    // qDebug() << "push error" << error;
+    pushMsg(PUSH_ERR, error);
 }
 void Sync::sync0() {
     QString dataPath = cfg->dataDir + "/" + cfg->appName + "/" + cfg->user;

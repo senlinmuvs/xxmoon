@@ -435,6 +435,7 @@ ApplicationWindow {
         }
     }
     function onPush(ty, data) {
+        // console.log("push", ty, data);
         if(ty === 0) {
             if(serv.visible) {
                 serv.onPush(ty, data);
@@ -443,7 +444,10 @@ ApplicationWindow {
             fileDialog.open();
         } else if(ty === 2) {
             about.op();
+        } else if(ty === Com.PUSH_ERR) {
+            navigation.err = data;
         }
+
         if(pageLoader.item.onPush) {
             pageLoader.item.onPush(ty, data);
         }

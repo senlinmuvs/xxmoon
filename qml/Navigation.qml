@@ -12,6 +12,7 @@ Rectangle {
     property NavBtn currentNavBtn: colBtn
     property int initYOffset: 0
     property int curIndex: 0
+    property string err: ''
 
     Rectangle {
         width: parent.width
@@ -123,6 +124,17 @@ Rectangle {
 //                    Com.st(0, '');
 //                }
 //            }
+            Btn {
+                id: btn_err
+                visible: err?true:false
+                text: "!"
+                text_color: "red"
+                text_size: UI.book_btn_add_font_size
+                color:"transparent"
+                function click() {
+                    alert(err, 0);
+                }
+            }
             Btn {
                 id: btn_add
                 text: "+"

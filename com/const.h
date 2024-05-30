@@ -10,7 +10,7 @@
 #define WIN 0
 #define UNIX 1
 #define MAC 2
-#define VERSION "1.48.0"
+#define VERSION "1.49.0"
 
 #define CB_VAR std::function<QVariantList()>
 #define CB_JSON std::function<void(QJsonObject&)>
@@ -144,6 +144,7 @@ const int PUSH_SERVER = 0;
 const int PUSH_OPENFILE = 1;
 const int PUSH_OPEN_ABOUT = 2;
 const int PUSH_UP_TAGS = 3;
+const int PUSH_ERR = 4;
 
 const static char* DOLOG_XM_NEW = "nx %1";
 const static char* DOLOG_XM_DEL = "dx %1 %2";

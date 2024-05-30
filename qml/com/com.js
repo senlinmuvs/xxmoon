@@ -8,6 +8,7 @@ const PUSH_SERVER = 0;
 const PUSH_OPENFILE = 1;
 const PUSH_OPEN_ABOUT = 2;
 const PUSH_UP_TAGS = 3;
+const PUSH_ERR = 4;
 
 let tag1 = $a.tag1;
 let tag2 = $a.tag2;
