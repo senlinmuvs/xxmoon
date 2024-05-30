@@ -27,6 +27,8 @@ public:
     void deleteByWid(uint wid);
     bool exists(uint wid, QString cont);
     uint count();
+    qint64 getEarliestTime();
+    qint64 getLastTime();
 };
 
 #endif // NOTEDAO_H

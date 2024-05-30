@@ -7,7 +7,7 @@ import "com/ui.js" as UI
 Popup {
     id: root
     width: 450
-    height: 200
+    height: 230
     x: navigation.width
     y: parent.height - height
     topPadding: 0
@@ -43,6 +43,7 @@ Popup {
             }
             Text {
                 id: e_count
+                textFormat: Text.RichText
                 font.pointSize: 12
                 color:"white"
             }
@@ -199,9 +200,6 @@ Popup {
 
     Component.onCompleted: {
         $a.getCfg(root);
-        $a.count(Com.putFunc(function(s){
-            e_count.text = s;
-        }));
     }
     onClosed: {
         setup_hot_key_xm.submit();
@@ -209,6 +207,9 @@ Popup {
 
     function op() {
         open();
+        $a.count(Com.putFunc(function(s){
+            e_count.text = s;
+        }));
     }
     function onCfg(cfg) {
         setup_data_path.text = cfg['dataDir'];

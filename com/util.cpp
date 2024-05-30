@@ -504,6 +504,10 @@ namespace ut {
         qint64 getCurMills() {
             return QDateTime::currentDateTime().toMSecsSinceEpoch();
         }
+        QString toString(qint64 mills, QString format) {
+            QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(mills);
+            return dateTime.toString(format);
+        }
     }
 
     namespace img {

@@ -2276,8 +2276,21 @@ void App::count(uint cbid) {
         uint totalFiles = counts[0];
         double size = double(counts[1])/1024/1024;
         QString totalSize = QString::number(size, 'f', 2);
-        QString s = QString("分类:%1 笔记:%2 书籍:%3 摘抄:%4 标签:%5 文件:%6 占用:%7M")
-                        .arg(totalCategory).arg(totalXM).arg(totalBook).arg(totalNote).arg(totalTag).arg(totalFiles).arg(totalSize);
+
+        qint64 xmEarliestTime = xmDao->getEarliestTime()*1000;
+        qint64 xmLastTime = xmDao->getLastTime()*1000;
+        qint64 noteEarliestTime = noteDao->getEarliestTime()*1000;
+        qint64 noteLastTime = noteDao->getLastTime()*1000;
+        QString fromTime = xmEarliestTime > noteEarliestTime ? ut::time::toString(noteEarliestTime) : ut::time::toString(xmEarliestTime);
+        QString endTime = xmLastTime > noteLastTime ? ut::time::toString(xmLastTime) : ut::time::toString(noteLastTime);
+
+        QString s = QString("分类: %1 笔记: %2 书籍:%3 摘抄: %4 标签: %5 文件: %6 占用: %7M<br>时间: %8 - %9")
+                        .arg(totalCategory).arg(totalXM).arg(totalBook).arg(totalNote).arg(totalTag).arg(totalFiles).arg(totalSize)
+                        .arg(fromTime).arg(endTime);
+        QStringList arr = QString("分类,笔记,书籍,摘抄,标签,文件,占用,时间").split(",");
+        for(QString& e: arr) {
+            s.replace(e+":", "<span style=\"color:#8a8a8a\">"+e+":</span>");
+        }
         sendMsg(cbid, s);
     });
 }

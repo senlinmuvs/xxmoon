@@ -482,3 +482,27 @@ uint NoteDao::count() {
     }
     return 0;
 }
+qint64 NoteDao::getEarliestTime() {
+    QSqlQuery q("select time from note order by time limit 1");
+    bool r = q.exec();
+    if(!r) {
+        lg->error(QString("getEarliestTime error %1").arg(q.lastError().text()));
+        return 0;
+    }
+    if(q.next()) {
+        return q.value(0).toLongLong();
+    }
+    return 0;
+}
+qint64 NoteDao::getLastTime() {
+    QSqlQuery q("select time from note order by time desc limit 1");
+    bool r = q.exec();
+    if(!r) {
+        lg->error(QString("getLastTime error %1").arg(q.lastError().text()));
+        return 0;
+    }
+    if(q.next()) {
+        return q.value(0).toLongLong();
+    }
+    return 0;
+}

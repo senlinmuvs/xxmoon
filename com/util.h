@@ -65,6 +65,7 @@ namespace ut {
         QString getCurrentTimeStr(QString format = "yyyyMMddhhmmss.zzz");
         uint getCurSeconds();
         qint64 getCurMills();
+        QString toString(qint64 mills, QString format = "yyyy/MM/dd hh:mm:ss");
     }
 
     namespace img {

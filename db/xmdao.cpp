@@ -391,3 +391,27 @@ void XMDao::setDtime(uint id, qint64 dtime) {
         dologXMNew(id);
     }
 }
+qint64 XMDao::getEarliestTime() {
+    QSqlQuery q("select time from xm order by time limit 1");
+    bool r = q.exec();
+    if(!r) {
+        lg->error(QString("getEarliestTime error %1").arg(q.lastError().text()));
+        return 0;
+    }
+    if(q.next()) {
+        return q.value(0).toLongLong();
+    }
+    return 0;
+}
+qint64 XMDao::getLastTime() {
+    QSqlQuery q("select time from xm order by time desc limit 1");
+    bool r = q.exec();
+    if(!r) {
+        lg->error(QString("getLastTime error %1").arg(q.lastError().text()));
+        return 0;
+    }
+    if(q.next()) {
+        return q.value(0).toLongLong();
+    }
+    return 0;
+}
