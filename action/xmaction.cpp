@@ -132,7 +132,7 @@ void XMAction::sorting(uint cid, uint srcIndex, uint dstIndex, uint cbid) {
 }
 void XMAction::countCategory(uint cid, uint cbid) {
     DB_Async->exe("countCategory", [=]{
-        uint n = xmDao->countCol(cid);
+        uint n = xmDao->countCategory(cid);
         sendMsg(cbid, n);
     });
 }

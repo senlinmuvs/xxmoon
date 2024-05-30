@@ -168,10 +168,7 @@ QString Script::exeCmd(int ty, const QString& cmd, const QString& cont) {
 }
 void Script::updateStatusText(QString& cont, QString& r) {
     QString cur = ut::time::getCurrentTimeStr("yyyy/MM/dd hh:mm:ss");
-    r.replace("\n", ",");
-    if(r[r.length()-1] == ',') {
-        r = r.mid(0, r.length()-1);
-    }
+    cont = cont.trimmed();
     int i = cont.lastIndexOf("----\n");
     if(i < 0) {
         cont += "\n----\n" + cur + " " + r;

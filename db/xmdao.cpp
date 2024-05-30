@@ -284,13 +284,28 @@ void XMDao::updateXMTags(uint xmid, QString tags) {
     }
 }
 
-uint XMDao::countCol(uint cid) {
+uint XMDao::countCategory(uint cid) {
     QSqlQuery q;
     q.prepare("select count(*) as n from xm where cid=:cid");
     q.bindValue(":cid", cid);
     bool suc = q.exec();
     if(!suc){
-        lg->error(QString("countCol error %1").arg(q.lastError().text()));
+        lg->error(QString("countCategory error %1").arg(q.lastError().text()));
+        return 0;
+    }
+    if(q.next()){
+        uint n = q.value(0).toUInt();
+        return n;
+    }
+    return 0;
+}
+
+uint XMDao::count() {
+    QSqlQuery q;
+    q.prepare("select count(*) as n from xm");
+    bool suc = q.exec();
+    if(!suc){
+        lg->error(QString("count error %1").arg(q.lastError().text()));
         return 0;
     }
     if(q.next()){

@@ -41,7 +41,7 @@ Rectangle {
                     topMargin: 5
                     left: parent.left
                     right: parent.right
-                    rightMargin: 5
+                    rightMargin: 10
                 }
                 MyImage {
                     id: img

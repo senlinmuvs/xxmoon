@@ -26,6 +26,7 @@ public:
     void deleteNote_(uint id);
     void deleteByWid(uint wid);
     bool exists(uint wid, QString cont);
+    uint count();
 };
 
 #endif // NOTEDAO_H

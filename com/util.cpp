@@ -15,6 +15,7 @@
 #include <QSettings>
 #include <QCryptographicHash>
 #include <QImageWriter>
+#include <QDirIterator>
 
 using namespace std;
 
@@ -179,6 +180,20 @@ namespace ut {
             } else {
                 return ".png";
             }
+        }
+        QList<uint> count(QString path) {
+            uint c = 0;
+            uint size = 0;
+            QDirIterator it(path, QDir::Files|QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+            while (it.hasNext()) {
+                it.next();
+                QFileInfo fileInfo = it.fileInfo();
+                if (fileInfo.isFile()) {
+                    c++;
+                    size += fileInfo.size();
+                }
+            }
+            return QList<uint>() << c << size;
         }
     }
 

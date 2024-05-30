@@ -22,7 +22,8 @@ public:
     void updateCid(uint pkId, uint cid);
     uint countImgRefrence(QString imgLink);
     void updateXMTags(uint pkid, QString tags);
-    uint countCol(uint cid);
+    uint countCategory(uint cid);
+    uint count();
     uint getNextID(uint cid, uint id);
     uint getIDByImg(QString img);
     uint getSolveTime(uint id);

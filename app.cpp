@@ -1674,7 +1674,7 @@ void App::importXM(QVariantMap pkdata) {
             resCol = categoryDao->getCategory(resColID);
         }
         if(resCol) {
-            resCol->total = xmDao->countCol(resCol->id);
+            resCol->total = xmDao->countCategory(resCol->id);
             if(lg->isDebug()) {
                 lg->debug(QString("ret resCol %1").arg(resCol->toString()));
             }
@@ -2264,4 +2264,19 @@ void App::cp(QString txt) {
     //注意以下是把<0xa0>替换成空格
     txt.replace(" ", " ");
     ut::cpb::setText(txt);
+}
+void App::count(uint cbid) {
+    DB_Async->exe("count", [=]{
+        uint totalCategory = categoryDao->count();
+        uint totalXM = xmDao->count();
+        uint totalBook = workDao->count();
+        uint totalNote = noteDao->count();
+        QList counts = ut::file::count(cfg->userBaseDir);
+        uint totalFiles = counts[0];
+        double size = double(counts[1])/1024/1024;
+        QString totalSize = QString::number(size, 'f', 2);
+        QString s = QString("分类:%1 笔记:%2 书籍:%3 摘抄:%4 文件:%5 占用:%6M")
+                        .arg(totalCategory).arg(totalXM).arg(totalBook).arg(totalNote).arg(totalFiles).arg(totalSize);
+        sendMsg(cbid, s);
+    });
 }
