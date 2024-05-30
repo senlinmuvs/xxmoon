@@ -6,7 +6,7 @@ import "com/ui.js" as UI
 
 Popup {
     id: root
-    width: 400
+    width: 450
     height: 200
     x: navigation.width
     y: parent.height - height

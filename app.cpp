@@ -2271,12 +2271,13 @@ void App::count(uint cbid) {
         uint totalXM = xmDao->count();
         uint totalBook = workDao->count();
         uint totalNote = noteDao->count();
+        uint totalTag = tagDao->count();
         QList counts = ut::file::count(cfg->userBaseDir);
         uint totalFiles = counts[0];
         double size = double(counts[1])/1024/1024;
         QString totalSize = QString::number(size, 'f', 2);
-        QString s = QString("分类:%1 笔记:%2 书籍:%3 摘抄:%4 文件:%5 占用:%6M")
-                        .arg(totalCategory).arg(totalXM).arg(totalBook).arg(totalNote).arg(totalFiles).arg(totalSize);
+        QString s = QString("分类:%1 笔记:%2 书籍:%3 摘抄:%4 标签:%5 文件:%6 占用:%7M")
+                        .arg(totalCategory).arg(totalXM).arg(totalBook).arg(totalNote).arg(totalTag).arg(totalFiles).arg(totalSize);
         sendMsg(cbid, s);
     });
 }

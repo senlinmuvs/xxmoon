@@ -23,6 +23,7 @@ public:
     uint countTag(uint id, uint target);
     vector<uint> findTagIdByTag(QString tag);
     QString getTagCondByTags(QStringList tags);
+    uint count();
 };
 
 #endif // TAGDAO_H

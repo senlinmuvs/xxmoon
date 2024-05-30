@@ -195,3 +195,17 @@ QString TagDao::getTagCondByTags(QStringList tags) {
     }
     return s;
 }
+uint TagDao::count() {
+    QSqlQuery q;
+    q.prepare("select count(*) as c from tag");
+    bool suc = q.exec();
+    if(!suc){
+        lg->error(QString("count error %1").arg(q.lastError().text()));
+        return 0;
+    }
+    if(q.next()){
+        uint n = q.value(0).toUInt();
+        return n;
+    }
+    return 0;
+}
