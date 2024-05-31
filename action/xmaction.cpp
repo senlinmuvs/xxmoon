@@ -6,9 +6,10 @@
 XMAction::XMAction() {
 }
 
-void updateScriptEnv(uint id, QString& cont) {
+void updateScriptEnv(uint id, const QString& cont_) {
     bool ok = false;
-    if(!cont.isEmpty()) {
+    if(!cont_.isEmpty()) {
+        QString cont = cont_;
         int i = cont.lastIndexOf("\n----\n");
         if(i >= 0) {
             cont = cont.mid(0, i);
@@ -186,28 +187,28 @@ void XMAction::updateXM(uint id, QString cont, QString k, uint pklistWidth, uint
         XM *xm = xmDao->getXM(id);
         if(xm != nullptr) {
             if(xm->cont != cont) {
+                xm->cont = cont;
                 if(!xm->jm) {
                     xmDao->updateXM(id, cont, 0);
                     QString tmpFile = cfg->tmpDir + "/" + cfg->tmpPKPre + QString::number(id);
                     if(ut::file::exists(tmpFile)){
                         ut::file::writeText(tmpFile, cont);
                     }
-                    xm->cont = cont;
                     updateScriptEnv(id, xm->cont);
                 } else {
                     delete xm;
                     alert(trans->tr("Can not edit encrypted content."));
                     return;
                 }
+                xm->simpleCont = extractXMSimpleCont(xm->cont, k);
+                sendMsg(cbid, xm->toVMap(1,1,pklistWidth));
+                delete xm;
             }
         } else {
             delete xm;
             alert(trans->tr("Failure.Not found the doc!"));
             return;
         }
-        xm->simpleCont = extractXMSimpleCont(xm->cont, k);
-        sendMsg(cbid, xm->toVMap(1,1,pklistWidth));
-        delete xm;
     });
 }
 

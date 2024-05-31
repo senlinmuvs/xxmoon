@@ -435,7 +435,9 @@ Popup {
     }
     function cl() {
         add = false;
-        Com.info("close editor", gid, bid, delegate);
+        if($l.isDebug()) {
+            Com.debug("close editor", gid, bid, delegate);
+        }
         if(first_field.visible) {
             $a.setUIVal(3, root.bid+","+text.cursorPosition);
         } else {

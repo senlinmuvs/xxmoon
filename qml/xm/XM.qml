@@ -629,13 +629,19 @@ Rectangle {
                 if(xm) {
                     edit_pk_popup.bid = xm.id;
                 }
-                Com.info('submitXM cb', JSON.stringify(xm));
+                if($l.isDebug()) {
+                    Com.debug('submitXM cb', JSON.stringify(xm));
+                }
             }, upeditor);
         }
         function cancel() {
-            Com.info('cancelEditXM');
+            if($l.isDebug()) {
+                Com.debug('cancelEditXM');
+            }
             XM.submitXM(function(xm) {
-                Com.info('submitXM cb', JSON.stringify(xm));
+                if($l.isDebug()) {
+                    Com.debug('submitXM cb', JSON.stringify(xm));
+                }
                 if(add && xm) {
                     let xm0 = list_model_xm.get(0);
                     if(!xm0 || xm0.id !== xm.id) {
