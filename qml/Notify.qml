@@ -26,7 +26,7 @@ ApplicationWindow {
         color: "white"
         textFormat: Text.RichText
         renderType: Text.NativeRendering
-        wrapMode: Text.WrapAnywhere
+        wrapMode: Text.WordWrap
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         onContentWidthChanged: function(contentWidth) {

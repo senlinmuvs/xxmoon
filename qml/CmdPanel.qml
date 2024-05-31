@@ -68,7 +68,7 @@ ApplicationWindow {
         focus: true
         header: Text {
             width: e_list.width
-            height: 40
+            height: text?40:0
             color: "white"
             text: key.substring(0, 30)
             visible: text

@@ -5,7 +5,6 @@ import "../com/com.js" as Com
 
 TextArea {
     id: root
-
     readOnly: true
     textFormat: Text.RichText
     renderType: Text.NativeRendering
