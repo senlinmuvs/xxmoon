@@ -200,8 +200,9 @@ QList<uint> extractRefIDsAsList(const QString& cont) {
     }
     return refs;
 }
-QString extractNoteSimpleCont(const QString& cont, const QString& k) {
-    if(k.trimmed().length() == 0) {
+QString extractNoteSimpleCont(const QString& cont, const QString& k_) {
+    QString k = k_.trimmed();
+    if(k.length() == 0) {
         return cont.mid(0, SIMPLE_SIZE);
     }
     QString s = "";
@@ -235,8 +236,9 @@ QString extractNoteSimpleCont(const QString& cont, const QString& k) {
     return replaceHighlightKey(cont, keys);
 }
 
-QString extractXMSimpleCont(const QString& cont, const QString& k) {
-    if(k.trimmed().length() == 0) {
+QString extractXMSimpleCont(const QString& cont, const QString& k_) {
+    QString k = k_.trimmed();
+    if(k.length() == 0) {
         return cont.mid(0, SIMPLE_SIZE);
     }
     QString s = "";
@@ -379,12 +381,15 @@ void filterSearchKey(QString& k) {
     k.replace(regex, "");
 }
 int replaceHighlightKey(QString& line, const QString& k, int from) {
+    if(from < 0 || from >= line.length()) {
+        return 0;
+    }
     int i = line.mid(from).indexOf(k);
     if(i != -1) {
         QString tag1 = "@#red ";
         QString tag2 = "@";
-        line.replace(i, k.length(), tag1+k+tag2);
-        from = i+k.length()+tag1.length()+tag2.length();
+        line.replace(from+i, k.length(), tag1+k+tag2);
+        from = from+i+k.length()+tag1.length()+tag2.length();
     }
     return from;
 }
