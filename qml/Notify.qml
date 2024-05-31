@@ -1,6 +1,6 @@
-import QtQuick 2.14
-import QtQuick.Controls 2.14
-import Qt.labs.platform 1.1
+import QtQuick
+import QtQuick.Controls
+import Qt.labs.platform
 import "com"
 import "com/com.js" as Com
 import "com/ui.js" as UI
@@ -16,8 +16,7 @@ ApplicationWindow {
         color: Qt.rgba(0.2, 0.2, 0.2, 0.8)
         radius: 10
     }
-    x: screen.width - width - 5
-    y: 20
+    x: screen.width - width - 2
     Text {
         id: text
         anchors.centerIn: parent
@@ -26,14 +25,22 @@ ApplicationWindow {
         color: "white"
         textFormat: Text.RichText
         renderType: Text.NativeRendering
-        wrapMode: Text.WordWrap
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        onContentWidthChanged: function(contentWidth) {
-            if(contentWidth > 500) {
+        wrapMode: Text.WrapAnywhere
+        onContentWidthChanged: {
+            if(contentWidth >= 520) {
                 width = 520;
             }
+            if(contentWidth <= 200) {
+                width = 200;
+            }
         }
+        onContentHeightChanged: {
+            if(contentHeight >= 1000) {
+                height = 1000;
+            }
+        }
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
         focus: true
         Keys.onPressed: function(e) {
             if(e.key === Qt.Key_Escape) {
@@ -67,7 +74,7 @@ ApplicationWindow {
     }
     function close() {
         text.text = "";
-        root.hide();
+        root.destroy();
     }
     MouseArea {
         anchors.fill: parent;

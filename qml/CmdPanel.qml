@@ -50,7 +50,7 @@ ApplicationWindow {
                     }
                 }
                 Rectangle {
-                    color: "#a9a9a9"
+                    color: "#696969"
                     width: parent.width
                     height: 1
                 }
@@ -66,44 +66,78 @@ ApplicationWindow {
         highColor: "#191919"
         currentIndex: -1
         focus: true
-        header: Text {
+        header: Rectangle {
+            color: "transparent"
             width: e_list.width
-            height: text?40:0
-            color: "white"
-            text: key.substring(0, 30)
-            visible: text
-            font.bold: true
-            font.pointSize: 16
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-        }
-        onCurrentIndexChanged: {
-            close();
+            height: e_txt.height
+            Text {
+                id: e_txt
+                x: 10
+                width: parent.width-20
+                height: key?30:10
+                color: "white"
+                text: key.length+': '+key
+                visible: key
+                font.pointSize: 12
+                verticalAlignment: Text.AlignVCenter
+                maximumLineCount: 1
+                clip: true
+            }
         }
         Keys.onPressed: function(e) {
             if(e.key === Qt.Key_Escape) {
                 close();
+            } else if(e.key === Qt.Key_Home) {
+                e_list.currentIndex = 0;
+            } else if(e.key === Qt.Key_End) {
+                e_list.currentIndex = m.count-1;
+            } else if(e.key === Qt.Key_J) {
+                e_list.currentIndex = Math.min(e_list.currentIndex+1, m.count-1);
+            } else if(e.key === Qt.Key_K) {
+                e_list.currentIndex = Math.max(e_list.currentIndex-1, 0);
+            } else if(e.key === Qt.Key_Return) {
+                let row = m.get(e_list.currentIndex);
+                exe(row, 0);
+                return;
             }
+
             let k = Number(e.key);
             if(k && k >= 49 && k <= 85) {
                 let i = k-49;
-                e_list.currentIndex = i;
                 if(i >= 0 && i < m.count) {
                     let row = m.get(i);
                     // console.log(JSON.stringify(row));
                     if(row && row.script) {
-                        $a.exePanelCmd(root.key, row.script);
+                        exe(row);
                     }
+                    e_list.currentIndex = i;
                 }
             }
+        }
+    }
+    Timer {
+        id: e_close_timer
+        repeat: false
+        interval: 300
+        onTriggered: {
+            close();
         }
     }
     Component.onCompleted: {
         e_list.forceActiveFocus();
     }
+    function exe(row, delayClose=1) {
+        $a.exePanelCmd(root.key, row.script, row.ty);
+        if(delayClose) {
+            e_close_timer.start();
+        } else {
+            close();
+        }
+    }
+
     function open(k, datas) {
         m.clear();
-        root.key = k;
+        root.key = k.replace("\n", " ");
         for(let i in datas) {
             // console.log(JSON.stringify(datas[i]));
             m.append(datas[i]);

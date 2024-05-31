@@ -415,11 +415,16 @@ void App::showCmdPanel() {
                 QString key = ut::cpb::getText();
                 QVariantList list;
                 for(QString& line: lines){
+                    line = line.trimmed();
+                    if(line.startsWith("//")) {
+                        continue;
+                    }
                     QStringList arr = line.split(",");
                     if(arr.length() > 2) {
                         m["n"] = arr[0].trimmed();
                         m["script"] = arr[1].trimmed();
                         m["tip"] = arr[2].trimmed();
+                        m["ty"] = arr.length() < 4 ? 0 : arr[3].trimmed().toUInt();
                         list << m;
                     }
                 }
@@ -2337,7 +2342,9 @@ void App::count(uint cbid) {
         sendMsg(cbid, s);
     });
 }
-void App::exePanelCmd(QString k, QString script_) {
+
+//ty=0表示返回写剪贴板 ty=1表示返回放桌面通知栏
+void App::exePanelCmd(QString k, QString script_, uint ty) {
     if(script_.isEmpty()) {
         return;
     }
@@ -2346,7 +2353,7 @@ void App::exePanelCmd(QString k, QString script_) {
         QString script = cfg->scriptDir + "/" + script_;
         QString res;
         if(ut::file::exists(script)) {
-            process.start("/usr/local/bin/python3", QStringList() << script << k.left(1));
+            process.start("/usr/local/bin/python3", QStringList() << script << k);
             if(process.waitForStarted()) {
                 if(process.waitForFinished()) {
                     res = process.readAll();
@@ -2362,7 +2369,11 @@ void App::exePanelCmd(QString k, QString script_) {
         }
         if(!res.isEmpty()) {
             // qDebug() << res;
-            notify(res, 1);
+            if(ty == 0) {
+                ut::cpb::setText(res);
+            } else if(ty == 1) {
+                notify(res, 1);
+            }
         }
     });
 }
