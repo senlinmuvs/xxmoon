@@ -48,6 +48,7 @@ public:
     QString cfgFile = xmCfgDir + "/" + appName +  ".cfg";
     QString hotKeyXm = ctrl+"+Alt+X";
     QString hotKeyShow = ctrl+"+Alt+Z";
+    QString hotKeyCmd = ctrl+"+Alt+P";
     QString lang = "";
     QString tmpActFile = "act";
     //
@@ -69,6 +70,8 @@ public:
     uint port = 10000;
 
     QString dologFile = xmCfgDir + "/."+ user +"-dolog";
+
+    uint cmdSrc = 0;
 
     QString toString();
     QVariantMap toVMap();

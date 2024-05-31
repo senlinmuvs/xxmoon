@@ -44,6 +44,7 @@ QVariantMap Cfg::toVMap() {
     map["cfgFile"] = cfgFile;
     map["hotKeyXm"] = hotKeyXm;
     map["hotKeyShow"] = hotKeyShow;
+    map["hotKeyCmd"] = hotKeyCmd;
     map["lang"] = lang;
     map["tmpActFile"] = tmpActFile;
     map["uiQuoteBgColor"] = uiQuoteBgColor;
@@ -61,6 +62,7 @@ QVariantMap Cfg::toVMap() {
     map["siteXmblogTag"] = siteXmblogTag;
     map["port"] = port;
     map["dologFile"] = dologFile;
+    map["cmdSrc"] = cmdSrc;
     return map;
 }
 

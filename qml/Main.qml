@@ -18,6 +18,7 @@ ApplicationWindow {
     y: screen.height/2 - height/2
     property bool winIsMax: false
     property var w_notify: null
+    property var w_cmdPanel: null
 
     property int st: 0
     property int st_height: UI.main_st_height
@@ -257,6 +258,10 @@ ApplicationWindow {
     Component {
         id: com_notify
         Notify{}
+    }
+    Component {
+        id: com_cmd_panel
+        CmdPanel{}
     }
 
     property int import_total: 0
@@ -600,5 +605,12 @@ ApplicationWindow {
         if(pageLoader.item.navBtnClick){
             pageLoader.item.navBtnClick(ty);
         }
+    }
+    function showCmdPanel(k, datas) {
+        if(!w_cmdPanel) {
+            w_cmdPanel = com_cmd_panel.createObject(null, {});
+        }
+        // console.log("showCmdPanel", k, JSON.stringify(datas));
+        w_cmdPanel.open(k, datas);
     }
 }

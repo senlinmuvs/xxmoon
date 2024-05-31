@@ -24,12 +24,20 @@ ApplicationWindow {
         font.bold: true
         font.pixelSize: 20
         color: "white"
+        textFormat: Text.RichText
+        renderType: Text.NativeRendering
         wrapMode: Text.WrapAnywhere
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        onContentWidthChanged: {
+        onContentWidthChanged: function(contentWidth) {
             if(contentWidth > 500) {
                 width = 520;
+            }
+        }
+        focus: true
+        Keys.onPressed: function(e) {
+            if(e.key === Qt.Key_Escape) {
+                close();
             }
         }
     }
@@ -55,6 +63,7 @@ ApplicationWindow {
         if(ty === 0) {
             timer.start();
         }
+        text.forceActiveFocus();
     }
     function close() {
         text.text = "";

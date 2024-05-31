@@ -34,6 +34,7 @@ private:
 public:
     void setGlobalHotkey(uint ty, QString k);
     void showOrHide();
+    void showCmdPanel();
 
 public:
     explicit App();
@@ -125,6 +126,7 @@ public:
     Q_INVOKABLE QString test();
     Q_INVOKABLE uint calLine(QString txt, int index);
     Q_INVOKABLE bool existFile(QString file);
+    Q_INVOKABLE void exePanelCmd(QString k, QString script);
 };
 
 #endif // APP_H

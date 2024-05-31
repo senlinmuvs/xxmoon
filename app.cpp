@@ -20,6 +20,7 @@
 #include <QSettings>
 #include <QSslCertificate>
 #include <QSslKey>
+#include <QThreadPool>
 #include "com/runmain.h"
 #include "com/future.h"
 #include "com/sslhelper.h"
@@ -404,7 +405,35 @@ void App::showOrHide() {
     QObject* root = engine->rootObjects().at(0);
     QMetaObject::invokeMethod(root, "showOrHide");
 }
+void App::showCmdPanel() {
+    if(cfg->cmdSrc > 0) {
+        DB_Async->exe("showCmdPanel", []{
+            XM* xm = xmDao->getXM(cfg->cmdSrc);
+            if(xm != nullptr) {
+                QStringList lines = xm->cont.trimmed().split("\n");
+                QVariantMap m;
+                QString key = ut::cpb::getText();
+                QVariantList list;
+                for(QString& line: lines){
+                    QStringList arr = line.split(",");
+                    if(arr.length() > 2) {
+                        m["n"] = arr[0].trimmed();
+                        m["script"] = arr[1].trimmed();
+                        m["tip"] = arr[2].trimmed();
+                        list << m;
+                    }
+                }
+                QObject* root = engine->rootObjects().at(0);
+                QMetaObject::invokeMethod(root, "showCmdPanel",
+                                          Q_ARG(QVariant, QVariant::fromValue(key)),
+                                          Q_ARG(QVariant, QVariant::fromValue(list)));
+                delete xm;
+            }
+        });
+    }
+}
 void App::setGlobalHotkey(uint ty, QString k) {
+    lg->info(QString("setGlobalHotkey %1 %2").arg(ty).arg(k));
     QString hotv = k;
     #ifdef Q_OS_MAC
         //mac的cmd在qt里是ctrl，当配置cmd时实际要换成ctrl
@@ -423,6 +452,8 @@ void App::setGlobalHotkey(uint ty, QString k) {
             this->xm();
         } else if(ty == 1) {
             this->showOrHide();
+        } else if(ty == 2) {
+            this->showCmdPanel();
         }
     });
 }
@@ -1541,7 +1572,15 @@ void App::setCfg(QString k, QString v) {
             emit hk->destroyed();
             delete hk;
         }
-        setGlobalHotkey(0, cfg->hotKeyXm);
+        setGlobalHotkey(1, cfg->hotKeyShow);
+    } else if(k == "hot_key_cmd") {
+        QHotkey *hk = hotkMap.take(2);
+        cfg->hotKeyCmd = v;
+        if(hk) {
+            emit hk->destroyed();
+            delete hk;
+        }
+        setGlobalHotkey(2, cfg->hotKeyCmd);
     } else if(k == "editor") {
         cfg->editor = v;
     }
@@ -1898,6 +1937,8 @@ void App::initCfg() {
                         cfg->hotKeyXm = v;
                     } else if(k == "hot_key_show") {
                         cfg->hotKeyShow = v;
+                    } else if(k == "hot_key_cmd") {
+                        cfg->hotKeyCmd = v;
                     } else if(k == "lang") {
                         cfg->lang = v;
                     } else if(k == "ui_quote_bg_color") {
@@ -1920,6 +1961,8 @@ void App::initCfg() {
                         cfg->ctrl = v;
                     } else if(k == "sync_url") {
                         cfg->syncUrl = v;
+                    } else if(k == "cmd_src") {
+                        cfg->cmdSrc = v.toUInt();
                     }
                 }
             }
@@ -2292,5 +2335,34 @@ void App::count(uint cbid) {
             s.replace(e+":", "<span style=\"color:#8a8a8a\">"+e+":</span>");
         }
         sendMsg(cbid, s);
+    });
+}
+void App::exePanelCmd(QString k, QString script_) {
+    if(script_.isEmpty()) {
+        return;
+    }
+    QThreadPool::globalInstance()->start([=]{
+        QProcess process;
+        QString script = cfg->scriptDir + "/" + script_;
+        QString res;
+        if(ut::file::exists(script)) {
+            process.start("/usr/local/bin/python3", QStringList() << script << k.left(1));
+            if(process.waitForStarted()) {
+                if(process.waitForFinished()) {
+                    res = process.readAll();
+                    if(lg->isDebug()) {
+                        lg->debug(QString("exePanelCmd k=%1 script=%2 res=%3").arg(k).arg(script).arg(res));
+                    }
+                } else {
+                    lg->error(QString("exePanelCmd err %1 k=%2 script=%3 res=%4").arg(process.errorString()).arg(k).arg(script).arg(res));
+                }
+            } else {
+                lg->error(QString("exePanelCmd err %1 k=%2 script=%3 res=%4").arg(process.errorString()).arg(k).arg(script).arg(res));
+            }
+        }
+        if(!res.isEmpty()) {
+            // qDebug() << res;
+            notify(res, 1);
+        }
     });
 }

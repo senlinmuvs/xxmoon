@@ -23,6 +23,7 @@ void Log::close(){
 //    }
 //    delete logFile;
 }
+
 void Log::log(QString level, QString msg) {
     QString time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
     QString log = QString("[%1] %2 [%3] %4").arg(QStringLiteral("%1").arg(level, 5).toUpper(),

@@ -80,5 +80,6 @@
         <file>qml/com/DetailWin.qml</file>
         <file>qml/Recycle.qml</file>
         <file>qml/com/VideoPlayer.qml</file>
+        <file>qml/CmdPanel.qml</file>
     </qresource>
 </RCC>

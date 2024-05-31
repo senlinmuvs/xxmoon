@@ -92,6 +92,7 @@ int initGui(MyApplication* ma) {
     //
     a->setGlobalHotkey(0, cfg->hotKeyXm);
     a->setGlobalHotkey(1, cfg->hotKeyShow);
+    a->setGlobalHotkey(2, cfg->hotKeyCmd);
 
 #ifdef Q_OS_MAC
     ma->setWindowIcon(QIcon(":/assets/logo.icns"));
