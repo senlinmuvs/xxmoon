@@ -200,10 +200,10 @@ void XMAction::updateXM(uint id, QString cont, QString k, uint pklistWidth, uint
                     alert(trans->tr("Can not edit encrypted content."));
                     return;
                 }
-                xm->simpleCont = extractXMSimpleCont(xm->cont, k);
-                sendMsg(cbid, xm->toVMap(1,1,pklistWidth));
-                delete xm;
             }
+            xm->simpleCont = extractXMSimpleCont(xm->cont, k);
+            sendMsg(cbid, xm->toVMap(1,1,pklistWidth));
+            delete xm;
         } else {
             delete xm;
             alert(trans->tr("Failure.Not found the doc!"));
