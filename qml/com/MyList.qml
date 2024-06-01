@@ -6,11 +6,10 @@ ListView {
     property string highColor: "#FBFBFB"
     property int vt : 0
     property bool showHighligh: false
+    property int hightighRadius: 0
 
     spacing: 1
     currentIndex: 0
-   // interactive: false
-   // flicking: false
     boundsBehavior: Flickable.StopAtBounds
     highlightMoveDuration: 100
     highlightMoveVelocity: -1
@@ -19,16 +18,6 @@ ListView {
     highlight: Rectangle {
         visible: showHighligh
         color: highColor
+        radius: hightighRadius
     }
-//    MouseArea {
-//        anchors.fill: parent
-//        acceptedButtons: Qt.LeftButton | Qt.RightButton
-//        onWheel: root.flick(0, wheel.angleDelta.y * 10)
-//        onClicked: {
-//            click();
-//        }
-//    }
-//    function click(){
-
-//    }
 }

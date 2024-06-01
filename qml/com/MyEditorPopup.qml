@@ -132,7 +132,7 @@ Popup {
                     text: $a.tr("Done")
                     text_size: UI.font_size_btn
                     function click() {
-                        cl();
+                        done();
                     }
                 }
             }
@@ -434,10 +434,11 @@ Popup {
         $a.regMenuReceiver(text);
     }
     function cl() {
-        add = false;
         if($l.isDebug()) {
             Com.debug("close editor", gid, bid, delegate);
         }
+        add = false;
+        timer.stop();
         if(first_field.visible) {
             $a.setUIVal(3, root.bid+","+text.cursorPosition);
         } else {
@@ -617,5 +618,9 @@ Popup {
         let e = text.selectionEnd;
         insertFlagToLineHead(s, ":[");
         insertFlagToLineEnd(e, "]");
+    }
+    function done() {
+        timer.stop();
+        cancel();
     }
 }

@@ -18,7 +18,6 @@ ApplicationWindow {
     }
     x: screen.width/2 - width/2
     y: screen.height/2 - height/2
-
     property string key: ''
 
     ListModel {
@@ -53,6 +52,13 @@ ApplicationWindow {
                     color: "#696969"
                     width: parent.width
                     height: 1
+                    visible: index < m.count-1
+                }
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    selectRow(index);
                 }
             }
         }
@@ -66,6 +72,7 @@ ApplicationWindow {
         highColor: "#191919"
         currentIndex: -1
         focus: true
+        hightighRadius: 10
         header: Rectangle {
             color: "transparent"
             width: e_list.width
@@ -105,12 +112,7 @@ ApplicationWindow {
             if(k && k >= 49 && k <= 85) {
                 let i = k-49;
                 if(i >= 0 && i < m.count) {
-                    let row = m.get(i);
-                    // console.log(JSON.stringify(row));
-                    if(row && row.script) {
-                        exe(row);
-                    }
-                    e_list.currentIndex = i;
+                    selectRow(i);
                 }
             }
         }
@@ -125,6 +127,13 @@ ApplicationWindow {
     }
     Component.onCompleted: {
         e_list.forceActiveFocus();
+    }
+    function selectRow(i) {
+        let row = m.get(i);
+        if(row && row.script) {
+            exe(row);
+        }
+        e_list.currentIndex = i;
     }
     function exe(row, delayClose=1) {
         $a.exePanelCmd(root.key, row.script, row.ty);
