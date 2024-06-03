@@ -48,7 +48,7 @@ public:
     QString cfgFile = xmCfgDir + "/" + appName +  ".cfg";
     QString hotKeyXm = ctrl+"+Alt+X";
     QString hotKeyShow = ctrl+"+Alt+Z";
-    QString hotKeyCmd = ctrl+"+Alt+P";
+    QString hotKeyCmd = "F6";
     QString lang = "";
     QString tmpActFile = "act";
     //

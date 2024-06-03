@@ -407,34 +407,38 @@ void App::showOrHide() {
 }
 void App::showCmdPanel() {
     if(cfg->cmdSrc > 0) {
-        DB_Async->exe("showCmdPanel", []{
-            XM* xm = xmDao->getXM(cfg->cmdSrc);
-            if(xm != nullptr) {
-                QStringList lines = xm->cont.trimmed().split("\n");
-                QVariantMap m;
-                QString key = ut::cpb::getText();
-                QVariantList list;
-                for(QString& line: lines){
-                    line = line.trimmed();
-                    if(line.startsWith("//")) {
-                        continue;
+        QObject* root = engine->rootObjects().at(0);
+        QVariant closeCmdPanelIfVisible;
+        QMetaObject::invokeMethod(root, "closeCmdPanelIfVisible", Q_RETURN_ARG(QVariant, closeCmdPanelIfVisible));
+        if(closeCmdPanelIfVisible.isValid() && !closeCmdPanelIfVisible.toBool()) {
+            DB_Async->exe("showCmdPanel", [=]{
+                XM* xm = xmDao->getXM(cfg->cmdSrc);
+                if(xm != nullptr) {
+                    QStringList lines = xm->cont.trimmed().split("\n");
+                    QVariantMap m;
+                    QString key = ut::cpb::getText();
+                    QVariantList list;
+                    for(QString& line: lines){
+                        line = line.trimmed();
+                        if(line.startsWith("//")) {
+                            continue;
+                        }
+                        QStringList arr = line.split(",");
+                        if(arr.length() > 2) {
+                            m["n"] = arr[0].trimmed();
+                            m["script"] = arr[1].trimmed();
+                            m["tip"] = arr[2].trimmed();
+                            m["ty"] = arr.length() < 4 ? 0 : arr[3].trimmed().toUInt();
+                            list << m;
+                        }
                     }
-                    QStringList arr = line.split(",");
-                    if(arr.length() > 2) {
-                        m["n"] = arr[0].trimmed();
-                        m["script"] = arr[1].trimmed();
-                        m["tip"] = arr[2].trimmed();
-                        m["ty"] = arr.length() < 4 ? 0 : arr[3].trimmed().toUInt();
-                        list << m;
-                    }
+                    QMetaObject::invokeMethod(root, "showCmdPanel",
+                                              Q_ARG(QVariant, QVariant::fromValue(key)),
+                                              Q_ARG(QVariant, QVariant::fromValue(list)));
+                    delete xm;
                 }
-                QObject* root = engine->rootObjects().at(0);
-                QMetaObject::invokeMethod(root, "showCmdPanel",
-                                          Q_ARG(QVariant, QVariant::fromValue(key)),
-                                          Q_ARG(QVariant, QVariant::fromValue(list)));
-                delete xm;
-            }
-        });
+            });
+        }
     }
 }
 void App::setGlobalHotkey(uint ty, QString k) {

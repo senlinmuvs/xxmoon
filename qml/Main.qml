@@ -613,4 +613,11 @@ ApplicationWindow {
         // console.log("showCmdPanel", k, JSON.stringify(datas));
         w_cmdPanel.open(k, datas);
     }
+    function closeCmdPanelIfVisible() {
+        if(w_cmdPanel && w_cmdPanel.visible) {
+            w_cmdPanel.close();
+            return true;
+        }
+        return false;
+    }
 }

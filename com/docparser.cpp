@@ -387,9 +387,10 @@ http://b
 QString DocParser::filterQml(QString s) {
     //用来先解决上面注释中第三种情况，先把这种情况的这样替换成空行，以免后面被全干掉了
     QString emptyLine = "<p style='line-height:20px'>&nbsp;</p>";
-    QStringList arr = {"h1", "h2", "h3", "div", "p"};
+    QStringList arr = {"h1", "h2", "h3", "div", "p", "hr"};
     for(QString& tag : arr) {
         for(QString& tagx : arr) {
+            //把块元素与块元素之间的\n换成空行
             s = s.replace("</"+tagx+">\n<"+tag,"</"+tagx+">"+emptyLine+"<"+tag);
         }
     }
@@ -437,9 +438,18 @@ QString DocParser::filterQml(QString s) {
             match = re.match(s, matchStart + replacement.length());
         }
     }
-    s = s.replace("\n<hr>", "<hr>");
     s = s.replace("<hr>\n", "<hr>");
-    s = s.replace("\n","<br>");//不用br还不行，只有br才会在块元素后是空一行，在行内元素后是换行，而这个p元素都是空一行。
+    //fix 3128
+    if(s.startsWith("<br>")) {
+        s = emptyLine+s.mid(4);
+    }
+    s = s.replace("\n", "<br>");
+    // //把所有块级元素紧挨着的\n换成空行，再把连续两个\n换成空行
+    // //因为br会在块元素后是空一行，在行内元素后是换行，而这个p元素都是空一行。
+    // for(QString& tag : arr) {
+    //     s = s.replace("</"+tag+">\n","</"+tag+">"+emptyLine);
+    // }
+    // s = s.replace("\n\n",emptyLine);
     // qDebug() << "filterQml" << s;
 //    qDebug() << QString("-------------------------------------------------------").toUtf8().data();
     return s;
@@ -533,7 +543,7 @@ QString DocParser::parseTxtHtml(QString s, uint maxWidth) {
     s = ut::str::replaceAllTag(s, "**","**", "<b>", "</b>", 1, param, "\n", eachTag);//匹配的串中间不能有\n
     s = ut::str::replaceAllTag(s, "@#","@", "<font color='{1}'>", "</font>", 1, param, "\n", eachTag);//匹配的串中间不能有\n
     s = ut::str::replaceAllTag(s, "---\n","---\n", "<table border='0' cellpadding='5' cellspacing='5' style='border-collapse:collapse;'>", "</table>", 0, param, "", eachTag);
-    s = ut::str::replaceAllTag(s, "----","\n", "<hr>", "");
+    s = s.replace("----\n", "<hr>");
     s = ut::str::replaceAllTag(s, ":[","]\n", "<p style='color:gray;text-align: right;font-style: italic;'>", "</p>", 0, param, "", eachTag);
     s = ut::str::replaceAllTag(s, "~~","~~", "<s>", "</s>", 1, param, "\n", eachTag);//匹配的串中间不能有\n
     if(s.endsWith("\n")) {//最后再去掉这个换行，如果还在的话，还在说明没有匹配到，不在说明被替换了。
