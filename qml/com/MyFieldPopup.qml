@@ -37,6 +37,7 @@ Popup {
         focus: true
         echoMode: pwd?TextInput.Password:TextInput.Normal
         placeholderText: placeholder
+        placeholderTextColor: "#eaeaea"
         verticalAlignment: Text.AlignVCenter
         Keys.onPressed: function(event) {
             if(event.key === Qt.Key_Return) {

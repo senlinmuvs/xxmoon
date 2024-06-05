@@ -103,14 +103,19 @@ ApplicationWindow {
             } else if(e.key === Qt.Key_K) {
                 e_list.currentIndex = Math.max(e_list.currentIndex-1, 0);
             } else if(e.key === Qt.Key_Return) {
-                let row = m.get(e_list.currentIndex);
-                exe(row, 0);
+                selectRow(e_list.currentIndex);
                 return;
             }
 
             let k = Number(e.key);
+            // console.log(">>>>>", k);
             if(k && k >= 49 && k <= 85) {
-                let i = k-49;
+                let i = -1;
+                if(k >= 65) {
+                    i = k-65+9;
+                } else {
+                    i = k-49;
+                }
                 if(i >= 0 && i < m.count) {
                     selectRow(i);
                 }
@@ -130,13 +135,21 @@ ApplicationWindow {
     }
     function selectRow(i) {
         let row = m.get(i);
+        // console.log(JSON.stringify(row));
         if(row && row.script) {
-            exe(row);
+            if(row.tk) {
+                close();
+                window.alertInput(0, '参数', function(param){
+                    exe(row, 1, param);
+                });
+            } else {
+                exe(row);
+            }
         }
         e_list.currentIndex = i;
     }
-    function exe(row, delayClose=1) {
-        $a.exePanelCmd(root.key, row.script, row.ty);
+    function exe(row, delayClose=1, param='') {
+        $a.exePanelCmd(root.key, row.script, row.ty, param);
         if(delayClose) {
             e_close_timer.start();
         } else {
@@ -151,6 +164,7 @@ ApplicationWindow {
             // console.log(JSON.stringify(datas[i]));
             m.append(datas[i]);
         }
+        root.height = Math.min(m.count*41+80, 900);
         e_list.currentIndex = -1;
         root.show();
         root.raise();

@@ -429,6 +429,7 @@ void App::showCmdPanel() {
                             m["script"] = arr[1].trimmed();
                             m["tip"] = arr[2].trimmed();
                             m["ty"] = arr.length() < 4 ? 0 : arr[3].trimmed().toUInt();
+                            m["tk"] = arr.length() < 5 ? 0 : arr[4].trimmed().toUInt();
                             list << m;
                         }
                     }
@@ -2348,7 +2349,7 @@ void App::count(uint cbid) {
 }
 
 //ty=0表示返回写剪贴板 ty=1表示返回放桌面通知栏
-void App::exePanelCmd(QString k, QString script_, uint ty) {
+void App::exePanelCmd(QString k, QString script_, uint ty, QString param) {
     if(script_.isEmpty()) {
         return;
     }
@@ -2357,18 +2358,18 @@ void App::exePanelCmd(QString k, QString script_, uint ty) {
         QString script = cfg->scriptDir + "/" + script_;
         QString res;
         if(ut::file::exists(script)) {
-            process.start("/usr/local/bin/python3", QStringList() << script << k);
+            process.start("/usr/local/bin/python3", QStringList() << script << k << param);
             if(process.waitForStarted()) {
                 if(process.waitForFinished()) {
                     res = process.readAll();
                     if(lg->isDebug()) {
-                        lg->debug(QString("exePanelCmd k=%1 script=%2 res=%3").arg(k).arg(script).arg(res));
+                        lg->debug(QString("exePanelCmd script=%1 k=%2 param=%3 res=%4").arg(script).arg(k).arg(param).arg(res));
                     }
                 } else {
-                    lg->error(QString("exePanelCmd err %1 k=%2 script=%3 res=%4").arg(process.errorString()).arg(k).arg(script).arg(res));
+                    lg->error(QString("exePanelCmd err %1 script=%2 k=%3 param=%4 res=%5").arg(process.errorString()).arg(script).arg(k).arg(param).arg(res));
                 }
             } else {
-                lg->error(QString("exePanelCmd err %1 k=%2 script=%3 res=%4").arg(process.errorString()).arg(k).arg(script).arg(res));
+                lg->error(QString("exePanelCmd err %1 script=%2 k=%3 param=%4 res=%5").arg(process.errorString()).arg(script).arg(k).arg(param).arg(res));
             }
         }
         if(!res.isEmpty()) {

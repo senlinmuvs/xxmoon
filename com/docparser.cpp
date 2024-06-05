@@ -524,28 +524,41 @@ QString DocParser::parseTxtHtml(QString s, uint maxWidth) {
     QString param = QString::number(maxWidth);
 //    qDebug() << "parseTxtHtml-------------->>>" << s;
     s += "\n";//在末尾加个换行，以匹配# x这种，最后再去掉这个换行，如果还在的话，还在说明没有匹配到，不在说明被替换了。
-    s = ut::str::replaceAllTag(s, "#"+blank,"\n", "<h1>", "</h1>");
-    s = ut::str::replaceAllTag(s, "#-"+blank,"\n", "<h1 style='text-align: center;'>", "</h1>");
-    s = ut::str::replaceAllTag(s, "#)"+blank,"\n", "<h1 style='text-align: right;'>", "</h1>");
+    s = ut::str::replaceAllTag(s, "#"+blank,"\n", "<h1>", "</h1>\n");
+    s = ut::str::replaceAllTag(s, "#-"+blank,"\n", "<h1 style='text-align: center;'>", "</h1>\n");
+    s = ut::str::replaceAllTag(s, "#)"+blank,"\n", "<h1 style='text-align: right;'>", "</h1>\n");
 //    qDebug() << "parseTxtHtml-------------->>>" << s;
-    s = ut::str::replaceAllTag(s, "##"+blank,"\n", "<h2>", "</h2>");
-    s = ut::str::replaceAllTag(s, "##-"+blank,"\n", "<h2 style='text-align: center;'>", "</h2>");
-    s = ut::str::replaceAllTag(s, "##)"+blank,"\n", "<h2 style='text-align: right;'>", "</h2>");
-    s = ut::str::replaceAllTag(s, "###"+blank,"\n", "<h3>", "</h3>");
-    s = ut::str::replaceAllTag(s, "###-"+blank,"\n", "<h3 style='text-align: center;'>", "</h3>");
-    s = ut::str::replaceAllTag(s, "###)"+blank,"\n", "<h3 style='text-align: right;'>", "</h3>");
+    s = ut::str::replaceAllTag(s, "##"+blank,"\n", "<h2>", "</h2>\n");
+    s = ut::str::replaceAllTag(s, "##-"+blank,"\n", "<h2 style='text-align: center;'>", "</h2>\n");
+    s = ut::str::replaceAllTag(s, "##)"+blank,"\n", "<h2 style='text-align: right;'>", "</h2>\n");
+    s = ut::str::replaceAllTag(s, "###"+blank,"\n", "<h3>", "</h3>\n");
+    s = ut::str::replaceAllTag(s, "###-"+blank,"\n", "<h3 style='text-align: center;'>", "</h3>\n");
+    s = ut::str::replaceAllTag(s, "###)"+blank,"\n", "<h3 style='text-align: right;'>", "</h3>\n");
     //用<div>是为了html导出时方便控制，<br/>不受控制
-    s = ut::str::replaceAllTag(s, "http://","\n", "<div><a href='http://{0}'>http://", "</a></div>", 0, param, "", eachTag);
-    s = ut::str::replaceAllTag(s, "https://","\n", "<div><a href='https://{0}'>https://", "</a></div>", 0, param, "", eachTag);
-    s = ut::str::replaceAllTag(s, "ftp://","\n", "<div><a href='ftp://{0}'>ftp://", "</a></div>", 0, param, "", eachTag);
-    s = ut::str::replaceAllTag(s, "file://","\n", "<div><a href='file://{0}'>file://", "</a></div>", 0, param, "", eachTag);
+    s = ut::str::replaceAllTag(s, "http://","\n", "<div><a href='http://{0}'>http://", "</a></div>\n", 0, param, "", eachTag);
+    s = ut::str::replaceAllTag(s, "https://","\n", "<div><a href='https://{0}'>https://", "</a></div>\n", 0, param, "", eachTag);
+    s = ut::str::replaceAllTag(s, "ftp://","\n", "<div><a href='ftp://{0}'>ftp://", "</a></div>\n", 0, param, "", eachTag);
+    s = ut::str::replaceAllTag(s, "file://","\n", "<div><a href='file://{0}'>file://", "</a></div>\n", 0, param, "", eachTag);
     s = ut::str::replaceAllTag(s, "![","]", "<a href='{1}'>", "</a>", 1, param, "", eachTag);
     s = ut::str::replaceAllTag(s, "**","**", "<b>", "</b>", 1, param, "\n", eachTag);//匹配的串中间不能有\n
     s = ut::str::replaceAllTag(s, "@#","@", "<font color='{1}'>", "</font>", 1, param, "\n", eachTag);//匹配的串中间不能有\n
-    s = ut::str::replaceAllTag(s, "---\n","---\n", "<table border='0' cellpadding='5' cellspacing='5' style='border-collapse:collapse;'>", "</table>", 0, param, "", eachTag);
-    s = s.replace("----\n", "<hr>");
-    s = ut::str::replaceAllTag(s, ":[","]\n", "<p style='color:gray;text-align: right;font-style: italic;'>", "</p>", 0, param, "", eachTag);
+    s = ut::str::replaceAllTag(s, "---\n","---\n", "<table border='0' cellpadding='5' cellspacing='5' style='border-collapse:collapse;'>", "</table>\n", 0, param, "", eachTag);
+    s = ut::str::replaceAllTag(s, ":[","]\n", "<p style='color:gray;text-align: right;font-style: italic;'>", "</p>\n", 0, param, "", eachTag);
     s = ut::str::replaceAllTag(s, "~~","~~", "<s>", "</s>", 1, param, "\n", eachTag);//匹配的串中间不能有\n
+
+    //--------匹配横线 start--------
+    //因为上面尾标签有\n时会被替换掉，所以但凡是这种情况都不能在头标签前面加\n来匹配了，已经就不准了，除非前面的替换方式是保留尾标签的\n，再在最后统一处理\n
+    s = "\n"+s;
+    s = s.replace("\n----\n", "\n<hr>");
+    if(s.startsWith("\n")) {
+        s = s.mid(1);
+    }
+    //再处理尾标签后的\n
+    QStringList arr = {"h1", "h2", "h3", "div", "table", "p"};
+    for(QString& tag : arr) {
+        s.replace("/"+tag+">\n", "/"+tag+">");
+    }
+    //--------匹配横线 end  --------
     if(s.endsWith("\n")) {//最后再去掉这个换行，如果还在的话，还在说明没有匹配到，不在说明被替换了。
         s = s.mid(0, s.length()-1);
     }

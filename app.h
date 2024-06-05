@@ -126,7 +126,7 @@ public:
     Q_INVOKABLE QString test();
     Q_INVOKABLE uint calLine(QString txt, int index);
     Q_INVOKABLE bool existFile(QString file);
-    Q_INVOKABLE void exePanelCmd(QString k, QString script, uint ty);
+    Q_INVOKABLE void exePanelCmd(QString k, QString script, uint ty, QString param);
 };
 
 #endif // APP_H

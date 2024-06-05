@@ -115,14 +115,14 @@ Rectangle {
             onTriggered: {
                 let c = XM.getCurrentCategory();
                 if(c.jm) {
-                    encrypt_cont_popup.delegate = {
+                    popup_input.delegate = {
                         onSubmit:function(v) {
                             $xm.validateCategoryPWD(c.id, v, Com.putFunc(function(y){
                                 if(y) {
                                     $xm.deleteEncryption(c.id, Com.putFunc(function(){
                                         c.jm = false;
                                         alert('取消成功');
-                                        encrypt_cont_popup.close();
+                                        popup_input.close();
                                     }));
                                 } else {
                                     alert("密码错误");
@@ -130,18 +130,18 @@ Rectangle {
                             }));
                         }
                     };
-                    encrypt_cont_popup.op();
+                    popup_input.op();
                 } else {
-                    encrypt_cont_popup.delegate = {
+                    popup_input.delegate = {
                         onSubmit:function(v) {
                             $xm.encrypt(c.id, v, Com.putFunc(function(){
                                 c.jm = true;
                                 alert('设置成功');
-                                encrypt_cont_popup.close();
+                                popup_input.close();
                             }));
                         }
                     };
-                    encrypt_cont_popup.op(1);
+                    popup_input.op(1);
                 }
             }
         }
@@ -433,21 +433,21 @@ Rectangle {
                 let c = XM.getCurrentCategory();
                 list_model_xm.clear();
                 if(c&&c.jm) {
-                    encrypt_cont_popup.delegate = {
+                    popup_input.delegate = {
                         onSubmit:function(v) {
                             $xm.validateCategoryPWD(c.id, v, Com.putFunc(function(y){
                                 if(y) {
                                     XM.loadXM(true, function(){
                                         xm_list_view.currentIndex = 0;
                                     });
-                                    encrypt_cont_popup.close();
+                                    popup_input.close();
                                 } else {
                                     alert("密码错误");
                                 }
                             }));
                         }
                     };
-                    encrypt_cont_popup.op();
+                    popup_input.op();
                 } else {
                     XM.loadXM(true, function() {
                         xm_list_view.currentIndex = 0;
@@ -550,7 +550,7 @@ Rectangle {
             }
             onCurrentIndexChanged: {
                 if(!search_bar.focus) {
-                    if(!encrypt_cont_popup.visible) {
+                    if(!popup_input.visible) {
                         category_list_view.forceActiveFocus();
                     }
                 }

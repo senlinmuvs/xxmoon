@@ -339,7 +339,7 @@ function openEncryptPopup() {
         let pk = getCurrentXM();
         if(pk) {
             let twiceCheck = !pk.jm;
-            encrypt_cont_popup.delegate = {
+            popup_input.delegate = {
                 onSubmit:function() {
                     enOrDecrypt();
                     category_list_view.forceActiveFocus();
@@ -348,7 +348,7 @@ function openEncryptPopup() {
                     category_list_view.forceActiveFocus();
                 }
             };
-            encrypt_cont_popup.op(twiceCheck);
+            popup_input.op(twiceCheck);
         }
     }
 }
@@ -508,7 +508,7 @@ class PKTagDelegate extends Tag.TagDelegate {
 function enOrDecrypt() {
     let pk = getCurrentXM();
     if(pk) {
-        let pwd = encrypt_cont_popup.text.trim();
+        let pwd = popup_input.text.trim();
         if(pk.jm) {
             Com.st(0, $a.tr("decrypting..."));
             $a.decrypt(pk.id, pwd, xm_list.width, Com.putFunc(function(pk2) {
@@ -530,7 +530,7 @@ function enOrDecrypt() {
                         list_model_xm.set(xm_list_view.currentIndex, pk);
                     }
                 }
-                encrypt_cont_popup.cancel();
+                popup_input.cancel();
                 Com.st(1, $a.tr("Finished"));
             }));
         } else {
@@ -551,11 +551,11 @@ function enOrDecrypt() {
                         list_model_xm.set(xm_list_view.currentIndex, pk);
                     }
                 }
-                encrypt_cont_popup.cancel();
+                popup_input.cancel();
                 Com.st(1, $a.tr("Finished"));
             }));
         }
-        encrypt_cont_popup.clear();
+        popup_input.clear();
     }
 }
 function sticky(id) {

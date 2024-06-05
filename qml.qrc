@@ -81,5 +81,6 @@
         <file>qml/Recycle.qml</file>
         <file>qml/com/VideoPlayer.qml</file>
         <file>qml/CmdPanel.qml</file>
+        <file>qml/Input.qml</file>
     </qresource>
 </RCC>

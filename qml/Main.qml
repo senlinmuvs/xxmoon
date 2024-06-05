@@ -19,6 +19,7 @@ ApplicationWindow {
     property bool winIsMax: false
     property var w_notify: null
     property var w_cmdPanel: null
+    property var w_input: null
 
     property int st: 0
     property int st_height: UI.main_st_height
@@ -110,7 +111,7 @@ ApplicationWindow {
         id: imgViewer
     }
     MyFieldPopup {
-        id: encrypt_cont_popup
+        id: popup_input
         pwd: true
         z: 11
         placeholder: $a.tr("Password")
@@ -262,6 +263,10 @@ ApplicationWindow {
     Component {
         id: com_cmd_panel
         CmdPanel{}
+    }
+    Component {
+        id: com_input
+        Input{}
     }
 
     property int import_total: 0
@@ -516,9 +521,9 @@ ApplicationWindow {
         if(pk.jm) {
             let delegate = {
                 onSubmit:function() {
-                    let pwd = encrypt_cont_popup.text;
+                    let pwd = popup_input.text;
                     $a.openXMFile(xmfile, pwd, Com.putFunc(function(pk2) {
-                        encrypt_cont_popup.cancel();
+                        popup_input.cancel();
                         openXM(pk2);
                     }));
                 },
@@ -526,9 +531,9 @@ ApplicationWindow {
                     pageLoader.item.fuckFocus();
                 }
             }
-            encrypt_cont_popup.delegate = delegate;
-            encrypt_cont_popup.closePolicy = Popup.NoAutoClose;
-            encrypt_cont_popup.op();
+            popup_input.delegate = delegate;
+            popup_input.closePolicy = Popup.NoAutoClose;
+            popup_input.op();
         }
     }
     function importXM(p) {
@@ -619,5 +624,19 @@ ApplicationWindow {
             return true;
         }
         return false;
+    }
+    function alertInput(pwd=0, holder='', cb) {
+        if(!w_input) {
+            w_input = com_input.createObject(null, {});
+        }
+        w_input.holder = holder;
+        w_input.delegate = {
+            onSubmit: function(t){
+                if(cb) {
+                    cb(t);
+                }
+            }
+        };
+        w_input.open();
     }
 }
