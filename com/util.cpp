@@ -464,6 +464,12 @@ namespace ut {
                 return s;
             }
         }
+        bool isChineseChar(QChar ch) {
+            if (ch.isLetter() && ch.unicode() >= 0x3400 && ch.unicode() <= 0x9FFF) {
+                return true;
+            }
+            return false;
+        }
     }
 
     ///ip

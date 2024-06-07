@@ -57,6 +57,7 @@ namespace ut {
         QString removeFirstLine(const QString& s);
         QString removeEndLine(const QString& s);
         QString getEndLine(const QString& s);
+        bool isChinese(QChar ch);
     }
 
     namespace time {

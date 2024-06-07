@@ -118,7 +118,10 @@ QString Script::exeCmd(int ty, const QString& cmd, const QString& cont) {
                 scriptFile = cfg->scriptDir + "/" + cmd;
             }
             if(ut::file::exists(scriptFile)) {
-                process.start("/usr/local/bin/python3", QStringList() << scriptFile);
+                QStringList params;
+                params << scriptFile;
+                params << "1";//最后一个参数表示是哪里调用的脚本 0表示从面板调用 1表示从定时器
+                process.start("/usr/local/bin/python3", params);
                 if(process.waitForStarted()) {
                     if(process.waitForFinished()) {
                         res = process.readAll();

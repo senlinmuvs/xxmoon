@@ -2358,7 +2358,16 @@ void App::exePanelCmd(QString k, QString script_, uint ty, QString param) {
         QString script = cfg->scriptDir + "/" + script_;
         QString res;
         if(ut::file::exists(script)) {
-            process.start("/usr/local/bin/python3", QStringList() << script << k << param);
+            QStringList params;
+            params << script;
+            if(param.isEmpty()) {
+                params << k;
+            } else {
+                QStringList params2 = param.split(" ");
+                params << params2;
+            }
+            params << "0";//最后一个参数表示是哪里调用的脚本 0表示从面板调用 1表示从定时器
+            process.start("/usr/local/bin/python3", params);
             if(process.waitForStarted()) {
                 if(process.waitForFinished()) {
                     res = process.readAll();
