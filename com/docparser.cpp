@@ -202,6 +202,7 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
         Doc doc = newList.at(i);
         if(doc.ty == TY_TEXT) {
             //如果下一个元素是引用块或代码块或图片
+            bool removeed = false;
             if(i+1 < newList.size()) {
                 Doc nextDoc = newList.at(i+1);
                 if(nextDoc.ty == TY_QUOTE || nextDoc.ty == TY_CODE || nextDoc.ty == TY_IMG) {
@@ -211,6 +212,7 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
                     if(!match.hasMatch()) {
                         doc.cont = doc.cont.mid(0, doc.cont.length()-1);
                         newList[i] = doc;
+                        removeed = true;
                     }
                 }
             }
@@ -218,8 +220,10 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
             if(i-1 >= 0) {
                 Doc preDoc = newList[i-1];
                 if(preDoc.ty == TY_QUOTE || preDoc.ty == TY_CODE || preDoc.ty == TY_IMG) {
-                    //如果开头是\n就直接去掉
-                    if(doc.cont.startsWith("\n")) {
+                    if(removeed && doc.cont.length()==1) {
+                        continue;
+                    }
+                    if(doc.cont.startsWith("\n")) {//如果开头是\n就直接去掉
                         doc.cont = doc.cont.mid(1);
                         newList[i] = doc;
                     }

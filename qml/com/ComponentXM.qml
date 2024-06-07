@@ -100,7 +100,6 @@ Rectangle {
                 Column {
                     id: cols
                     width: parent.width - 10
-                    spacing: 2
                     property var qmls: simple_qmls
                     onQmlsChanged: {
                         // console.log("simple_qmls changed", qmls, JSON.stringify(qmls));
