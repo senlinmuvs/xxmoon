@@ -10,7 +10,7 @@ ApplicationWindow {
     visible: true
     color: "transparent"
     flags: Qt.FramelessWindowHint|Qt.WindowSystemMenuHint|Qt.WindowMinimizeButtonHint|Qt.Window
-    width: 300
+    width: 400
     height: 300
     background: Rectangle {
         color: Qt.rgba(0.2, 0.2, 0.2, 0.8)
@@ -26,6 +26,7 @@ ApplicationWindow {
     Component {
         id: com_list
         Rectangle {
+            id: root_item
             width: root.width
             height: e_col.height
             color:"transparent"
@@ -33,19 +34,36 @@ ApplicationWindow {
             Column {
                 id: e_col
                 width: parent.width - 40
+                height: e_row.height+1
                 x: 20
-                Text {
-                    id: e_text
-                    font.bold: true
-                    font.pointSize: 16
-                    color: "white"
-                    text: n + " " + tip
-                    wrapMode: Text.WrapAnywhere
-                    verticalAlignment: Text.AlignVCenter
+                Row {
+                    id: e_row
                     width: parent.width
-                    height: 40
-                    onContentHeightChanged: function(contentHeight) {
-                        height = Math.max(contentHeight + 20, height);
+                    height: e_text.height
+                    Text {
+                        id: e_no
+                        font.bold: true
+                        font.pointSize: 16
+                        color: "white"
+                        text: n
+                        wrapMode: Text.WrapAnywhere
+                        verticalAlignment: Text.AlignVCenter
+                        width: 20
+                        height: 40
+                    }
+                    Text {
+                        id: e_text
+                        font.bold: true
+                        font.pointSize: 16
+                        color: "white"
+                        text: tip
+                        wrapMode: Text.WrapAnywhere
+                        verticalAlignment: Text.AlignVCenter
+                        width: parent.width - e_no.width
+                        height: 40
+                        onContentHeightChanged: function(contentHeight) {
+                            height = Math.max(contentHeight + 20, height);
+                        }
                     }
                 }
                 Rectangle {
@@ -57,6 +75,13 @@ ApplicationWindow {
             }
             MouseArea {
                 anchors.fill: parent
+                hoverEnabled: true
+                onEntered: {
+                    root_item.color = "#393939";
+                }
+                onExited: {
+                    root_item.color = "transparent";
+                }
                 onClicked: {
                     selectRow(index);
                 }

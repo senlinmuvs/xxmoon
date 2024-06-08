@@ -219,11 +219,26 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
             //如果前一个元素是引用块或代码块或图片
             if(i-1 >= 0) {
                 Doc preDoc = newList[i-1];
-                if(preDoc.ty == TY_QUOTE || preDoc.ty == TY_CODE || preDoc.ty == TY_IMG) {
+                //这两个的尾标签没有\n，所以如果后面接着\n也不会被匹配此标签时被替换掉，所以还得单独去掉
+                if(preDoc.ty == TY_QUOTE || preDoc.ty == TY_CODE) {
+                    //fix 3167
                     if(removeed && doc.cont.length()==1) {
                         continue;
                     }
-                    if(doc.cont.startsWith("\n")) {//如果开头是\n就直接去掉
+                    if(doc.cont.startsWith("\n")) {
+                        doc.cont = doc.cont.mid(1);
+                        newList[i] = doc;
+                    }
+                } else if(preDoc.ty == TY_IMG) {
+					//fix 3167
+                    if(removeed && doc.cont.length()==1) {
+                        continue;
+                    }
+                    //fix 3174
+                    //如果开头是\n+块级元素就直接去掉，否则是非块级元素则不去掉
+                    static QRegularExpression re("\n[#]{1,3}[ ].+\n.+", QRegularExpression::DotMatchesEverythingOption);
+                    QRegularExpressionMatch match = re.match(doc.cont);
+                    if(match.hasMatch()) {
                         doc.cont = doc.cont.mid(1);
                         newList[i] = doc;
                     }
