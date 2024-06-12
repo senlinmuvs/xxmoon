@@ -228,10 +228,10 @@ QString extractNoteSimpleCont(const QString& cont, const QString& k_) {
 //            i = ut::str::findFrontLine(cont, cfg->simple_cont_front_line, i);
             i = i - cfg->simpleContKeyFront;
         }
-        s = cont.mid(max(0, i), SIMPLE_SIZE);
+        s = ut::str::substrUniformWidth(cont, max(0, i), SIMPLE_SIZE);
         s = ut::str::frontLine(s, cfg->simpleContMaxLine);
     } else {
-        s = cont.mid(0, SIMPLE_SIZE);
+        s = ut::str::substrUniformWidth(cont, 0, SIMPLE_SIZE);
     }
     return replaceHighlightKey(cont, keys);
 }
@@ -263,10 +263,10 @@ QString extractXMSimpleCont(const QString& cont, const QString& k_) {
         if(i > 0) {
             i = i - cfg->simpleContKeyFront;
         }
-        s = cont.mid(max(0, i), SIMPLE_SIZE);
+        s = ut::str::substrUniformWidth(cont, max(0, i), SIMPLE_SIZE);
         s = ut::str::frontLine(s, cfg->simpleContMaxLine);
     } else {
-        s = cont.mid(0, SIMPLE_SIZE);
+        s = ut::str::substrUniformWidth(cont, 0, SIMPLE_SIZE);
     }
     return replaceHighlightKey(cont, keys);
 }

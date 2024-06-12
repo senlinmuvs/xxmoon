@@ -2,15 +2,12 @@
 #define CONST_H
 
 #define PAGE_SIZE 50
-#define SIMPLE_SIZE 200
-#define MAX_TAG 6
-#define GEN_PDF_MAX_WIDTH 520
 #define FILE_PRE "file:///"
 #define FILE_PRE_MAC "file://"
 #define WIN 0
 #define UNIX 1
 #define MAC 2
-#define VERSION "1.50.8"
+#define VERSION "1.51.0"
 
 #define CB_VAR std::function<QVariantList()>
 #define CB_JSON std::function<void(QJsonObject&)>
@@ -130,6 +127,9 @@ const static char* FOLDER_RESOURCES = "resources";
 
 const static unsigned int MAX_XM_IMG_COUNT = 10000;
 const static unsigned int SIZE_1G = 1*1024*1024*1024;
+const static unsigned int SIMPLE_SIZE = 250;
+const static unsigned int MAX_TAG = 50;
+const static unsigned int GEN_PDF_MAX_WIDTH = 50;
 
 //==============================//
 const int Cmd_EnableServer = 0;

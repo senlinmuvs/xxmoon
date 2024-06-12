@@ -464,11 +464,30 @@ namespace ut {
                 return s;
             }
         }
-        bool isChineseChar(QChar ch) {
+        bool isChinese(QChar ch) {
             if (ch.isLetter() && ch.unicode() >= 0x3400 && ch.unicode() <= 0x9FFF) {
                 return true;
             }
             return false;
+        }
+        QString substrUniformWidth(const QString &s, int from, int len) {
+            if(from < 0) {
+                from = 0;
+            }
+            if(from >= s.length()) {
+                return "";
+            }
+            QString x = "";
+            int end = std::min(from+len, int(s.length()));
+            for(int i = from; i < end;) {
+                x += s[i];
+                if(isChinese(s[i])) {
+                    i+=2;
+                } else {
+                    i++;
+                }
+            }
+            return x;
         }
     }
 
