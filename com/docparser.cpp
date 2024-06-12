@@ -234,14 +234,6 @@ QStringList DocParser::parse0(bool qml, QString s, uint maxWidth) {
                     if(removeed && doc.cont.length()==1) {
                         continue;
                     }
-                    //fix 3174
-                    //如果开头是\n+块级元素就直接去掉，否则是非块级元素则不去掉
-                    static QRegularExpression re("\n[#]{1,3}[ ].+\n.+", QRegularExpression::DotMatchesEverythingOption);
-                    QRegularExpressionMatch match = re.match(doc.cont);
-                    if(match.hasMatch()) {
-                        doc.cont = doc.cont.mid(1);
-                        newList[i] = doc;
-                    }
                 }
             }
         }
