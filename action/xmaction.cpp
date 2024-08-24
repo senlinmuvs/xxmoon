@@ -205,8 +205,9 @@ void XMAction::updateXM(uint id, QString cont, QString k, uint pklistWidth, uint
             sendMsg(cbid, xm->toVMap(1,1,pklistWidth));
             delete xm;
         } else {
+            lg->error(QString("udpateXM error id %1").at(id));
             delete xm;
-            alert(trans->tr("Failure.Not found the doc!"));
+            alert(trans->tr("Not found the doc!"));
             return;
         }
     });
@@ -239,7 +240,7 @@ void XMAction::addXM(uint cid, QString txt, uint pklistWidth, uint cbid) {
             newXM->simpleCont = extractXMSimpleCont(newXM->cont, "");
             m = newXM->toVMap(0,0,pklistWidth);
         } else {
-            alert(trans->tr("Failure.Not found the doc!"));
+            alert(trans->tr("Not found the doc!"));
             return;
         }
         sendMsg(cbid, m);

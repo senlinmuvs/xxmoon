@@ -43,7 +43,7 @@ ApplicationWindow {
                     Text {
                         id: e_no
                         font.bold: true
-                        font.pointSize: 16
+                        font.pointSize: UI.font_size_normal
                         color: "white"
                         text: n
                         wrapMode: Text.WrapAnywhere
@@ -54,7 +54,7 @@ ApplicationWindow {
                     Text {
                         id: e_text
                         font.bold: true
-                        font.pointSize: 16
+                        font.pointSize: UI.font_size_normal
                         color: "white"
                         text: tip
                         wrapMode: Text.WrapAnywhere
@@ -110,7 +110,7 @@ ApplicationWindow {
                 color: "white"
                 text: key.length+': '+key
                 visible: key
-                font.pointSize: 12
+                font.pointSize: UI.font_size_small
                 verticalAlignment: Text.AlignVCenter
                 maximumLineCount: 1
                 clip: true
@@ -189,7 +189,8 @@ ApplicationWindow {
             // console.log(JSON.stringify(datas[i]));
             m.append(datas[i]);
         }
-        root.height = Math.min(m.count*41+80, 900);
+        let x = $a.getPlatform()===Com.platform_mac?80:50;
+        root.height = Math.min(m.count*41+x, 900);
         e_list.currentIndex = -1;
         root.show();
         root.raise();

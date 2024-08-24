@@ -32,6 +32,7 @@ QVariantMap Cfg::toVMap() {
     map["dbFile"] = dbFile;
     map["imgDir"] = imgDir;
     map["fileDir"] = fileDir;
+    map["attachesDir"] = attachesDir;
     map["scriptDir"] = scriptDir;
     map["tmpDir"] = tmpDir;
     map["logLevel"] = logLevel;
@@ -63,6 +64,7 @@ QVariantMap Cfg::toVMap() {
     map["port"] = port;
     map["dologFile"] = dologFile;
     map["cmdSrc"] = cmdSrc;
+    map["python"] = python;
     return map;
 }
 

@@ -17,7 +17,6 @@ Rectangle {
         width: parent.width - 30
         text: name
         font.pointSize: UI.col_font_size
-        font.bold: true
         font.italic: ty||jm
         color: "white"
         verticalAlignment: Text.AlignVCenter

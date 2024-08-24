@@ -208,8 +208,9 @@ class TagManager {
     }
 }
 class TagDelegate {
-    constructor() {
+    constructor(delegate) {
         this.tagManager = 0;
+        this.delegate = delegate;
     }
     click(tag, st) {
         if(st) {
@@ -217,6 +218,7 @@ class TagDelegate {
         } else {
             this.tagManager.delTagFromSearchKey(tag.tag);
         }
+        this.delegate.refreshData();
     }
     getCurrentItem() {
         return 0;

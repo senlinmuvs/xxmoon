@@ -28,16 +28,17 @@ Rectangle {
                     id: cols
                     width: parent.width - 40
                     spacing: 5
-                    property var qmlArr: qmls
-                    onQmlArrChanged: {
-                       // console.log("qmlArr changed", JSON.stringify(qmlArr));
+                    property var qmlStr: qmls
+                    onQmlStrChanged: {
+                        // console.log("qmlStr changed", qmlStr);
                         cols.data = [];
-                        if(qmlArr) {
-                            let i = 0;
-                            for(let k in qmlArr) {
-                                let qml = qmlArr[k];
-                                let o = Qt.createQmlObject(qml, cols, "dy_"+i);
-                                i++;
+                        if(qmlStr) {
+                            let arr = JSON.parse(qmlStr);
+                            if(arr) {
+                                for(let i = 0; i < arr.length; i++) {
+                                    let qml = arr[i];
+                                    let o = Qt.createQmlObject(qml, cols, "dy_"+i);
+                                }
                             }
                         }
                     }
@@ -63,11 +64,11 @@ Rectangle {
                 }
             }
             Row {
-                spacing: 15
+                spacing: UI.space_note_list_row
                 width: parent.width - 15
                 layoutDirection: Qt.RightToLeft
                 Text {
-                    width: 80
+                    width: UI.width_text_date
                     font.pointSize: UI.ui_font_pk_time
                     color:"#898989"
                     text: (date_str + " " + time_str)

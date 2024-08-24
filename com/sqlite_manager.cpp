@@ -27,6 +27,7 @@ void SQLiteManager::init() {
     query.exec(sql_category_table);
     query.exec(sql_xm_table);
     query.exec(sql_tag_table);
+    query.exec(sql_task_log_table);
     //
     if(categoryDao->getMaxId() == 0) {
         Category *c = new Category();

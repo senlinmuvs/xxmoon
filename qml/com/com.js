@@ -277,7 +277,7 @@ function wrapKey(cont, k) {
 
 function convXM(preDateStr, preTimeStr, e) {
     // console.log("convXM", JSON.stringify(e));
-    // let simpleQmlsStr = JSON.stringify(e.simple_qmls);
+    let simpleQmlsStr = JSON.stringify(e.simple_qmls);
 //    console.log("convPK", simpleQmlsStr);
     let n = {
         id: e.id,
@@ -287,8 +287,8 @@ function convXM(preDateStr, preTimeStr, e) {
         qmls_: "",
         simple_cont: e.simple_cont,
         // simple_html: e.simple_html,
-        // simple_qmls: simpleQmlsStr,
-        simple_qmls: e.simple_qmls,
+        simple_qmls: simpleQmlsStr,
+        // simple_qmls: e.simple_qmls,
         img: e.img,
         time: e.time,
         lst: e.lst,

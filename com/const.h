@@ -1,13 +1,12 @@
 #ifndef CONST_H
 #define CONST_H
 
-#define PAGE_SIZE 50
+#define PAGE_SIZE 20
 #define FILE_PRE "file:///"
 #define FILE_PRE_MAC "file://"
 #define WIN 0
 #define UNIX 1
 #define MAC 2
-#define VERSION "1.51.0"
 
 #define CB_VAR std::function<QVariantList()>
 #define CB_JSON std::function<void(QJsonObject&)>
@@ -84,6 +83,17 @@ const static char* sql_env_table =
     "k varchar constraint env_pk primary key,"
     "v text default '' not null"
 ");";
+
+const static char* sql_task_log_table =
+"create table if not exists `task_log` ("
+    "id INTERGER not null primary key,"
+    "xmid INTERGER not null default 0,"
+    "ct INTERGER not null,"
+    "cont TEXT not null default ''"
+");";
+
+const static char* VERSION = "v1.54.0";
+
 const static char* ENV_K_LAST_IMP_PATH = "LAST_IMP_PATH";
 const static char* ENV_K_LAST_IMP_TIME = "LAST_IMP_TIME";
 const static char* ENV_K_LAST_EXCHANGE_VERSION = "LAST_EXCHANGE_VERSION";
@@ -160,4 +170,5 @@ const static char* DOLOG_ENV_DEL = "de %1";
 const static char* DOLOG_TAG_NEW = "nt %1";
 const static char* DOLOG_TAG_DEL = "dt %1";
 const static char* DOLOG_SQL = "sql %1";
+const static char* DOLOG_TaskLog_NEW = "nl %1";
 #endif //CONST_H

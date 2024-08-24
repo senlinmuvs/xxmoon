@@ -68,7 +68,7 @@ Trans::Trans() {
     trans_zh_map.insert("Last imported path:", "上次导入路径：");
     trans_zh_map.insert("Failed to register %1. Error: %2", "");
     trans_zh_map.insert("Failed to unregister %1. Error: %2", "");
-    trans_zh_map.insert("Failure.Not found the doc!", "失败，未找到此文档！");
+    trans_zh_map.insert("Not found the doc!", "未找到此文档！");
     trans_zh_map.insert("Text", "文本");
     trans_zh_map.insert("Add Success!", "添加成功！");
     trans_zh_map.insert("Delete Success!", "删除成功！");
@@ -111,6 +111,8 @@ Trans::Trans() {
     trans_zh_map.insert("yes", "是");
     trans_zh_map.insert("no", "否");
     trans_zh_map.insert("done", "完成");
+    trans_zh_map.insert("Loading", "加载中");
+    trans_zh_map.insert("No Record", "无记录");
 }
 
 QString Trans::tr(QString k) {

@@ -30,6 +30,7 @@ namespace ut {
         int postfixType(QString f);
         QString typeToPostfix(int t);
         QList<uint> count(QString path);
+        QString convPathForWinExplorer(QString path);
     }
     QString ipv4IntegerToString(quint32 ip);
     quint32 ipv4StringToInteger(const QString& ip);

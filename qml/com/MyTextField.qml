@@ -5,10 +5,14 @@ import "../com/ui.js" as UI
 TextField {
     height: 23
     font.family: "Arial"
-    font.pointSize: UI.my_feild_font_size
+    font.pointSize: UI.font_size_normal
     color: "white"
     selectByMouse: true
     horizontalAlignment: Text.AlignLeft
+    background: Rectangle {
+        anchors.fill: parent
+        color:"#222"
+    }
     property var range
 
     onTextChanged: {

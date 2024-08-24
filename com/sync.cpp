@@ -245,7 +245,8 @@ bool processMessage(const QString& msg) {
         {"c", "category"},
         {"w", "work"},
         {"e", "env"},
-        {"t", "tag"}
+        {"t", "tag"},
+        {"l", "task_log"}
     };
 
     QString action = parts[0];

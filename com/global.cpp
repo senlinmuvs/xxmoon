@@ -27,6 +27,7 @@ EnvDao *envDao = new EnvDao();
 XMDao *xmDao = new XMDao();
 CategoryDao *categoryDao = new CategoryDao();
 TagDao *tagDao = new TagDao();
+TaskLogDao *taskLogDao = new TaskLogDao();
 #ifdef Q_OS_MAC
 Mac *mac = new Mac();
 #endif
@@ -447,4 +448,7 @@ void dologEnvDel(const QString& k) {
 }
 void dologSql(const QString& sql) {
     dolog(QString(DOLOG_SQL).arg(sql));
+}
+void dologTaskLogNew(uint id) {
+    dolog(QString(DOLOG_TaskLog_NEW).arg(id));
 }

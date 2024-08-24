@@ -6,7 +6,7 @@ import "com/ui.js" as UI
 
 Popup {
     id: root
-    width: 450
+    width: 480
     height: 230
     x: navigation.width
     y: parent.height - height
@@ -44,7 +44,7 @@ Popup {
             Text {
                 id: e_count
                 textFormat: Text.RichText
-                font.pointSize: 12
+                font.pointSize: UI.font_size_normal
                 color:"white"
             }
         }
@@ -177,7 +177,7 @@ Popup {
             Row {
                 spacing: 5
                 Text {
-                    text:"v"+ $a.getVersion()
+                    text:$a.getVersion()
                     color: "white"
                     font.bold: true
                     font.pointSize: UI.font_size_title2

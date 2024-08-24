@@ -1,7 +1,7 @@
 ﻿import QtQuick 2.0
+import "ui.js" as UI
 
 Text {
     font.bold: true
-    font.pointSize: 30
-    horizontalAlignment: Text.left
+    font.pointSize: UI.font_size_h2
 }

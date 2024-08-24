@@ -1,6 +1,7 @@
 ﻿import QtQuick
 import QtQuick.Controls.Fusion
 import "com.js" as Com
+import "ui.js" as UI
 import "../xm/XM.js" as XM
 
 Popup {
@@ -47,7 +48,8 @@ Popup {
         anchors.right: parent.right
         height: 40
         placeholderText: $a.tr("input tag")
-        font.pointSize: 16
+        placeholderTextColor: "#a9a9a9"
+        font.pointSize: UI.tag_font_size
         font.family: "Arial"
         color: "white"
         selectByMouse: true

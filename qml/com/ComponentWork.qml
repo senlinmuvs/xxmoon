@@ -50,8 +50,7 @@ Rectangle {
                 width: work_list.width - 50
                 text: search_bar.keys[1] ? Book.viewCont(name, search_bar.keys[2]) : name
                 font {
-                    pointSize: 16
-                    bold: true
+                    pointSize: UI.col_font_size
                 }
                 color: "white"
                 wrapMode: Text.Wrap
@@ -73,7 +72,7 @@ Rectangle {
                 width: work_list.width - e_extra.width - 25
                 text: search_bar.keys[0] ? Book.viewCont(author, search_bar.keys[2]) : author
                 font {
-                    pointSize: 12
+                    pointSize: UI.col_font_size2
                 }
                 color:"#989898"
                 wrapMode: Text.Wrap

@@ -78,7 +78,7 @@ Popup {
                     id: btn_b
                     height: 24
                     text:'B'
-                    text_size: 12
+                    text_size: UI.font_size_btn
                     function click() {
                         b();
                     }

@@ -21,12 +21,21 @@
         color: #6969ff;
         font-style: italic;
     }
+    div.toolbar {
+        height: 40px;
+    }
+    div.toolbar .btn {
+        text-decoration: underline;
+    }
     </style>
 </head>
 <body>
     <div class="main">
         ${cont}
         <div class="time">${time}</div>
+    </div>
+    <div class="toolbar">
+        <a href="/index.html" class="btn">回首页</a>
     </div>
     ${extra}
 </body>

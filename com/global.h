@@ -2,6 +2,7 @@
 #define GLOBAL_H
 
 #include "async.h"
+#include "db/tasklogdao.h"
 #include "docparser.h"
 #ifdef Q_OS_MAC
 #include "mac.h"
@@ -16,6 +17,9 @@
 #include <app.h>
 #include "com/sqlite_manager.h"
 #include "com/log.h"
+#include "com/trans.h"
+#include "com/sync.h"
+#include "com/filequeue.h"
 #include "db/envdao.h"
 #include "db/notedao.h"
 #include "db/xmdao.h"
@@ -52,6 +56,7 @@ extern EnvDao *envDao;
 extern XMDao *xmDao;
 extern CategoryDao *categoryDao;
 extern TagDao *tagDao;
+extern TaskLogDao *taskLogDao;
 #ifdef Q_OS_MAC
 extern Mac *mac;
 extern MenuManager *menuManager;
@@ -139,4 +144,5 @@ void dologTagDel(uint id);
 void dologEnvNew(const QString& k);
 void dologEnvDel(const QString& k);
 void dologSql(const QString& sql);
+void dologTaskLogNew(uint id);
 #endif // GLOBAL_H
