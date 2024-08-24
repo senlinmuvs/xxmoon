@@ -2,6 +2,7 @@
 import QtQuick.Controls.Fusion
 
 import "com.js" as Com
+import "ui.js" as UI
 
 Popup {
     id: root
@@ -30,7 +31,7 @@ Popup {
     TextField {
         id: popup_text
         anchors.fill: parent
-        font.pointSize: 16
+        font.pointSize: UI.font_size_normal
         color: "white"
         wrapMode: Text.Wrap
         selectByMouse: true
@@ -39,6 +40,9 @@ Popup {
         placeholderText: placeholder
         placeholderTextColor: "#eaeaea"
         verticalAlignment: Text.AlignVCenter
+        background: Rectangle{
+            color:"#222"
+        }
         Keys.onPressed: function(event) {
             if(event.key === Qt.Key_Return) {
                 event.accepted = true;
@@ -64,7 +68,7 @@ Popup {
        width: 30
        height: 30
        text:"X"
-       text_size: 18
+       text_size: UI.btn_close_font_size
        color: "black"
        radius: width/2
        function click() {
@@ -78,6 +82,7 @@ Popup {
         z:10
         color: "black"
         text: $a.tr("OK")
+        text_size: UI.font_size_btn
 
         function click() {
             submit();

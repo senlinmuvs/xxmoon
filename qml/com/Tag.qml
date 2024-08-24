@@ -14,7 +14,7 @@ Btn {
 
     Text {
         id: count
-        font.pointSize: 10
+        font.pointSize: UI.tag_count_font_size
         color:"#B0B0B0"
         width: parent.width - 30
         x: 15
@@ -32,7 +32,7 @@ Btn {
                 target: btn
                 width: max(t.width + 32, 60)
                 height: t.height + 22
-                text_size: 16
+                text_size: UI.tag_font_size
             }
         },
         State {
@@ -45,7 +45,7 @@ Btn {
                 target: btn
                 width: t.width + 25
                 height: t.height + 10
-                text_size: 11
+                text_size: UI.tag_simple_font_size
                 color:"#bababa"
                 enable_click: false
                 hover_color: "#bebebe"

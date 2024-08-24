@@ -24,6 +24,7 @@ public:
     QString dbFile = userBaseDir + "/" + dbFileName;
     QString imgDir = userBaseDir + "/imgs";
     QString fileDir = userBaseDir + "/files";
+    QString attachesDir = userBaseDir + "/attaches";
     QString scriptDir = userBaseDir + "/scripts";
     QString tmpDir = userBaseDir + "/tmp";
     QString logLevel = "error";
@@ -72,6 +73,7 @@ public:
     QString dologFile = xmCfgDir + "/."+ user +"-dolog";
 
     uint cmdSrc = 0;
+    QString python = "python";
 
     QString toString();
     QVariantMap toVMap();

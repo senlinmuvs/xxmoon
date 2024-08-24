@@ -5,7 +5,7 @@ import "../com/ui.js" as UI
 TextField {
     height: 23
     font.family: "Arial"
-    font.pointSize: UI.my_feild_font_size
+    font.pointSize: UI.font_size_normal
     color: "#696969"
     horizontalAlignment: Text.AlignLeft
     background: Rectangle {

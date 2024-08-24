@@ -1,4 +1,7 @@
 #include "qaesencryption.h"
+#ifdef Q_OS_WIN
+#include <random>
+#endif
 #include "util.h"
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -194,6 +197,22 @@ namespace ut {
                 }
             }
             return QList<uint>() << c << size;
+        }
+        QString convPathForWinExplorer(QString path) {
+            QString newPath = path.replace("\\\\", "\\")
+                                  .replace("/", "\\");
+            QStringList segments = path.split("\\");
+            QString result;
+            for (int i = 0; i < segments.size(); i++) {
+                const QString &segment = segments[i];
+                if(i > 0) {
+                    result += QString("\"%1\"").arg(segment);
+                } else {
+                    result += segment;
+                }
+                result += "\\";
+            }
+            return result;
         }
     }
 
@@ -422,8 +441,16 @@ namespace ut {
             int size = sizeof(ch);
             char* str = new char[n + 1];
             int num = 0;
+            std::random_device rd; // Will be used to obtain a seed for the random number engine
+            std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
             for (int i = 0; i < n; ++i) {
+#ifdef Q_OS_MAC
                 num = arc4random() % (size - 1);
+#endif
+#ifdef Q_OS_WIN
+                std::uniform_int_distribution<> dis(0, size-1);
+                num = dis(gen) % (size - 1);
+#endif
                 str[i] = ch[num];
             }
             str[n] = '\0';

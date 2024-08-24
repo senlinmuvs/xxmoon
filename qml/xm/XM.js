@@ -110,7 +110,7 @@ function addOrUpdateCol(col) {
 /// pk
 function loadXM(clear, cb) {
     let index = category_list_view.currentIndex;
-    xm_list_view.footer = xm_list_more_btn;
+    xm_list_view.footer = xm_list_footer;
     if(clear) {
         list_model_xm.clear();
     }
@@ -119,11 +119,13 @@ function loadXM(clear, cb) {
         let cid = c.id;
         let k = search_bar.text.trim();
         let lsId = getPKLastId();
+        xm_list_view.loading = true;
         $xm.getXMList(k, cid, lsId, xm_list.width, Com.putFunc(function(list){
             loadXM0(list);
             if(cb) {
                 cb();
             }
+            xm_list_view.loading = false;
         }));
     }
 }
@@ -136,10 +138,10 @@ function loadXM0(list) {
     let preTimeStr = ar[1];
     for(let i in list) {
         let e = list[i];
+        let xm = Com.convXM(preDateStr, preTimeStr, e);
         if($l.isDebug()) {
             Com.debug("xm", JSON.stringify(e));
         }
-        let xm = Com.convXM(preDateStr, preTimeStr, e);
         list_model_xm.append(xm);
         preDateStr = xm.date_str;
         preTimeStr = xm.time_str;
@@ -147,7 +149,7 @@ function loadXM0(list) {
     if(list.length < $a.pageSize) {
         xm_list_view.footer = pkNoMoreBtn;
     } else {
-        xm_list_view.footer = xm_list_more_btn;
+        xm_list_view.footer = xm_list_footer;
     }
 
     //定位当前选中项
@@ -242,6 +244,7 @@ function closeEditPK() {
 }
 
 function onKeysPressed(event) {
+    // console.log("onKeysPressed", event.key, event.modifiers, ctrlVal, Qt.MetaModifier, event.modifiers === ctrlVal);
     event.accepted = true;
     let jump = false;
     if(event.modifiers === Qt.ShiftModifier && event.key === Qt.Key_J) {
@@ -283,6 +286,7 @@ function onKeysPressed(event) {
         openImgView();
     } else if(event.modifiers === Qt.ShiftModifier && event.key === Qt.Key_Space) {
         detailWin();
+    } else if(event.modifiers === ctrlVal && event.key === Qt.Key_Space) {
     } else if(event.key === Qt.Key_Space) {
         detail();
     } else if(event.modifiers === ctrlVal && event.key === Qt.Key_N) {
@@ -522,7 +526,7 @@ function enOrDecrypt() {
                         pk.jm_ensure = true;
                         pk.simple_cont = pk2.simple_cont;
                         pk.cont = pk2.cont;
-                        pk.simple_qmls = pk2.simple_qmls;
+                        pk.simple_qmls = JSON.stringify(pk2.simple_qmls);
                         pk.img_path = Com.file_pre + $a.getCfgVal("tmp_dir") + "/" + pk2.img;
                         pk.qmls_ = JSON.stringify(pk2.qmls);//这里直接赋值为数组不行，就暂时转成字符串
                         pk.forceMaxWidth = true;
@@ -546,7 +550,7 @@ function enOrDecrypt() {
                         pk.jm_ensure = true;
                         pk.cont = pk2.cont;
                         pk.qmls_ = JSON.stringify(pk2.qmls);
-                        pk.simple_qmls = pk2.simple_qmls;
+                        pk.simple_qmls = JSON.stringify(pk2.simple_qmls);
                         xm_list_view.currentItem.refresh(pk);
                         list_model_xm.set(xm_list_view.currentIndex, pk);
                     }

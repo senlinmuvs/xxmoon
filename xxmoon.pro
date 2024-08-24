@@ -35,6 +35,7 @@ SOURCES += \
         db/envdao.cpp \
         db/notedao.cpp \
         db/tagdao.cpp \
+        db/tasklogdao.cpp \
         db/workdao.cpp \
         db/xmdao.cpp \
         hserver.cpp \
@@ -43,6 +44,7 @@ SOURCES += \
         model/cfg.cpp \
         model/note.cpp \
         model/tag.cpp \
+        model/tasklog.cpp \
         model/work.cpp \
         app.cpp \
         l.cpp \
@@ -86,6 +88,7 @@ HEADERS += \
     db/envdao.h \
     db/notedao.h \
     db/tagdao.h \
+    db/tasklogdao.h \
     db/workdao.h \
     db/xmdao.h \
     hserver.h \
@@ -94,6 +97,7 @@ HEADERS += \
     model/cfg.h \
     model/note.h \
     model/tag.h \
+    model/tasklog.h \
     model/work.h \
     app.h \
     l.h \
@@ -123,11 +127,11 @@ macx {
 }
 win32 {
     win32:RC_ICONS += assets/logo.ico
-    include(D:\github\qt\QHotkey\qhotkey.pri)
+    include(E:\code\qt\os\QHotkey\qhotkey.pri)
     DEFINES += _WINSOCKAPI_
     LIBS += -lWs2_32
-    LIBS += -L$$PWD/libs/ -lcrypto -lssl
-    INCLUDEPATH += D:\github\c\openssl-1.1.1g\build_win32\out\include
+    LIBS += -L$$PWD\libs\win\ -lcrypto -lssl
+    INCLUDEPATH += $$PWD\libs\win\include
 }
 unix:!macx {
     include(/home/sen/github/qt/QHotkey/qhotkey.pri)

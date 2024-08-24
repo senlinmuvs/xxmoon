@@ -93,6 +93,7 @@ function onKeyPressed(event) {
         note_list_view.currentIndex = 0;
     } else if(event.key === Qt.Key_End) {
         note_list_view.currentIndex = note_list_view.count - 1;
+    } else if(event.modifiers === ctrlVal && event.key === Qt.Key_Space) {
     } else if(event.key === Qt.Key_Space) {
         detail();
     } else if(event.key === Qt.Key_Return){
@@ -259,7 +260,7 @@ function convNoteToPK(e) {
 }
 
 function loadNote(clear, cb) {
-    note_list_view.footer = note_list_more_btn;
+    note_list_view.footer = note_list_footer;
     if(clear) {
         note_list_model.clear();
     }
@@ -268,6 +269,7 @@ function loadNote(clear, cb) {
         let k = search_bar.text.trim();
         let sort = sort_btn.text.trim();
         // console.log('load note', k, w.id, note_list_view.page, sort, JSON.stringify(w));
+        note_list_view.loading = true;
         $bk.getNoteList(k, w.id, note_list_view.page, sort, note_list_view.width, Com.putFunc(function(list){
             if($l.isDebug()) {
                 Com.debug("pushNote len", list.length);
@@ -276,11 +278,11 @@ function loadNote(clear, cb) {
             let preDateStr = ar[0];
             let preTimeStr = ar[1];
             for(let i in list) {
+                let e = list[i];
+                let n = note(e, preDateStr, preTimeStr);
                 if($l.isTrace()) {
                     Com.trace("note", JSON.stringify(list[i]));
                 }
-                let e = list[i];
-                let n = note(e, preDateStr, preTimeStr);
                 note_list_model.append(n);
                 preDateStr = n.date_str;
                 preTimeStr = n.time_str;
@@ -291,12 +293,13 @@ function loadNote(clear, cb) {
             if(list.length < $a.pageSize) {
                 note_list_view.footer = workNoMoreBtn;
             } else {
-                note_list_view.footer = note_list_more_btn;
+                note_list_view.footer = note_list_footer;
             }
             $a.setUIVal(1, note_list.width);
             if(cb) {
                 cb();
             }
+            note_list_view.loading = false;
         }));
     }
 }
@@ -476,7 +479,7 @@ function note(e, preDateStr = '', preTimeStr='') {
         time: e.time,
         cont: e.cont,
 //        html: e.html,
-        qmls: e.qmls,
+        qmls: JSON.stringify(e.qmls),
         tags: e.tags,
         bj: e.bj,
         date_str:'',

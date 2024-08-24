@@ -17,7 +17,7 @@ Rectangle {
     signal tipsInfo(string txt)
 
     property var tagCom: Qt.createComponent("qrc:/qml/com/Tag.qml")
-    property var tagManager: new Tag.TagManager(tagCom, 1, search_bar, tag_view, work_list_view, new Book.NoteTagDelegate())
+    property var tagManager: new Tag.TagManager(tagCom, 1, search_bar, tag_view, work_list_view, new Book.NoteTagDelegate(root))
     property int view_type: 0
 
     ListModel {
@@ -34,8 +34,9 @@ Rectangle {
         anchors.right: parent.right
         height: 40
         placeholderText: $a.tr("Search...")
+        placeholderTextColor: "#a9a9a9"
         font.family: "Arial"
-        font.pointSize: UI.btn_font_size
+        font.pointSize: UI.font_size_btn
         color: "white"
         selectByMouse: true
         background: Rectangle {
@@ -44,13 +45,13 @@ Rectangle {
         }
         onTextChanged: {
             keys = Book.filterKey(text);
-            clearData();
-            loadWork();
         }
         Keys.onPressed: function(event) {
-            if(event.key === Qt.Key_Escape || event.key === Qt.Key_Return || event.key === Qt.Key_Tab) {
+            if(event.key === Qt.Key_Escape || event.key === Qt.Key_Tab) {
                 event.accepted = true;
                 work_list_view.forceActiveFocus();
+            } else if(event.key === Qt.Key_Return) {
+                refreshData();
             }
         }
         onFocusChanged: {
@@ -418,12 +419,36 @@ Rectangle {
             property int page: 0
             vt: view_type
             Component {
-                id: note_list_more_btn
-                MoreBtn {
-                    function click() {
-                        if(note_list_view.footer) {
-                            Book.loadNote();
+                id: note_list_footer
+                Column {
+                    width: note_list_view.width
+                    Text {
+                        text: $a.tr("Loading") + "..."
+                        width: parent.width
+                        height: 40
+                        font.pointSize: UI.font_size_normal
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        color: "#191919"
+                        visible: note_list_view.loading
+                    }
+                    MoreBtn {
+                        visible: !note_list_view.loading && note_list_model.count > 0
+                        function click() {
+                            if(note_list_view.footer) {
+                                Book.loadNote();
+                            }
                         }
+                    }
+                    Text {
+                        text: $a.tr("No Record")
+                        font.pointSize: UI.font_size_normal
+                        width: parent.width
+                        height: 40
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        color: "#191919"
+                        visible: !note_list_view.loading && note_list_model.count === 0
                     }
                 }
             }
@@ -752,5 +777,10 @@ Rectangle {
         } else if(ty === 'tag') {
             tagManager.openTagView();
         }
+    }
+    function refreshData() {
+        clearData();
+        loadWork();
+        work_list_view.forceActiveFocus();
     }
 }

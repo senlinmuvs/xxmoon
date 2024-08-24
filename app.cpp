@@ -62,28 +62,6 @@ int App::getPlatform() {
 QString App::getCfgFile() {
     return cfg->cfgFile;
 }
-QString App::getComputerID() {
-    QString uuid = ut::sys::iOPlatformUUID();
-    QByteArray hashKey = QCryptographicHash::hash(uuid.toLocal8Bit(), QCryptographicHash::Md5);
-    QString CID = QString(hashKey).toUtf8().toHex().toUpper();
-#ifdef Q_OS_UNIX
-    return CID;
-#else
-    QString CID2 = CID;
-    CID2 = "";
-    for (int i = 0; i < CID.length(); i += 2) {
-        bool ok;
-        int a = QString(CID.at(i)).toInt(&ok, 16);
-        int b = 0;
-        if (i + 1 < CID.length()) {
-            b = QString(CID.at(i+1)).toInt(&ok, 16);
-        }
-        int c = a + b;
-        CID2 += CODE36.at(c);
-    }
-    return CID2;
-#endif
-}
 
 QString App::getDataDir() {
     return cfg->dataDir + "/xxmoon";
@@ -1369,23 +1347,29 @@ void App::openInExternal(int type, QString param, uint obj) {
         openFile(param);
     }
 }
+
 void App::openDir(QString path) {
 #if defined(Q_OS_MAC)
     if(lg->isDebug()){
         lg->debug(QString("mac openDir %1").arg(path));
     }
+    if(!path.startsWith("/")) {
+        path = cfg->attachesDir + "/" + path;
+    }
     process->start("open", QStringList() << "-R" << path);
     process->waitForFinished();
 #elif defined(Q_OS_WIN)
+    path = path.replace("&nbsp;", " ");
+    path = ut::file::convPathForWinExplorer(path);
+    path = QDir::toNativeSeparators(path);
+    QStringList param;
+    param << "/select," + path;
     if(lg->isDebug()){
         lg->debug(QString("win openDir %1").arg(path));
     }
-    const QString explorer = "explorer";
-    QStringList param;
-    if (!QFileInfo(path).isDir())
-        param << QLatin1String("/select,");
-    param << QDir::toNativeSeparators(path);
-    QProcess::startDetached(explorer, param);
+    process->start("explorer", param);
+//    qDebug() << "explorer" << param[0].toUtf8().data();
+    process->waitForFinished();
 #endif
 }
 
@@ -1973,6 +1957,8 @@ void App::initCfg() {
                         cfg->syncUrl = v;
                     } else if(k == "cmd_src") {
                         cfg->cmdSrc = v.toUInt();
+                    } else if(k == "python") {
+                        cfg->python = v;
                     }
                 }
             }
@@ -1996,6 +1982,7 @@ void App::initCfg() {
     cfg->dbFile = cfg->userBaseDir + "/xxmoon.data";
     cfg->imgDir = cfg->userBaseDir + "/imgs";
     cfg->fileDir = cfg->userBaseDir + "/files";
+    cfg->attachesDir = cfg->userBaseDir + "/attaches";
     cfg->scriptDir = cfg->userBaseDir + "/scripts";
     cfg->tmpDir = cfg->userBaseDir + "/tmp";
     if(cfg->sitedir == "") {
@@ -2056,6 +2043,7 @@ void initDB() {
             categoryDao->init();
             xmDao->init();
             tagDao->init();
+            taskLogDao->init();
         } else {
             l->error("db open error");
         }
@@ -2367,7 +2355,7 @@ void App::exePanelCmd(QString k, QString script_, uint ty, QString param) {
                 params << params2;
             }
             params << "0";//最后一个参数表示是哪里调用的脚本 0表示从面板调用 1表示从定时器
-            process.start("/usr/local/bin/python3", params);
+            process.start(cfg->python, params);
             if(process.waitForStarted()) {
                 if(process.waitForFinished()) {
                     res = process.readAll();

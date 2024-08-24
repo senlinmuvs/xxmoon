@@ -35,10 +35,9 @@ Popup {
                     $a.regMenuReceiver(tf_book_name);
                 }
             }
-            // background: Rectangle {
-            //     color: "#292929"
-            //     border.color: "#000"
-            // }
+            background: Rectangle {
+                color: "#222"
+            }
         }
         TextField {
             id: tf_author_name
@@ -51,6 +50,9 @@ Popup {
             wrapMode: Text.Wrap
             selectByMouse: true
             maximumLength: 50
+            background: Rectangle {
+                color: "#222"
+            }
             onFocusChanged: {
                 if(focus) {
                     $a.regMenuReceiver(tf_author_name);
@@ -74,6 +76,9 @@ Popup {
             wrapMode: Text.Wrap
             selectByMouse: true
             maximumLength: 50
+            background: Rectangle {
+                color: "#222"
+            }
         }
         TextField {
             id: tf_extra
@@ -86,12 +91,16 @@ Popup {
             wrapMode: Text.Wrap
             selectByMouse: true
             maximumLength: 50
+            background: Rectangle {
+                color: "#222"
+            }
         }
         Btn {
             x: parent.width/2 - width/2
             y: 8
             color: "black"
             text: $a.tr("OK")
+            text_size: UI.font_size_btn
             function click() {
                 submit();
             }
@@ -111,7 +120,7 @@ Popup {
        width: 30
        height: 30
        text:"X"
-       text_size: 18
+       text_size: UI.btn_close_font_size
        color: "black"
        radius: width/2
        function click() {

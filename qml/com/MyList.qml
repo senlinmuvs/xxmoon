@@ -7,6 +7,7 @@ ListView {
     property int vt : 0
     property bool showHighligh: false
     property int hightighRadius: 0
+    property bool loading: false
 
     spacing: 1
     currentIndex: 0

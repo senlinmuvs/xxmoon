@@ -15,7 +15,7 @@ MyBtn {
         anchors.centerIn: parent
         img_radius: 1
         border.width: 0
-        enableMask: false
+        // enableMask: false
         width: parent.width - xx
         height: parent.height - xx
     }

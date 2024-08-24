@@ -42,13 +42,14 @@ Rectangle {
                         id: btn_no
                         text: $a.tr("no")
                         color: Qt.rgba(0/255, 0/255, 0/255, 0.9)
+                        text_size: UI.font_size_btn
                         function click() {
                             if(btn_no.visible) {
                                 $xm.getXM(XM.getCurrentXMId(), xm_list.width, Com.putFunc(function(pk) {
                                     simple_cont = pk.simple_cont;
                                     cont = pk.cont;
-                                    simple_qmls = pk.simple_qmls;
-                                    cols.qmls = pk.simple_qmls;
+                                    simple_qmls = JSON.stringify(pk.simple_qmls);
+                                    cols.qmls = simple_qmls;
                                     qmls = pk.qmls;
                                     jm_ensure = false;
                                     jm = jm ? 0 : 1;
@@ -60,6 +61,7 @@ Rectangle {
                     Btn {
                         text: $a.tr("yes")
                         color: Qt.rgba(0/255, 0/255, 0/255, 0.9)
+                        text_size: UI.font_size_btn
                         function click() {
                             $a.ensureEncryptOrDecrypt(id, cont, Com.putFunc(function(st) {
                                 if(st === 0) {
@@ -102,14 +104,15 @@ Rectangle {
                     width: parent.width - 10
                     property var qmls: simple_qmls
                     onQmlsChanged: {
-                        // console.log("simple_qmls changed", qmls, JSON.stringify(qmls));
+                        // console.log("simple_qmls changed", qmls);
                         cols.data = [];
-                        if(qmls) {
-                            let i = 0;
-                            for(let k in qmls) {
-                                let qml = qmls[k];
-                                Qt.createQmlObject(qml, cols, "dy_"+i);
-                                i++;
+                        if(simple_qmls) {
+                            let arr = JSON.parse(simple_qmls);
+                            if(arr) {
+                                for(let i = 0; i < arr.length; i++) {
+                                    let qml = arr[i];
+                                    Qt.createQmlObject(qml, cols, "dy_"+i);
+                                }
                             }
                         }
                     }

@@ -157,6 +157,7 @@ Rectangle {
                 anchors.right: scroll.right
                 anchors.bottom: scroll.bottom
                 stepSize: scrollStep
+                width: 10
             }
             Keys.onPressed: function(event) {
                 onKeysPressed(event);
@@ -336,7 +337,6 @@ Rectangle {
         }
     }
     function scrollTo(pos) {
-        console.log("scrollTo", pos);
         scrollBar.position = pos;
     }
     function setToTop() {

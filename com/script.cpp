@@ -103,7 +103,7 @@ bool checkEveryWeek(const QDateTime& timestamp, const QString& time) {
     }
     return ok;
 }
-QString Script::exeCmd(int ty, const QString& cmd, const QString& cont) {
+QString Script::exeCmd(uint xmid, const QString& ty, const QString& cmd, const QString& cont) {
     // qDebug() << "exeCmd" << ty << file << cont;
     QString res;
     if(cmd.isEmpty()) {
@@ -121,7 +121,7 @@ QString Script::exeCmd(int ty, const QString& cmd, const QString& cont) {
                 QStringList params;
                 params << scriptFile;
                 params << "1";//最后一个参数表示是哪里调用的脚本 0表示从面板调用 1表示从定时器
-                process.start("/usr/local/bin/python3", params);
+                process.start(cfg->python, params);
                 if(process.waitForStarted()) {
                     if(process.waitForFinished()) {
                         res = process.readAll();
@@ -159,15 +159,68 @@ QString Script::exeCmd(int ty, const QString& cmd, const QString& cont) {
             }
         }
     }
-    if(!res.isEmpty()) {
-        if(ty == 1) {
-            notify(res.trimmed(), 1);
-        } else if(ty == 2) {
-            notify(res.trimmed());
-        }
-        return res;
+    //
+    // 0   默认值，无结果
+    // 1   桌面通知：不消失，手动关闭
+    // 2   桌面通知：N秒后消失
+    // 11  桌面通知1+微信通知
+    // 21  桌面通知2+微信通知
+    // 001 无结果：结果变动写入日志
+    // 101 桌面通知：不消失，手动关闭，结果变动写入日志
+    // 201 桌面通知：N秒后消失，结果变动写入日志
+    // 102 不消失，当有变动时才通知与写日志
+    // 202 消失，当有变动时才通知与写日志
+    uint ty0 = 0;
+    uint ty1 = 0;
+    uint ty2 = 0;
+    if(ty.length() > 0) {
+        ty0 = QString(ty[0]).toUInt();
     }
-    return "成功";
+    if(ty.length() > 1) {
+        ty1 = QString(ty[1]).toUInt();
+    }
+    if(ty.length() > 2) {
+        ty2 = QString(ty[2]).toUInt();
+    }
+    res = res == "" ? "成功" : res;
+    bool resChanged = false;
+    if(ty2 == 1 || ty2 == 2) {//变动结果写日志
+        Future *f = new Future();
+        DB_Async->exe("script_add_log", [=]{
+            QString lastLogCont = taskLogDao->getLastLog(xmid);
+            if(lastLogCont != res) {
+                taskLogDao->add(xmid, res);
+                f->set(QVariant(1));
+            } else {
+                f->set(QVariant(-1));
+            }
+        });
+        resChanged = f->get(5000, 0).toInt() > 0;
+        delete f;
+    }
+    if(res != "成功") {
+        if(ty0 == 1) {//不消失
+            if(ty2 == 2) {
+                if(resChanged) {
+                    notify(res.trimmed(), 1);
+                }
+            } else {
+                notify(res.trimmed(), 1);
+            }
+        } else if(ty0 == 2) {//自动消失
+            if(ty2 == 2) {
+                if(resChanged) {
+                    notify(res.trimmed());
+                }
+            } else {
+                notify(res.trimmed());
+            }
+        }
+        if(ty1 == 1) {//微信通知
+            //TODO 微信通知
+        }
+    }
+    return res;
 }
 void Script::updateStatusText(QString& cont, QString& r) {
     QString cur = ut::time::getCurrentTimeStr("yyyy/MM/dd hh:mm:ss");
@@ -262,15 +315,15 @@ void Script::checkAndRun() {
                 }
                 if(ok) {
                     lg->info(QString("execute script %1").arg(xmid));
-                    int ty = 0;
+                    QString ty = "";
                     QString file = "";
                     if(params.size() > 1) {
-                        ty = params.at(1).trimmed().toInt();
+                        ty = params.at(1).trimmed();
                     }
                     if(params.size() > 2) {
                         file = params.at(2).trimmed();
                     }
-                    QString r = exeCmd(ty, file, ut::str::removeEndLine(cont));
+                    QString r = exeCmd(xmid, ty, file, ut::str::removeEndLine(cont));
                     Future* f = new Future();
                     DB_Async->exe("更新定时器状态", [&]{
                         XM* xm = xmDao->getXM(xmid);

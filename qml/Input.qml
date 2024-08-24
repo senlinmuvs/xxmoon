@@ -30,6 +30,7 @@ ApplicationWindow {
         placeholderTextColor: "#a9a9a9"
         verticalAlignment: Text.AlignVCenter
         background: Rectangle{color:"transparent"}
+        color: "white"
         focus: true
         Keys.onPressed: function(event) {
             if(event.key === Qt.Key_Return) {

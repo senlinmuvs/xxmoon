@@ -1,6 +1,5 @@
 HEADERS += $$files($$PWD/*.h, true)
 SOURCES += $$files($$PWD/*.cpp, true)
-SOURCES += $$files($$PWD/*.mm, true)
 
 EXCLUDE_HEADERS += $$files($$PWD/build/*.h, true)
 EXCLUDE_SOURCES1 += $$files($$PWD/build/*.cpp, true)
@@ -13,6 +12,8 @@ SOURCES -= $$files($$PWD/main.cpp)
 INCLUDEPATH += $$PWD/../xxmoon
 
 macx {
+    SOURCES += $$files($$PWD/*.mm, true)
+
     LIBS += -framework Foundation
     LIBS += -framework Cocoa
     include(/Volumes/D/github/qt/QHotkey/qhotkey.pri)
@@ -23,11 +24,11 @@ macx {
 }
 win32 {
     win32:RC_ICONS += assets/logo.ico
-    include(D:\github\qt\QHotkey\qhotkey.pri)
+    include(E:\code\qt\os\QHotkey\qhotkey.pri)
     DEFINES += _WINSOCKAPI_
     LIBS += -lWs2_32
-    LIBS += -L$$PWD/libs/ -lcrypto -lssl
-    INCLUDEPATH += D:\github\c\openssl-1.1.1g\build_win32\out\include
+    LIBS += -L$$PWD\libs\win\ -lcrypto -lssl
+    INCLUDEPATH += $$PWD\libs\win\include
 }
 unix:!macx {
     include(/home/sen/github/qt/QHotkey/qhotkey.pri)

@@ -16,7 +16,7 @@ Rectangle {
     signal tipsInfo(string txt)
     property var tagCom: Qt.createComponent("qrc:/qml/com/Tag.qml")
 //    property var lineItemCom: Qt.createComponent("qrc:/com/LineItem.qml")
-    property var tagManager: new Tag.TagManager(tagCom, Com.type_pk, search_bar, tag_view, category_list_view, new XM.PKTagDelegate())
+    property var tagManager: new Tag.TagManager(tagCom, Com.type_pk, search_bar, tag_view, category_list_view, new XM.PKTagDelegate(root_xm))
     property int sorting_col_index: 0
     property int pre_cid: 0
     property int pre_xmid: 0
@@ -32,7 +32,8 @@ Rectangle {
         anchors.right: parent.right
         height: 40
         placeholderText: $a.tr("Search...")
-        font.pointSize: UI.btn_font_size
+        placeholderTextColor: "#a9a9a9"
+        font.pointSize: UI.font_size_title2
         font.family: "Arial"
         color: "white"
         selectByMouse: true
@@ -43,14 +44,13 @@ Rectangle {
         onTextChanged: {
             let txt = text;
             text = txt.replace("  ", " ");
-            if(txt === text) {
-                XM.refreshAll(true);
-            }
         }
         Keys.onPressed: function(event) {
-            if(event.key === Qt.Key_Escape || event.key === Qt.Key_Return || event.key === Qt.Key_Tab) {
+            if(event.key === Qt.Key_Escape || event.key === Qt.Key_Tab) {
                 event.accepted = true;
                 category_list_view.forceActiveFocus();
+            } else if(event.key === Qt.Key_Return) {
+                refreshData();
             }
         }
         onFocusChanged: {
@@ -539,12 +539,36 @@ Rectangle {
         MyList {
             id: xm_list_view
             Component {
-                id: xm_list_more_btn
-                MoreBtn {
-                    function click() {
-                        if(xm_list_view.footer) {
-                            XM.loadXM();
+                id: xm_list_footer
+                Column {
+                    width: xm_list_view.width
+                    Text {
+                        text: $a.tr("Loading") + "..."
+                        width: parent.width
+                        height: 40
+                        font.pointSize: UI.font_size_normal
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        color: "#191919"
+                        visible: xm_list_view.loading
+                    }
+                    MoreBtn {
+                        visible: !xm_list_view.loading && list_model_xm.count > 0
+                        function click() {
+                            if(xm_list_view.footer) {
+                                XM.loadXM();
+                            }
                         }
+                    }
+                    Text {
+                        text: $a.tr("No Record")
+                        font.pointSize: UI.font_size_normal
+                        width: parent.width
+                        height: 40
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        color: "#191919"
+                        visible: !xm_list_view.loading && list_model_xm.count === 0
                     }
                 }
             }
@@ -822,5 +846,9 @@ Rectangle {
         } else if(ty === 'tag') {
             tagManager.openTagView();
         }
+    }
+    function refreshData() {
+        XM.refreshAll(true);
+        category_list_view.forceActiveFocus();
     }
 }

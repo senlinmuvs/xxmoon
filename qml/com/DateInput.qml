@@ -9,6 +9,9 @@ TextField {
     placeholderText: "____/__/__"
     verticalAlignment: Text.AlignVCenter
     font.pointSize: 12
+    background: Rectangle {
+        color: "#222"
+    }
     onTextChanged: {
         text = vdate(text);
     }

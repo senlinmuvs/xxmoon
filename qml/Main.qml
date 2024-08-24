@@ -361,8 +361,9 @@ ApplicationWindow {
             window.height = wh[1];
         }
         if(!inited){
+            let offset = $a.getPlatform() === Com.platform_mac?0:-5;
             x = screen.width/2 - window.width/2;
-            y = screen.height/2 - window.height/2;
+            y = screen.height/2 - window.height/2+offset;
             inited = true;
         }
 
