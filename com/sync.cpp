@@ -89,7 +89,9 @@ bool upfile(const QString file) {
     QEventLoop loop;
     Http http;
     http.timeout = 15000;
-    // qDebug() << "upfile" << file << "params" << params;
+    if(l->isDebug()) {
+        l->debug(QString("upfile %1 params %2").arg(file).arg(params.size()));
+    }
     http.upload(url, params, file, [&,f](){
         lg->info(QString("upfile done %1").arg(file));
         f->set(QVariant(1));
@@ -99,9 +101,11 @@ bool upfile(const QString file) {
         loop.quit();
     });
     loop.exec();
-    if(f->get(5000).toUInt() == 1) {
+    int st = f->get(5000, -1).toInt();
+    if(st == 1) {
         return true;
     }
+    lg->error(QString("upfile url %1 st %2").arg(url).arg(st));
     delete f;
     return false;
 }
@@ -135,7 +139,9 @@ bool uprecord(const QString& table, const QString& k, const QString& v, const QS
         loop.quit();
     });
     loop.exec();
-    bool ok = f->get(5000, -1).toInt() == 0;
+    int st = f->get(5000, -1).toInt();
+    bool ok = st == 0;
+    lg->error(QString("uprecord url %1 st %2").arg(url).arg(st));
     delete f;
     return ok;
 }
@@ -182,6 +188,9 @@ bool delFile(const QString& file) {
     QEventLoop loop;
     Http http;
     http.timeout = 5000;
+    if(l->isDebug()) {
+        l->debug(QString("delFile file %1 params %2").arg(file).arg(params.size()));
+    }
     Future *f = new Future();
     http.post(url, params, [&,f](QJsonObject jo){
         int st = ut::json::getInt(jo, "st", -1);
@@ -343,6 +352,7 @@ void writeDirectoryContentsToFile(const QString &directoryPath, const QString &o
     qDebug() << "Directory contents written to:" << outputFilePath;
 }
 bool processLines(const QStringList &lines) {
+    qDebug() << "2";
     for(const QString &line : lines) {
         lg->info(QString("process line %1").arg(line));
         QString file = cfg->userBaseDir+"/"+line;
@@ -515,6 +525,9 @@ QList<QStringList> Sync::getUploadFiles() {
             fileMap.insert(filePath, fileInfo.lastModified().toMSecsSinceEpoch());
         }
     }
+    if(l->isDebug()) {
+        l->debug(QString("getUploadFiles fileMap %1 fileModTimeMap %2").arg(fileMap.size()).arg(fileModTimeMap.size()));
+    }
     bool init = fileModTimeMap.isEmpty();
     foreach(const QString &filePath, fileMap.keys()) {
         qint64 v = fileModTimeMap[filePath];
@@ -544,10 +557,10 @@ QList<QStringList> Sync::getUploadFiles() {
 }
 void Sync::start() {
     QString error = "";
-    if(lg->isDebug()) {
-        lg->debug("sync start");
-    }
     bool initDone = ut::file::readFile(cfg->xmCfgDir+"/.init_done_time").toLongLong() > 0;
+    if(lg->isDebug()) {
+        lg->debug(QString("sync start. initDone=%1").arg(initDone));
+    }
     if(initDone) {
         fq->dequeue([&](const QString& msg)->bool{
             lg->info(QString("dolog [%1] start").arg(msg));
@@ -588,8 +601,14 @@ void Sync::start() {
     }
     //
     qint64 cur = ut::time::getCurMills();
+    if(lg->isDebug()) {
+        lg->debug(QString("sync start. cur %1 lastCheckFileTime %2 diff %3").arg(cur).arg(lastCheckFileTime).arg(cur - lastCheckFileTime));
+    }
     if(cur - lastCheckFileTime > 30000) {
         QList<QStringList> files = getUploadFiles();
+        if(lg->isDebug()) {
+            lg->debug(QString("sync start. upFiles %1 delFiles %2").arg(files[0].size()).arg(files[1].size()));
+        }
         QString dbfile = cfg->appName+"/"+cfg->user+"/"+cfg->dbFileName;
         for(QString& f:files[0]) {
             if(f.endsWith(dbfile)) {
@@ -618,6 +637,7 @@ void Sync::start() {
     pushMsg(PUSH_ERR, error);
 }
 void Sync::sync0() {
+    qDebug() << "1";
     QString dataPath = cfg->dataDir + "/" + cfg->appName + "/" + cfg->user;
     QString sync0File = cfg->xmCfgDir + "/." + cfg->user + "-sync0";
     QString sync1File = cfg->xmCfgDir + "/." + cfg->user + "-sync1";

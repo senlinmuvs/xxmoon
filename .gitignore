@@ -8,3 +8,4 @@ Release
 xxmoon.xcodeproj/*
 .qmake.stash
 build
+moc_*.cpp

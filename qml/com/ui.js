@@ -67,7 +67,7 @@ if(platform === Com.platform_win) {
     book_btn_view_font_size = 11;
     book_btn_tag_font_size = 14;
     book_btn_add_font_size = 20;
-    tag_font_size = 12;
+    tag_font_size = 10;
     tag_simple_font_size = 8;
     tag_count_font_size = 6;
     col_font_size = 12;
