@@ -203,7 +203,9 @@ function zoom(w, h, factor=1.2) {
 }
 function parseWithHeightInImgName(imgName) {
     if(imgName) {
-        let arr = imgName.split('.');
+        let arr = imgName.split("|");
+        imgName = arr[0];
+        arr = imgName.split('.');
         if(arr.length>2){
             let w = Number(arr[arr.length-3]);
             let h = Number(arr[arr.length-2]);

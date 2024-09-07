@@ -1959,6 +1959,8 @@ void App::initCfg() {
                         cfg->cmdSrc = v.toUInt();
                     } else if(k == "python") {
                         cfg->python = v;
+                    } else if(k == "xm_img_category") {
+                        cfg->xmImgCategory = v;
                     }
                 }
             }
@@ -2044,6 +2046,10 @@ void initDB() {
             xmDao->init();
             tagDao->init();
             taskLogDao->init();
+
+            if(cfg->xmImgCategory != "") {
+                xmImgCID = categoryDao->getIDByName(cfg->xmImgCategory);
+            }
         } else {
             l->error("db open error");
         }

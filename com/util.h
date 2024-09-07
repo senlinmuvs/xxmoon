@@ -60,6 +60,7 @@ namespace ut {
         QString getEndLine(const QString& s);
         bool isChinese(QChar ch);
         QString substrUniformWidth(const QString &s, int from, int len);
+        QString toCamelCase(const QString &s);
     }
 
     namespace time {

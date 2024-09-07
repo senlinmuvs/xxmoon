@@ -43,11 +43,8 @@ void DocParser::addQmlList(QStringList& l, Doc& doc, uint maxWidth) {
         l << s;
     } else if(doc.ty == DocParser::TY_IMG) {
         QVariantList vl = calWinHeight(doc.cont, maxWidth);
-        QString s = QString("Img{src:\"%1/%2\";width:Math.min(parent?parent.width:0, %3);height:%4}")
-                .arg(getFilePre() + cfg->imgDir,
-                     doc.cont.trimmed(),
-                     vl.at(1).toString(),
-                     vl.at(2).toString());
+        QString s = QString("Img{src:\"%1/%2\";width:Math.min(parent?parent.width:0,%3);height:%4;scale:%5}")
+                        .arg(getFilePre() + cfg->imgDir, vl[0].toString(), vl[1].toString(), vl[2].toString()).arg(vl[3].toFloat());
         l << s;
     } else if(doc.ty == DocParser::TY_QUOTE) {
         doc.cont = txtKeepPre(doc.cont.toHtmlEscaped());

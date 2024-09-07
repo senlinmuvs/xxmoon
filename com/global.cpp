@@ -46,11 +46,12 @@ QRegularExpression Reg_Find_Img("[^`]![(](.+)[)]");
 QRegularExpression Reg_Find_Refid("(?!`)![[](\\d+):?.*?[]]");
 QRegularExpression Reg_Win_Path("^[a-zA-Z]:.+$");
 
-bool activated = false;
+uint xmImgCID = -1;
 
 ///
 void initGlobal() {
     fq = new FileQueue(cfg->dologFile);
+
 }
 
 //#tag1#tag2 x
@@ -112,19 +113,32 @@ QList<double> calImgSizeByWidth(double srcW, double srcH, double maxWidth) {
     return {w, h};
 }
 QVariantList calWinHeight(const QString& k, uint maxWidth) {
-    QStringList arr = k.split('.');
+    QStringList arr = k.split("|");
+    QString cont = arr[0];
+    float scale = 1;
+    if(arr.length() > 1) {
+        scale = arr[1].toFloat();
+        if(scale <= 0) {
+            scale = 1;
+        } else if(scale < 0.1) {
+            scale = 0.1;
+        } else if(scale > 10) {
+            scale = 10;
+        }
+    }
+    arr = cont.split('.');
     if(maxWidth <= 0) {
         QWindow *w = qobject_cast<QWindow *>(engine->rootObjects().at(0));
         uint win_width = w->width();
         maxWidth = win_width - 310;
     }
     if(arr.length()>2) {
-        uint w = arr[arr.length()-3].toUInt();
-        uint h = arr[arr.length()-2].toUInt();
+        uint w = arr[arr.length()-3].toUInt()*scale;
+        uint h = arr[arr.length()-2].toUInt()*scale;
         QList<double> wh = calImgSizeByWidth(w, h, maxWidth);
-        return {k, wh[0], wh[1]};
+        return {cont, wh[0], wh[1], scale};
     } else {
-        return {k, maxWidth, 200};
+        return {cont, maxWidth, 200, scale};
     }
 }
 QString getFilePre() {

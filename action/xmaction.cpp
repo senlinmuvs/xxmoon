@@ -321,6 +321,9 @@ QString XMAction::xm(QImage *img, const QString& cont, const QString& file) {
         dir.mkpath(path);
     }
     if(!img->isNull()) {
+        if(xmImgCID >= 0) {
+            xm->cid = xmImgCID;
+        }
         QString w = QString::number(img->width());
         QString h = QString::number(img->height());
         QString postfix = file.isEmpty() ? ".png" : ut::file::postfix(file);

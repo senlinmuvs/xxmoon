@@ -1,5 +1,6 @@
 #include "qaesencryption.h"
 #ifdef Q_OS_WIN
+#include <QRegularExpression>
 #include <random>
 #endif
 #include "util.h"
@@ -515,6 +516,47 @@ namespace ut {
                 }
             }
             return x;
+        }
+        QString toCamelCase(const QString &underscoreStr) {
+            QString result;
+            QString currentWord;
+            bool nextUpper = false;
+
+            for (int i = 0; i < underscoreStr.length(); ++i) {
+                QChar c = underscoreStr[i];
+                if (c == '_') {
+                    if (!currentWord.isEmpty()) {
+                        if (nextUpper) {
+                          result += currentWord.at(0).toUpper();
+                          if (currentWord.length() > 1) {
+                              result += currentWord.mid(1);
+                          }
+                        } else {
+                          result += currentWord;
+                        }
+                        currentWord.clear();
+                    }
+                    nextUpper = true;
+                } else {
+                    currentWord += c;
+                    if (nextUpper && currentWord.length() > 1) {
+                        currentWord[0] = currentWord.at(0).toUpper();
+                        nextUpper = false;
+                    }
+                }
+            }
+
+            if (!currentWord.isEmpty()) {
+                if (nextUpper) {
+                    result += currentWord.at(0).toUpper();
+                    if (currentWord.length() > 1) {
+                        result += currentWord.mid(1);
+                    }
+                } else {
+                    result += currentWord;
+                }
+            }
+            return result;
         }
     }
 

@@ -1,7 +1,7 @@
 #include "cfg.h"
 #include <QVariantMap>
 #include <QDebug>
-Cfg::Cfg() {
+Cfg::Cfg(QObject *parent): QObject(parent) {
 }
 
 QString Cfg::toString() {
@@ -48,6 +48,7 @@ QVariantMap Cfg::toVMap() {
     map["hotKeyCmd"] = hotKeyCmd;
     map["lang"] = lang;
     map["tmpActFile"] = tmpActFile;
+    map["xmImgCategory"] = xmImgCategory;
     map["uiQuoteBgColor"] = uiQuoteBgColor;
     map["uiQuoteTextColor"] = uiQuoteTextColor;
     map["uiHighlightColor"] = uiHighlightColor;

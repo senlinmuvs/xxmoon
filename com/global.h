@@ -76,7 +76,7 @@ extern QRegularExpression Reg_Find_Img;
 extern QRegularExpression Reg_Find_Refid;
 extern QRegularExpression Reg_Win_Path;
 
-extern bool activated;
+extern uint xmImgCID;
 
 void initGlobal();
 QVariantList parseKeyTags(const QString& k);

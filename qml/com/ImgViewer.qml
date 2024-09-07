@@ -246,7 +246,8 @@ Window {
         if(pk){
             let curPKListViewIndex = delegate.getCurrentIndex();
             if(pk.img_path) {
-                list[list.length] = {i:curPKListViewIndex,img:pk.img_path, w:pk.src_w, h: pk.src_h};
+                let img = pk.img_path.split("|")[0];
+                list[list.length] = {i:curPKListViewIndex,img:img, w:pk.src_w, h: pk.src_h};
                 n++;
             }
             let arr = pk.imgs.split(",");
@@ -269,7 +270,8 @@ Window {
         if(pk){
             let curPKListViewIndex = delegate.getCurrentIndex();
             if(pk.img_path) {
-                list.unshift({i:curPKListViewIndex,img:pk.img_path, w:pk.src_w, h: pk.src_h});
+                let img = pk.img_path.split("|")[0];
+                list.unshift({i:curPKListViewIndex,img:img, w:pk.src_w, h: pk.src_h});
                 n++;
             }
             let arr = pk.imgs.split(",");
@@ -306,7 +308,8 @@ Window {
             return;
         }
         let it = list[curIndex];
-        src = it.img;
+        let img = it.img.split("|")[0];
+        src = img;
         let wh = Com.calImgSizeByHeight(it.w, it.h);
         width = wh[0];
         height = wh[1];

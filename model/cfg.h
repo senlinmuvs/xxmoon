@@ -5,10 +5,9 @@
 #include <QString>
 
 
-class Cfg {
+class Cfg: public QObject {
 public:
-    Cfg();
-
+    explicit Cfg(QObject *parent = nullptr);
     QString dataDir = QDir::homePath();
     QString exchangeDataDir = "";
     QString initImgNamePre = "";
@@ -52,6 +51,7 @@ public:
     QString hotKeyCmd = "F6";
     QString lang = "";
     QString tmpActFile = "act";
+    QString xmImgCategory = "";
     //
     QString uiQuoteBgColor = "#303030";
     QString uiQuoteTextColor = "#FFFFFF";
