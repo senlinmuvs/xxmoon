@@ -2379,3 +2379,11 @@ void App::exePanelCmd(QString k, QString script_, uint ty, QString param) {
         }
     });
 }
+
+void App::genContent(QString k, uint cbid) {
+    QString cont = "";
+    if(k == "/t") {
+        cont = ut::time::getCurrentTimeStr("yyyy/MM/dd hh:mm");
+        sendMsg(cbid, cont);
+    }
+}

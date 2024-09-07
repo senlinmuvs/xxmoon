@@ -494,6 +494,24 @@ Popup {
             cancel();
         } else if(event.modifiers === ctrlVal && event.key === Qt.Key_S) {
             submit();
+        } else if(event.modifiers === Qt.AltModifier && event.key === Qt.Key_Return) {
+            let keyStartIndex = -1;
+            let keyEndIndex = text.cursorPosition;
+            for(let i = keyEndIndex; i >= 0; i--) {
+                let c = text.text[i];
+                if(c === "/") {
+                    keyStartIndex = i;
+                    break;
+                }
+            }
+            if(keyStartIndex < 0) {
+                return;
+            }
+            let key = text.text.substring(keyStartIndex, keyEndIndex);
+            $a.genContent(key, Com.putFunc(function(r){
+                text.text = text.text.substring(0, keyStartIndex) + r + text.text.substring(keyEndIndex);
+                text.cursorPosition = keyStartIndex + r.length;
+            }));
         } else if(event.key === Qt.Key_Backtab) {
             if(first_field.focus) {
                 text.forceActiveFocus();
@@ -523,7 +541,7 @@ Popup {
                 break
             }
         }
-        text.text = text.text.substring(0, i) + flag +    text.text.substring(i);
+        text.text = text.text.substring(0, i) + flag +  text.text.substring(i);
         text.cursorPosition = oldI + flag.length;
     }
     function insertFlagToLineEnd(fromPos, flag) {

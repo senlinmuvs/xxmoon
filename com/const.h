@@ -92,7 +92,7 @@ const static char* sql_task_log_table =
     "cont TEXT not null default ''"
 ");";
 
-const static char* VERSION = "v1.54.0";
+const static char* VERSION = "v1.55.0";
 
 const static char* ENV_K_LAST_IMP_PATH = "LAST_IMP_PATH";
 const static char* ENV_K_LAST_IMP_TIME = "LAST_IMP_TIME";

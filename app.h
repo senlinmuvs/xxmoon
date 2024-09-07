@@ -98,6 +98,7 @@ public:
     Q_INVOKABLE QString tr(QString k);
     Q_INVOKABLE void cp(QString txt);
     Q_INVOKABLE void count(uint cbid);
+    Q_INVOKABLE void genContent(QString k, uint cbid);
 
     QString createSiteFile(QString filename, QString cont, qint64 ct);
     QString insertIndexItem(QString indexhtml, QMap<QString,QString> indexmap);

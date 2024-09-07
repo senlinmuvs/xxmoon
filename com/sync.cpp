@@ -141,7 +141,9 @@ bool uprecord(const QString& table, const QString& k, const QString& v, const QS
     loop.exec();
     int st = f->get(5000, -1).toInt();
     bool ok = st == 0;
-    lg->error(QString("uprecord url %1 st %2").arg(url).arg(st));
+    if(!ok) {
+        lg->error(QString("uprecord url %1 st %2").arg(url).arg(st));
+    }
     delete f;
     return ok;
 }
