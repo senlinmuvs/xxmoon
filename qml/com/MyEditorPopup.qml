@@ -320,30 +320,33 @@ Popup {
         event.accepted = true;
         let start = text.selectionStart;
         let end = text.selectionEnd;
-        let tab = '\t';
+        let tab = '  ';
+        let l = tab.length;
         if(start === end){
             text.text = text.text.insert(start, tab);
-            text.cursorPosition = start+1;
+            text.cursorPosition = start+l;
         } else {
             let s = text.text;
+            //开始点所在行移动，即使开始点不在行首
             for(let i = start; i >= 0; i--) {
                 if(i===0) {
                     s = s.insert(i, tab);
-                    start++;
-                    end++;
+                    start+=l;
+                    end+=l;
                 } else {
                     if(s[i]==='\n') {
                         s = s.insert(i+1, tab);
-                        start++;
-                        end++;
+                        start+=l;
+                        end+=l;
                         break;
                     }
                 }
             }
+            //开始点到结束点经过的行都移动
             for(let i = start; i < end; i++) {
                 if(s[i]==='\n') {
-                    end++;
                     s = s.insert(i+1, tab);
+                    end+=l;
                 }
             }
             text.text = s;
@@ -359,35 +362,41 @@ Popup {
         let end = text.selectionEnd;
         let tab = '\t';
         let space = ' ';
+        let s = text.text;
         if(start === end) {
-            text.text = text.text.insert(start, tab);
-            text.cursorPosition = start+1;
-        } else {
-            let s = text.text;
             for(let i = start; i >= 0; i--) {
-                if(i === 0) {
-                    if(Com.eq(s[i],tab,space)) {
-                        s = s.del(i, 1);
-                        start--;
-                        end--;
-                        break;
-                    }
-                } else {
-                    if(s[i]==='\n'){
-                        if(Com.eq(s[i+1],tab,space)) {
-                            s = s.del(i+1, 1);
-                            start--;
-                            end--;
-                        }
-                        break;
-                    }
+                if(s[i] === '\n') {
+                    break;
+                }
+                let isSpace = s[i] === space;
+                let isTab = s[i] === tab;
+                let l = isTab ? 2 : 1;
+                if(isSpace || isTab) {
+                    s = s.del(i, l);
+                    start-=l;
+                    end-=l;
+                    text.text = s;
+                    text.cursorPosition = start;
+                    break;
                 }
             }
-            for(let i = start; i < end; i++) {
+        } else {
+            let scanStart = start;
+            for(let i = start; i >= 0; i--) {
                 if(s[i] === '\n') {
-                    if(i+1 < s.length && Com.eq(s[i+1],tab,space)) {
-                        s = s.del(i+1, 1);
-                        end--;
+                    break;
+                }
+                scanStart--;
+            }
+            for(let i = scanStart; i < end; i++) {
+                if(s[i] === '\n') {
+                    let isSpace = s[i+1] === space;
+                    let isTab = s[i+1] === tab;
+                    let l = isTab ? 2 : 1;
+                    if(i+1 < s.length && isSpace || isTab) {
+                        s = s.del(i+1, l);
+                        start = Com.max(scanStart, start-l);
+                        end-=l;
                     }
                 }
             }
@@ -516,11 +525,7 @@ Popup {
             if(first_field.focus) {
                 text.forceActiveFocus();
             } else if(text.focus) {
-                if(text.selectedText) {
-                    editorDelTab(event);
-                } else {
-                    first_field.forceActiveFocus();
-                }
+                editorDelTab(event);
             }
         } else if(event.key === Qt.Key_Tab) {
             if(first_field.focus) {
