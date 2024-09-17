@@ -296,7 +296,8 @@ Window {
     function setCurIndexByImg(img) {
         for(let i = 0; i < list.length; i++) {
 //            console.log("setCurIndexByImg", list[i].img, img);
-            if(list[i].img === img) {
+            let img_ = list[i].img.split("|")[0];
+            if(img_ === img) {
                 curIndex = i;
                 return;
             }
@@ -308,6 +309,7 @@ Window {
             return;
         }
         let it = list[curIndex];
+//        console.log(">>>>>>>>>>>", curIndex, JSON.stringify(it));
         let img = it.img.split("|")[0];
         src = img;
         let wh = Com.calImgSizeByHeight(it.w, it.h);

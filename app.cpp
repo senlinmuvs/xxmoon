@@ -1083,7 +1083,7 @@ QString getExtra(QString filename) {
 }
 
 QString App::createSiteFile(QString filename, QString cont, qint64 ct) {
-    //去掉cont中---\n以下的内容
+    // 去掉cont中---\n以下的内容
     QString tag = "---<br>";
     int i = cont.lastIndexOf(tag);
     if(i >= 0) {
@@ -1961,6 +1961,14 @@ void App::initCfg() {
                         cfg->python = v;
                     } else if(k == "xm_img_category") {
                         cfg->xmImgCategory = v;
+                    } else if(k == "xm_img_quality") {
+                        uint v_ = v.toUInt();
+                        if(cfg->xmImgQuality <= 0) {
+                            v_ = 1;
+                        } else if(cfg->xmImgQuality > 100) {
+                            v_ = 100;
+                        }
+                        cfg->xmImgQuality = v_;
                     }
                 }
             }

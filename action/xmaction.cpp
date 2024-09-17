@@ -341,7 +341,9 @@ QString XMAction::xm(QImage *img, const QString& cont, const QString& file) {
         if(imgSize > 1024*1024) {
             QString original_file = path+"/"+time_str+"."+w+"."+h+ "_original" + postfix;
             f.copy(original_file);
-            ut::img::reduceImage(full_path, full_path, 50, 0, 0, 0);
+            if(cfg->xmImgQuality > 0 && cfg->xmImgQuality < 100) {
+                ut::img::reduceImage(full_path, full_path, cfg->xmImgQuality, 0, 0, 0);
+            }
         }
         xm->img = (year + "/" + file_name);
         new_clipboard_text = "!("+xm->img+")";

@@ -49,6 +49,7 @@ QVariantMap Cfg::toVMap() {
     map["lang"] = lang;
     map["tmpActFile"] = tmpActFile;
     map["xmImgCategory"] = xmImgCategory;
+    map["xmImgQuality"] = xmImgQuality;
     map["uiQuoteBgColor"] = uiQuoteBgColor;
     map["uiQuoteTextColor"] = uiQuoteTextColor;
     map["uiHighlightColor"] = uiHighlightColor;

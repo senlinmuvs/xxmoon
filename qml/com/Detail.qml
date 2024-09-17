@@ -29,7 +29,7 @@ Rectangle {
             id: scroll
             width: parent.width
             height: parent.height
-            contentWidth:  width - 5
+            contentWidth:  width
             contentHeight: col.height + 30
             clip: true
             Column {
@@ -41,7 +41,7 @@ Rectangle {
                     topMargin: 5
                     left: parent.left
                     right: parent.right
-                    rightMargin: 10
+                    rightMargin: scrollBar.width
                 }
                 MyImage {
                     id: img
@@ -157,13 +157,11 @@ Rectangle {
                 anchors.right: scroll.right
                 anchors.bottom: scroll.bottom
                 stepSize: scrollStep
-                width: 10
             }
             Keys.onPressed: function(event) {
                 onKeysPressed(event);
             }
         }
-
         acceptedButtons: Qt.RightButton
     }
     Menu {

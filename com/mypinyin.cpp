@@ -2125,4 +2125,3 @@ void testHanziRang() {
     // setlocale(LC_ALL, "");  // 在初始化时调用这个
     // #include <iostream>     // 对应的头文件
 }
-

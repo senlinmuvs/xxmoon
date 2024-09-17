@@ -52,6 +52,7 @@ public:
     QString lang = "";
     QString tmpActFile = "act";
     QString xmImgCategory = "";
+    uint xmImgQuality = 70;
     //
     QString uiQuoteBgColor = "#303030";
     QString uiQuoteTextColor = "#FFFFFF";

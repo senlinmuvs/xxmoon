@@ -206,6 +206,15 @@ Popup {
                     }
                 }
             }
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            ScrollBar.vertical: ScrollBar {
+                id: scrollBar
+                parent: scroll.parent
+                anchors.top: scroll.top
+                anchors.right: scroll.right
+                anchors.bottom: scroll.bottom
+                stepSize: scrollStep
+            }
         }
         Rectangle {
             id: rect_status
@@ -318,6 +327,7 @@ Popup {
     }
     function editorAddTab(event) {
         event.accepted = true;
+        let oldScrollBarPos = scrollBar.position;
         let start = text.selectionStart;
         let end = text.selectionEnd;
         let tab = '  ';
@@ -353,11 +363,13 @@ Popup {
             text.cursorPosition = start;
             text.moveCursorSelection(end, TextEdit.SelectCharacters);
         }
+        scrollBar.position = oldScrollBarPos;
 //        let x = text.text.replace(/\n/g, 'n').replace(/\t/g, 't');
 //        Com.log(text.selectionStart, text.selectionEnd, text.lineCount, text.length, x);
     }
     function editorDelTab(event) {
         event.accepted = true;
+        let oldScrollBarPos = scrollBar.position;
         let start = text.selectionStart;
         let end = text.selectionEnd;
         let tab = '\t';
@@ -404,6 +416,7 @@ Popup {
             text.cursorPosition = start;
             text.moveCursorSelection(end, TextEdit.SelectCharacters);
         }
+        scrollBar.position = oldScrollBarPos;
 //        let x = text.text.replace(/\n/g, 'n').replace(/\t/g, 't');
 //        Com.log(text.cursorPosition, text.selectionStart, text.selectionEnd, text.lineCount, text.length, x);
     }
@@ -517,9 +530,11 @@ Popup {
                 return;
             }
             let key = text.text.substring(keyStartIndex, keyEndIndex);
+            let oldScrollBarPos = scrollBar.position;
             $a.genContent(key, Com.putFunc(function(r){
                 text.text = text.text.substring(0, keyStartIndex) + r + text.text.substring(keyEndIndex);
                 text.cursorPosition = keyStartIndex + r.length;
+                scrollBar.position = oldScrollBarPos;
             }));
         } else if(event.key === Qt.Key_Backtab) {
             if(first_field.focus) {
