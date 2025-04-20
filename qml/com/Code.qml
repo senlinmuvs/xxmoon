@@ -79,4 +79,7 @@ Rectangle {
     function getTxt() {
         return txt;
     }
+    function up() {
+        txt.up();
+    }
 }

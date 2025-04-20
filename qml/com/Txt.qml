@@ -61,4 +61,7 @@ TextArea {
             }
         }
     }
+    function up() {
+        root.update();
+    }
 }

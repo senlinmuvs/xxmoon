@@ -109,6 +109,9 @@ function addOrUpdateCol(col) {
 
 /// pk
 function loadXM(clear, cb) {
+    if(xm_list_view.loading) {
+        return;
+    }
     let index = category_list_view.currentIndex;
     xm_list_view.footer = xm_list_footer;
     if(clear) {
@@ -153,20 +156,24 @@ function loadXM0(list) {
     }
 
     //定位当前选中项
-    if(pre_cid > 0) {
-        let i = getColIndexByCid(pre_cid);
-        if(i >= 0) {
-            category_list_view.currentIndex = i;
-            pre_cid = 0;
-        }
-    }
+    let xmLocSuc = false;
     if(pre_xmid > 0) {
         let arr = getPKByIdInCurrentList(pre_xmid);
         if(arr) {
             let i = arr[0];
             xm_list_view.currentIndex = i;
-            pre_xmid = 0;
+            xmLocSuc = true;
         }
+        pre_xmid = 0;
+    }
+    if(pre_cid > 0) {
+        if(xmLocSuc) {
+            let i = getColIndexByCid(pre_cid);
+            if(i >= 0) {
+                category_list_view.currentIndex = i;
+            }
+        }
+        pre_cid = 0;
     }
     $a.setUIVal(0, xm_list.width);
 }
@@ -387,6 +394,7 @@ let img_view_delegate = {
 function openImgView(img) {
     let pk = getCurrentXM();
     if(pk && !pk.jm) {
+        let imgViewer = window.openImgView();
         imgViewer.delegate = img_view_delegate;
         let n = imgViewer.append(pk);
         if(n>0) {

@@ -1349,6 +1349,15 @@ void App::openInExternal(int type, QString param, uint obj) {
 }
 
 void App::openDir(QString path) {
+    if(path.startsWith(getFilePre())) {
+        path = path.mid(getFilePre().length());
+    }
+    QStringList arr = path.split("|");
+    if(arr.size() == 2) {
+        path = arr[0];
+    }
+    path = path.replace("&nbsp;", " ");
+    path = QDir::toNativeSeparators(path);
 #if defined(Q_OS_MAC)
     if(lg->isDebug()){
         lg->debug(QString("mac openDir %1").arg(path));
@@ -1359,16 +1368,13 @@ void App::openDir(QString path) {
     process->start("open", QStringList() << "-R" << path);
     process->waitForFinished();
 #elif defined(Q_OS_WIN)
-    path = path.replace("&nbsp;", " ");
-    path = ut::file::convPathForWinExplorer(path);
-    path = QDir::toNativeSeparators(path);
+    path = path.replace("\\\\", "\\");
     QStringList param;
-    param << "/select," + path;
-    if(lg->isDebug()){
+    param << "/select,"+path;
+    if(lg->isDebug()) {
         lg->debug(QString("win openDir %1").arg(path));
     }
     process->start("explorer", param);
-//    qDebug() << "explorer" << param[0].toUtf8().data();
     process->waitForFinished();
 #endif
 }

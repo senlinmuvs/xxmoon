@@ -424,6 +424,10 @@ function randomStr(length = 30) {
     return str;
 };
 function isAnimation(s) {
+    s = String(s);
+    if(!s) {
+        return false;
+    }
     return s.endsWith(".gif") || s.endsWith(".webp");
 }
 function verText(txt) {

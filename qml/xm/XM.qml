@@ -21,6 +21,7 @@ Rectangle {
     property int pre_cid: 0
     property int pre_xmid: 0
     property int wallpaper_cid: 0
+    property bool preNotEmptyKeySearch:false
 
     ListModel {
         id: list_model_category
@@ -50,7 +51,12 @@ Rectangle {
                 event.accepted = true;
                 category_list_view.forceActiveFocus();
             } else if(event.key === Qt.Key_Return) {
-                refreshData();
+                let notEmptyKey = search_bar.text.trim().length > 0;
+                if(preNotEmptyKeySearch || notEmptyKey) {
+                    refreshData();
+                }
+                preNotEmptyKeySearch = notEmptyKey;
+                category_list_view.forceActiveFocus();
             }
         }
         onFocusChanged: {

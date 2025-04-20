@@ -41,7 +41,7 @@ Rectangle {
                     topMargin: 5
                     left: parent.left
                     right: parent.right
-                    rightMargin: scrollBar.width
+                    rightMargin: scrollBar.width+5
                 }
                 MyImage {
                     id: img
@@ -157,10 +157,19 @@ Rectangle {
                 anchors.right: scroll.right
                 anchors.bottom: scroll.bottom
                 stepSize: scrollStep
+                onPositionChanged: {
+                    for (var i = 0; i < cols.children.length; i++) {
+                        var child = cols.children[i]
+                        if(child instanceof Txt || child instanceof Quote) {
+                            child.up();
+                        }
+                    }
+                }
             }
             Keys.onPressed: function(event) {
                 onKeysPressed(event);
             }
+
         }
         acceptedButtons: Qt.RightButton
     }
@@ -396,6 +405,7 @@ Rectangle {
                 let t2 = new Date().getTime();
         //                console.log(">>>>>>>>>>>>>", t2-t1, qml);
             }
+
         //            console.log("---------------------------------------------");
         }
         scroll.forceActiveFocus();
@@ -564,6 +574,7 @@ Rectangle {
                 op(tmp);
             }
         }
+        let imgViewer = window.openImgView();
         imgViewer.delegate = img_view_delegate;
         let n = imgViewer.append(pk);
         if(n>0) {

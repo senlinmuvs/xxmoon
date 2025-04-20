@@ -199,22 +199,6 @@ namespace ut {
             }
             return QList<uint>() << c << size;
         }
-        QString convPathForWinExplorer(QString path) {
-            QString newPath = path.replace("\\\\", "\\")
-                                  .replace("/", "\\");
-            QStringList segments = path.split("\\");
-            QString result;
-            for (int i = 0; i < segments.size(); i++) {
-                const QString &segment = segments[i];
-                if(i > 0) {
-                    result += QString("\"%1\"").arg(segment);
-                } else {
-                    result += segment;
-                }
-                result += "\\";
-            }
-            return result;
-        }
     }
 
     ///string

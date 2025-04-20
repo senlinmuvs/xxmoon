@@ -37,6 +37,7 @@ ApplicationWindow {
 
     property var win_detail_refs//{detail_win_name:1}保持详情分离窗口引用避免加载数据多了窗口消失
     property int win_detail_index: 0//详情分离窗口的索引计数,即窗口名后缀
+    property var winImgView:null
 
     Menu {
         id: trayMenu
@@ -106,9 +107,6 @@ ApplicationWindow {
     Detail {
         id: detailView
         z: 10
-    }
-    ImgViewer {
-        id: imgViewer
     }
     MyFieldPopup {
         id: popup_input
@@ -406,9 +404,9 @@ ApplicationWindow {
             if(file === "") {
                 file = $a.fileDir;
             }
-            if($a.getPlatform() === Com.platform_win && /.+[.](pdf|html|xm)/.test(file)) {
-                file = file.substring(0, file.lastIndexOf("/"));
-            }
+            // if($a.getPlatform() === Com.platform_win && /.+[.](pdf|html|xm)/.test(file)) {
+            //     file = file.substring(0, file.lastIndexOf("/"));
+            // }
             $a.openDir(file);
         } else {
             Com.st(1, $a.tr('generated failure.'));
@@ -639,5 +637,15 @@ ApplicationWindow {
             }
         };
         w_input.open();
+    }
+    function openImgView() {
+        if(winImgView != null) {
+            return winImgView;
+        }
+        let com = Qt.createComponent("qrc:/qml/com/ImgViewer.qml");
+        let win = com.createObject(null);
+        win.show();
+        winImgView = win;
+        return win;
     }
 }

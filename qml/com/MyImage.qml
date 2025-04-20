@@ -10,7 +10,7 @@ Rectangle {
     clip: true
     radius: 10
     property alias img_radius: root.radius
-    property string source
+    property alias source: img.source
     property alias fillMode: img.fillMode
 
     Image {
@@ -20,13 +20,16 @@ Rectangle {
         antialiasing: true
         source: root.source
         fillMode: Image.PreserveAspectFit
+        visible: !Com.isAnimation(source)
         cache: false
     }
     AnimatedImage {
-        visible: Com.isAnimation(root.source)
+        id: img_ai
+        visible: Com.isAnimation(img.source)
         anchors.fill: parent
-        source: root.source
+        source: img.source
         onStatusChanged: playing = (status == AnimatedImage.Ready)
+        cache: false
     }
     // Rectangle {
     //     id: mask

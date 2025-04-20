@@ -172,6 +172,7 @@ let img_view_delegate = {
 function openImgView(img) {
     let pk = getCurrentNote();
     if(pk) {
+        let imgViewer = window.openImgView();
         imgViewer.delegate = img_view_delegate;
         let n = imgViewer.append(pk);
         if(n>0) {
@@ -182,7 +183,13 @@ function openImgView(img) {
         }
     }
 }
-
+let editor_delegate = {
+    onClose:function(wid, id) {
+//        if(detailView.visible) {
+//            detailView.reloadData(id);
+//        }
+    }
+}
 let detail_delegate = {
     next:function() {
         if(note_list_view.currentIndex+1>=note_list_view.count) {
@@ -227,14 +234,6 @@ let detail_delegate = {
     }
 }
 
-let editor_delegate = {
-    onClose:function(wid, id) {
-//        if(detailView.visible) {
-//            detailView.reloadData(id);
-//        }
-    }
-}
-
 ///Note
 function convNoteToPK(e) {
     let extra = "";
@@ -260,6 +259,9 @@ function convNoteToPK(e) {
 }
 
 function loadNote(clear, cb) {
+    if(note_list_view.loading) {
+        return;
+    }
     note_list_view.footer = note_list_footer;
     if(clear) {
         note_list_model.clear();

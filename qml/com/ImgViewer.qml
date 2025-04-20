@@ -188,6 +188,10 @@ Window {
             delegate.onClose();
         }
         e_iv_timer.stop();
+        img.source = "";
+        img.destroy();
+        root.destroy();
+        window.winImgView = null;
     }
 
     function next() {
@@ -285,14 +289,12 @@ Window {
         }
         return n;
     }
-
     function checkIndex() {
         if(curIndex < 0 || curIndex > list.length-1) {
             return false;
         }
         return true;
     }
-
     function setCurIndexByImg(img) {
         for(let i = 0; i < list.length; i++) {
 //            console.log("setCurIndexByImg", list[i].img, img);
@@ -303,7 +305,6 @@ Window {
             }
         }
     }
-
     function open() {
         if(!checkIndex()){
             return;

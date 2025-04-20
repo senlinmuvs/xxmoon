@@ -6,11 +6,12 @@ import "ui.js" as UI
 
 Popup {
     id: root
+    property double scrollStep: 0.025
     property alias text: text.text
     width: parent.width+UI.nav_width
     height: parent.height
     x: parent.width-width
-    y: 0
+    y: -2
 
     closePolicy: Popup.NoAutoClose
     topPadding: 0
