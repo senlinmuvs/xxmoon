@@ -29,8 +29,7 @@ Rectangle {
     TextField {
         id: search_bar
         anchors.top: parent.top
-        anchors.left:parent.left
-        anchors.right: parent.right
+        width: category_list.width
         height: 40
         placeholderText: $a.tr("Search...")
         placeholderTextColor: "#a9a9a9"

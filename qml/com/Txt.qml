@@ -17,6 +17,7 @@ TextArea {
         color: "transparent"
     }
     wrapMode: Text.WrapAnywhere
+    ContextMenu.menu: null
 
     onLinkActivated: function(link) {
         if(link) {

@@ -13,6 +13,7 @@ TextField {
         anchors.fill: parent
         color:"#222"
     }
+    ContextMenu.menu: null
     property var range
 
     onTextChanged: {

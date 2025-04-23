@@ -148,6 +148,7 @@ Popup {
             selectByMouse: true
             placeholderText: '位置:123-456'
             placeholderTextColor: "#808080"
+            ContextMenu.menu: null
             validator: RegularExpressionValidator {
                 regularExpression: /[0-9]{1,9}-[0-9]{1,9}/
             }
@@ -183,6 +184,7 @@ Popup {
                 wrapMode: Text.Wrap
                 selectByMouse: true
                 focus: true
+                ContextMenu.menu: null
                 selectionColor: "#7887FF"
                 selectedTextColor: "#FFF"
                 tabStopDistance: 4*fontMetrics.advanceWidth(" ")
